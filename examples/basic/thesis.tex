@@ -1,0 +1,38 @@
+%!TEX root = thesis.tex
+
+%:-------------------------- Preamble -----------------------
+
+\documentclass{../../uit-thesis}
+
+% Lorem ipsum
+\usepackage{lipsum}
+
+% Make glossaries
+\makeglossaries
+
+\begin{document}
+
+%:-------------------------- Frontmatter -----------------------
+\frontmatter
+
+% Create toc, list of figures and list of tables. Remove if any of these are not desired
+\tableofcontents
+
+\newacronym{api}{API}{application programming interface}
+
+\printglossaries
+\addcontentsline{toc}{chapter}{\acronymname}
+
+%:-------------------------- Mainmatter -----------------------
+\mainmatter
+
+\chapter{Introduction}
+\lipsum[1-4]
+
+We can use the \ac{api} to do stuff!
+
+\chapter{Design}
+\lipsum[5-8]
+
+\end{document}
+
