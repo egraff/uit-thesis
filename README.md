@@ -5,6 +5,7 @@ LaTeX document class for writing theses
 
 
 TODO:
+ - Fix frontpage??????
  - Fix math font
  - Fix kerning and protrusion
    - Add microtype
