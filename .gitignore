@@ -9,6 +9,7 @@
 *.glg
 *.glo
 *.gls
+*.glsdefs
 *.idx
 *.ilg
 *.ind
