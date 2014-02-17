@@ -103,7 +103,8 @@
 %:-------------------------- URLs -----------------------
 
 % Nicely formatted URLs
-\usepackage[obeyspaces]{url}
+% Retain spaces in URLs, and allow line break at hyphens
+\usepackage[obeyspaces,hyphens]{url}
 
 % Define a new 'leo' style for the package that will use a smaller font.
 \def\url@leostyle{%
@@ -114,24 +115,10 @@
 
 %:-------------------------- Figures, graphics, includes, etc.  -----------------------
 
+
 \ifpdf
   
-  \usepackage[ pdftex, plainpages = false, pdfpagelabels, 
-               pdfpagelayout = useoutlines,
-               bookmarks,
-               bookmarksopen = true,
-               bookmarksnumbered = true,
-               breaklinks = true,
-               linktocpage,
-               pagebackref,
-               colorlinks = false,  % was true
-               linkcolor = blue,
-               urlcolor  = blue,
-               citecolor = red,
-               anchorcolor = green,
-               hyperindex = true,
-               hyperfigures
-               ]{hyperref}
+  \usepackage[pdftex,plainpages=false,pdfpagelabels,pdfpagemode={UseOutlines},bookmarks,pagebackref,hyperindex,hyperfigures]{hyperref}
   
   % Used for adding figures in thesis
   \usepackage[pdftex]{graphicx}
@@ -141,21 +128,7 @@
   
 \else
   
-  \usepackage[ dvips, 
-               bookmarks,
-               bookmarksopen = true,
-               bookmarksnumbered = true,
-               breaklinks = true,
-               linktocpage,
-               pagebackref,
-               colorlinks = false,  % was true
-               linkcolor = blue,
-               urlcolor  = blue,
-               citecolor = red,
-               anchorcolor = green,
-               hyperindex = true,
-               hyperfigures
-               ]{hyperref}
+  \usepackage[dvips,bookmarks,pagebackref,hyperindex,hyperfigures]{hyperref}
 
   % Used for adding figures in thesis
   \usepackage{graphicx}
@@ -163,15 +136,17 @@
 \fi
 
 \usepackage[all]{hypcap} % Correct a problem with hyperref
-\hypersetup{
-    bookmarksnumbered,
-    pdfstartview={FitH},
-    colorlinks=false,%
-    citecolor=black,%
-    filecolor=black,%
-    linkcolor=black,%
-    urlcolor=black,%
-    pdfpagemode={UseOutlines}
+
+\hypersetup{%
+  bookmarksopen = true,
+  bookmarksnumbered = true,
+  breaklinks = true,
+  linktocpage,
+  colorlinks = false,% was true
+  linkcolor = blue,
+  urlcolor  = blue,
+  citecolor = red,
+  anchorcolor = green
 }
 
 % Enables adding figures and tables side by side
