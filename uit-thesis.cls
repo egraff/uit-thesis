@@ -398,19 +398,58 @@
 % Define how chapter number is drawn
 \newcommand{\printchapternum}{
   \begin{tikzpicture}
-    %\tikzstyle{every rectangle node}=[draw]                                               % Just for debugging, not used!
-    %\draw[fill,color=black] (0,0) rectangle (2cm,2cm);                                    % Just for debugging, not used!
-    \draw[fill,color=chapnumcol] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;  % Draw UiT "slash"
-    \draw[color=black] (1.81,1.28) node[rectangle] { \chapnumfont\thechapter };            % Draw chapter number
+    %\tikzstyle{every rectangle node}=[draw]                                                                                     % Just for debugging, not used!
+    %\draw[fill,color=red] (0,0) rectangle (3.15cm,3.15cm);                                                                % Just for debugging, not used!
+    \draw[fill,color=chapnumcol] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;                       % Draw UiT "slash"
+    \draw[color=black] (1.81,1.28) node[rectangle] { \Huge\bfseries\chapnumfont\thechapter };     % Draw chapter number
   \end{tikzpicture}
 }
+\newlength{\chapterheadalign}
+\setlength{\chapterheadalign}{\z@}
+\setlength{\chapterheadalign}{\z@ - 3.15cm + 1em + 7\baselineskip} % Align bottom of UiT slash with bottom of baseline (therefore, we subtract 1em)
+
+% Align chapter num
+\newlength{\chapternumalign}
+\setlength{\chapternumalign}{\z@} % Align bottom of UiT slash with bottom of baseline
+\setlength{\chapternumalign}{1.28cm - 20pt - \baselineskip} % Align bottom of chapter number with bottom of baseline
+
+% Align chapter name
+\newlength{\chapternamealign}
+\setlength{\chapternamealign}{\z@}
+\setlength{\chapternamealign}{\z@ - \chapternumalign}
+
+% Extra vertical spacing that is added by book.cls in addition to the default 50\p@ (I think it is \vspace* that does it)
+% See https://groups.google.com/forum/#!topic/comp.text.tex/tIoCvZWpF7U
+\newlength{\chaperheadtopvspace}
+\setlength{\chaperheadtopvspace}{\parskip + \baselineskip}
+
+%%%%%%%%%%%%%%% THESE CAN BE CHANGED!!!!! %%%%%%%%%%%%%%%
+\def\baselinesbeforechaphead{6} % Approximate same distance as would be with standard 50\p@ vspace
+\def\baselinesafterchapnum{3}
+\def\baselinesafterchaptitle{0}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Now, use our supahdupah chapter style! YEEEEEEAAAAHHHHHH!
 \titleformat{\chapter}[display]
-  {\vspace*{8pt}\Huge\bfseries\chaptitlefont}
+  {}
   {\printchapternum}
-  {9pt} % Vertical distance between chapter number and chapter title
-  {\Huge\bfseries\chaptitlefont}
+  {\z@ - \parskip + \chapternamealign + \baselinesafterchapnum\baselineskip} % Vertical distance between chapter number and chapter title
+  {} % XXX: How to make sure Chapter title aligns to baseline
+
+% Adjust spacing around chapter title
+\titlespacing{\chapter}
+  {\z@}          % Left margin = 0
+  {\z@ - \chaperheadtopvspace + \chapterheadalign + \chapternumalign + \baselinesbeforechaphead\baselineskip} % Vertical space before chapter head (50\p@ is standard from book.cls)
+  {\z@ - \parskip + \baselinesafterchaptitle\baselineskip}        % Vertical space after title, before text (\ttl@chapafter is default)
+
+
+
+
+%:-------------------------- TOC and lists -----------------------
+
+\renewcommand{\acronymname}{List of Abbreviations}
+
+
 
 %:-------------------------- Book class overrides -----------------------
 
