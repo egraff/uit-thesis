@@ -166,6 +166,11 @@
 \usepackage{opensans}
 \usepackage{charter}
 
+%:-------------------------- Bibliography etc. -----------------------
+
+% Citation numbering not starting on table of contents 
+\usepackage{notoccite} 
+
 %:-------------------------- Symbols -----------------------
 
 % AMS
