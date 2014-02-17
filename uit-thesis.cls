@@ -275,6 +275,22 @@
    \node[inner sep=0pt] (N) {#1};%
 }
 
+% Redeﬁne the macro \textsc that switches to small capitals.
+% If the actual font is italic or slanted, switch to a fake slanted small caps, otherwise switch to ordinary small caps.
+% Note: this macro is based on a similar macro from the "slantsc" package.
+\DeclareRobustCommand\textsc[1]{%
+    \ifthenelse{\equal{\f@shape}{\scdefault}}{% If text already has small caps shape
+        % Do nothing
+        {#1}%
+    }{% Else
+        \ifthenelse{\equal{\f@shape}{\itdefault}\or\equal{\f@shape}{\sldefault}}{% If text is italicized or slanted
+            {\fontshape\scdefault\selectfont\faketextsl{#1}}%
+        }{%
+            {\fontshape\scdefault\selectfont{#1}}%
+        }%
+    }%
+}
+
 % Magic to define \upsc{} command that replaces upper-case letters with lower-case small-caps
 \ExplSyntaxOn
 \cs_generate_variant:Nn \tl_rescan:nn { nV } 
