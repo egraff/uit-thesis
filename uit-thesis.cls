@@ -281,7 +281,7 @@
 % Used for abreviations and list of abreviations
 % Don't use 'toc' option because it doesn't print '\acronymname' in table of contents (TOC)
 % Instead, we override manually later
-\usepackage[acronym,shortcuts,nomain,nonumberlist]{glossaries}
+\usepackage[acronym,shortcuts,nomain,nonumberlist,nopostdot]{glossaries}
 
 % Use smallcaps-magic!!! _o/ \o/ \o_
 % Must be used to support ACR-commands that are not aliased to GLS-commands
