@@ -108,7 +108,7 @@
 
 % Define a new 'leo' style for the package that will use a smaller font.
 \def\url@leostyle{%
-  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}%
+  \@ifundefined{select}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}%
 }
 % Now actually use the newly defined style.
 \urlstyle{leo}
@@ -512,6 +512,104 @@
   % Redefine headers for appendices
   \pagestyle{empty}
 }
+
+
+%:-------------------------- Frontpage stuffs -----------------------
+
+\usepackage{eso-pic}
+\usepackage{geometry}
+\usepackage{setspace}
+
+\newcommand\ThesisFrontpageImagePath{frontpage_image.pdf}
+
+\newcommand\ThesisFrontpageLogo{
+  \put(0,-100){
+  \parbox[b][\paperheight]{\paperwidth}{%
+    \vfill
+    \centering
+    \includegraphics[width=20cm,height=20cm,
+    keepaspectratio]{\ThesisFrontpageImagePath}%
+    \vfill}
+  }
+}
+
+\newcommand\ThesisFrontpageImage{
+  \put(0,10){
+    \parbox[b][\paperheight]{\paperwidth}{%
+    \vfill
+    \centering
+    \includegraphics[width=\paperwidth,height=\paperheight,
+    keepaspectratio]{frontpage_overlay_logo.pdf}%
+    \vfill}
+  }
+}
+
+% Custom variables for the frontpage
+\def\thesissubtitle#1{\def\@thesissubtitle{#1}}
+\def\thesisfaculty#1{\def\@thesisfaculty{#1}}
+\def\thesisprogramme#1{\def\@thesisprogramme{#1}}
+
+\renewcommand\maketitle{
+  % Set custom geometry for the frontpage text
+  \newgeometry{top=0.5in,bottom=1in,right=1.0in,left=2.37in}
+
+  \begin{titlepage}%
+
+  % Image and logo
+  \AddToShipoutPicture*{\ThesisFrontpageLogo}
+  \AddToShipoutPicture*{\ThesisFrontpageImage}
+  
+  % Text
+  \begingroup\begin{spacing}{0.9}
+  \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{l}{n}\selectfont
+  \@thesisfaculty
+  \end{spacing}\endgroup
+  
+  \begingroup\begin{spacing}{0.9}
+  \fontsize{12.5pt}{15pt}\usefont{OT1}{fos}{b}{n}\selectfont
+  \@title
+  \end{spacing}\endgroup
+  
+  \begingroup\begin{spacing}{0.3}
+  \fontsize{12.5pt}{19pt}\usefont{OT1}{fos}{l}{it}\selectfont
+  \@thesissubtitle
+  \end{spacing}\endgroup
+  
+  \begingroup\begin{spacing}{0.4}
+  \fontsize{12.5pt}{15pt}\usefont{OT1}{fos}{l}{it}\selectfont
+  —
+  \end{spacing}\endgroup
+  
+  \begingroup\begin{spacing}{0.5}
+  \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{sb}{n}\selectfont
+  \@author
+  \end{spacing}\endgroup
+  
+  \begingroup\begin{spacing}{0.3}
+  \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{l}{it}\selectfont
+  \@thesisprogramme
+  \end{spacing}\endgroup
+  
+  \end{titlepage}%
+  
+  % Restore original geometry
+  \restoregeometry
+  
+  \setcounter{footnote}{0}%
+  \global\let\thanks\relax
+  \global\let\maketitle\relax
+  \global\let\@thanks\@empty
+  \global\let\@author\@empty
+  \global\let\@date\@empty
+  \global\let\@title\@empty
+  \global\let\@thesissubtitle\@empty
+  \global\let\title\relax
+  \global\let\author\relax
+  \global\let\date\relax
+  \global\let\and\relax
+  \global\let\thesissubtitle\relax
+}
+
 
 %:-------------------------- Convenient macros and definitions -----------------------
 
