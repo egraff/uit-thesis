@@ -189,7 +189,7 @@
 %:-------------------------- Fonts -----------------------
 
 \usepackage{opensans}
-\usepackage{charter}
+\usepackage[osf]{XCharter}
 
 %:-------------------------- Symbols -----------------------
 
@@ -254,16 +254,19 @@
 
 %:-------------------------- Black magic hacks -----------------------
 
+% I haven't deleted the below in case someone needs it later. The charter
+% extention, XCharter, provides emphasized smallcaps, however, so it is
+% superfluous here. - EIN
 % Used together with small caps to achieve fake emphasized (actually slanted) small caps
-\newcommand{\faketextsl}[1]{%
-   \tikz[baseline=(N.base)]%
-   % The transform says:
-   % x' = 1x + 0.22y + 0pt
-   % y' = 0x + 1y    + 0pt
-   % This gives a slant - adjust the value for each font!
-   \pgfsys@transformcm{1}{0}{0.18}{1}{0pt}{0pt}% This is adjusted to look good with Charter BT
-   \node[inner sep=0pt] (N) {#1};%
-}
+%\newcommand{\faketextsl}[1]{%
+%   \tikz[baseline=(N.base)]%
+%   % The transform says:
+%   % x' = 1x + 0.22y + 0pt
+%   % y' = 0x + 1y    + 0pt
+%   % This gives a slant - adjust the value for each font!
+%   \pgfsys@transformcm{1}{0}{0.18}{1}{0pt}{0pt}% This is adjusted to look good with Charter BT
+%   \node[inner sep=0pt] (N) {#1};%
+%}
 
 % Magic to define \upsc{} command that replaces upper-case letters with lower-case small-caps
 \ExplSyntaxOn
