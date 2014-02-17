@@ -204,9 +204,11 @@
 \usepackage[parfill]{parskip}
 
 % Set indent at new paragraph to 0
-\setlength{\parindent}{0pt} 
+\setlength{\parindent}{\z@} 
 
 % Set paragraph skip length to two lines
+% Note: this reads the current value of \baselineskip for the normal font and font size, and stores it in parskip.
+% Chaning \baselineskip will NOT change \parskip
 \setlength{\parskip}{\baselineskip}
 
 %\typeout{Old paragraph definition: \meaning\paragraph}
@@ -420,29 +422,39 @@
 
 % Extra vertical spacing that is added by book.cls in addition to the default 50\p@ (I think it is \vspace* that does it)
 % See https://groups.google.com/forum/#!topic/comp.text.tex/tIoCvZWpF7U
-\newlength{\chaperheadtopvspace}
-\setlength{\chaperheadtopvspace}{\parskip + \baselineskip}
+\newlength{\chapterheadtopvspace}
+\setlength{\chapterheadtopvspace}{\parskip + \baselineskip}
 
 %%%%%%%%%%%%%%% THESE CAN BE CHANGED!!!!! %%%%%%%%%%%%%%%
 \def\baselinesbeforechaphead{6} % Approximate same distance as would be with standard 50\p@ vspace
-\def\baselinesafterchapnum{3}
-\def\baselinesafterchaptitle{0}
+\def\baselinesafterchapnum{4}
+\def\baselinesafterchaptitle{4}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\chaptitlefontsize {\normalsize}
+\def\chaptitlefontsize {\Huge}
+%\def\chaptitlefontsize {\fontsize{50}{60}}
 
 % Now, use our supahdupah chapter style! YEEEEEEAAAAHHHHHH!
 \titleformat{\chapter}[display]
   {}
   {\printchapternum}
   {\z@ - \parskip + \chapternamealign + \baselinesafterchapnum\baselineskip} % Vertical distance between chapter number and chapter title
-  {} % XXX: How to make sure Chapter title aligns to baseline
+  {% Make sure Chapter title aligns to baseline
+    \chaptitlefont\chaptitlefontsize\selectfont
+    \vspace*{-\baselineskip}}
+  [% Make sure that normal text following chapter title aligns to baseline
+    \vspace*{-1ex}
+    \vspace*{-\baselineskip}
+    \normalsize\normalfont\selectfont
+    \vspace*{1ex}
+    \vspace*{\parskip}]
 
 % Adjust spacing around chapter title
 \titlespacing{\chapter}
   {\z@}          % Left margin = 0
-  {\z@ - \chaperheadtopvspace + \chapterheadalign + \chapternumalign + \baselinesbeforechaphead\baselineskip} % Vertical space before chapter head (50\p@ is standard from book.cls)
+  {\z@ - \chapterheadtopvspace + \chapterheadalign + \chapternumalign + \baselinesbeforechaphead\baselineskip} % Vertical space before chapter head (50\p@ is standard from book.cls)
   {\z@ - \parskip + \baselinesafterchaptitle\baselineskip}        % Vertical space after title, before text (\ttl@chapafter is default)
-
-
 
 
 %:-------------------------- TOC and lists -----------------------
