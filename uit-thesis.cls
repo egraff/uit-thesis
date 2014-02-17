@@ -457,5 +457,9 @@
   \pagestyle{empty}
 }
 
+%:-------------------------- Convenient macros and definitions -----------------------
+
+\def \const #1{\penalty 100 \hbox{\texttt{#1}}}
+
 % That's all, folks!
 \endinput
