@@ -43,11 +43,11 @@
 % Allow UTF-8 characters in .tex source files (e.g. so we don't have to escape Norwegian characters)
 \RequirePackage[utf8]{inputenc}
 
-% Correct font encoding / language support in output (hyphenations, etc.)
-\RequirePackage[T1]{fontenc}
-
 % Support text copy and text search in LaTex pdf documents with ligatures (e.g. ff, fi, ...)
 \RequirePackage[resetfonts]{cmap}
+
+% Correct font encoding / language support in output (hyphenations, etc.)
+\RequirePackage[T1]{fontenc}
 
 % American patterns
 \RequirePackage[english=usenglishmax]{hyphsubst}
