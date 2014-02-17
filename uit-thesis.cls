@@ -61,9 +61,6 @@
 \RequirePackage{lmodern}
 \RequirePackage{type1cm}
 
-% Begin paragraphs with an empty line rather than an indent
-\RequirePackage[parfill]{parskip}
-
 % Support for subscript and superscript using \textsuperscript{} and \textsubscript{}
 \RequirePackage{fixltx2e}
 
@@ -219,6 +216,27 @@
 \setlength{\hoffset}{0.00cm}
 \setlength{\voffset}{0.00cm}
 
+
+% Begin paragraphs with an empty line rather than an indent
+\usepackage[parfill]{parskip}
+
+% Set indent at new paragraph to 0
+\setlength{\parindent}{0pt} 
+
+% Set paragraph skip length to two lines
+\setlength{\parskip}{\baselineskip}
+
+%\typeout{Old paragraph definition: \meaning\paragraph}
+
+% Renew paragraph spacing to make sure we are strict about white space between paragraphs
+% Lines should always align to baseline grid, i.e. we do not allow "rubber" lengths
+% See http://en.wikibooks.org/wiki/LaTeX/Paragraph_Formatting and http://tex.stackexchange.com/questions/53008/align-baseline-in-multicol
+\renewcommand\paragraph{%
+    \@startsection{paragraph}{4}{\z@}%
+       {2\baselineskip}%  default is "3.25ex \@plus1ex \@minus.2ex"
+       {-1em}{\normalfont\normalsize\bfseries \SS@parafont}%
+}
+
 %:-------------------------- Header/footer -----------------------
 
 % Used to modify header/footer of pages
@@ -251,6 +269,9 @@
 
 % Redefine what is in \sectionmark so that \rightmark contains section number and section name (e.g. "2.1 My Sections Name")
 \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}{}}
+
+% Fix head height
+\setlength{\headheight}{15pt}
 
 %:-------------------------- Black magic hacks -----------------------
 
