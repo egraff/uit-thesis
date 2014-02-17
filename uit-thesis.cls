@@ -3,6 +3,7 @@
 
 %:-------------------------- Basic class options -----------------------
 
+
 % We're based on the standard 'book' class
 \def\baseclass{book}
 
@@ -182,6 +183,9 @@
 \usepackage{bm}
 
 %:-------------------------- Page layout -----------------------
+
+% Geometry is needed to set frontpage layout
+\usepackage[pass]{geometry}
 
 % Used to modify layout
 \usepackage{layout}
@@ -517,7 +521,6 @@
 %:-------------------------- Frontpage stuffs -----------------------
 
 \usepackage{eso-pic}
-\usepackage{geometry}
 \usepackage{setspace}
 
 \newcommand\ThesisFrontpageImagePath{frontpage_image.pdf}
@@ -552,7 +555,7 @@
 \renewcommand\maketitle{
   % Set custom geometry for the frontpage text
   \newgeometry{top=0.5in,bottom=1in,right=1.0in,left=2.37in}
-
+  
   \begin{titlepage}%
 
   % Image and logo
