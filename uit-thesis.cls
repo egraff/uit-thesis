@@ -72,6 +72,9 @@
 % Used to provide \ifpdf macro
 \usepackage{ifpdf}
 
+% Allow calculations in \vspace*
+\usepackage{calc}
+
 %:-------------------------- Colors -----------------------
 
 % Text coloring with support for 68 standard color names
