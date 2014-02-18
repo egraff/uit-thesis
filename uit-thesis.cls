@@ -539,44 +539,43 @@
 \usepackage{eso-pic}
 \usepackage{setspace}
 
-\newcommand\ThesisFrontpageImagePath{frontpage_image.pdf}
 
-\newcommand\ThesisFrontpageLogo{
-  \put(0,-100){
-  \parbox[b][\paperheight]{\paperwidth}{%
-    \vfill
-    \centering
-    \includegraphics[width=20cm,height=20cm,
-    keepaspectratio]{\ThesisFrontpageImagePath}%
-    \vfill}
-  }
-}
-
-\newcommand\ThesisFrontpageImage{
-  \put(0,10){
-    \parbox[b][\paperheight]{\paperwidth}{%
-    \vfill
-    \centering
-    \includegraphics[width=\paperwidth,height=\paperheight,
-    keepaspectratio]{frontpage_overlay_logo.pdf}%
-    \vfill}
-  }
-}
 
 % Custom variables for the frontpage
 \def\thesissubtitle#1{\def\@thesissubtitle{#1}}
 \def\thesisfaculty#1{\def\@thesisfaculty{#1}}
 \def\thesisprogramme#1{\def\@thesisprogramme{#1}}
+\def\ThesisFrontpageImage#1{\def\@ThesisFrontpageImage{#1}}
+\def\ThesisFrontpageLogo#1{\def\@ThesisFrontpageLogo{#1}}
+
+\ThesisFrontpageImage{frontpage_image.pdf}
+\ThesisFrontpageLogo{frontpage_overlay_logo.pdf}
 
 \renewcommand\maketitle{
   % Set custom geometry for the frontpage text
   \newgeometry{top=0.5in,bottom=1in,right=1.0in,left=2.37in}
   
   \begin{titlepage}%
-
-  % Image and logo
-  \AddToShipoutPicture*{\ThesisFrontpageLogo}
-  \AddToShipoutPicture*{\ThesisFrontpageImage}
+  
+  \AddToShipoutPicture*{
+    \put(0,-100){
+      \parbox[b][\paperheight]{\paperwidth}{%
+        \vfill
+        \centering
+        \includegraphics[width=20cm,height=20cm,
+        keepaspectratio]{\@ThesisFrontpageImage}%
+        \vfill
+  }}}
+  
+  \AddToShipoutPicture*{
+    \put(0,10){
+      \parbox[b][\paperheight]{\paperwidth}{%
+        \vfill
+        \centering
+        \includegraphics[width=\paperwidth,height=\paperheight,
+        keepaspectratio]{\@ThesisFrontpageLogo}%
+        \vfill
+  }}}
   
   % Text
   \begingroup\begin{spacing}{0.9}
@@ -589,10 +588,12 @@
   \@title
   \end{spacing}\endgroup
   
-  \begingroup\begin{spacing}{0.3}
-  \fontsize{12.5pt}{19pt}\usefont{OT1}{fos}{l}{it}\selectfont
-  \@thesissubtitle
-  \end{spacing}\endgroup
+  \ifdefined\@thesissubtitle
+    \begingroup\begin{spacing}{0.3}
+    \fontsize{12.5pt}{19pt}\usefont{OT1}{fos}{l}{it}\selectfont
+    \@thesissubtitle
+    \end{spacing}\endgroup
+  \fi
   
   \begingroup\begin{spacing}{0.4}
   \fontsize{12.5pt}{15pt}\usefont{OT1}{fos}{l}{it}\selectfont
