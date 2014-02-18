@@ -550,10 +550,11 @@
 
 \ThesisFrontpageImage{frontpage_image.pdf}
 \ThesisFrontpageLogo{frontpage_overlay_logo.pdf}
+% \ThesisFrontpageLogo{original_frontpage_ref.pdf} % Use this to check title alignment
 
 \renewcommand\maketitle{
   % Set custom geometry for the frontpage text
-  \newgeometry{top=0.5in,bottom=1in,right=1.0in,left=2.37in}
+  \newgeometry{top=13mm,bottom=15mm,right=7mm,left=60mm}
   
   \begin{titlepage}%
   
@@ -583,29 +584,29 @@
   \@thesisfaculty
   \end{spacing}\endgroup
   
-  \begingroup\begin{spacing}{0.9}
+  \begingroup\begin{spacing}{0.85}
   \fontsize{12.5pt}{15pt}\usefont{OT1}{fos}{b}{n}\selectfont
   \@title
   \end{spacing}\endgroup
   
   \ifdefined\@thesissubtitle
-    \begingroup\begin{spacing}{0.3}
+    \begingroup\begin{spacing}{0.5}
     \fontsize{12.5pt}{19pt}\usefont{OT1}{fos}{l}{it}\selectfont
     \@thesissubtitle
     \end{spacing}\endgroup
   \fi
   
-  \begingroup\begin{spacing}{0.4}
+  \begingroup\begin{spacing}{0.32}
   \fontsize{12.5pt}{15pt}\usefont{OT1}{fos}{l}{it}\selectfont
   —
   \end{spacing}\endgroup
   
-  \begingroup\begin{spacing}{0.5}
+  \begingroup\begin{spacing}{0.32}
   \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{sb}{n}\selectfont
   \@author
   \end{spacing}\endgroup
   
-  \begingroup\begin{spacing}{0.3}
+  \begingroup\begin{spacing}{0.5}
   \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{l}{it}\selectfont
   \@thesisprogramme
   \end{spacing}\endgroup
