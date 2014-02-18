@@ -5,7 +5,7 @@ LaTeX document class for writing theses
 
 
 TODO:
- - Fix frontpage??????
+ - Fix frontpage dependencies (ask Magnus)
  - Fix footnote marker in actual footnote
  - Fix math font
  - Fix kerning and protrusion
