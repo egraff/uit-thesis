@@ -550,26 +550,26 @@
 
 \ThesisFrontpageImage{frontpage_image.pdf}
 \ThesisFrontpageLogo{frontpage_overlay_logo.pdf}
-% \ThesisFrontpageLogo{original_frontpage_ref.pdf} % Use this to check title alignment
+%\ThesisFrontpageLogo{original_frontpage_ref.pdf} % Use this to check title alignment
 
 \renewcommand\maketitle{
   % Set custom geometry for the frontpage text
-  \newgeometry{top=13mm,bottom=15mm,right=7mm,left=60mm}
+  \newgeometry{top=16.5mm,bottom=10mm,right=7mm,left=59mm}
   
   \begin{titlepage}%
   
   \AddToShipoutPicture*{
-    \put(0,-100){
+    \put(-3,-110.5){  % This is the correct position
       \parbox[b][\paperheight]{\paperwidth}{%
         \vfill
         \centering
-        \includegraphics[width=20cm,height=20cm,
+        \includegraphics[width=199.5mm,height=199.5mm,
         keepaspectratio]{\@ThesisFrontpageImage}%
         \vfill
   }}}
   
   \AddToShipoutPicture*{
-    \put(0,10){
+    \put(-3,0){   % For some reason, (-3, 0) is the magic position
       \parbox[b][\paperheight]{\paperwidth}{%
         \vfill
         \centering
