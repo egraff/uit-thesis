@@ -167,10 +167,6 @@
 \usepackage{opensans}
 \usepackage{charter}
 
-%:-------------------------- Bibliography etc. -----------------------
-
-% Citation numbering not starting on table of contents 
-\usepackage{notoccite} 
 
 %:-------------------------- Symbols -----------------------
 
@@ -224,6 +220,25 @@
     \@startsection{paragraph}{4}{\z@}%
        {2\baselineskip}%  default is "3.25ex \@plus1ex \@minus.2ex"
        {-1em}{\normalfont\normalsize\bfseries \SS@parafont}%
+}
+
+%:-------------------------- Bibliography etc. -----------------------
+
+% Citation numbering not starting on table of contents
+% Note: we do not use notoccite package, since it overwrites changes that
+% parskip does to \@starttoc
+\renewcommand*{\@starttoc}[1]{%
+  \begingroup
+    \@fileswfalse  % Add modification from notoccite
+    \makeatletter
+    \parskip\z@    % Retain modification from parskip
+    \@input{\jobname.#1}%
+    \if@filesw
+      \expandafter\newwrite\csname tf@#1\endcsname
+      \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
+    \fi
+    \@nobreakfalse
+  \endgroup
 }
 
 %:-------------------------- Header/footer -----------------------
