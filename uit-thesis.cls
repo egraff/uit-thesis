@@ -416,6 +416,13 @@
 }
 \SetCustomStyle % Apply magic smallcaps glossaries style
 
+
+% Prevent grouping together abbreviations starting on same letter in list of
+% abbreviations.
+% See http://tex.stackexchange.com/questions/4183/package-glossaries-single-spaced-printglossaries
+\glsnogroupskiptrue
+\renewcommand*{\glsgroupskip}{}
+
 %:-------------------------- Chapter and section style -----------------------
 
 % Alias sectsty internals
