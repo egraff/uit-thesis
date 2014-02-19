@@ -655,5 +655,10 @@
 
 \def \const #1{\penalty 100 \hbox{\texttt{#1}}}
 
+% todo macro
+\newcommand{\todo}[1]{\textcolor{blue}{TODO:\\#1}}
+% WIP macro
+\newcommand{\wip}[1]{\textcolor{red}{W.I.P:\\#1}}
+
 % That's all, folks!
 \endinput
