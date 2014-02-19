@@ -539,7 +539,20 @@
 \usepackage{eso-pic}
 \usepackage{setspace}
 
-
+% \begin{egg}
+\usepackage{xstring}
+ \usetikzlibrary{arrows}
+\newcommand{\printthed}{
+\begin{tikzpicture}
+\draw [o-*] plot[smooth, tension=.7] coordinates {(-12,-8) (-12,1) (-8,1) (-8,-8)};
+\draw [o-*] plot[smooth, tension=.7] coordinates {(-12,1)};
+\draw [o-*] plot[smooth, tension=.7] coordinates {(-12,1) (-13,4) (-10,7) (-7,4) (-8,1)};
+\draw [o-*] plot[smooth, tension=.7] coordinates {(-10,6) (-10,7)};
+\draw [o-*] (-13,-11) ellipse (3 and 3);
+\draw [o-*] (-7,-11) ellipse (3 and 3);
+\end{tikzpicture}
+}
+% \end{egg}
 
 % Custom variables for the frontpage
 \def\thesissubtitle#1{\def\@thesissubtitle{#1}}
@@ -577,7 +590,7 @@
         keepaspectratio]{\@ThesisFrontpageLogo}%
         \vfill
   }}}
-  
+    
   % Text
   \begingroup\begin{spacing}{0.9}
   \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{l}{n}\selectfont
@@ -610,6 +623,12 @@
   \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{l}{it}\selectfont
   \@thesisprogramme
   \end{spacing}\endgroup
+  
+   % \begin{egg}
+  \IfEndWith{\@author}{arlberg}{
+      \printthed
+  }{}
+  % \end{egg}
   
   \end{titlepage}%
   
