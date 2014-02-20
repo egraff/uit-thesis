@@ -244,6 +244,26 @@
        {\normalfont\normalsize\bfseries \SS@parafont}%
 }
 
+%\gridSetup[pt]{\p@}{2}{12}{20}{2}
+%\renewcommand*\ESO@gridcolor{red!20}
+%\renewcommand*\ESO@subgridcolor{blue!20}
+
+% BASELINE GRID
+\usepackage{atbegshi,picture}
+\AtBeginShipout{%
+  \AtBeginShipoutUpperLeft{%
+    \color{red}%
+    \put(\dimexpr 1in+\oddsidemargin,
+         -\dimexpr 1in+\topmargin+\headheight+\headsep+\topskip)%
+      {%
+       \vtop to\dimexpr\vsize+\baselineskip{
+         \hrule
+         \leaders\vbox to\baselineskip{\hrule width\hsize\vfill}\vfill
+       }%
+      }%
+  }%
+}
+
 %:-------------------------- Header/footer -----------------------
 
 % Used to modify header/footer of pages
