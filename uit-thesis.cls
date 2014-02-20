@@ -220,10 +220,17 @@
 % Set indent at new paragraph to 0
 \setlength{\parindent}{\z@} 
 
+\linespread{1.0}
+
+% Strict linespacing, don't allow LaTeX to put extra spacing between lines
+\lineskip=0pt
+
 % Set paragraph skip length to two lines
 % Note: this reads the current value of \baselineskip for the normal font and font size, and stores it in parskip.
 % Chaning \baselineskip will NOT change \parskip
 \setlength{\parskip}{\baselineskip}
+
+\renewcommand{\baselinestretch}{1.0}\normalsize
 
 %\typeout{Old paragraph definition: \meaning\paragraph}
 
