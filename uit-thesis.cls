@@ -323,6 +323,12 @@
 % Fix head height
 \setlength{\headheight}{15pt}
 
+%:-------------------------- Footnote fix ----------------------------
+\usepackage{scrextend}
+
+% sorry, I don't remember what these numbers mean
+\deffootnote[2.5em]{2.5em}{2.5em}{\thefootnotemark\space}
+
 %:-------------------------- Black magic hacks -----------------------
 
 % Used together with small caps to achieve fake emphasized (actually slanted) small caps
