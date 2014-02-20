@@ -177,10 +177,6 @@
 \usepackage{opensans}
 \usepackage{charter}
 
-%:-------------------------- Bibliography etc. -----------------------
-
-% Citation numbering not starting on table of contents 
-\usepackage{notoccite} 
 
 %:-------------------------- Symbols -----------------------
 
@@ -262,6 +258,25 @@
        }%
       }%
   }%
+}
+
+%:-------------------------- Bibliography etc. -----------------------
+
+% Citation numbering not starting on table of contents
+% Note: we do not use notoccite package, since it overwrites changes that
+% parskip does to \@starttoc
+\renewcommand*{\@starttoc}[1]{%
+  \begingroup
+    \@fileswfalse  % Add modification from notoccite
+    \makeatletter
+    \parskip\z@    % Retain modification from parskip
+    \@input{\jobname.#1}%
+    \if@filesw
+      \expandafter\newwrite\csname tf@#1\endcsname
+      \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
+    \fi
+    \@nobreakfalse
+  \endgroup
 }
 
 %:-------------------------- Header/footer -----------------------
@@ -438,6 +453,13 @@
   }%
 }
 \SetCustomStyle % Apply magic smallcaps glossaries style
+
+
+% Prevent grouping together abbreviations starting on same letter in list of
+% abbreviations.
+% See http://tex.stackexchange.com/questions/4183/package-glossaries-single-spaced-printglossaries
+\glsnogroupskiptrue
+\renewcommand*{\glsgroupskip}{}
 
 %:-------------------------- Chapter and section style -----------------------
 
