@@ -65,6 +65,16 @@
 % Support for subscript and superscript using \textsuperscript{} and \textsubscript{}
 \RequirePackage{fixltx2e}
 
+%:-------------------------- DEBUG -----------------------
+
+% Used to halt LaTeX compilation
+\def\debughalt#1{%
+  \PackageError{uit-thesis}{DEBUG}{#1}}
+
+% Used to output definition of a LaTeX macro in console
+\def\debugdef#1{%
+  \typeout{[DEBUG] Definition of \@backslashchar #1: \expandafter\meaning\csname#1\endcsname ^^J ^^J}}
+
 %:-------------------------- LaTeX control flow macros -----------------------
 
 % Used to provide if-then-else macros
