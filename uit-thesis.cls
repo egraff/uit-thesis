@@ -32,6 +32,11 @@
   \PassOptionsToClass{pdftex}{\baseclass}
 \fi
 
+% Option for drawing baseline grid
+\newif\if@drawbaselinegrid
+\@drawbaselinegridfalse % Default to false
+\DeclareOption{baselinegrid}{\@drawbaselinegridtrue}
+
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
@@ -246,6 +251,7 @@
 
 % BASELINE GRID
 \usepackage{atbegshi,picture}
+\if@drawbaselinegrid
 \AtBeginShipout{%
   \AtBeginShipoutUpperLeft{%
     \color{red}%
@@ -259,6 +265,7 @@
       }%
   }%
 }
+\fi
 
 %:-------------------------- Bibliography etc. -----------------------
 
