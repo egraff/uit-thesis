@@ -114,7 +114,8 @@
 % Support-color
 \definecolor{pms5435}{cmyk}{0.32,0.09,0.08,0.07}
 
-\colorlet{chapnumcol}{pms633}
+%\colorlet{chapnumcol}{pms2229}
+\definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
 
 %:-------------------------- URLs -----------------------
 
@@ -489,7 +490,7 @@
 % Change font for chapter number
 \chapternumberfont{%
   \usefont{T1}{fos}{b}{n}%      % Use Open Sans as chapter number font
-  \fontsize{60}{60}%            % font size 60pt, baselineskip 60pt
+  \fontsize{56}{56}%            % font size 60pt, baselineskip 60pt
   \selectfont%                  % activate font
 }
 
@@ -499,7 +500,7 @@
     %\tikzstyle{every rectangle node}=[draw]                                                      % Just for debugging, not used!
     %\draw[fill,color=red] (0,0) rectangle (3.15cm,3.15cm);                                       % Just for debugging, not used!
     \draw[fill,color=chapnumcol] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;         % Draw UiT "slash"
-    \draw[color=black] (1.81,1.22) node[rectangle] { \Huge\bfseries\chapnumfont\thechapter };     % Draw chapter number
+    \draw[color=black] (1.78,1.18) node[rectangle] { \Huge\bfseries\chapnumfont\thechapter };     % Draw chapter number
   \end{tikzpicture}
 }
 \newlength{\chapterheadalign}
