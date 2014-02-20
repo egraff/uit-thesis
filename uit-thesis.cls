@@ -240,7 +240,8 @@
 \renewcommand\paragraph{%
     \@startsection{paragraph}{4}{\z@}%
        {2\baselineskip}%  default is "3.25ex \@plus1ex \@minus.2ex"
-       {-1em}{\normalfont\normalsize\bfseries \SS@parafont}%
+       {-1em}
+       {\normalfont\normalsize\bfseries \SS@parafont}%
 }
 
 %:-------------------------- Header/footer -----------------------
