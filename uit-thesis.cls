@@ -441,6 +441,15 @@
 
 %:-------------------------- Chapter and section style -----------------------
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%        DEBUG         %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\debugdef{@startsection}
+\debugdef{@makechapterhead}
+\debugdef{@chapter}
+\debugdef{chapter}
+\debugdef{secdef}
+
 % Alias sectsty internals
 \newcommand{\chapnumfont}{\SS@chapnumfont}     % use \chapternumberfont{} to change
 \newcommand{\chaptitlefont}{\SS@chaptitlefont} % use \chaptertitlefont{} to change
@@ -458,20 +467,20 @@
 % Define how chapter number is drawn
 \newcommand{\printchapternum}{
   \begin{tikzpicture}
-    %\tikzstyle{every rectangle node}=[draw]                                                                                     % Just for debugging, not used!
-    %\draw[fill,color=red] (0,0) rectangle (3.15cm,3.15cm);                                                                % Just for debugging, not used!
-    \draw[fill,color=chapnumcol] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;                       % Draw UiT "slash"
+    %\tikzstyle{every rectangle node}=[draw]                                                      % Just for debugging, not used!
+    %\draw[fill,color=red] (0,0) rectangle (3.15cm,3.15cm);                                       % Just for debugging, not used!
+    \draw[fill,color=chapnumcol] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;         % Draw UiT "slash"
     \draw[color=black] (1.81,1.28) node[rectangle] { \Huge\bfseries\chapnumfont\thechapter };     % Draw chapter number
   \end{tikzpicture}
 }
 \newlength{\chapterheadalign}
 \setlength{\chapterheadalign}{\z@}
-\setlength{\chapterheadalign}{\z@ - 3.15cm + 1em + 7\baselineskip} % Align bottom of UiT slash with bottom of baseline (therefore, we subtract 1em)
+\setlength{\chapterheadalign}{\z@ - 3.1642cm + 7\baselineskip} % Align bottom of UiT slash with bottom of baseline
 
 % Align chapter num
 \newlength{\chapternumalign}
 \setlength{\chapternumalign}{\z@} % Align bottom of UiT slash with bottom of baseline
-\setlength{\chapternumalign}{1.28cm - 20pt - \baselineskip} % Align bottom of chapter number with bottom of baseline
+%\setlength{\chapternumalign}{1.28cm - 20\p@ - \baselineskip} % Align bottom of chapter number with bottom of baseline
 
 % Align chapter name
 \newlength{\chapternamealign}
@@ -486,12 +495,29 @@
 %%%%%%%%%%%%%%% THESE CAN BE CHANGED!!!!! %%%%%%%%%%%%%%%
 \def\baselinesbeforechaphead{6} % Approximate same distance as would be with standard 50\p@ vspace
 \def\baselinesafterchapnum{4}
-\def\baselinesafterchaptitle{4}
+\def\baselinesafterchaptitle{0}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\chaptitlefontsize {\normalsize}
-\def\chaptitlefontsize {\Huge}
-%\def\chaptitlefontsize {\fontsize{50}{60}}
+%%%%%%%%%%%%% DEBUG %%%%%%%%%%%%%
+%\renewcommand{\chaptitlefont}{\normalfont\selectfont}
+%\def\chaptitlefontsize {\normalsize}
+%\def\chaptitlefontsize {\fontsize{10}{3}}
+%\def\chaptitlefontsize {\fontsize{10}{30}}
+%\def\chaptitlefontsize {\fontsize{10}{60}}
+%\def\chaptitlefontsize {\Huge}
+%\def\chaptitlefontsize {\fontsize{24}{60}}
+%\def\chaptitlefontsize {\fontsize{24}{72}}
+%\def\chaptitlefontsize {\fontsize{24}{128}}
+%\def\chaptitlefontsize {\fontsize{28}{10}}
+
+% Pretty size that spans two baselines. Height is approx. \baselineskip + \fontcharht\font`B
+\def\chaptitlefontsize {\fontsize{26}{32}}
+
+% XXX: Should create a better strut that accomodates possibility of \baselineskip < 1em
+% Should use \vspace*{-\fontchardp\font`q} and \vspace*{-\fontcharht\font`B}
+% instead of \baselineskip...
+\def\fixedstrutbox{\strutbox}
+\def\fixedstrut{\relax\unhcopy\fixedstrutbox}
 
 % Now, use our supahdupah chapter style! YEEEEEEAAAAHHHHHH!
 \titleformat{\chapter}[display]
@@ -500,20 +526,165 @@
   {\z@ - \parskip + \chapternamealign + \baselinesafterchapnum\baselineskip} % Vertical distance between chapter number and chapter title
   {% Make sure Chapter title aligns to baseline
     \chaptitlefont\chaptitlefontsize\selectfont
-    \vspace*{-\baselineskip}}
+    \vspace*{-\baselineskip} % XXX: This does not work when \baselineskip < 1em
+  }
   [% Make sure that normal text following chapter title aligns to baseline
-    \vspace*{-1ex}
+    %
+    % The titlesec package inserts something like
+    %  \kern \z@ \strut \@@par \nobreak
+    % before this.
+    %
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%  NOTE: This is black magic!!! It was infinitely hard to figure out!!  %%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %
+    % You should see:
+    % --------------------------
+    % http://tex.stackexchange.com/questions/40977/confused-with-tex-terminology-height-depth-width
+    % http://tex.stackexchange.com/questions/21832/definition-of-strut-explained
+    % http://en.wikibooks.org/wiki/LaTeX/Rules_and_Struts
+    % http://tex.stackexchange.com/questions/41185/whats-the-difference-between-strut-mathstrut-and-vphantom
+    % http://tex.stackexchange.com/questions/121627/why-is-strut-working-in-these-scenarios
+    % http://tex.stackexchange.com/questions/4239/which-measurement-units-should-one-use-in-latex
+    % http://tex.stackexchange.com/questions/22225/determine-height-and-depth-of-letters-relative-to-the-font-size
+    % --------------------------
+    %
+    % The criteria for determining whether this "works" or not, is if the text lines following the
+    % chapter title are positioned equally, regardless of the baseline skip of the chapter title font.
+    % To test this, I have varied the font between these definitions:
+    %  \def\chaptitlefontsize {\normalsize}
+    %  \def\chaptitlefontsize {\fontsize{10}{60}}
+    %  \def\chaptitlefontsize {\Huge}
+    %  \def\chaptitlefontsize {\fontsize{24}{60}}
+    %  \def\chaptitlefontsize {\fontsize{24}{72}}
+    %  \def\chaptitlefontsize {\fontsize{24}{128}}
+    %
+    %
+    % Sooo, here it is:
+    %
+    % Note: we have confirmed that this is needed (try changing value of \parskip right before \@@par).
+    % It's probably \@@par that inserts a \parskip. Also note that \parskip does not change when changing font size...
+    \vspace*{-\parskip}
+    %
+    % Compensate for 'depth' of strut that was added
+    % Note: \dp\strutbox === 0.3\baselineskip
+    % Also note that \dimen0 may sometimes be equal to \dp\strutbox, but most often it is not!
+    \vspace*{-\dp\fixedstrutbox}
+    %
+    % Now, compensate for entire line
     \vspace*{-\baselineskip}
+    %
+    % Simulate strut of previous line
+    \kern \z@ \fixedstrut \@@par \nobreak
+    %
+    % But remove parskip
+    \vspace*{-\parskip}
+    %
+    % So far, so good!
+    %
+    % Now, switch to normal font
     \normalsize\normalfont\selectfont
-    \vspace*{1ex}
-    \vspace*{\parskip}]
+    %
+    % Simulate that chapter title was one line with normal font
+    \vspace*{-\baselineskip}
+    %
+    % But compensate for 'depth' of strut that was removed
+    \vspace*{\dp\fixedstrutbox}
+    %
+    % Aaaand... add our own strut
+    \kern \z@ \strut
+  ]
 
 % Adjust spacing around chapter title
 \titlespacing{\chapter}
   {\z@}          % Left margin = 0
   {\z@ - \chapterheadtopvspace + \chapterheadalign + \chapternumalign + \baselinesbeforechaphead\baselineskip} % Vertical space before chapter head (50\p@ is standard from book.cls)
-  {\z@ - \parskip + \baselinesafterchaptitle\baselineskip}        % Vertical space after title, before text (\ttl@chapafter is default)
+  {\z@ + \baselinesafterchaptitle\baselineskip}        % Vertical space after title, before text (\ttl@chapafter is default)
 
+
+% NOTE: chapter head is printed as:
+%   #4{#8}\kern \z@ \strut \@@par \nobreak #5\@@par
+% where #4 = before, #8 = title, #5 = after
+% 'before' and 'after' are arguments from \titleformat
+% (defined in \ttlh@display).
+
+
+%%% From titlesec.sty:
+%%% ----------------------------------
+%%% The following tags are used:
+%%% ttl@  : the generic tag used through the style
+%%% ttlh@ : a shape definition
+%%% ttlf@ : a macro containing the title format
+%%% ttls@ : id. the title space
+%%% ttlp@ : page key related macros
+%%% ttll@ : level number
+%%% ----------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%        DEBUG         %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\typeout{[DEBUG] After re-definition of chapter stuff... ^^J ===================================================== ^^J ^^J}
+%\debugdef{@startsection}
+\debugdef{@makechapterhead}
+\debugdef{ttl@startargs}
+\debugdef{ttl@mkchap}
+\debugdef{ttl@mkchap@i}
+\debugdef{ttl@save@mkchap}
+
+% \ttl@mkchap has following arguments:
+% 1: left        --- 1st \ttls@chapter arg == \z@
+% 2: right       --- 2nd \ttls@chapter arg == \z@
+% 3: before      --- 3rd \ttls@chapter arg == 2nd \titlespacing arg
+% 4: after       --- 4th \ttls@chapter arg == 3rd \titlespacing arg
+% 5: afterindent --- 5th \ttls@chapter arg == \@ne
+% 6: name  == {chapter}
+% 7: title
+
+% \ttl@select has following arguments:
+% 1: {chapter}   --- 6th \ttl@mkchap arg
+% 2: left        --- 1st \ttl@mkchap arg == 1st \ttls@chapter arg == \z@
+% 3: right       --- 2nd \ttl@mkchap arg == 2nd \ttls@chapter arg == \z@
+% 4: title       --- 7th \ttl@mkchap arg
+
+% Contains arguments from \titlespacing
+%%% From titlesec.sty:
+%%% -------------------------------------------
+% % The surrounding space is stored in a macro
+% % named \ttls@<section> whose content is
+% % {left}{right}{before}{after}{afterindent}.
+%%% -------------------------------------------
+%%% 'before' is 2nd argument from \titlespacing, and 'after' is 3rd argument
+%%% 'left' and 'right are zero (\z@), and 'afterindent' is \@ne
+\debugdef{ttls@chapter}
+
+% \ttlh@<shape> defines the \titleformat shape
+% We use the 'display' shape above to place title label in separate paragraph
+% (see http://ctan.mackichan.com/macros/latex/contrib/titlesec/titlesec.pdf section 3.1)
+%%% From titlesec.sty:
+%%% -------------------------------------------
+%%% % 1:global 2:label 3:sep 4:style 5:after 6:left 7:right 8:title
+%%% \ttl@<shape> and \ttlh@<shape> take the following eight
+%%% arguments:
+%%% {format}{label}{sep}{before}{after}{left}{right}{title}
+%%% where before and after refer to the format.
+%%% With the option explicit, #4 contains the title and #8 is
+%%% empty.
+%%% -------------------------------------------
+% Note: this macro contains the actual definition of what \@makechapterhead outputs!!
+\debugdef{ttlh@display}
+
+% Macro for invoking \ttlh@display with arguments from \titleformat{\chapter}
+\debugdef{ttlf@chapter}
+
+%\typeout{[DEBUG] Definition of \@backslashchar ttl@midlongest: \meaning\ttl@midlongest ^^J ^^J}
+%\typeout{[DEBUG] Definition of \@backslashchar ttl@endlongest: \meaning\ttl@endlongest ^^J ^^J}
+
+%\typeout{[DEBUG] Definition of \@backslashchar @chapter: \meaning\@chapter ^^J ^^J}
+%\typeout{[DEBUG] Definition of \@backslashchar chapter: \meaning\chapter ^^J ^^J}
+%\typeout{[DEBUG] Definition of \@backslashchar secdef: \meaning\secdef ^^J ^^J}
+
+% DEBUG: Uncomment this to halt LaTeX compilation
+%\debughalt{Debug halt.}
 
 %:-------------------------- TOC and lists -----------------------
 
