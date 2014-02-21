@@ -135,7 +135,18 @@
 
 \ifpdf
   
-  \usepackage[pdftex,plainpages=false,pdfpagelabels,pdfpagemode={UseOutlines},bookmarks,pagebackref,hyperindex,hyperfigures]{hyperref}
+  \usepackage[pdftex,%                       %
+              plainpages=false,%             %
+              pdfpagelabels,%                %
+              pdfpagemode={UseOutlines},%    % Show bookmarks
+              pdfstartview={FitV},%          % Fit height of page to PDF viewer window
+              pdfpagelayout={TwoPageRight},% % Display two pages, odd-numbered pages to the right
+              pdfdisplaydoctitle,%           % Display document title instead of filename in title bar
+              bookmarks,%                    % Show bookmarks bar when displaying document
+              pagebackref,%                  % Allow back references inside bibilography.
+              hyperindex,%                   %
+              hyperfigures%                  %
+             ]{hyperref}
   
   % Used for adding figures in thesis
   \usepackage[pdftex]{graphicx}
@@ -155,15 +166,16 @@
 \usepackage[all]{hypcap} % Correct a problem with hyperref
 
 \hypersetup{%
-  bookmarksopen = true,
-  bookmarksnumbered = true,
-  breaklinks = true,
+  bookmarksopen=true,
+  bookmarksnumbered=true,
+  breaklinks=true,
   linktocpage,
-  colorlinks = false,% was true
-  linkcolor = blue,
-  urlcolor  = blue,
-  citecolor = red,
-  anchorcolor = green
+  colorlinks=false,% Should never be set to true, as it reduces quality of print...
+  linkcolor=blue,
+  urlcolor =blue,
+  citecolor=red,
+  anchorcolor=green,
+  hidelinks=true% Remove color and border
 }
 
 % Enables adding figures and tables side by side
