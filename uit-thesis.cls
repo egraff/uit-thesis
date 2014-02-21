@@ -195,6 +195,9 @@
   \hypersetup{pdfauthor={#1}}%
 }
 
+% Add macro for subtitle
+\def\subtitle#1{\gdef\@subtitle{#1}}
+
 %:-------------------------- Things we need to do magic -----------------------
 
 % For sweet-ass drawings and transformations and shit
@@ -831,7 +834,6 @@
 % \end{egg}
 
 % Custom variables for the frontpage
-\def\thesissubtitle#1{\def\@thesissubtitle{#1}}
 \def\thesisfaculty#1{\def\@thesisfaculty{#1}}
 \def\thesisprogramme#1{\def\@thesisprogramme{#1}}
 \def\ThesisFrontpageImage#1{\def\@ThesisFrontpageImage{#1}}
@@ -878,10 +880,10 @@
   \@title
   \end{spacing}\endgroup
   
-  \ifdefined\@thesissubtitle
+  \ifdefined\@subtitle
     \begingroup\begin{spacing}{0.5}
     \fontsize{12.5pt}{19pt}\usefont{OT1}{fos}{l}{it}\selectfont
-    \@thesissubtitle
+    \@subtitle
     \end{spacing}\endgroup
   \fi
   
@@ -918,12 +920,12 @@
   \global\let\@author\@empty
   \global\let\@date\@empty
   \global\let\@title\@empty
-  \global\let\@thesissubtitle\@empty
+  \global\let\@subtitle\@empty
   \global\let\title\relax
+  \global\let\subtitle\relax
   \global\let\author\relax
   \global\let\date\relax
   \global\let\and\relax
-  \global\let\thesissubtitle\relax
 }
 
 
