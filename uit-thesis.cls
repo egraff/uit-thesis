@@ -181,6 +181,20 @@
 % Enables adding figures and tables side by side
 \usepackage{subfigure}
 
+% Override \title to update pdftitle
+\let\ult@save@title\title
+\def\title#1{%
+  \ult@save@title{#1}%
+  \hypersetup{pdftitle={#1}}%
+}
+
+% Override \author to update pdfauthor
+\let\ult@save@author\author
+\def\author#1{%
+  \ult@save@author{#1}%
+  \hypersetup{pdfauthor={#1}}%
+}
+
 %:-------------------------- Things we need to do magic -----------------------
 
 % For sweet-ass drawings and transformations and shit
