@@ -350,6 +350,10 @@
 \setlength{\headheight}{15pt}
 
 %:-------------------------- Footnote fix ----------------------------
+
+% If a footnote is split, draw a full width rule above the continued part of the footnote as a visual cue to readers
+\usepackage[splitrule]{footmisc}
+
 \usepackage{scrextend}
 
 % sorry, I don't remember what these numbers mean
