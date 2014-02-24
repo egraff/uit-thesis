@@ -182,16 +182,16 @@
 \usepackage{subfigure}
 
 % Override \title to update pdftitle
-\let\ult@save@title\title
+\let\ult@savetitle\title
 \def\title#1{%
-  \ult@save@title{#1}%
+  \ult@savetitle{#1}%
   \hypersetup{pdftitle={#1}}%
 }
 
 % Override \author to update pdfauthor
-\let\ult@save@author\author
+\let\ult@saveauthor\author
 \def\author#1{%
-  \ult@save@author{#1}%
+  \ult@saveauthor{#1}%
   \hypersetup{pdfauthor={#1}}%
 }
 
@@ -258,7 +258,7 @@
 
 % Set paragraph skip length to two lines
 % Note: this reads the current value of \baselineskip for the normal font and font size, and stores it in parskip.
-% Chaning \baselineskip will NOT change \parskip
+% Changing \baselineskip later will NOT change \parskip
 \setlength{\parskip}{\baselineskip}
 
 \renewcommand{\baselinestretch}{1.0}\normalsize
