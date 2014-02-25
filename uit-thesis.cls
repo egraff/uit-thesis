@@ -70,6 +70,10 @@
 % Support for subscript and superscript using \textsuperscript{} and \textsubscript{}
 \RequirePackage{fixltx2e}
 
+% Convenience package for setting spaces between lines.
+% Note: MUST be loaded before hyperref
+\RequirePackage{setspace}
+
 %:-------------------------- DEBUG -----------------------
 
 % Used to halt LaTeX compilation
@@ -884,7 +888,6 @@
 %:-------------------------- Frontpage stuffs -----------------------
 
 \usepackage{eso-pic}
-\usepackage{setspace}
 
 % \begin{egg}
 \usepackage{xstring}
