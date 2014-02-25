@@ -363,14 +363,24 @@
 
 %\typeout{Old paragraph definition: \meaning\paragraph}
 
+%%% NOTE
+%%% The \@startsection macro is defined as follows:
+%%%  \@startsection{<name>}{<level>}{<indent>}{<beforeskip>}{<afterskip>}{<style>}*[<altheading>]{<heading>}
+%%% where the part after the *, including the * is optional.
+%%% See http://tex.stackexchange.com/questions/31780/where-can-i-find-help-files-or-documentation-for-commands-like-startsection-fo
+%%% and http://www.tug.org/texlive/Contents/live/texmf-dist/doc/latex/base/source2e.pdf
+
 % Renew paragraph spacing to make sure we are strict about white space between paragraphs
 % Lines should always align to baseline grid, i.e. we do not allow "rubber" lengths
 % See http://en.wikibooks.org/wiki/LaTeX/Paragraph_Formatting and http://tex.stackexchange.com/questions/53008/align-baseline-in-multicol
 \renewcommand\paragraph{%
-    \@startsection{paragraph}{4}{\z@}%
-       {2\baselineskip}%  default is "3.25ex \@plus1ex \@minus.2ex"
-       {-1em}
-       {\normalfont\normalsize\bfseries \SS@parafont}%
+    \@startsection{paragraph}{4}% Paragraph = level 4
+                  {\z@}% No left indentation of heading
+                  % Absolute value = skip to leave above the heading. Positive value means that text following heading retains indentation.
+                  {2\baselineskip}% Default is "3.25ex \@plus1ex \@minus.2ex"
+                  % If positive, then skip to leave below heading, else negative of skip to leave to right of run-in heading.
+                  {-1em}
+                  {\normalfont\normalsize\bfseries \SS@parafont}% Style
 }
 
 %\gridSetup[pt]{\p@}{2}{12}{20}{2}
@@ -611,7 +621,7 @@
 \newcommand{\chapnumfont}{\SS@chapnumfont}     % use \chapternumberfont{} to change
 \newcommand{\chaptitlefont}{\SS@chaptitlefont} % use \chaptertitlefont{} to change
 
-% Use Open Sans (fos) instead of Charter BT (bch) as section title font
+% Use Open Sans (fos) instead of Charter BT (bch) as chapter and section title font
 \allsectionsfont{\rmfamily\upshape\bfseries\usefont{OT1}{fos}{bx}{n}\selectfont}
 
 % Change font for chapter number
@@ -685,7 +695,7 @@
   {% Make sure Chapter title aligns to baseline
     \chaptitlefont\chaptitlefontsize\selectfont
     \vspace*{-\baselineskip} % XXX: This does not work when \baselineskip < 1em
-  }
+  }%
   [% Make sure that normal text following chapter title aligns to baseline
     %
     % The titlesec package inserts something like
@@ -834,12 +844,7 @@
 % Macro for invoking \ttlh@display with arguments from \titleformat{\chapter}
 \debugdef{ttlf@chapter}
 
-%\typeout{[DEBUG] Definition of \@backslashchar ttl@midlongest: \meaning\ttl@midlongest ^^J ^^J}
-%\typeout{[DEBUG] Definition of \@backslashchar ttl@endlongest: \meaning\ttl@endlongest ^^J ^^J}
-
-%\typeout{[DEBUG] Definition of \@backslashchar @chapter: \meaning\@chapter ^^J ^^J}
-%\typeout{[DEBUG] Definition of \@backslashchar chapter: \meaning\chapter ^^J ^^J}
-%\typeout{[DEBUG] Definition of \@backslashchar secdef: \meaning\secdef ^^J ^^J}
+\debugdef{section}
 
 % DEBUG: Uncomment this to halt LaTeX compilation
 %\debughalt{Debug halt.}
