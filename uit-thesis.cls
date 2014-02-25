@@ -175,7 +175,7 @@
   urlcolor =blue,
   citecolor=red,
   anchorcolor=green,
-  hidelinks=true% Remove color and border
+  hidelinks% Remove color and border
 }
 
 % Enables adding figures and tables side by side
