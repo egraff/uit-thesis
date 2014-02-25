@@ -145,7 +145,8 @@
               bookmarks,%                    % Show bookmarks bar when displaying document
               pagebackref,%                  % Allow back references inside bibilography.
               hyperindex,%                   %
-              hyperfigures%                  %
+              hyperfigures,%                 %
+              hyperfootnotes=false,% footmisc package is incompatible with hyperref, so disable footnote hyperlinks for now...
              ]{hyperref}
   
   % Used for adding figures in thesis
@@ -156,7 +157,7 @@
   
 \else
   
-  \usepackage[dvips,bookmarks,pagebackref,hyperindex,hyperfigures]{hyperref}
+  \usepackage[dvips,bookmarks,pagebackref,hyperindex,hyperfigures,hyperfootnotes=false]{hyperref}
 
   % Used for adding figures in thesis
   \usepackage{graphicx}
@@ -354,13 +355,80 @@
 
 %:-------------------------- Footnote fix ----------------------------
 
-% If a footnote is split, draw a full width rule above the continued part of the footnote as a visual cue to readers
-\usepackage[splitrule]{footmisc}
+\debugdef{@makefnmark}
+\debugdef{@makefntext}
+\debugdef{@footnotemark} % Uses \@makefnmark
+\debugdef{@thefnmark}
 
-\usepackage{scrextend}
+\usepackage[splitrule,% % If a footnote is split, draw a full width rule above the continued part of the footnote as a visual cue to readers
+            bottom%     % Make sure footnotes are pushed to the bottom of the page (instead of being placed after the actual page break)
+           ]{footmisc}
 
-% sorry, I don't remember what these numbers mean
-\deffootnote[2.5em]{2.5em}{2.5em}{\thefootnotemark\space}
+\debugdef{@makefnmark}
+\debugdef{@makefntext}
+\debugdef{@footnotemark} % Uses \@makefnmark
+\debugdef{@thefnmark}
+
+\debugdef{par}
+\debugdef{@par}
+\debugdef{@@par}
+\debugdef{@setpar}
+\debugdef{parshape}
+
+\debugdef{hangfootparskip}
+\debugdef{hangfootparindent}
+
+% The actual marker symbol (per footnote)
+\providecommand*{\thefootnotemark}{\@thefnmark}
+
+% Footnote marker font
+\newcommand*{\ftnm@font}{\normalfont}
+
+% Footnote text font
+\newcommand*{\ftn@font}{\normalfont}
+
+% Definition of footnote mark in actual footnote
+% Currently set to adapt to Chicago style footnotes with non-superior footnote labels and single dot after label.
+\def\@@makefnmark{%
+    \hbox{{\ftnm@font{\@thefnmark .\space}}}%
+}
+
+% Footnote paragraph skip
+\def\hangfootparskip{\z@}
+
+% Footnote paragraph indentation
+\def\hangfootparindent{2.5em}%
+
+% Width of footnote label box
+\def\ult@footnotemarkwidth{2.4em}
+
+% Horizontal space between footnotemark and start of text
+\def\footnotemargin{\z@}
+
+% Redefine footnote with hanging style, based on above parameters
+\long\def\@makefntext#1{%
+  \bgroup
+  \setbox\@tempboxa\hbox{%
+    \ifdim\footnotemargin>\z@
+      \hb@xt@\z@{\hb@xt@-\footnotemargin{\hss\@@makefnmark}\hss}%
+    \else
+      \@@makefnmark
+    \fi
+  }%
+  \@tempdima = \hsize
+  \addtolength{\@tempdima}{-\ult@footnotemarkwidth}%
+  \addtolength{\@tempdima}{-\footnotemargin}%
+  \@tempdimb = \ult@footnotemarkwidth
+  \addtolength{\@tempdimb}{\footnotemargin}%
+  \parshape \@ne \@tempdimb \@tempdima
+  \@setpar{{\@@par}}%
+  \leavevmode
+  \llap{\box\@tempboxa}%
+  \parskip\hangfootparskip\relax
+  \parindent\hangfootparindent\relax
+  \ftn@font#1%
+  \par\egroup
+}
 
 %:-------------------------- Black magic hacks -----------------------
 
