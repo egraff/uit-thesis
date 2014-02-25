@@ -33,9 +33,9 @@
 \fi
 
 % Option for drawing baseline grid
-\newif\if@drawbaselinegrid
-\@drawbaselinegridfalse % Default to false
-\DeclareOption{baselinegrid}{\@drawbaselinegridtrue}
+\newif\ifult@drawbaselinegrid
+\ult@drawbaselinegridfalse % Default to false
+\DeclareOption{baselinegrid}{\ult@drawbaselinegridtrue}
 
 % Now, process!
 \ProcessOptions\relax
@@ -281,7 +281,7 @@
 
 % BASELINE GRID
 \usepackage{atbegshi,picture}
-\if@drawbaselinegrid
+\ifult@drawbaselinegrid
 \AtBeginShipout{%
   \AtBeginShipoutUpperLeft{%
     \color{red}%
