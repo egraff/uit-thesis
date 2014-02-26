@@ -75,10 +75,6 @@
 % Support for subscript and superscript using \textsuperscript{} and \textsubscript{}
 \RequirePackage{fixltx2e}
 
-% Convenience package for setting spaces between lines.
-% Note: MUST be loaded before hyperref
-\RequirePackage{setspace}
-
 %:-------------------------- DEBUG -----------------------
 
 % Used to halt LaTeX compilation
@@ -981,76 +977,94 @@
 \ThesisFrontpageLogo{frontpage_overlay_logo.pdf}
 %\ThesisFrontpageLogo{original_frontpage_ref.pdf} % Use this to check title alignment
 
+\if@titlepage
 \renewcommand\maketitle{
   % Set custom geometry for the frontpage text
   \newgeometry{top=16.5mm,bottom=10mm,right=7mm,left=59mm}
-  
+  %
   \begin{titlepage}%
-  
-  \AddToShipoutPicture*{
-    \put(-3,-110.5){  % This is the correct position
+  \AddToShipoutPicture*{%
+    \put(-3,-110.5){% This is the correct position
       \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill
-        \centering
-        \includegraphics[width=199.5mm,height=199.5mm,
-        keepaspectratio]{\@ThesisFrontpageImage}%
-        \vfill
-  }}}
-  
-  \AddToShipoutPicture*{
-    \put(-3,0){   % For some reason, (-3, 0) is the magic position
+        \vfill%
+        \centering%
+        \includegraphics[width=199.5mm,height=199.5mm,keepaspectratio]{\@ThesisFrontpageImage}%
+        \vfill%
+      }%
+    }%
+  }
+  \AddToShipoutPicture*{%
+    \put(-3,0){% For some reason, (-3, 0) is the magic position
       \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill
-        \centering
-        \includegraphics[width=\paperwidth,height=\paperheight,
-        keepaspectratio]{\@ThesisFrontpageLogo}%
-        \vfill
-  }}}
-    
-  % Text
-  \begingroup\begin{spacing}{0.9}
-  \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{l}{n}\selectfont
-  \@thesisfaculty
-  \end{spacing}\endgroup
-  
-  \begingroup\begin{spacing}{0.85}
-  \fontsize{12.5pt}{15pt}\usefont{OT1}{fos}{b}{n}\selectfont
-  \@title
-  \end{spacing}\endgroup
-  
+        \vfill%
+        \centering%
+        \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\@ThesisFrontpageLogo}%
+        \vfill%
+      }%
+    }%
+  }
+  % Faculty / department
+  \begingroup
+    \vskip \z@
+    \fontsize{10.3pt}{23pt}\usefont{OT1}{fos}{l}{n}\selectfont
+    \noindent\@thesisfaculty
+    \vskip -\parskip
+  \endgroup
+  % Thesis title
+  \begingroup
+    \vskip 2\baselineskip
+    \fontsize{12.5pt}{15pt}\usefont{OT1}{fos}{b}{n}\selectfont
+    \vspace*{-\baselineskip}
+    \noindent\@title
+    \vskip -\parskip
+    \normalsize\normalfont\selectfont\vspace*{\baselineskip}
+  \endgroup
+  % Thesis subtitle
   \ifdefined\@subtitle
-    \begingroup\begin{spacing}{0.5}
-    \fontsize{12.5pt}{19pt}\usefont{OT1}{fos}{l}{it}\selectfont
-    \@subtitle
-    \end{spacing}\endgroup
+    \ifx\@subtitle\@empty\else
+      \begingroup
+        \vskip \ht\strutbox
+        \fontsize{12.5pt}{19pt}\usefont{OT1}{fos}{l}{it}\selectfont
+        \vspace*{-\baselineskip}
+        \noindent\@subtitle
+        \vskip -\parskip
+        \normalsize\normalfont\selectfont\vspace*{\baselineskip}
+      \endgroup
+    \fi
   \fi
-  
-  \begingroup\begin{spacing}{0.32}
-  \fontsize{12.5pt}{15pt}\usefont{OT1}{fos}{l}{it}\selectfont
-  —
-  \end{spacing}\endgroup
-  
-  \begingroup\begin{spacing}{0.32}
-  \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{sb}{n}\selectfont
-  \@author
-  \end{spacing}\endgroup
-  
-  \begingroup\begin{spacing}{0.5}
-  \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{l}{it}\selectfont
-  \@thesisprogramme
-  \end{spacing}\endgroup
-  
-   % \begin{egg}
-  \IfEndWith{\@author}{arlberg}{
-      \printthed
-  }{}
+  % Separation line
+  \begingroup
+    \fontsize{12.5pt}{15pt}\usefont{OT1}{fos}{l}{it}\selectfont
+    \vspace*{-\baselineskip}
+    \noindent ---
+    \vskip -\parskip
+    \normalsize\normalfont\selectfont\vspace*{\baselineskip}
+  \endgroup
+  % Name of author
+  \begingroup
+    \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{sb}{n}\selectfont
+    \vspace*{-\baselineskip}
+    \noindent\@author
+    \vskip -\parskip
+    \normalsize\normalfont\selectfont\vspace*{\baselineskip}
+  \endgroup
+  % Thesis description one-line / study program / month and year
+  \begingroup
+    \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{l}{it}\selectfont
+    \vspace*{-\baselineskip}
+    \noindent\@thesisprogramme
+    \vskip -\parskip
+  \endgroup
+  %
+  % \begin{egg}
+  \IfEndWith{\@author}{arlberg}{\printthed}{}
   % \end{egg}
-  
+  %
   \end{titlepage}%
-  
+  %
   % Restore original geometry
   \restoregeometry
-  
+  %
   \setcounter{footnote}{0}%
   \global\let\thanks\relax
   \global\let\maketitle\relax
@@ -1065,6 +1079,7 @@
   \global\let\date\relax
   \global\let\and\relax
 }
+\fi
 
 
 %:-------------------------- Convenient macros and definitions -----------------------
