@@ -1033,5 +1033,13 @@
 % WIP macro
 \newcommand{\wip}[1]{\textcolor{red}{W.I.P:\\#1}}
 
+\let\ult@save@onefilewithoptions\@onefilewithoptions
+\def\@onefilewithoptions#1[#2][#3]#4{%
+  \ifx\AtBeginDocument\@firstofone\else
+    \@latex@warning{Are you sure you are allowed to use the #1 package?}%
+  \fi
+  \ult@save@onefilewithoptions#1[{#2}][{#3}]#4%
+}
+
 % That's all, folks!
 \endinput
