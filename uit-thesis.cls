@@ -783,7 +783,7 @@
   ]
 
 % Adjust spacing around chapter title
-\titlespacing{\chapter}
+\titlespacing*{\chapter}
   {\z@}          % Left margin = 0
   {\z@ - \chapterheadtopvspace + \baselinesbeforefrontchaphead\baselineskip} % Vertical space before chapter head (50\p@ is standard from book.cls)
   {\z@ - \parskip + \baselinesafterchaptitle\baselineskip}        % Vertical space after title, before text (\ttl@chapafter is default)
