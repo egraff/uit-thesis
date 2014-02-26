@@ -616,10 +616,14 @@
 \debugdef{@chapter}
 \debugdef{chapter}
 \debugdef{secdef}
+\debugdef{section}
+\debugdef{sectfont}
+\debugdef{SS@sectfont}
 
 % Alias sectsty internals
 \newcommand{\chapnumfont}{\SS@chapnumfont}     % use \chapternumberfont{} to change
 \newcommand{\chaptitlefont}{\SS@chaptitlefont} % use \chaptertitlefont{} to change
+\newcommand{\sectfont}{\SS@sectfont} % use \sectionfont{} to change
 
 % Use Open Sans (fos) instead of Charter BT (bch) as chapter and section title font
 \allsectionsfont{\rmfamily\upshape\bfseries\usefont{OT1}{fos}{bx}{n}\selectfont}
@@ -664,6 +668,9 @@
 \def\baselinesbeforemainchaphead{6} % Approximate same distance as would be with standard 50\p@ vspace
 \def\baselinesafterchapnum{3}
 \def\baselinesafterchaptitle{2}
+
+\def\baselinesbeforesection{3}
+\def\baselinesaftersection{0}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%% DEBUG %%%%%%%%%%%%%
@@ -768,6 +775,30 @@
   {\z@}          % Left margin = 0
   {\z@ - \chapterheadtopvspace + \baselinesbeforefrontchaphead\baselineskip} % Vertical space before chapter head (50\p@ is standard from book.cls)
   {\z@ - \parskip + \baselinesafterchaptitle\baselineskip}        % Vertical space after title, before text (\ttl@chapafter is default)
+
+
+% The titlesec package overrides definition of \section, but sectsty overrides that definition in turn.
+% Re-define \section using titlesec's macros
+% NOTE: We do this instead of renewing \section definition manually
+% using \@startsection, because it allows a higher degree of flexibility.
+\titleclass{\section}{straight}
+
+% Now, define how \section is formatted.
+\titleformat{\section}[hang]
+  {\normalfont \vspace*{\baselineskip} \Large \bfseries \sectfont \selectfont \vspace*{-\baselineskip}}% Format
+  {\thesection\space}% Label
+  {\z@}% Sep
+  {}% Before-code
+  []% After-code
+
+% Starred version makes sure we suppress indentation of text following section title
+\titlespacing*{\section}
+  {\z@}% % Left margin = 0
+  {\z@ + \baselinesbeforesection\baselineskip}% % Vertical space before
+  {\z@ + \baselinesaftersection\baselineskip}%  % Vertical space after
+
+
+
 
 
 % NOTE: chapter head is printed as:
