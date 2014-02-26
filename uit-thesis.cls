@@ -870,6 +870,9 @@
   
   % Redefine what is in \chaptermark so that \leftmark contains chapter name. Thus "Abstract" and "Acknowledgements" will be written in header
   \renewcommand{\chaptermark}[1]{\markboth{##1}{}} % Note: we use two number signs (#) because we have renewcommand within renewcommand
+  
+  % Make sure that abbreviations are not expanded
+  \glsunsetall
 }
 
 \renewcommand\mainmatter{%
@@ -886,7 +889,7 @@
   % Set odd pages to have have \rightmark instead of \leftmark
   \fancyhead[LO]{\nouppercase{\rightmark}}
   
-  % Reset glossaries
+  % Reset glossaries so every abbreviation will expand on first use
   \glsresetall
 }
 
