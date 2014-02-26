@@ -37,6 +37,11 @@
 \ult@drawbaselinegridfalse % Default to false
 \DeclareOption{baselinegrid}{\ult@drawbaselinegridtrue}
 
+% Option for using indented paragraphs instead of vertical skip between paragraphs
+\newif\ifult@parindent
+\ult@parindentfalse % Default to false
+\DeclareOption{parindent}{\ult@parindenttrue}
+
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
@@ -342,22 +347,29 @@
 \setlength{\hoffset}{0.00cm}
 \setlength{\voffset}{0.00cm}
 
+\ifult@parindent
+  % No skip between paragraphs when using indentation
+  \setlength{\parskip}{\z@}
 
-% Begin paragraphs with an empty line rather than an indent
-\usepackage[parfill]{parskip}
+  % NOTE: We retain the default \parindent
+\else
+  % Begin paragraphs with an empty line rather than an indent
+  \usepackage[parfill]{parskip}
 
-% Set indent at new paragraph to 0
-\setlength{\parindent}{\z@} 
+  % Set indent at new paragraph to 0
+  \setlength{\parindent}{\z@}
+
+  % Set paragraph skip length to two lines
+  % Note: this reads the current value of \baselineskip for the normal font and font size, and stores it in parskip.
+  % Changing \baselineskip later will NOT change \parskip
+  \setlength{\parskip}{\baselineskip}
+\fi
+
 
 \linespread{1.0}
 
 % Strict linespacing, don't allow LaTeX to put extra spacing between lines
 \lineskip=0pt
-
-% Set paragraph skip length to two lines
-% Note: this reads the current value of \baselineskip for the normal font and font size, and stores it in parskip.
-% Changing \baselineskip later will NOT change \parskip
-\setlength{\parskip}{\baselineskip}
 
 \renewcommand{\baselinestretch}{1.0}\normalsize
 
