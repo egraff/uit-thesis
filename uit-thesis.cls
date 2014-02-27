@@ -42,6 +42,11 @@
 \ult@parindentfalse % Default to false
 \DeclareOption{parindent}{\ult@parindenttrue}
 
+% Option for adding Preface
+\newif\ifult@preface
+\ult@prefacefalse % Default to false
+\DeclareOption{preface}{\ult@prefacetrue}
+
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
@@ -512,9 +517,14 @@
 %:-------------------------- Glossaries -----------------------
 
 % Used for abreviations and list of abreviations
-% Don't use 'toc' option because it doesn't print '\acronymname' in table of contents (TOC)
-% Instead, we override manually later
-\usepackage[acronym,shortcuts,nomain,nonumberlist,nopostdot]{glossaries}
+% Translate=false because package 'babel' reverts renaming of the default glossary-/acronymnames
+\usepackage[toc,acronym,shortcuts,nonumberlist,nopostdot,translate=false]{glossaries}
+
+% Apparently, no problem running makegloss here
+\makeglossaries
+
+% Make glossarylistings start with Caps (This is for regular glossary entries, not acronyms)
+\renewcommand{\glsnamefont}[1]{\makefirstuc{#1}}
 
 % Use smallcaps-magic!!! _o/ \o/ \o_
 % Must be used to support ACR-commands that are not aliased to GLS-commands
@@ -888,12 +898,6 @@
 % DEBUG: Uncomment this to halt LaTeX compilation
 %\debughalt{Debug halt.}
 
-%:-------------------------- TOC and lists -----------------------
-
-\renewcommand{\acronymname}{List of Abbreviations}
-
-
-
 %:-------------------------- Book class overrides -----------------------
 
 \renewcommand\frontmatter{%
@@ -912,6 +916,42 @@
   
   % Make sure that abbreviations are not expanded
   \glsunsetall
+
+  % Add TOC
+  \tableofcontents
+
+  % LISTS
+  % 1: Figures/illustrations
+  % 2: Tables
+  % 3: Abbreviations
+  % 4: Symbols
+  % 5: Preface
+
+  \listoffigures
+  %\addcontentsline{toc}{chapter}{List of Figures}
+
+  \listoftables
+  %\addcontentsline{toc}{chapter}{List of Tables}
+
+  % Print "List of Abbreviations"
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+  \renewcommand{\acronymname}{List of Abbreviations}
+  \printacronyms
+
+  \ifult@preface
+    \if@openright
+      \cleardoublepage
+    \else
+      \clearpage
+    \fi
+    % TODO: PREFACE
+    \addcontentsline{toc}{chapter}{Preface}
+  \fi
+
 }
 
 \renewcommand\mainmatter{%
@@ -945,6 +985,9 @@
   
   % Redefine headers for appendices
   \pagestyle{empty}
+
+  % Print glossary and add to toc (regular glossary, and only if it has been used)
+  \printglossary
 }
 
 
