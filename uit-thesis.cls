@@ -424,12 +424,12 @@
     \makeatletter
     \parskip\z@    % Retain modification from parskip
     \@input{\jobname.#1}%
-    \if@filesw
-      \expandafter\newwrite\csname tf@#1\endcsname
-      \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
-    \fi
-    \@nobreakfalse
   \endgroup
+  \if@filesw
+    \expandafter\newwrite\csname tf@#1\endcsname
+    \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
+  \fi
+  \@nobreakfalse
 }
 
 %:-------------------------- Header/footer -----------------------
