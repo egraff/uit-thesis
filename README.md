@@ -24,3 +24,4 @@ TODO:
    - Would it be possible to auto-detect if we need List of Figures, List of Abbreviations, etc.?
    - Re-define \tableofcontents?
    - Re-define other list macros to automagically add \cleardoublepage and TOC entry?
+ - Use \AtBeginDocument{} to make class patches more stable (make sure that packages loaded in preamble do not fuck up our modifications)?
