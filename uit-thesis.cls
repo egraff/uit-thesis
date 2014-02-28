@@ -302,6 +302,10 @@
 % Add macro for subtitle
 \def\subtitle#1{\gdef\@subtitle{#1}}
 
+%:-------------------------- Table of Contents (TOC) -----------------------C
+\usepackage[nottoc]{tocbibind}
+\usepackage[subfigure,titles]{tocloft}
+
 %:-------------------------- Things we need to do magic -----------------------
 
 % For sweet-ass drawings and transformations and shit
