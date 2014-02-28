@@ -286,6 +286,9 @@
 % Enables adding figures and tables side by side
 \usepackage{subfigure}
 
+% Listings
+\usepackage{listings}
+
 % Override \title to update pdftitle
 \let\ult@savetitle\title
 \def\title#1{%
@@ -304,8 +307,18 @@
 \def\subtitle#1{\gdef\@subtitle{#1}}
 
 %:-------------------------- Table of Contents (TOC) -----------------------C
-\usepackage[nottoc]{tocbibind}
-\usepackage[subfigure,titles]{tocloft}
+
+% ToC support for list of figures, list of tables, bibliography, index, etc.
+\usepackage[nottoc%     % No entry for ToC in ToC
+           ]{tocbibind}
+
+% Styling of actual Table of Contents
+\usepackage[subfigure,% % Needed to be compatible with subfigure package
+            titles%     % Retain chapter headers
+           ]{tocloft}
+
+% Used to determine if document contains figures, tables, listings, etc.
+\usepackage[figure,table,lstlisting]{totalcount}
 
 %:-------------------------- Things we need to do magic -----------------------
 
@@ -911,10 +924,10 @@
   
   % Set \leftmark to the left on odd pages
   \fancyhead[LO]{\nouppercase{\leftmark}}
-  
+
   % Redefine what is in \chaptermark so that \leftmark contains chapter name. Thus "Abstract" and "Acknowledgements" will be written in header
   \renewcommand{\chaptermark}[1]{\markboth{##1}{}} % Note: we use two number signs (#) because we have renewcommand within renewcommand
-  
+
   % Make sure that abbreviations are not expanded
   \glsunsetall
 
@@ -928,22 +941,38 @@
   % 4: Symbols
   % 5: Preface
 
-  \cleardoublepage
-  \listoffigures
+  % List of figures
+  \iftotalfigures
+    \cleardoublepage
+    \listoffigures
+  \fi
 
-  \cleardoublepage
-  \listoftables
+  % List of tables
+  \iftotaltables
+    \cleardoublepage
+    \listoftables
+  \fi
 
-  % Print "List of Abbreviations"
-  \cleardoublepage
+  % List of Listings
+  \renewcommand{\lstlistlistingname}{List of Listings}
+  \iftotallstlistings
+    \cleardoublepage
+    \lstlistoflistings
+    \addcontentsline{toc}{chapter}{\lstlistlistingname}
+  \fi
+
+  % List of Abbreviations
   \renewcommand{\acronymname}{List of Abbreviations}
   \printacronyms
 
+  % Preface (Acknowledgements per haps)
   \ifult@preface
     \cleardoublepage
     % TODO: PREFACE
     \addcontentsline{toc}{chapter}{Preface}
   \fi
+
+  % Abstract
 
 }
 
@@ -970,6 +999,9 @@
 
   % Print glossary and add to toc (regular glossary, and only if it has been used)
   \printglossary
+
+  % Empty back cover
+  \cleardoublepage
 }
 
 
