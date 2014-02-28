@@ -24,6 +24,7 @@
 % Option overrides
 \PassOptionsToClass{a4paper}{\baseclass}
 \PassOptionsToClass{twoside}{\baseclass}
+\DeclareOption{openany}{}
 
 % DVI of PDF?
 \ifx\pdfoutput\undefined
@@ -927,27 +928,19 @@
   % 4: Symbols
   % 5: Preface
 
+  \cleardoublepage
   \listoffigures
-  %\addcontentsline{toc}{chapter}{List of Figures}
 
+  \cleardoublepage
   \listoftables
-  %\addcontentsline{toc}{chapter}{List of Tables}
 
   % Print "List of Abbreviations"
-  \if@openright
-    \cleardoublepage
-  \else
-    \clearpage
-  \fi
+  \cleardoublepage
   \renewcommand{\acronymname}{List of Abbreviations}
   \printacronyms
 
   \ifult@preface
-    \if@openright
-      \cleardoublepage
-    \else
-      \clearpage
-    \fi
+    \cleardoublepage
     % TODO: PREFACE
     \addcontentsline{toc}{chapter}{Preface}
   \fi
