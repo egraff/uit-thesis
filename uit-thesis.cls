@@ -942,7 +942,8 @@
   \iftotaltables\newpagefor{\listoftables}\fi
 
   % List of Listings
-  \iftotallstlistings\newpagefor{\lstlistoflistings}\fi
+  \renewcommand{\lstlistlistingname}{List of Listings}
+  \iftotallstlistings\newpagefor{\lstlistoflistings}\addcontentsline{toc}{chapter}{\lstlistlistingname}\fi
 
   % List of Abbreviations
   \renewcommand{\acronymname}{List of Abbreviations}
@@ -993,6 +994,8 @@
 
   % Print glossary and add to toc (regular glossary, and only if it has been used)
   \printglossary
+
+  \newpagefor{}
 }
 
 
