@@ -285,6 +285,9 @@
 % Enables adding figures and tables side by side
 \usepackage{subfigure}
 
+% Listings
+\usepackage{listings}
+
 % Override \title to update pdftitle
 \let\ult@savetitle\title
 \def\title#1{%
@@ -898,6 +901,11 @@
 % DEBUG: Uncomment this to halt LaTeX compilation
 %\debughalt{Debug halt.}
 
+%:---------------------------------- ToC --------------------------------
+\usepackage[nottoc]{tocbibind}
+\usepackage[figure,table,lstlisting]{totalcount}
+
+
 %:-------------------------- Book class overrides -----------------------
 
 \renewcommand\frontmatter{%
@@ -910,10 +918,10 @@
   
   % Set \leftmark to the left on odd pages
   \fancyhead[LO]{\nouppercase{\leftmark}}
-  
+
   % Redefine what is in \chaptermark so that \leftmark contains chapter name. Thus "Abstract" and "Acknowledgements" will be written in header
   \renewcommand{\chaptermark}[1]{\markboth{##1}{}} % Note: we use two number signs (#) because we have renewcommand within renewcommand
-  
+
   % Make sure that abbreviations are not expanded
   \glsunsetall
 
@@ -927,30 +935,27 @@
   % 4: Symbols
   % 5: Preface
 
-  \listoffigures
-  %\addcontentsline{toc}{chapter}{List of Figures}
+  % List of figures
+  \iftotalfigures\newpagefor{\listoffigures}\fi
 
-  \listoftables
-  %\addcontentsline{toc}{chapter}{List of Tables}
+  % List of tables
+  \iftotaltables\newpagefor{\listoftables}\fi
 
-  % Print "List of Abbreviations"
-  \if@openright
-    \cleardoublepage
-  \else
-    \clearpage
-  \fi
+  % List of Listings
+  \iftotallstlistings\newpagefor{\lstlistoflistings}\fi
+
+  % List of Abbreviations
   \renewcommand{\acronymname}{List of Abbreviations}
-  \printacronyms
+  \newpagefor{\printacronyms}
 
+  % Preface (Acknowledgements per haps)
   \ifult@preface
-    \if@openright
-      \cleardoublepage
-    \else
-      \clearpage
-    \fi
+    \newpagefor{}
     % TODO: PREFACE
     \addcontentsline{toc}{chapter}{Preface}
   \fi
+
+  % Abstract
 
 }
 
@@ -1126,6 +1131,18 @@
 
 
 %:-------------------------- Convenient macros and definitions -----------------------
+
+
+% Clear page/doublepage for command #1
+\newcommand{\newpagefor}[1]{%
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+  {#1}
+}
+
 
 \def \const #1{\penalty 100 \hbox{\texttt{#1}}}
 
