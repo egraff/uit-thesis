@@ -904,13 +904,9 @@
 
 %:-------------------------- Book class overrides -----------------------
 
+\let\ult@savefrontmatter\frontmatter
 \renewcommand\frontmatter{%
-  % Froom book.cls:
-    \cleardoublepage
-  \@mainmatterfalse
-  \pagenumbering{roman}
-  
-  %% Our additions:
+  \ult@savefrontmatter
   
   % Set \leftmark to the left on odd pages
   \fancyhead[LO]{\nouppercase{\leftmark}}
@@ -958,13 +954,9 @@
 
 }
 
+\let\ult@savemainmatter\mainmatter
 \renewcommand\mainmatter{%
-  %% Froom book.cls:
-    \cleardoublepage
-  \@mainmattertrue
-  \pagenumbering{arabic}
-  
-  %% Our additions:
+  \ult@savemainmatter
   
   % Redefine \chaptermark, so it contains chapter number in front of chapter name (e.g. "2 My Chapers Name")
   \renewcommand{\chaptermark}[1]{\markboth{\thechapter\ ##1}{}} % Note: we use two number signs (#) because we have renewcommand within renewcommand
@@ -976,16 +968,9 @@
   \glsresetall
 }
 
+\let\ult@savebackmatter\backmatter
 \renewcommand\backmatter{%
-  %% Froom book.cls:
-  \if@openright
-    \cleardoublepage
-  \else
-    \clearpage
-  \fi
-  \@mainmatterfalse
-  
-  %% Our additions:
+  \ult@savebackmatter
   
   % Redefine headers for appendices
   \pagestyle{empty}
