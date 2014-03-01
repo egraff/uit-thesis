@@ -9,6 +9,7 @@
 *.glg
 *.glo
 *.gls
+*.glsdefs
 *.idx
 *.ilg
 *.ind
@@ -30,3 +31,4 @@
 *.vrb
 *.xdy
 *.tdo
+*.fls

@@ -5,6 +5,7 @@ LaTeX document class for writing theses
 
 
 TODO:
+ - Fix frontpage dependencies (ask Magnus)
  - Fix math font
  - Fix kerning and protrusion
    - Add microtype
@@ -16,7 +17,7 @@ TODO:
  - Use autoref / add macros for referencing Figure, Chapter, Section, Listing, etc.
  - Add class option for color on UiT line?
  - Add class option for font? (Vil Jan-Ove bruke CM, eller klare vi å overtale han til å bruke Charter?)
- - Fix spacing between chapter numer, chapter title, section, paragraph
+ - Fix spacing for section header, subsection header, sub-paragraph
    - Make sure that lines "line up".
    - If we are going to support both 10pt, 11pt, and 12pt, then we should make sure this is correct for all font sizes.
  - Fix TOC stuff?
