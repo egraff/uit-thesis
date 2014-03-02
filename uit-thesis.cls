@@ -102,6 +102,32 @@
 % Allow calculations in \vspace*
 \usepackage{calc}
 
+% Used to prevent given LaTeX macro from being called more than once
+\newcommand\ult@once[1]{%
+  % Save original macro
+  \expandafter\let\csname ult@once@save\expandafter\@gobble\string#1\endcsname#1
+  %
+  % DEBUG
+  %\typeout{DEBUG \expandafter\meaning\csname ult@once@savelistoffigures\endcsname}
+  %\debughalt{}
+  %
+  % Re-define macro
+  \expandafter\renewcommand\csname\expandafter\@gobble\string#1\endcsname{%
+    % Invoke original macro
+    \csname ult@once@save\expandafter\@gobble\string#1\endcsname%
+    % Re-define macro
+    \expandafter\renewcommand\csname\expandafter\@gobble\string#1\endcsname{%
+      % Warn on second usage
+      \@latex@warning{Call to \@backslashchar\expandafter\@gobble\string#1\space was ignored, because it was called previously}%
+      % Re-define macro
+      \expandafter\renewcommand\csname\expandafter\@gobble\string#1\endcsname{%
+        % Error on third usage
+        \@latex@error{Duplicate call to \@backslashchar\expandafter\@gobble\string#1}
+      }%
+    }%
+  }%
+}
+
 %:-------------------------- Colors -----------------------
 
 % Text coloring with support for 68 standard color names
@@ -316,9 +342,6 @@
 \usepackage[subfigure,% % Needed to be compatible with subfigure package
             titles%     % Retain chapter headers
            ]{tocloft}
-
-% Used to determine if document contains figures, tables, listings, etc.
-\usepackage[figure,table,lstlisting]{totalcount}
 
 %:-------------------------- Things we need to do magic -----------------------
 
@@ -916,6 +939,77 @@
 % DEBUG: Uncomment this to halt LaTeX compilation
 %\debughalt{Debug halt.}
 
+
+%:-------------------------- ToC lists -----------------------
+
+% Used to determine if document contains figures, tables, listings, etc.
+\usepackage[figure,table,lstlisting]{totalcount}
+
+% Make sure \tableofcontents has effect at most once!
+\ult@once{\tableofcontents}%
+
+% List of figures
+\let\ult@savelistoffigures\listoffigures
+\renewcommand\listoffigures{%
+  \iftotalfigures% Only output list if count > 0
+    \cleardoublepage
+    \ult@savelistoffigures
+  \fi
+}
+% Make sure \listoffigures has effect at most once!
+\ult@once{\listoffigures}
+
+% List of tables
+\let\ult@savelistoftables\listoftables
+\renewcommand\listoftables{%
+  \iftotaltables% Only output list if count > 0
+    \cleardoublepage
+    \ult@savelistoftables
+  \fi
+}
+% Make sure \listoftables has effect at most once!
+\ult@once{\listoftables}
+
+
+% Register listings with tocloft
+\begingroup\let\newcounter\@gobble\let\setcounter\@gobbletwo
+  \globaldefs\@ne \let\c@loldepth\@ne
+  \newlistof{listings}{lol}{\lstlistlistingname}
+\endgroup
+\let\l@lstlisting\l@listings
+\AtBeginDocument{\addtocontents{lol}{\protect\addvspace{10\p@}}}
+\setlength{\cftlistingsindent}{1.5em}
+\setlength{\cftlistingsnumwidth}{2.3em}
+
+% Use tocbibind to generate list of listings
+\renewcommand{\lstlistoflistings}{%
+  \begingroup
+    \tocfile{\lstlistlistingname}{lol}
+  \endgroup%
+}
+
+% List of Listings
+\renewcommand{\lstlistlistingname}{List of Listings}
+\let\ult@lstlistoflistings\lstlistoflistings
+\renewcommand\lstlistoflistings{%
+  \iftotallstlistings% Only output list if count > 0
+    \cleardoublepage
+    \ult@lstlistoflistings
+  \fi
+}
+% Make sure \listoflistings has effect at most once!
+\ult@once{\lstlistoflistings}
+
+% List of Abbreviations
+\renewcommand{\acronymname}{List of Abbreviations}
+% Make sure \printacronyms has effect at most once!
+\AtBeginDocument{%
+  \ifglsacronym
+    \ult@once{\printacronyms}
+  \fi%
+}
+
+
 %:-------------------------- Book class overrides -----------------------
 
 \let\ult@savefrontmatter\frontmatter
@@ -941,28 +1035,13 @@
   % 4: Symbols
   % 5: Preface
 
-  % List of figures
-  \iftotalfigures
-    \cleardoublepage
-    \listoffigures
-  \fi
+  \listoffigures
 
-  % List of tables
-  \iftotaltables
-    \cleardoublepage
-    \listoftables
-  \fi
+  \listoftables
 
-  % List of Listings
-  \renewcommand{\lstlistlistingname}{List of Listings}
-  \iftotallstlistings
-    \cleardoublepage
-    \lstlistoflistings
-    \addcontentsline{toc}{chapter}{\lstlistlistingname}
-  \fi
+  \lstlistoflistings
 
   % List of Abbreviations
-  \renewcommand{\acronymname}{List of Abbreviations}
   \printacronyms
 
   % Preface (Acknowledgements per haps)
