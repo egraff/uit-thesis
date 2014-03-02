@@ -931,32 +931,48 @@
   % Make sure that abbreviations are not expanded
   \glsunsetall
 
-  % Add TOC
-  \tableofcontents
+  %:------------ Preferred document structure ------------
+  % 1: Titlepage
+  % 2: Abstract
+  % 3: Acknowledgements
+  % 4: ToC
+  % 5: LoF (Fig)
+  % 6: LoT (Tab)
+  % 7: LoA (Abbr)
 
-  % LISTS
-  % 1: Figures/illustrations
-  % 2: Tables
-  % 3: Abbreviations
-  % 4: Symbols
-  % 5: Preface
+
+  % Abstract is always printed here if abstract environment is used, does not matter where it is defined or included
+  \ifdefined\@abstractbox
+    \chapter*{\abstractname}
+    \thispagestyle{empty}
+    \addcontentsline{toc}{chapter}{\abstractname}
+    \usebox{\@abstractbox}
+  \fi
+
+  % Acknowledgement is always printed here if preface environment is used, does not matter where it is defined in the text
+  \ifdefined\@ackbox
+    \chapter*{\ackname}
+    \thispagestyle{empty}
+    \addcontentsline{toc}{chapter}{\ackname}
+    \usebox{\@ackbox}
+  \fi
+
+  % Tableof contents is here
+  \tableofcontents
 
   % List of figures
   \iftotalfigures
-    \cleardoublepage
     \listoffigures
   \fi
 
   % List of tables
   \iftotaltables
-    \cleardoublepage
     \listoftables
   \fi
 
   % List of Listings
-  \renewcommand{\lstlistlistingname}{List of Listings}
   \iftotallstlistings
-    \cleardoublepage
+    \renewcommand{\lstlistlistingname}{List of Listings}
     \lstlistoflistings
     \addcontentsline{toc}{chapter}{\lstlistlistingname}
   \fi
@@ -964,15 +980,6 @@
   % List of Abbreviations
   \renewcommand{\acronymname}{List of Abbreviations}
   \printacronyms
-
-  % Preface (Acknowledgements per haps)
-  \ifult@preface
-    \cleardoublepage
-    % TODO: PREFACE
-    \addcontentsline{toc}{chapter}{Preface}
-  \fi
-
-  % Abstract
 
 }
 
@@ -1004,6 +1011,29 @@
   \cleardoublepage
 }
 
+%:---------------------- Abstract/Preface/Copyright -----------------
+
+% Abstract environment
+\newcommand{\abstractname}{Abstract}
+\newenvironment{abstract}{
+  \newsavebox\@abstractbox
+  \lrbox\@abstractbox
+  \begin{minipage}[t]{\textwidth}
+  }{
+  \end{minipage}
+  \endlrbox
+}
+
+% Acknowledgement environment
+\newcommand{\ackname}{Acknowledgements}
+\newenvironment{ack}{
+  \newsavebox\@ackbox
+  \lrbox\@ackbox
+  \begin{minipage}[t]{\textwidth}
+  }{
+  \end{minipage}
+  \endlrbox
+}
 
 %:-------------------------- Frontpage stuffs -----------------------
 
