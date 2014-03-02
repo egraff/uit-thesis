@@ -6,7 +6,10 @@ LaTeX document class for writing theses
 
 TODO:
  - Fix frontpage dependencies (ask Magnus)
- - Fix math font
+ - Create a LaTeX "CTAN-ready" distribution package?
+   - Local texmf tree?
+   - Allows us to resolve e.g. pdf dependencies?
+     - See http://stackoverflow.com/questions/3374174/including-graphics-in-latex-classfile
  - Fix kerning and protrusion
    - Add microtype
    - Turn off protrusion in frontmatter
