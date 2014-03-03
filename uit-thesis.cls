@@ -43,11 +43,6 @@
 \ult@parindentfalse % Default to false
 \DeclareOption{parindent}{\ult@parindenttrue}
 
-% Option for adding Preface
-\newif\ifult@preface
-\ult@prefacefalse % Default to false
-\DeclareOption{preface}{\ult@prefacetrue}
-
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
@@ -949,7 +944,7 @@
     \usebox{\@abstractbox}
   \fi
 
-  % Acknowledgement is always printed here if preface environment is used, does not matter where it is defined in the text
+  % Acknowledgement is always printed here if acknowledgement environment is used, does not matter where it is defined in the text
   \ifdefined\@ackbox
     \chapter*{\ackname}
     \thispagestyle{empty}
@@ -1011,7 +1006,7 @@
   \cleardoublepage
 }
 
-%:---------------------- Abstract/Preface/Copyright -----------------
+%:---------------------- Abstract/Acknowledgements/Copyright -----------------
 
 % Abstract environment
 \newcommand{\abstractname}{Abstract}
