@@ -122,7 +122,7 @@
       % Re-define macro
       \expandafter\renewcommand\csname\expandafter\@gobble\string#1\endcsname{%
         % Error on third usage
-        \@latex@error{Duplicate call to \@backslashchar\expandafter\@gobble\string#1}
+        \@latex@error{Duplicate call to \@backslashchar\expandafter\@gobble\string#1}\@ehd
       }%
     }%
   }%
@@ -1028,9 +1028,16 @@
 
   % Make sure that abbreviations are not expanded
   \glsunsetall
+}
 
-  % Add TOC
-  \tableofcontents
+% Table of Contents
+\let\ult@savetableofcontents\tableofcontents
+\renewcommand\tableofcontents{%
+  \ult@savetableofcontents
+
+  \renewcommand\tableofcontents{%
+    \@latex@error{Duplicate \@backslashchar tableofcontents}\@ehd
+  }
 
   % LISTS
   % 1: Figures/illustrations
@@ -1056,7 +1063,6 @@
   \fi
 
   % Abstract
-
 }
 
 \let\ult@savemainmatter\mainmatter
