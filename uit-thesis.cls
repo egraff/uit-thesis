@@ -184,11 +184,6 @@
 \debugdef{@mpfootnotetext}
 \debugdef{@xfootnotemark}
 
-%\debughalt{}
-
-%\usepackage{fnpct}
-%\usepackage{footnotebackref}
-
 \debugdef{@makefnmark}
 \debugdef{@makefntext}
 \debugdef{@footnotemark} % Uses \@makefnmark
@@ -410,8 +405,6 @@
 
 \renewcommand{\baselinestretch}{1.0}\normalsize
 
-%\typeout{Old paragraph definition: \meaning\paragraph}
-
 %%% NOTE
 %%% The \@startsection macro is defined as follows:
 %%%  \@startsection{<name>}{<level>}{<indent>}{<beforeskip>}{<afterskip>}{<style>}*[<altheading>]{<heading>}
@@ -431,10 +424,6 @@
                   {-1em}
                   {\normalfont\normalsize\bfseries \SS@parafont}% Style
 }
-
-%\gridSetup[pt]{\p@}{2}{12}{20}{2}
-%\renewcommand*\ESO@gridcolor{red!20}
-%\renewcommand*\ESO@subgridcolor{blue!20}
 
 % BASELINE GRID
 \usepackage{atbegshi,picture}
@@ -555,9 +544,6 @@
 % Used for abreviations and list of abreviations
 % Translate=false because package 'babel' reverts renaming of the default glossary-/acronymnames
 \usepackage[toc,acronym,shortcuts,nonumberlist,nopostdot,translate=false]{glossaries}
-
-% Apparently, no problem running makegloss here
-\makeglossaries
 
 % Make glossarylistings start with Caps (This is for regular glossary entries, not acronyms)
 \renewcommand{\glsnamefont}[1]{\makefirstuc{#1}}
@@ -726,18 +712,6 @@
 \def\baselinesbeforesection{3}
 \def\baselinesaftersection{0}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%% DEBUG %%%%%%%%%%%%%
-%\renewcommand{\chaptitlefont}{\normalfont\selectfont}
-%\def\chaptitlefontsize {\normalsize}
-%\def\chaptitlefontsize {\fontsize{10}{3}}
-%\def\chaptitlefontsize {\fontsize{10}{30}}
-%\def\chaptitlefontsize {\fontsize{10}{60}}
-%\def\chaptitlefontsize {\Huge}
-%\def\chaptitlefontsize {\fontsize{24}{60}}
-%\def\chaptitlefontsize {\fontsize{24}{72}}
-%\def\chaptitlefontsize {\fontsize{24}{128}}
-%\def\chaptitlefontsize {\fontsize{28}{10}}
 
 % Pretty size that spans two baselines. Height is approx. \baselineskip + \fontcharht\font`B
 \def\chaptitlefontsize {\fontsize{26}{32}}
@@ -992,22 +966,9 @@
 % Make sure \listoflistings has effect at most once!
 \ult@once{\lstlistoflistings}
 
-% List of Abbreviations
-\renewcommand{\acronymname}{List of Abbreviations}
-% Make sure \printacronyms has effect at most once!
-\AtBeginDocument{%
-  \ifglsacronym
-    \ult@once{\printacronyms}
-  \fi%
-}
-
-% Prevent \printglossaries
-\renewcommand*{\printglossaries}{%
-  \@latex@warning{Call to \@backslashchar printglossaries was ignored.}%
-}
-
 %:-------------------------- Book class overrides -----------------------
 
+% Frontmatter
 \let\ult@savefrontmatter\frontmatter
 \renewcommand\frontmatter{%
   \ult@savefrontmatter
@@ -1043,11 +1004,9 @@
   \listoftables
 
   \lstlistoflistings
-
-  % List of Abbreviations
-  \printacronyms
 }
 
+% Mainmatter
 \let\ult@savemainmatter\mainmatter
 \renewcommand\mainmatter{%
   \ult@savemainmatter
@@ -1062,18 +1021,13 @@
   \glsresetall
 }
 
+% Backmatter
 \let\ult@savebackmatter\backmatter
 \renewcommand\backmatter{%
   \ult@savebackmatter
   
   % Redefine headers for appendices
   \pagestyle{empty}
-
-  % Print glossary and add to toc (regular glossary, and only if it has been used)
-  \printglossary
-
-  % Empty back cover
-  \cleardoublepage
 }
 
 
