@@ -945,9 +945,6 @@
 % Used to determine if document contains figures, tables, listings, etc.
 \usepackage[figure,table,lstlisting]{totalcount}
 
-% Make sure \tableofcontents has effect at most once!
-\ult@once{\tableofcontents}%
-
 % List of figures
 \let\ult@savelistoffigures\listoffigures
 \renewcommand\listoffigures{%
