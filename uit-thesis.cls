@@ -1009,6 +1009,10 @@
   \fi%
 }
 
+% Prevent \printglossaries
+\renewcommand*{\printglossaries}{%
+  \@latex@warning{Call to \@backslashchar printglossaries was ignored.}%
+}
 
 %:-------------------------- Book class overrides -----------------------
 
