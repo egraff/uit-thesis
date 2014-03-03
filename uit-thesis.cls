@@ -467,16 +467,168 @@
 % Used to modify header/footer of pages
 \usepackage{fancyhdr}
 
-% Macro to create empty page so that chapters always start on even page number
+\newcounter{ult@c@firstblankpage}\setcounter{ult@c@firstblankpage}{\z@}%
+\newcounter{ult@c@lastblankpage}\setcounter{ult@c@lastblankpage}{\z@}%
+\newcounter{ult@c@tmpblankpage}
+
+\newcommand\updatefirstblankpage{%
+  \ifnum\c@page>\value{ult@c@firstblankpage}%
+    \setcounter{ult@c@firstblankpage}{\c@page}%
+    \typeout{FIRST BLANK PAGE SET TO: \the\c@page}%
+  \fi%
+}
+
+\newcommand\updatelastblankpage{%
+  \setcounter{ult@c@lastblankpage}{\c@page}%
+  \typeout{LAST BLANK PAGE SET TO: \the\c@page}%
+}
+
+\let\ult@saveclearpage\clearpage
+\renewcommand\clearpage{%
+  \setcounter{ult@c@tmpblankpage}{\c@page}%
+  \ult@saveclearpage%
+  \ifnum\c@page=\value{ult@c@tmpblankpage}% Previous page was blank
+    \ifnum\c@page>\value{ult@c@lastblankpage}
+      \setcounter{ult@c@firstblankpage}{\c@page}%
+      \addtocounter{ult@c@firstblankpage}{\m@ne}%
+      \typeout{LAST BLANK PAGE UPDATED TO: \the\value{ult@c@firstblankpage}}%
+    \fi
+  \else
+    \updatefirstblankpage%
+  \fi
+}
+
+% Macro to create empty page so that chapters always start on recto page
 % Note that we use pagestyle "empty" to let the blank pages be blank folios (no page numbers)
 % It can be changed to "plain" if page number is desired on blank pages
-\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
-    \hbox{}
-    \thispagestyle{empty}
-    \newpage
-    \if@twocolumn\hbox{}\newpage\fi\fi\fi%
+\def\cleardoublepage{%
+  \clearpage%
+  \if@twoside%
+    \ifodd\c@page\else% If even page
+      \updatelastblankpage% Verso page is blank
+      \hbox{}%
+      \thispagestyle{empty}%
+      \newpage%
+      \if@twocolumn%
+        \hbox{}%
+        \newpage%
+      \fi%
+    \fi%
+  \fi%
 }
-\clearpage{\pagestyle{empty}\cleardoublepage}
+
+% Make sure we have a blank verso page. Following content will continue on succeeding recto page.
+% Note: this is different from \cleardoublepage, which allows content on verso page.
+\def\clearversopage{%
+  \clearpage%
+  \if@twoside%
+    \ifnum\value{ult@c@firstblankpage}>\value{ult@c@lastblankpage}% If we have no known, preceding blank pages
+      \ifodd\c@page% If odd page (text ended on verso page)
+        \typeout{CLEARVERSO: ODDPAGE == Y ^^J}
+        % Add one blank recto page and one blank verso page
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+        \updatelastblankpage% Verso page is blank
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+      \else % Text ended on recto page
+        \typeout{CLEARVERSO: EEEEEEEEEEVENPAGE ^^J}
+        % Add one blank verso page
+        \updatelastblankpage% Verso page is blank
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+      \fi%
+    \else% If we have known, preceding blank pages
+      \typeout{CLEARVERSO: ALREADY BLANK ^^J}
+      \ifodd\value{ult@c@lastblankpage}% If last blank page was recto page
+        \typeout{CLEARVERSO: ADDING EXTRA BLANK ^^J}
+        \ifodd\c@page% Current page should not be recto page in this case...
+          \@latex@error{BUG in \@backslashchar clearversopage in uit-thesis package!!!!!!!!!!}\@ehd
+        \fi%
+        % Add one blank verso page to get blank back-sheet
+        \updatelastblankpage% Verso page is blank
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+       \fi%
+    \fi%
+  \fi%
+}
+
+% Make sure we have a blank recto page. Following content will continue on succeeding verso page.
+\def\clearrectopage{%
+  \clearpage%
+  \if@twoside%
+    \ifnum\value{ult@c@firstblankpage}>\value{ult@c@lastblankpage}% If we have no known, preceding blank pages
+      \ifodd\c@page% If odd page (text ended on verso page)
+        \typeout{CLEARRECTO: ODDPAGE == Y ^^J}
+        % Add one blank recto page
+        \updatelastblankpage% Recto page is blank
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+      \else % Text ended on recto page
+        \typeout{CLEARRECTO: EEEEEEEEEEVENPAGE ^^J}
+        % Add one blank verso page and one blank recto page
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+        \updatelastblankpage% Recto page is blank
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+      \fi%
+    \else% If we have known, preceding blank pages
+      \typeout{CLEARRECTO: ALREADY BLANK ^^J}
+      \ifodd\value{ult@c@lastblankpage}\else% If last blank page was verso page
+        \typeout{CLEARVERSO: ADDING EXTRA BLANK ^^J}
+        \ifodd\c@page\else% Current page should not be verso page in this case...
+          \@latex@error{BUG in \@backslashchar clearrectopage in uit-thesis package!!!!!!!!!!}\@ehd
+        \fi
+        % Add one blank recto page
+        \updatelastblankpage% Recto page is blank
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+       \fi%
+    \fi%
+  \fi%
+}
 
 % Define pagestyle
 \pagestyle{fancy}
@@ -1028,6 +1180,9 @@
   
   % Redefine headers for appendices
   \pagestyle{empty}
+  
+  % Blank back cover
+  \clearversopage
 }
 
 
