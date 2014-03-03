@@ -43,11 +43,6 @@
 \ult@parindentfalse % Default to false
 \DeclareOption{parindent}{\ult@parindenttrue}
 
-% Option for adding Preface
-\newif\ifult@preface
-\ult@prefacefalse % Default to false
-\DeclareOption{preface}{\ult@prefacetrue}
-
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
@@ -1051,15 +1046,6 @@
 
   % List of Abbreviations
   \printacronyms
-
-  % Preface (Acknowledgements per haps)
-  \ifult@preface
-    \cleardoublepage
-    % TODO: PREFACE
-    \addcontentsline{toc}{chapter}{Preface}
-  \fi
-
-  % Abstract
 }
 
 \let\ult@savemainmatter\mainmatter
