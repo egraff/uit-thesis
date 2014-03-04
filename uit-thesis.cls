@@ -477,13 +477,13 @@
 \newcommand\updatefirstblankpage{%
   \ifnum\c@page>\value{ult@c@firstblankpage}%
     \setcounter{ult@c@firstblankpage}{\c@page}%
-    \typeout{FIRST BLANK PAGE SET TO: \the\c@page}%
+    %\typeout{FIRST BLANK PAGE SET TO: \the\c@page}%
   \fi%
 }
 
 \newcommand\updatelastblankpage{%
   \setcounter{ult@c@lastblankpage}{\c@page}%
-  \typeout{LAST BLANK PAGE SET TO: \the\c@page}%
+  %\typeout{LAST BLANK PAGE SET TO: \the\c@page}%
 }
 
 \let\ult@saveclearpage\clearpage
@@ -494,7 +494,7 @@
     \ifnum\c@page>\value{ult@c@lastblankpage}
       \setcounter{ult@c@firstblankpage}{\c@page}%
       \addtocounter{ult@c@firstblankpage}{\m@ne}%
-      \typeout{LAST BLANK PAGE UPDATED TO: \the\value{ult@c@firstblankpage}}%
+      %\typeout{LAST BLANK PAGE UPDATED TO: \the\value{ult@c@firstblankpage}}%
     \fi
   \else
     \updatefirstblankpage%
@@ -527,7 +527,7 @@
   \if@twoside%
     \ifnum\value{ult@c@firstblankpage}>\value{ult@c@lastblankpage}% If we have no known, preceding blank pages
       \ifodd\c@page% If odd page (text ended on verso page)
-        \typeout{CLEARVERSO: ODDPAGE == Y ^^J}
+        %\typeout{CLEARVERSO: ODDPAGE == Y ^^J}
         % Add one blank recto page and one blank verso page
         \hbox{}%
         \thispagestyle{empty}%
@@ -545,7 +545,7 @@
           \newpage%
         \fi%
       \else % Text ended on recto page
-        \typeout{CLEARVERSO: EEEEEEEEEEVENPAGE ^^J}
+        %\typeout{CLEARVERSO: EEEEEEEEEEVENPAGE ^^J}
         % Add one blank verso page
         \updatelastblankpage% Verso page is blank
         \hbox{}%
@@ -557,9 +557,9 @@
         \fi%
       \fi%
     \else% If we have known, preceding blank pages
-      \typeout{CLEARVERSO: ALREADY BLANK ^^J}
+      %\typeout{CLEARVERSO: ALREADY BLANK ^^J}
       \ifodd\value{ult@c@lastblankpage}% If last blank page was recto page
-        \typeout{CLEARVERSO: ADDING EXTRA BLANK ^^J}
+        %\typeout{CLEARVERSO: ADDING EXTRA BLANK ^^J}
         \ifodd\c@page% Current page should not be recto page in this case...
           \@latex@error{BUG in \@backslashchar clearversopage in uit-thesis package!!!!!!!!!!}\@ehd
         \fi%
@@ -583,7 +583,7 @@
   \if@twoside%
     \ifnum\value{ult@c@firstblankpage}>\value{ult@c@lastblankpage}% If we have no known, preceding blank pages
       \ifodd\c@page% If odd page (text ended on verso page)
-        \typeout{CLEARRECTO: ODDPAGE == Y ^^J}
+        %\typeout{CLEARRECTO: ODDPAGE == Y ^^J}
         % Add one blank recto page
         \updatelastblankpage% Recto page is blank
         \hbox{}%
@@ -594,7 +594,7 @@
           \newpage%
         \fi%
       \else % Text ended on recto page
-        \typeout{CLEARRECTO: EEEEEEEEEEVENPAGE ^^J}
+        %\typeout{CLEARRECTO: EEEEEEEEEEVENPAGE ^^J}
         % Add one blank verso page and one blank recto page
         \hbox{}%
         \thispagestyle{empty}%
@@ -613,9 +613,9 @@
         \fi%
       \fi%
     \else% If we have known, preceding blank pages
-      \typeout{CLEARRECTO: ALREADY BLANK ^^J}
+      %\typeout{CLEARRECTO: ALREADY BLANK ^^J}
       \ifodd\value{ult@c@lastblankpage}\else% If last blank page was verso page
-        \typeout{CLEARVERSO: ADDING EXTRA BLANK ^^J}
+        %\typeout{CLEARVERSO: ADDING EXTRA BLANK ^^J}
         \ifodd\c@page\else% Current page should not be verso page in this case...
           \@latex@error{BUG in \@backslashchar clearrectopage in uit-thesis package!!!!!!!!!!}\@ehd
         \fi
