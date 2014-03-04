@@ -342,6 +342,9 @@
 \usepackage{l3regex}
 \usepackage{xparse}
 
+% To read LaTeX macro from file
+\usepackage{catchfile}
+
 %:-------------------------- Fonts -----------------------
 
 \usepackage{opensans}
@@ -1118,6 +1121,66 @@
 % Make sure \listoflistings has effect at most once!
 \ult@once{\lstlistoflistings}
 
+
+% List of Abbreviations
+\renewcommand{\acronymname}{List of Abbreviations}
+
+% Override \printglossary to prevent blank page from being inserted
+% when acronym/glossary list is empty.
+%
+% The problem is that an "empty" auxillary file for a glossary list
+% will contain "\null" as its file contents. The \null command is the
+% same as \hbox{}, and will flush a new page if called after a
+% \clearpage or \cleardoublepage, which is *extremely* undesirable.
+%
+% The following hack exploits the fact that \printglossary uses the
+% \@input@ command to output the contents of the auxillary file for
+% the glossary list. So we re-define \@input@ temporarily to use
+% LaTeX magic to read the entire file contents into a command
+% \ult@read@buf, and test if the file contents are strictly equal to
+% \null. If so, we simply ignore the \@input@, else we call the
+% normal \@input@ command (that we have saved first). Then, when
+% \printglossary calls \@input@, it will actually call our overridden
+% command, and make sure we don't output anything if the file only
+% contains \null. Finally, we restore the original \@input@ command
+% so it can be used later.
+%
+% Note: Must use \LetLtxMacro because \printglossary is complex with
+% default value for parameter.
+% See: http://www.tex.ac.uk/cgi-bin/texfaq2html?label=patch
+%
+% Also note: I tried to use a normal LaTeX \read-loop with scantokens,
+% but did not succeed, so I ended up using the 'catchfile' package,
+% which seems to get the job done!
+\LetLtxMacro{\ult@saveprintglossary}{\printglossary}
+\renewcommand{\printglossary}[1][type=\glsdefaulttype]{%
+  % Override \@input@ that is used by \printglossary
+  \let\ult@save@input@\@input@
+  \renewcommand\@input@[1]{%
+    \IfFileExists{##1}{%
+      % See http://tex.stackexchange.com/questions/14145/how-do-i-create-a-macro-which-reads-the-content-of-a-file-when-the-macro-is-defi
+      \CatchFileDef{\ult@read@buf}% Macro we dump file contents into
+                   {##1}% File name
+                   {\makeatletter\endlinechar=-1\relax}% Scancode magic
+      
+      % If file contents is equal to \null, then ignore...
+      % This will prevent an additional blank page being inserted,
+      % since we suppress the \null from being output.
+      \expandafter\ifx\ult@read@buf\null\else
+        % Call on saved \@input@ command
+        \ult@save@input@{##1}
+      \fi%
+    }{}% Don't output anything if file does not exist!
+  }%
+  %
+  % Now, that we have overridden \@input@, call saved \printglossary
+  \ult@saveprintglossary[#1]%
+  %
+  % Finally, restore \@input@ so we don't fuck up for other stuff
+  \let\@input@\ult@save@input@
+}
+
+
 %:-------------------------- Book class overrides -----------------------
 
 % Frontmatter
@@ -1156,6 +1219,8 @@
   \listoftables
 
   \lstlistoflistings
+
+  \printacronyms
 }
 
 % Mainmatter
@@ -1180,6 +1245,8 @@
   
   % Redefine headers for appendices
   \pagestyle{empty}
+  
+  \printglossary
   
   % Blank back cover
   \clearversopage
