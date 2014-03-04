@@ -912,21 +912,70 @@
 
 \newcommand{\abstractname}{Abstract}
 \newcommand{\ackname}{Acknowledgements}
+\newcommand{\dedicationname}{Dedication}
+
+\newif\ifult@hasacknowledgement
+\global\ult@hasacknowledgementfalse
+
+\newif\ifult@hasabstract
+\global\ult@hasabstractfalse
+
+\newif\ifult@hasdedication
+\global\ult@hasdedicationfalse
+
+\newif\ifult@hasepigraph
+\global\ult@hasepigraphfalse
 
 \newenvironment{abstract}{%
-  \ifdefined\ult@hasacknowledgement
+  \ifult@hasacknowledgement % Abstract should come before acknowledgements
     \@latex@warning{'\abstractname' should precede '\ackname'.}%
   \fi
+  \global\ult@hasabstracttrue
   \chapter{\abstractname}
   \thispagestyle{empty}
 }{}
 
-\newenvironment{ack}{%
+\newenvironment{acknowledge}{%
+  \global\ult@hasacknowledgementtrue
   \chapter{\ackname}
   \thispagestyle{empty}
-  \global\def\ult@hasacknowledgement{\true}
 }{}
 
+\newenvironment{dedication}{%
+  \ifult@hasabstract % Dedication should come before abstract
+    \@latex@warning{'\dedicationname' should precede '\abstractname'.}%
+  \fi
+  \ifult@hasacknowledgement % Dedication should come before acknowledgements
+    \@latex@warning{'\dedicationname' should precede '\ackname'.}%
+  \fi
+  \ifult@hasepigraph % Epigraph should come after dedication
+    \@latex@warning{'\dedicationname' should precede 'Epigraph'}
+  \fi
+  \global\ult@hasdedicationtrue
+  \chapter{\dedicationname}
+  \thispagestyle{empty}
+}{}
+
+\newcommand{\epigraphitem}[2]{\item {\textit{"#1"}\\{--}#2}}
+
+\newenvironment{epigraph}{%
+  \ifult@hasacknowledgement % Abstract should come before epigraph
+    \@latex@warning{'Epigraph' should precede '\ackname'.}%
+  \fi
+  \ifult@hasabstract % Epigraph should come before abstract
+    \@latex@warning{'Epigraph' should precede '\abstractname'.}%
+  \fi
+  \ifult@hasdedication
+  \else
+    \@latex@warning{'Epigraph' should succeed '\dedicationname'.}%
+  \fi
+  \global\ult@hasepigraphtrue
+  \clearpage
+  \thispagestyle{empty}
+  \null
+  \vfill
+  \begin{flushright}
+}{\end{flushright}}
 
 
 %:-------------------------- ToC lists -----------------------
