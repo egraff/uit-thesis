@@ -917,14 +917,12 @@
   \ifdefined\acknowledgement
     \@latex@warning{'\abstractname' should precede '\ackname'.}\@ehd%
   \fi
-  \chapter*{\abstractname}
-  \addcontentsline{toc}{chapter}{\abstractname}
+  \chapter{\abstractname}
   \thispagestyle{empty}
 }{}
 
 \newenvironment{ack}{%
-  \chapter*{\ackname}
-  \addcontentsline{toc}{chapter}{\ackname}
+  \chapter{\ackname}
   \thispagestyle{empty}
   \global\def\acknowledgement{\true}
 }{}
