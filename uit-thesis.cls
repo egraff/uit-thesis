@@ -490,10 +490,13 @@
 \fancyhead[RO,LE]{\thepage}
 
 % Set \leftmark to show to the right in header on even pages. Only upper case on first letter of chapter name
+% This will make sure that chapter title is written to the right on even/verso pages
 \fancyhead[RE]{\nouppercase{\leftmark}}
 
 % Redefine what is in \sectionmark so that \rightmark contains section number and section name (e.g. "2.1 My Sections Name")
-\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}{}}
+\renewcommand{\sectionmark}[1]{%
+  \markright{\thesection\ #1}% \leftmark (right even) is set to section number + title after start of new section
+}
 
 % Fix head height
 \setlength{\headheight}{15pt}
@@ -972,12 +975,18 @@
 \let\ult@savefrontmatter\frontmatter
 \renewcommand\frontmatter{%
   \ult@savefrontmatter
-  
-  % Set \leftmark to the left on odd pages
-  \fancyhead[LO]{\nouppercase{\leftmark}}
 
   % Redefine what is in \chaptermark so that \leftmark contains chapter name. Thus "Abstract" and "Acknowledgements" will be written in header
-  \renewcommand{\chaptermark}[1]{\markboth{##1}{}} % Note: we use two number signs (#) because we have renewcommand within renewcommand
+  \renewcommand{\chaptermark}[1]{%
+    % Note: we use two number signs (#) because we have renewcommand within renewcommand
+    \markboth{##1}% % \leftmark (will be written to the right on even/verso pages and to the left on odd/recto pages) is set to chapter title after start of new chapters
+             {}%    % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
+    }
+
+  % Set \leftmark to the left on odd pages
+  % This will make sure that chapter title is written in front matter where section title is normally written in main matter,
+  % that is, to the left on odd/recto pages (in addition to the right on even/verso pages, where it is already written)
+  \fancyhead[LO]{\nouppercase{\leftmark}}
 
   % Make sure that abbreviations are not expanded
   \glsunsetall
@@ -1012,9 +1021,15 @@
   \ult@savemainmatter
   
   % Redefine \chaptermark, so it contains chapter number in front of chapter name (e.g. "2 My Chapers Name")
-  \renewcommand{\chaptermark}[1]{\markboth{\thechapter\ ##1}{}} % Note: we use two number signs (#) because we have renewcommand within renewcommand
+  % Note that we do not use \@chapapp (contains "chapter type"), because we do not want to write "Chapter" before the chapter number.
+  \renewcommand{\chaptermark}[1]{%
+    % Note: we use two number signs (#) because we have renewcommand within renewcommand
+    \markboth{\thechapter\ ##1}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
+             {}%                 % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
+  }
   
   % Set odd pages to have have \rightmark instead of \leftmark
+  % This will make sure that section title is written to the left in running headers on odd (recto) pages
   \fancyhead[LO]{\nouppercase{\rightmark}}
   
   % Reset glossaries so every abbreviation will expand on first use
