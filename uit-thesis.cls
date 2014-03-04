@@ -914,8 +914,8 @@
 \newcommand{\ackname}{Acknowledgements}
 
 \newenvironment{abstract}{%
-  \ifdefined\acknowledgement
-    \@latex@warning{'\abstractname' should precede '\ackname'.}\@ehd%
+  \ifdefined\ult@hasacknowledgement
+    \@latex@warning{'\abstractname' should precede '\ackname'.}%
   \fi
   \chapter{\abstractname}
   \thispagestyle{empty}
@@ -924,7 +924,7 @@
 \newenvironment{ack}{%
   \chapter{\ackname}
   \thispagestyle{empty}
-  \global\def\acknowledgement{\true}
+  \global\def\ult@hasacknowledgement{\true}
 }{}
 
 
