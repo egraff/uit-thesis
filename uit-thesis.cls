@@ -908,6 +908,28 @@
 % DEBUG: Uncomment this to halt LaTeX compilation
 %\debughalt{Debug halt.}
 
+%:------------------------ Environments ----------------------
+
+\newcommand{\abstractname}{Abstract}
+\newcommand{\ackname}{Acknowledgements}
+
+\newenvironment{abstract}{%
+  \ifdefined\acknowledgement
+    \@latex@warning{'\abstractname' should precede '\ackname'.}\@ehd%
+  \fi
+  \chapter*{\abstractname}
+  \addcontentsline{toc}{chapter}{\abstractname}
+  \thispagestyle{empty}
+}{}
+
+\newenvironment{ack}{%
+  \chapter*{\ackname}
+  \addcontentsline{toc}{chapter}{\ackname}
+  \thispagestyle{empty}
+  \global\def\acknowledgement{\true}
+}{}
+
+
 
 %:-------------------------- ToC lists -----------------------
 
@@ -986,6 +1008,7 @@
 % Table of Contents
 \let\ult@savetableofcontents\tableofcontents
 \renewcommand\tableofcontents{%
+  % Call original \tableofcontents
   \ult@savetableofcontents
 
   \renewcommand\tableofcontents{%
