@@ -175,7 +175,8 @@
 
 \typeout{^^J ^^J ============================================= ^^J ^^J}
 
-\usepackage[splitrule,% % If a footnote is split, draw a full width rule above the continued part of the footnote as a visual cue to readers
+\usepackage[norule, % drop the small rule before footnotes
+            splitrule,% % If a footnote is split, draw a full width rule above the continued part of the footnote as a visual cue to readers
             bottom%    % Make sure footnotes are pushed to the bottom of the page (instead of being placed after the actual page break)
            ]{footmisc}
 
@@ -483,6 +484,9 @@
 
 % Reset all header settings
 \fancyhf{}
+
+% strips the crazy head rule
+\let\headrule\@empty
 
 % Set pagenumber in the header.
 % RO = Right Odd: Page number is set to the right in the header on odd pages
