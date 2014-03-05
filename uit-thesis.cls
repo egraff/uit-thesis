@@ -486,7 +486,7 @@
 \fancyhf{}
 
 % strips the crazy head rule
-\renewcommand\headrule{}
+\let\headrule\@empty
 
 % Set pagenumber in the header.
 % RO = Right Odd: Page number is set to the right in the header on odd pages
