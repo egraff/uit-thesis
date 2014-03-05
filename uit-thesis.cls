@@ -1180,6 +1180,18 @@
   \let\@input@\ult@save@input@
 }
 
+% Make sure \printacronyms has effect at most once!
+\AtBeginDocument{%
+  \ifglsacronym
+    \ult@once{\printacronyms}
+  \fi%
+}
+
+% Prevent \printglossaries, since we have acronyms in frontmatter and glossary in back matter
+\renewcommand*{\printglossaries}{%
+  \@latex@warning{Call to \@backslashchar printglossaries was ignored.}%
+}
+
 
 %:-------------------------- Book class overrides -----------------------
 
