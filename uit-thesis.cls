@@ -922,7 +922,7 @@
 
 % Abstract
 \newenvironment{abstract}{%
-  \ifult@hasacknowledgement
+  \ifult@hasacknowledgement%
     \@latex@warning{'\abstractname' should precede '\ackname'.}%
   \fi
   \global\ult@hasabstracttrue
@@ -937,13 +937,13 @@
 }{}
 % Dedication
 \newenvironment{dedication}{%
-  \ifult@hasabstract
+  \ifult@hasabstract%
     \@latex@warning{'\dedicationname' should precede '\abstractname'.}%
   \fi
-  \ifult@hasacknowledgement
+  \ifult@hasacknowledgement%
     \@latex@warning{'\dedicationname' should precede '\ackname'.}%
   \fi
-  \ifult@hasepigraph
+  \ifult@hasepigraph%
     \@latex@warning{'\dedicationname' should precede 'Epigraph'}%
   \fi
   \global\ult@hasdedicationtrue
@@ -952,32 +952,33 @@
 }{}
 % Epigraph
 \newcommand{\epigraphitem}[2]{%
-  \ifdefined\@ult@epigraphenv
+  \ifdefined\@ult@epigraphenv%
     \item{\textit{``#1\relax''}\\{--}#2\relax}%
-  \else
+  \else%
     \@latex@error{epigraph environment required for epigraphitem!}\@ehd%
   \fi
 }
 \newenvironment{epigraph}{%
-  \ifult@hasacknowledgement
+  \ifult@hasacknowledgement%
     \@latex@warning{'Epigraph' should precede '\ackname'.}%
   \fi
-  \ifult@hasabstract
+  \ifult@hasabstract%
     \@latex@warning{'Epigraph' should precede '\abstractname'.}%
   \fi
-  \ifult@hasdedication\else
+  \ifult@hasdedication\else%
     \@latex@warning{'Epigraph' should succeed '\dedicationname'.}%
   \fi
-  \ifdefined\@ult@epigraphenv
+  \ifdefined\@ult@epigraphenv%
     \@latex@error{Nested epigraphs are not allowed!}\@ehd%
   \fi
   \global\ult@hasepigraphtrue
   \def\@ult@epigraphenv{}
   \clearpage\thispagestyle{empty}
   \null\vfill
-  \begin{flushright}
-}{\end{flushright}
-\vspace*{2\baselineskip}%
+  \begin{flushright}%
+}{%
+  \end{flushright}%
+  \vspace*{2\baselineskip}
 }
 
 %:-------------------------- ToC lists -----------------------
