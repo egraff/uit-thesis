@@ -834,8 +834,9 @@
 \newcommand{\sectfont}{\SS@sectfont}           % use \sectionfont{} to change
 
 % Use Open Sans (fos) instead of Charter BT (bch) as chapter and section title font
+% fosj is Open Sans with old style figures.
 % Note: \raggedright is used to prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
-\allsectionsfont{\rmfamily\upshape\bfseries\usefont{OT1}{fos}{bx}{n}\selectfont}
+\allsectionsfont{\rmfamily\upshape\bfseries\usefont{OT1}{fosj}{bx}{n}\selectfont}
 
 % Change font for chapter number
 \chapternumberfont{%
