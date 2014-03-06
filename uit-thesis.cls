@@ -152,6 +152,10 @@
 % Support-color
 \definecolor{pms5435}{cmyk}{0.32,0.09,0.08,0.07}
 
+% Running head color
+\definecolor{rheadcolor}{cmyk}{0.15,0,0,0.5}
+\definecolor{rheadslashcolor}{cmyk}{0.6,0,0.2,0.1}
+
 %\colorlet{chapnumcol}{pms2229}
 \definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
 
@@ -660,15 +664,15 @@
 % Set pagenumber in the header.
 % RO = Right Odd: Page number is set to the right in the header on odd pages
 % LE = Left Even: Page number is set to the left in the header on even pages
-\fancyhead[RO,LE]{\thepage}
+\fancyhead[RO,LE]{\textcolor{rheadcolor}{\thepage}}
 
 % Set \leftmark to show to the right in header on even pages. Only upper case on first letter of chapter name
 % This will make sure that chapter title is written to the right on even/verso pages
-\fancyhead[RE]{\nouppercase{\leftmark}}
+\fancyhead[RE]{\textcolor{rheadcolor}{\nouppercase{\leftmark}}}
 
 % Redefine what is in \sectionmark so that \rightmark contains section number and section name (e.g. "2.1 My Sections Name")
 \renewcommand{\sectionmark}[1]{%
-  \markright{\thesection\ #1}% \leftmark (right even) is set to section number + title after start of new section
+  \markright{\thesection\ \printrheadslash\ #1}% \leftmark (right even) is set to section number + title after start of new section
 }
 
 % Fix head height
@@ -841,12 +845,18 @@
 }
 
 % Define how chapter number is drawn
-\newcommand{\printchapternum}{
-  \begin{tikzpicture}
+\newcommand{\printchapternum}[1][1.0]{
+  \begin{tikzpicture}[scale=#1, every node/.style={scale=#1}]
     %\tikzstyle{every rectangle node}=[draw]                                                             % Just for debugging, not used!
     %\draw[fill,color=red] (0,0) rectangle (3.15cm,3.15cm);                                              % Just for debugging, not used!
     \draw[fill,color=chapnumcol] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;                % Draw UiT "slash"
     \draw[color=black] (1.1,1.18) node[rectangle,anchor=west] { \Huge\bfseries\chapnumfont\thechapter }; % Draw chapter number
+  \end{tikzpicture}
+}
+
+\newcommand{\printrheadslash}[1][]{
+  \begin{tikzpicture}[scale=0.08]
+    \draw[fill,color=rheadslashcolor] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;                % Draw UiT "slash"
   \end{tikzpicture}
 }
 
@@ -1172,7 +1182,7 @@
   % Set \leftmark to the left on odd pages
   % This will make sure that chapter title is written in front matter where section title is normally written in main matter,
   % that is, to the left on odd/recto pages (in addition to the right on even/verso pages, where it is already written)
-  \fancyhead[LO]{\nouppercase{\leftmark}}
+  \fancyhead[LO]{\textcolor{rheadcolor}{\nouppercase{\leftmark}}}
 
   % Make sure that abbreviations are not expanded
   \glsunsetall
@@ -1212,13 +1222,13 @@
   % Note that we do not use \@chapapp (contains "chapter type"), because we do not want to write "Chapter" before the chapter number.
   \renewcommand{\chaptermark}[1]{%
     % Note: we use two number signs (#) because we have renewcommand within renewcommand
-    \markboth{\thechapter\ ##1}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
+    \markboth{\@chapapp\ \thechapter\ \printrheadslash\ ##1}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
              {}%                 % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
   }
   
   % Set odd pages to have have \rightmark instead of \leftmark
   % This will make sure that section title is written to the left in running headers on odd (recto) pages
-  \fancyhead[LO]{\nouppercase{\rightmark}}
+  \fancyhead[LO]{\textcolor{rheadcolor}{\nouppercase{\rightmark}}}
   
   % Reset glossaries so every abbreviation will expand on first use
   \glsresetall
