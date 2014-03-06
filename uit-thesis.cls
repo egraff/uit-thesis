@@ -43,6 +43,16 @@
 \ult@parindentfalse % Default to false
 \DeclareOption{parindent}{\ult@parindenttrue}
 
+% Option for turning on printing of list of abbreviations
+\newif\ifult@loa
+\ult@loafalse % Default to false
+\DeclareOption{loa}{\ult@loatrue}
+
+% Option for turning off printing of glossary in the backmatter.
+\newif\ifult@nogloss
+\ult@noglossfalse % Default to print glossary
+\DeclareOption{nogloss}{\ult@noglosstrue}
+
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
@@ -1320,7 +1330,10 @@
 
   \lstlistoflistings
 
-  \printacronyms
+  % Print list of abbreviations if 'loa' classoption is used
+  \ifult@loa%
+    \printacronyms%
+  \fi
 }
 
 % Mainmatter
@@ -1352,7 +1365,10 @@
   % Redefine headers for appendices
   \pagestyle{empty}
   
-  \printglossary
+  % Print glossary by default, turn off with 'nogloss' classoption
+  \ifult@nogloss\else%
+    \printglossary%
+  \fi
   
   % Blank back cover
   \clearversopage
