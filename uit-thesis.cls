@@ -840,18 +840,27 @@
 
 % Change font for chapter number
 \chapternumberfont{%
-  \usefont{T1}{fos}{b}{n}%      % Use Open Sans as chapter number font
+  \usefont{T1}{fos}{b}{n}%      % Use Open Sans (fos) as chapter number font
   \fontsize{56}{56}%            % font size 56pt, baselineskip 56pt
   \selectfont%                  % activate font
 }
 
 % Define how chapter number is drawn
 \newcommand{\printchapternum}[1][1.0]{
+  % Strutbox for numbers, to make sure that numbers are given correct vertical positions
+  \newbox\ult@chapnummetabox%
+  \setbox\ult@chapnummetabox\hbox{\Huge\bfseries\chapnumfont 0123456789}%
+  \newbox\ult@chapnumbox%
+  \setbox\ult@chapnumbox\hbox{%
+    \vrule\@height\ht\ult@chapnummetabox
+          \@depth\dp\ult@chapnummetabox
+          \@width\z@%
+  }%
   \begin{tikzpicture}[scale=#1, every node/.style={scale=#1}]
     %\tikzstyle{every rectangle node}=[draw]                                                             % Just for debugging, not used!
     %\draw[fill,color=red] (0,0) rectangle (3.15cm,3.15cm);                                              % Just for debugging, not used!
     \draw[fill,color=chapnumcol] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;                % Draw UiT "slash"
-    \draw[color=black] (1.1,1.18) node[rectangle,anchor=west] { \Huge\bfseries\chapnumfont\thechapter }; % Draw chapter number
+    \draw[color=black] (1.1,1.18) node[rectangle,anchor=west] { \Huge\bfseries\chapnumfont\unhcopy\ult@chapnumbox\thechapter }; % Draw chapter number
   \end{tikzpicture}
 }
 
