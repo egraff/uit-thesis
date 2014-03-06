@@ -66,7 +66,7 @@
 \RequirePackage[USenglish]{babel}
 
 % To modify the heading styles more thoroughly use the titlesec package
-\RequirePackage{titlesec}
+\RequirePackage[explicit]{titlesec}
 \RequirePackage{sectsty}
 
 % Scalable Computer Modern font support
@@ -96,6 +96,12 @@
 
 % Allow calculations in \vspace*
 \usepackage{calc}
+
+% Used to calculate ratio between two dimension commands
+% http://tex.stackexchange.com/questions/6417/how-to-find-the-ratio-of-a-length-command-e-g-textwidth-to-a-reference-valu?rq=1
+\newcommand*{\DivideLengths}[2]{%
+  \strip@pt\dimexpr\number\numexpr\number\dimexpr#1\relax*65536/\number\dimexpr#2\relax\relax sp\relax
+}
 
 % Used to prevent given LaTeX macro from being called more than once
 \newcommand\ult@once[1]{%
@@ -146,6 +152,10 @@
 % Support-color
 \definecolor{pms5435}{cmyk}{0.32,0.09,0.08,0.07}
 
+% Running head color
+\definecolor{rheadcolor}{cmyk}{0.15,0,0,0.5}
+\definecolor{rheadslashcolor}{cmyk}{0.6,0,0.2,0.1}
+
 %\colorlet{chapnumcol}{pms2229}
 \definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
 
@@ -175,7 +185,8 @@
 
 \typeout{^^J ^^J ============================================= ^^J ^^J}
 
-\usepackage[splitrule,% % If a footnote is split, draw a full width rule above the continued part of the footnote as a visual cue to readers
+\usepackage[norule, % drop the small rule before footnotes
+            splitrule,% % If a footnote is split, draw a full width rule above the continued part of the footnote as a visual cue to readers
             bottom%    % Make sure footnotes are pushed to the bottom of the page (instead of being placed after the actual page break)
            ]{footmisc}
 
@@ -342,6 +353,9 @@
 \usepackage{l3regex}
 \usepackage{xparse}
 
+% To read LaTeX macro from file
+\usepackage{catchfile}
+
 %:-------------------------- Fonts -----------------------
 
 \usepackage{opensans}
@@ -401,7 +415,12 @@
 \linespread{1.0}
 
 % Strict linespacing, don't allow LaTeX to put extra spacing between lines
-\lineskip=0pt
+\lineskip=\z@
+
+% Make sure that line spacing defined by \baselineskip will be preserved under all circumstances!
+% See http://tex.stackexchange.com/questions/49072/is-changing-lineskiplimit-to-some-negative-value-a-good-idea-and-what-the-valu
+% Note: this could be a potential source of future text formatting bugs (if lines are written on top of each other)
+\lineskiplimit=-\maxdimen
 
 \renewcommand{\baselinestretch}{1.0}\normalsize
 
@@ -443,6 +462,9 @@
 }
 \fi
 
+% For \RaggedRight macro, which is better than \raggedright
+\usepackage{ragged2e}
+
 %:-------------------------- Bibliography etc. -----------------------
 
 % Citation numbering not starting on table of contents
@@ -467,16 +489,168 @@
 % Used to modify header/footer of pages
 \usepackage{fancyhdr}
 
-% Macro to create empty page so that chapters always start on even page number
+\newcounter{ult@c@firstblankpage}\setcounter{ult@c@firstblankpage}{\z@}%
+\newcounter{ult@c@lastblankpage}\setcounter{ult@c@lastblankpage}{\z@}%
+\newcounter{ult@c@tmpblankpage}
+
+\newcommand\updatefirstblankpage{%
+  \ifnum\c@page>\value{ult@c@firstblankpage}%
+    \setcounter{ult@c@firstblankpage}{\c@page}%
+    %\typeout{FIRST BLANK PAGE SET TO: \the\c@page}%
+  \fi%
+}
+
+\newcommand\updatelastblankpage{%
+  \setcounter{ult@c@lastblankpage}{\c@page}%
+  %\typeout{LAST BLANK PAGE SET TO: \the\c@page}%
+}
+
+\let\ult@saveclearpage\clearpage
+\renewcommand\clearpage{%
+  \setcounter{ult@c@tmpblankpage}{\c@page}%
+  \ult@saveclearpage%
+  \ifnum\c@page=\value{ult@c@tmpblankpage}% Previous page was blank
+    \ifnum\c@page>\value{ult@c@lastblankpage}
+      \setcounter{ult@c@firstblankpage}{\c@page}%
+      \addtocounter{ult@c@firstblankpage}{\m@ne}%
+      %\typeout{LAST BLANK PAGE UPDATED TO: \the\value{ult@c@firstblankpage}}%
+    \fi
+  \else
+    \updatefirstblankpage%
+  \fi
+}
+
+% Macro to create empty page so that chapters always start on recto page
 % Note that we use pagestyle "empty" to let the blank pages be blank folios (no page numbers)
 % It can be changed to "plain" if page number is desired on blank pages
-\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
-    \hbox{}
-    \thispagestyle{empty}
-    \newpage
-    \if@twocolumn\hbox{}\newpage\fi\fi\fi%
+\def\cleardoublepage{%
+  \clearpage%
+  \if@twoside%
+    \ifodd\c@page\else% If even page
+      \updatelastblankpage% Verso page is blank
+      \hbox{}%
+      \thispagestyle{empty}%
+      \newpage%
+      \if@twocolumn%
+        \hbox{}%
+        \newpage%
+      \fi%
+    \fi%
+  \fi%
 }
-\clearpage{\pagestyle{empty}\cleardoublepage}
+
+% Make sure we have a blank verso page. Following content will continue on succeeding recto page.
+% Note: this is different from \cleardoublepage, which allows content on verso page.
+\def\clearversopage{%
+  \clearpage%
+  \if@twoside%
+    \ifnum\value{ult@c@firstblankpage}>\value{ult@c@lastblankpage}% If we have no known, preceding blank pages
+      \ifodd\c@page% If odd page (text ended on verso page)
+        %\typeout{CLEARVERSO: ODDPAGE == Y ^^J}
+        % Add one blank recto page and one blank verso page
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+        \updatelastblankpage% Verso page is blank
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+      \else % Text ended on recto page
+        %\typeout{CLEARVERSO: EEEEEEEEEEVENPAGE ^^J}
+        % Add one blank verso page
+        \updatelastblankpage% Verso page is blank
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+      \fi%
+    \else% If we have known, preceding blank pages
+      %\typeout{CLEARVERSO: ALREADY BLANK ^^J}
+      \ifodd\value{ult@c@lastblankpage}% If last blank page was recto page
+        %\typeout{CLEARVERSO: ADDING EXTRA BLANK ^^J}
+        \ifodd\c@page% Current page should not be recto page in this case...
+          \@latex@error{BUG in \@backslashchar clearversopage in uit-thesis package!!!!!!!!!!}\@ehd
+        \fi%
+        % Add one blank verso page to get blank back-sheet
+        \updatelastblankpage% Verso page is blank
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+       \fi%
+    \fi%
+  \fi%
+}
+
+% Make sure we have a blank recto page. Following content will continue on succeeding verso page.
+\def\clearrectopage{%
+  \clearpage%
+  \if@twoside%
+    \ifnum\value{ult@c@firstblankpage}>\value{ult@c@lastblankpage}% If we have no known, preceding blank pages
+      \ifodd\c@page% If odd page (text ended on verso page)
+        %\typeout{CLEARRECTO: ODDPAGE == Y ^^J}
+        % Add one blank recto page
+        \updatelastblankpage% Recto page is blank
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+      \else % Text ended on recto page
+        %\typeout{CLEARRECTO: EEEEEEEEEEVENPAGE ^^J}
+        % Add one blank verso page and one blank recto page
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+        \updatelastblankpage% Recto page is blank
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+      \fi%
+    \else% If we have known, preceding blank pages
+      %\typeout{CLEARRECTO: ALREADY BLANK ^^J}
+      \ifodd\value{ult@c@lastblankpage}\else% If last blank page was verso page
+        %\typeout{CLEARVERSO: ADDING EXTRA BLANK ^^J}
+        \ifodd\c@page\else% Current page should not be verso page in this case...
+          \@latex@error{BUG in \@backslashchar clearrectopage in uit-thesis package!!!!!!!!!!}\@ehd
+        \fi
+        % Add one blank recto page
+        \updatelastblankpage% Recto page is blank
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage%
+        \if@twocolumn%
+          \hbox{}%
+          \newpage%
+        \fi%
+       \fi%
+    \fi%
+  \fi%
+}
 
 % Define pagestyle
 \pagestyle{fancy}
@@ -484,16 +658,22 @@
 % Reset all header settings
 \fancyhf{}
 
+% strips the crazy head rule
+\let\headrule\@empty
+
 % Set pagenumber in the header.
 % RO = Right Odd: Page number is set to the right in the header on odd pages
 % LE = Left Even: Page number is set to the left in the header on even pages
-\fancyhead[RO,LE]{\thepage}
+\fancyhead[RO,LE]{\textcolor{rheadcolor}{\thepage}}
 
 % Set \leftmark to show to the right in header on even pages. Only upper case on first letter of chapter name
-\fancyhead[RE]{\nouppercase{\leftmark}}
+% This will make sure that chapter title is written to the right on even/verso pages
+\fancyhead[RE]{\textcolor{rheadcolor}{\nouppercase{\leftmark}}}
 
 % Redefine what is in \sectionmark so that \rightmark contains section number and section name (e.g. "2.1 My Sections Name")
-\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}{}}
+\renewcommand{\sectionmark}[1]{%
+  \markright{\thesection\ \printrheadslash\ #1}% \leftmark (right even) is set to section number + title after start of new section
+}
 
 % Fix head height
 \setlength{\headheight}{15pt}
@@ -648,60 +828,57 @@
 
 %:-------------------------- Chapter and section style -----------------------
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%        DEBUG         %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-\debugdef{@startsection}
-\debugdef{@makechapterhead}
-\debugdef{@chapter}
-\debugdef{chapter}
-\debugdef{secdef}
-\debugdef{section}
-\debugdef{sectfont}
-\debugdef{SS@sectfont}
-
 % Alias sectsty internals
 \newcommand{\chapnumfont}{\SS@chapnumfont}     % use \chapternumberfont{} to change
 \newcommand{\chaptitlefont}{\SS@chaptitlefont} % use \chaptertitlefont{} to change
-\newcommand{\sectfont}{\SS@sectfont} % use \sectionfont{} to change
+\newcommand{\sectfont}{\SS@sectfont}           % use \sectionfont{} to change
 
 % Use Open Sans (fos) instead of Charter BT (bch) as chapter and section title font
-\allsectionsfont{\rmfamily\upshape\bfseries\usefont{OT1}{fos}{bx}{n}\selectfont}
+% fosj is Open Sans with old style figures.
+% Note: \raggedright is used to prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
+\allsectionsfont{\rmfamily\upshape\bfseries\usefont{OT1}{fosj}{bx}{n}\selectfont}
 
 % Change font for chapter number
 \chapternumberfont{%
-  \usefont{T1}{fos}{b}{n}%      % Use Open Sans as chapter number font
-  \fontsize{56}{56}%            % font size 60pt, baselineskip 60pt
+  \usefont{T1}{fos}{b}{n}%      % Use Open Sans (fos) as chapter number font
+  \fontsize{56}{56}%            % font size 56pt, baselineskip 56pt
   \selectfont%                  % activate font
 }
 
 % Define how chapter number is drawn
-\newcommand{\printchapternum}{
-  \begin{tikzpicture}
-    %\tikzstyle{every rectangle node}=[draw]                                                      % Just for debugging, not used!
-    %\draw[fill,color=red] (0,0) rectangle (3.15cm,3.15cm);                                       % Just for debugging, not used!
-    \draw[fill,color=chapnumcol] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;         % Draw UiT "slash"
-    \draw[color=black] (1.78,1.18) node[rectangle] { \Huge\bfseries\chapnumfont\thechapter };     % Draw chapter number
+\newcommand{\printchapternum}[1][1.0]{
+  % Strutbox for numbers, to make sure that numbers are given correct vertical positions
+  \newbox\ult@chapnummetabox%
+  \setbox\ult@chapnummetabox\hbox{\Huge\bfseries\chapnumfont 0123456789}%
+  \newbox\ult@chapnumbox%
+  \setbox\ult@chapnumbox\hbox{%
+    \vrule\@height\ht\ult@chapnummetabox
+          \@depth\dp\ult@chapnummetabox
+          \@width\z@%
+  }%
+  \begin{tikzpicture}[scale=#1, every node/.style={scale=#1}]
+    %\tikzstyle{every rectangle node}=[draw]                                                             % Just for debugging, not used!
+    %\draw[fill,color=red] (0,0) rectangle (3.15cm,3.15cm);                                              % Just for debugging, not used!
+    \draw[fill,color=chapnumcol] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;                % Draw UiT "slash"
+    \draw[color=black] (1.1,1.18) node[rectangle,anchor=west] { \Huge\bfseries\chapnumfont\unhcopy\ult@chapnumbox\thechapter }; % Draw chapter number
   \end{tikzpicture}
 }
-\newlength{\chapterheadalign}
-\setlength{\chapterheadalign}{\z@}
-\setlength{\chapterheadalign}{\z@ - 3.15cm - 0.0142cm + 7\baselineskip} % Align bottom of UiT slash with bottom of baseline % XXX: The 0.0142cm magic constant really bothers me....
 
-% Align chapter num
-\newlength{\chapternumalign}
-\setlength{\chapternumalign}{\z@} % Align bottom of UiT slash with bottom of baseline
-%\setlength{\chapternumalign}{1.28cm - 20\p@ - \baselineskip} % Align bottom of chapter number with bottom of baseline
+\newcommand{\printrheadslash}[1][]{
+  \begin{tikzpicture}[scale=0.08]
+    \draw[fill,color=rheadslashcolor] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;                % Draw UiT "slash"
+  \end{tikzpicture}
+}
+
+% Align bottom of UiT slash with bottom of baseline
+\newlength{\chapterheadalign}\setlength{\chapterheadalign}{\z@ + 8\baselineskip}
 
 % Align chapter name
-\newlength{\chapternamealign}
-\setlength{\chapternamealign}{\z@}
-\setlength{\chapternamealign}{\z@ - \chapternumalign}
+\newlength{\chapternamealign}\setlength{\chapternamealign}{\z@}
 
 % Extra vertical spacing that is added by book.cls in addition to the default 50\p@ (I think it is \vspace* that does it)
 % See https://groups.google.com/forum/#!topic/comp.text.tex/tIoCvZWpF7U
-\newlength{\chapterheadtopvspace}
-\setlength{\chapterheadtopvspace}{\parskip + \baselineskip}
+\newlength{\chapterheadtopvspace}\setlength{\chapterheadtopvspace}{\parskip + \baselineskip}
 
 %%%%%%%%%%%%%%% THESE CAN BE CHANGED!!!!! %%%%%%%%%%%%%%%
 \def\baselinesbeforefrontchaphead{8} % Approximate same distance as would be with standard 50\p@ vspace
@@ -709,100 +886,82 @@
 \def\baselinesafterchapnum{3}
 \def\baselinesafterchaptitle{2}
 
-\def\baselinesbeforesection{3}
+\def\baselinesbeforesection{2}
 \def\baselinesaftersection{0}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Pretty size that spans two baselines. Height is approx. \baselineskip + \fontcharht\font`B
-\def\chaptitlefontsize {\fontsize{26}{32}}
+% baselineskip is set to 2.5 * parskip (baselineskip of normal font), so that every second
+% line aligns to the baseline of the normal font.
+\def\chaptitlefontsize {\fontsize{26}{2.5\parskip}}
 
-% XXX: Should create a better strut that accomodates possibility of \baselineskip < 1em
-% Should use \vspace*{-\fontchardp\font`q} and \vspace*{-\fontcharht\font`B}
-% instead of \baselineskip...
-\def\fixedstrutbox{\strutbox}
-\def\fixedstrut{\relax\unhcopy\fixedstrutbox}
+% vbox used to measure chapter name height
+\newbox\ult@chaptername@vbox
+
+% Used for counting number of lines in chapter title
+\newcounter{ult@chapter@tmpnumlines}
+
+% Override \rightskip for \RaggedRight. This could be adjusted.
+% See ftp://ftp.rz.uni-wuerzburg.de/pub/tex/latex2e/contrib/ms/ragged2e.pdf
+\RaggedRightRightskip\z@\@plus1 fil
 
 % Now, use our supahdupah chapter style! YEEEEEEAAAAHHHHHH!
 \titleformat{\chapter}[display]
-  {}
-  {\vspace*{-\baselinesbeforefrontchaphead\baselineskip} \vspace*{\baselinesbeforemainchaphead\baselineskip} \vspace*{\chapterheadalign} \vspace*{\chapternumalign} \printchapternum}
-  {\z@ - \parskip + \chapternamealign + \baselinesafterchapnum\baselineskip} % Vertical distance between chapter number and chapter title
-  {% Make sure Chapter title aligns to baseline
-    \chaptitlefont\chaptitlefontsize\selectfont
-    \vspace*{-\baselineskip} % XXX: This does not work when \baselineskip < 1em
+  {}% Format
+  {\vspace*{\baselinesbeforemainchaphead\baselineskip} \vspace*{-\baselinesbeforefrontchaphead\baselineskip} \vspace*{\chapterheadalign} \printchapternum}% Label
+  {\z@ - \parskip + \chapternamealign + \baselinesafterchapnum\baselineskip}% Vertical distance between chapter number and chapter title
+  {% Before-code plus chapter name (titlesec's explicit option is enabled, so #1 is chapter name)
+    % Make sure Chapter title aligns to baseline
+    %
+    \chaptitlefont\chaptitlefontsize
+    %
+    % Prevent overfull hbox
+    \RaggedRight
+    \selectfont
+    %
+    \vspace*{-\baselineskip}
+    %
+    % Measure number of text lines in chapter name
+    \newdimen\ult@chapter@tmptotalheight
+    \setbox0=\vbox{#1\relax \kern \z@ \strut}
+    \ult@chapter@tmptotalheight=\ht0 \advance\ult@chapter@tmptotalheight by \dp0
+    \setbox0=\vbox{Bq \kern \z@ \strut}
+    \newdimen\ult@chapter@tmpstrutheight
+    \ult@chapter@tmpstrutheight=\ht0 \advance\ult@chapter@tmpstrutheight by \dp0
+    \setcounter{ult@chapter@tmpnumlines}{\DivideLengths{\ult@chapter@tmptotalheight}{\ult@chapter@tmpstrutheight}}
+    %
+    % Print chapter name
+    #1% Important not to add spaces behind chapter name
   }%
-  [% Make sure that normal text following chapter title aligns to baseline
+  [% After-code
+    % Make sure that normal text following chapter title aligns to baseline
     %
     % The titlesec package inserts something like
     %  \kern \z@ \strut \@@par \nobreak
     % before this.
     %
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%  NOTE: This is black magic!!! It was infinitely hard to figure out!!  %%
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %
-    % You should see:
-    % --------------------------
-    % http://tex.stackexchange.com/questions/40977/confused-with-tex-terminology-height-depth-width
-    % http://tex.stackexchange.com/questions/21832/definition-of-strut-explained
-    % http://en.wikibooks.org/wiki/LaTeX/Rules_and_Struts
-    % http://tex.stackexchange.com/questions/41185/whats-the-difference-between-strut-mathstrut-and-vphantom
-    % http://tex.stackexchange.com/questions/121627/why-is-strut-working-in-these-scenarios
-    % http://tex.stackexchange.com/questions/4239/which-measurement-units-should-one-use-in-latex
-    % http://tex.stackexchange.com/questions/22225/determine-height-and-depth-of-letters-relative-to-the-font-size
-    % --------------------------
-    %
-    % The criteria for determining whether this "works" or not, is if the text lines following the
-    % chapter title are positioned equally, regardless of the baseline skip of the chapter title font.
-    % To test this, I have varied the font between these definitions:
-    %  \def\chaptitlefontsize {\normalsize}
-    %  \def\chaptitlefontsize {\fontsize{10}{60}}
-    %  \def\chaptitlefontsize {\Huge}
-    %  \def\chaptitlefontsize {\fontsize{24}{60}}
-    %  \def\chaptitlefontsize {\fontsize{24}{72}}
-    %  \def\chaptitlefontsize {\fontsize{24}{128}}
-    %
-    %
-    % Sooo, here it is:
+    % Note: this only works as long as \lineskiplimit=-\maxdimen. Without that, the solution is infinitely more complex.
+    % For the old solution, see e.g. commit be2341c37a93c0af6f665bd3d4a0b445c310e1d2
     %
     % Note: we have confirmed that this is needed (try changing value of \parskip right before \@@par).
     % It's probably \@@par that inserts a \parskip. Also note that \parskip does not change when changing font size...
     \vspace*{-\parskip}
     %
-    % Compensate for 'depth' of strut that was added
-    % Note: \dp\strutbox === 0.3\baselineskip
-    % Also note that \dimen0 may sometimes be equal to \dp\strutbox, but most often it is not!
-    \vspace*{-\dp\fixedstrutbox}
-    %
-    % Now, compensate for entire line
-    \vspace*{-\baselineskip}
-    %
-    % Simulate strut of previous line
-    \kern \z@ \fixedstrut \@@par \nobreak
-    %
-    % But remove parskip
-    \vspace*{-\parskip}
-    %
-    % So far, so good!
+    % Make sure total height + spacing corresponds to an even number of parskips (baselineskip for normal font)
+    \ifodd\value{ult@chapter@tmpnumlines}\else
+      \vspace*{0.5\parskip}% XXX: This value is hardcoded such that \baselineskip of \chaptitlefontsize + this value is an integer multiple of parskips
+    \fi
     %
     % Now, switch to normal font
     \normalsize\normalfont\selectfont
     %
-    % Simulate that chapter title was one line with normal font
-    \vspace*{-\baselineskip}
-    %
-    % But compensate for 'depth' of strut that was removed
-    \vspace*{\dp\fixedstrutbox}
-    %
-    % Aaaand... add our own strut
-    \kern \z@ \strut
   ]
 
 % Adjust spacing around chapter title
 \titlespacing*{\chapter}
   {\z@}          % Left margin = 0
   {\z@ - \chapterheadtopvspace + \baselinesbeforefrontchaphead\baselineskip} % Vertical space before chapter head (50\p@ is standard from book.cls)
-  {\z@ - \parskip + \baselinesafterchaptitle\baselineskip}        % Vertical space after title, before text (\ttl@chapafter is default)
+  {\z@ + \baselinesafterchaptitle\baselineskip}        % Vertical space after title, before text (\ttl@chapafter is default)
 
 
 % The titlesec package overrides definition of \section, but sectsty overrides that definition in turn.
@@ -816,7 +975,7 @@
   {\normalfont \vspace*{\baselineskip} \Large \bfseries \sectfont \selectfont \vspace*{-\baselineskip}}% Format
   {\thesection\space}% Label
   {\z@}% Sep
-  {}% Before-code
+  {#1}% Before-code: print section name (needed because we have enabled titlesec's explicit option)
   []% After-code
 
 % Starred version makes sure we suppress indentation of text following section title
@@ -825,16 +984,11 @@
   {\z@ + \baselinesbeforesection\baselineskip}% % Vertical space before
   {\z@ + \baselinesaftersection\baselineskip}%  % Vertical space after
 
-
-
-
-
 % NOTE: chapter head is printed as:
 %   #4{#8}\kern \z@ \strut \@@par \nobreak #5\@@par
 % where #4 = before, #8 = title, #5 = after
 % 'before' and 'after' are arguments from \titleformat
 % (defined in \ttlh@display).
-
 
 %%% From titlesec.sty:
 %%% ----------------------------------
@@ -846,17 +1000,6 @@
 %%% ttlp@ : page key related macros
 %%% ttll@ : level number
 %%% ----------------------------------
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%        DEBUG         %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-\typeout{[DEBUG] After re-definition of chapter stuff... ^^J ===================================================== ^^J ^^J}
-%\debugdef{@startsection}
-\debugdef{@makechapterhead}
-\debugdef{ttl@startargs}
-\debugdef{ttl@mkchap}
-\debugdef{ttl@mkchap@i}
-\debugdef{ttl@save@mkchap}
 
 % \ttl@mkchap has following arguments:
 % 1: left        --- 1st \ttls@chapter arg == \z@
@@ -882,7 +1025,7 @@
 %%% -------------------------------------------
 %%% 'before' is 2nd argument from \titlespacing, and 'after' is 3rd argument
 %%% 'left' and 'right are zero (\z@), and 'afterindent' is \@ne
-\debugdef{ttls@chapter}
+%\debugdef{ttls@chapter}
 
 % \ttlh@<shape> defines the \titleformat shape
 % We use the 'display' shape above to place title label in separate paragraph
@@ -898,15 +1041,10 @@
 %%% empty.
 %%% -------------------------------------------
 % Note: this macro contains the actual definition of what \@makechapterhead outputs!!
-\debugdef{ttlh@display}
+%\debugdef{ttlh@display}
 
 % Macro for invoking \ttlh@display with arguments from \titleformat{\chapter}
-\debugdef{ttlf@chapter}
-
-\debugdef{section}
-
-% DEBUG: Uncomment this to halt LaTeX compilation
-%\debughalt{Debug halt.}
+%\debugdef{ttlf@chapter}
 
 %:------------------------ Environments ----------------------
 % Environment names
@@ -1038,18 +1176,96 @@
 % Make sure \listoflistings has effect at most once!
 \ult@once{\lstlistoflistings}
 
+
+% List of Abbreviations
+\renewcommand{\acronymname}{List of Abbreviations}
+
+% Override \printglossary to prevent blank page from being inserted
+% when acronym/glossary list is empty.
+%
+% The problem is that an "empty" auxillary file for a glossary list
+% will contain "\null" as its file contents. The \null command is the
+% same as \hbox{}, and will flush a new page if called after a
+% \clearpage or \cleardoublepage, which is *extremely* undesirable.
+%
+% The following hack exploits the fact that \printglossary uses the
+% \@input@ command to output the contents of the auxillary file for
+% the glossary list. So we re-define \@input@ temporarily to use
+% LaTeX magic to read the entire file contents into a command
+% \ult@read@buf, and test if the file contents are strictly equal to
+% \null. If so, we simply ignore the \@input@, else we call the
+% normal \@input@ command (that we have saved first). Then, when
+% \printglossary calls \@input@, it will actually call our overridden
+% command, and make sure we don't output anything if the file only
+% contains \null. Finally, we restore the original \@input@ command
+% so it can be used later.
+%
+% Note: Must use \LetLtxMacro because \printglossary is complex with
+% default value for parameter.
+% See: http://www.tex.ac.uk/cgi-bin/texfaq2html?label=patch
+%
+% Also note: I tried to use a normal LaTeX \read-loop with scantokens,
+% but did not succeed, so I ended up using the 'catchfile' package,
+% which seems to get the job done!
+\LetLtxMacro{\ult@saveprintglossary}{\printglossary}
+\renewcommand{\printglossary}[1][type=\glsdefaulttype]{%
+  % Override \@input@ that is used by \printglossary
+  \let\ult@save@input@\@input@
+  \renewcommand\@input@[1]{%
+    \IfFileExists{##1}{%
+      % See http://tex.stackexchange.com/questions/14145/how-do-i-create-a-macro-which-reads-the-content-of-a-file-when-the-macro-is-defi
+      \CatchFileDef{\ult@read@buf}% Macro we dump file contents into
+                   {##1}% File name
+                   {\makeatletter\endlinechar=-1\relax}% Scancode magic
+      
+      % If file contents is equal to \null, then ignore...
+      % This will prevent an additional blank page being inserted,
+      % since we suppress the \null from being output.
+      \expandafter\ifx\ult@read@buf\null\else
+        % Call on saved \@input@ command
+        \ult@save@input@{##1}
+      \fi%
+    }{}% Don't output anything if file does not exist!
+  }%
+  %
+  % Now, that we have overridden \@input@, call saved \printglossary
+  \ult@saveprintglossary[#1]%
+  %
+  % Finally, restore \@input@ so we don't fuck up for other stuff
+  \let\@input@\ult@save@input@
+}
+
+% Make sure \printacronyms has effect at most once!
+\AtBeginDocument{%
+  \ifglsacronym
+    \ult@once{\printacronyms}
+  \fi%
+}
+
+% Prevent \printglossaries, since we have acronyms in frontmatter and glossary in back matter
+\renewcommand*{\printglossaries}{%
+  \@latex@warning{Call to \@backslashchar printglossaries was ignored.}%
+}
+
+
 %:-------------------------- Book class overrides -----------------------
 
 % Frontmatter
 \let\ult@savefrontmatter\frontmatter
 \renewcommand\frontmatter{%
   \ult@savefrontmatter
-  
-  % Set \leftmark to the left on odd pages
-  \fancyhead[LO]{\nouppercase{\leftmark}}
 
   % Redefine what is in \chaptermark so that \leftmark contains chapter name. Thus "Abstract" and "Acknowledgements" will be written in header
-  \renewcommand{\chaptermark}[1]{\markboth{##1}{}} % Note: we use two number signs (#) because we have renewcommand within renewcommand
+  \renewcommand{\chaptermark}[1]{%
+    % Note: we use two number signs (#) because we have renewcommand within renewcommand
+    \markboth{##1}% % \leftmark (will be written to the right on even/verso pages and to the left on odd/recto pages) is set to chapter title after start of new chapters
+             {}%    % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
+    }
+
+  % Set \leftmark to the left on odd pages
+  % This will make sure that chapter title is written in front matter where section title is normally written in main matter,
+  % that is, to the left on odd/recto pages (in addition to the right on even/verso pages, where it is already written)
+  \fancyhead[LO]{\textcolor{rheadcolor}{\nouppercase{\leftmark}}}
 
   % Make sure that abbreviations are not expanded
   \glsunsetall
@@ -1077,6 +1293,8 @@
   \listoftables
 
   \lstlistoflistings
+
+  \printacronyms
 }
 
 % Mainmatter
@@ -1085,10 +1303,16 @@
   \ult@savemainmatter
   
   % Redefine \chaptermark, so it contains chapter number in front of chapter name (e.g. "2 My Chapers Name")
-  \renewcommand{\chaptermark}[1]{\markboth{\thechapter\ ##1}{}} % Note: we use two number signs (#) because we have renewcommand within renewcommand
+  % Note that we do not use \@chapapp (contains "chapter type"), because we do not want to write "Chapter" before the chapter number.
+  \renewcommand{\chaptermark}[1]{%
+    % Note: we use two number signs (#) because we have renewcommand within renewcommand
+    \markboth{\@chapapp\ \thechapter\ \printrheadslash\ ##1}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
+             {}%                 % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
+  }
   
   % Set odd pages to have have \rightmark instead of \leftmark
-  \fancyhead[LO]{\nouppercase{\rightmark}}
+  % This will make sure that section title is written to the left in running headers on odd (recto) pages
+  \fancyhead[LO]{\textcolor{rheadcolor}{\nouppercase{\rightmark}}}
   
   % Reset glossaries so every abbreviation will expand on first use
   \glsresetall
@@ -1101,6 +1325,11 @@
   
   % Redefine headers for appendices
   \pagestyle{empty}
+  
+  \printglossary
+  
+  % Blank back cover
+  \clearversopage
 }
 
 
