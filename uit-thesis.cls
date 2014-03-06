@@ -877,7 +877,7 @@
 \def\baselinesafterchapnum{3}
 \def\baselinesafterchaptitle{2}
 
-\def\baselinesbeforesection{3}
+\def\baselinesbeforesection{2}
 \def\baselinesaftersection{0}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
