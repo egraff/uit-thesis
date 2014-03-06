@@ -840,10 +840,10 @@
 % Define how chapter number is drawn
 \newcommand{\printchapternum}{
   \begin{tikzpicture}
-    %\tikzstyle{every rectangle node}=[draw]                                                      % Just for debugging, not used!
-    %\draw[fill,color=red] (0,0) rectangle (3.15cm,3.15cm);                                       % Just for debugging, not used!
-    \draw[fill,color=chapnumcol] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;         % Draw UiT "slash"
-    \draw[color=black] (1.78,1.18) node[rectangle] { \Huge\bfseries\chapnumfont\thechapter };     % Draw chapter number
+    %\tikzstyle{every rectangle node}=[draw]                                                             % Just for debugging, not used!
+    %\draw[fill,color=red] (0,0) rectangle (3.15cm,3.15cm);                                              % Just for debugging, not used!
+    \draw[fill,color=chapnumcol] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;                % Draw UiT "slash"
+    \draw[color=black] (1.1,1.18) node[rectangle,anchor=west] { \Huge\bfseries\chapnumfont\thechapter }; % Draw chapter number
   \end{tikzpicture}
 }
 \newlength{\chapterheadalign}
