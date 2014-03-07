@@ -269,7 +269,7 @@
   
   \usepackage[pdftex,%                       %
               plainpages=false,%             %
-              pdfpagelabels,%                %
+              pdfpagelabels=false,%          % Don't index pages using logical page numbers in PDF reader (such as ii, iii, iv, ...)
               pdfpagemode={UseOutlines},%    % Show bookmarks
               pdfstartview={FitV},%          % Fit height of page to PDF viewer window
               pdfpagelayout={TwoPageRight},% % Display two pages, odd-numbered pages to the right
@@ -1395,6 +1395,9 @@
 
 \if@titlepage
 \renewcommand\maketitle{
+  % Fix PDF page numbering (title page must _not_ get page number 1, else we have two pages with that number)
+  \renewcommand\thepage{Title}
+  %
   % Set custom geometry for the frontpage text
   \newgeometry{top=16.5mm,bottom=10mm,right=7mm,left=59mm}
   %
