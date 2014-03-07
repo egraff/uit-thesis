@@ -1373,12 +1373,12 @@
  \usetikzlibrary{arrows}
 \newcommand{\printthed}{
 \begin{tikzpicture}
-\draw [o-*] plot[smooth, tension=.7] coordinates {(-12,-8) (-12,1) (-8,1) (-8,-8)};
-\draw [o-*] plot[smooth, tension=.7] coordinates {(-12,1)};
-\draw [o-*] plot[smooth, tension=.7] coordinates {(-12,1) (-13,4) (-10,7) (-7,4) (-8,1)};
-\draw [o-*] plot[smooth, tension=.7] coordinates {(-10,6) (-10,7)};
-\draw [o-*] (-13,-11) ellipse (3 and 3);
-\draw [o-*] (-7,-11) ellipse (3 and 3);
+\draw [ultra thick,o-*] plot[smooth, tension=.7] coordinates {(-12,-8) (-12,1) (-8,1) (-8,-8)};
+\draw [ultra thick,o-*] plot[smooth, tension=.7] coordinates {(-12,1)};
+\draw [ultra thick,o-*] plot[smooth, tension=.7] coordinates {(-12,1) (-13,4) (-10,7) (-7,4) (-8,1)};
+\draw [ultra thick,o-*] plot[smooth, tension=.7] coordinates {(-10,6) (-10,7)};
+\draw [ultra thick,o-*] (-13,-11) ellipse (3 and 3);
+\draw [ultra thick,o-*] (-7,-11) ellipse (3 and 3);
 \end{tikzpicture}
 }
 % \end{egg}
@@ -1476,7 +1476,12 @@
   \endgroup
   %
   % \begin{egg}
-  \IfEndWith{\@author}{arlberg}{\printthed}{}
+  \IfEndWith{\@author}{arlberg}{%
+    \vspace*{600\p@}
+    \begingroup
+      \printthed
+    \endgroup%
+  }{}
   % \end{egg}
   %
   \end{titlepage}%
