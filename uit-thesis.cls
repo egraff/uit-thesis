@@ -1060,7 +1060,6 @@
 % Environment names
 \newcommand{\abstractname}{Abstract}
 \newcommand{\ackname}{Acknowledgements}
-\newcommand{\dedicationname}{Dedication}
 
 % Control-ifs
 \newif\ifult@hasacknowledgement\ult@hasacknowledgementfalse
@@ -1086,22 +1085,33 @@
 % Dedication
 \newenvironment{dedication}{%
   \ifult@hasabstract%
-    \@latex@warning{'\dedicationname' should precede '\abstractname'.}%
+    \@latex@warning{'Dedication' should precede '\abstractname'.}%
   \fi
   \ifult@hasacknowledgement%
-    \@latex@warning{'\dedicationname' should precede '\ackname'.}%
+    \@latex@warning{'Dedication' should precede '\ackname'.}%
   \fi
   \ifult@hasepigraph%
-    \@latex@warning{'\dedicationname' should precede 'Epigraph'}%
+    \@latex@warning{'Dedication' should precede 'Epigraph'}%
   \fi
   \global\ult@hasdedicationtrue
-  \chapter{\dedicationname}
+  \cleardoublepage
+  \phantomsection
+  \chaptermark{}
   \thispagestyle{empty}
-}{}
+  \null
+  \vfil
+  \begingroup
+  \center
+  \fontsize{12pt}{14.4pt}\usefont{OT1}{bch}{m}{it}\selectfont
+}{%
+  \endcenter
+  \endgroup
+  \vfil
+}
 % Epigraph
 \newcommand{\epigraphitem}[2]{%
   \ifdefined\@ult@epigraphenv%
-    \item{\textit{``#1\relax''}\\{--}#2\relax}%
+    \item{``#1\relax''\\{--}#2\relax}%
   \else%
     \@latex@error{epigraph environment required for epigraphitem!}\@ehd%
   \fi
@@ -1114,7 +1124,7 @@
     \@latex@warning{'Epigraph' should precede '\abstractname'.}%
   \fi
   \ifult@hasdedication\else%
-    \@latex@warning{'Epigraph' should succeed '\dedicationname'.}%
+    \@latex@warning{'Epigraph' should succeed 'Dedication'.}%
   \fi
   \ifdefined\@ult@epigraphenv%
     \@latex@error{Nested epigraphs are not allowed!}\@ehd%
