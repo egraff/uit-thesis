@@ -449,14 +449,25 @@
 \AtBeginShipout{%
   \AtBeginShipoutUpperLeft{%
     \color{red}%
-    \put(\dimexpr 1in+\oddsidemargin,
-         -\dimexpr 1in+\topmargin+\headheight+\headsep+\topskip)%
-      {%
-       \vtop to\dimexpr\vsize+\baselineskip{
-         \hrule
-         \leaders\vbox to\baselineskip{\hrule width\hsize\vfill}\vfill
-       }%
-      }%
+    \ifodd\c@page
+      \put(\dimexpr 1in+\oddsidemargin,
+           -\dimexpr 1in+\topmargin+\headheight+\headsep+\topskip)%
+        {%
+          \vtop to\dimexpr\vsize+\baselineskip{
+            \hrule
+            \leaders\vbox to\baselineskip{\hrule width\hsize\vfill}\vfill
+          }%
+        }%
+    \else
+      \put(\dimexpr 1in+\evensidemargin,
+           -\dimexpr 1in+\topmargin+\headheight+\headsep+\topskip)%
+        {%
+          \vtop to\dimexpr\vsize+\baselineskip{
+            \hrule
+            \leaders\vbox to\baselineskip{\hrule width\hsize\vfill}\vfill
+          }%
+        }%
+    \fi
   }%
 }
 \fi
