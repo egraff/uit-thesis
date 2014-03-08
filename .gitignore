@@ -32,3 +32,5 @@
 *.xdy
 *.tdo
 *.fls
+.build
+Makefile

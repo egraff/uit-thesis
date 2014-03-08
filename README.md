@@ -6,7 +6,10 @@ LaTeX document class for writing theses
 
 TODO:
  - Fix frontpage dependencies (ask Magnus)
- - Fix math font
+ - Create a LaTeX "CTAN-ready" distribution package?
+   - Local texmf tree?
+   - Allows us to resolve e.g. pdf dependencies?
+     - See http://stackoverflow.com/questions/3374174/including-graphics-in-latex-classfile
  - Fix kerning and protrusion
    - Add microtype
    - Turn off protrusion in frontmatter
@@ -20,7 +23,7 @@ TODO:
  - Fix spacing for section header, subsection header, sub-paragraph
    - Make sure that lines "line up".
    - If we are going to support both 10pt, 11pt, and 12pt, then we should make sure this is correct for all font sizes.
- - Fix TOC stuff?
-   - Would it be possible to auto-detect if we need List of Figures, List of Abbreviations, etc.?
-   - Re-define \tableofcontents?
-   - Re-define other list macros to automagically add \cleardoublepage and TOC entry?
+ - Fix TOC stuff
+   - Class option for list of abbreviations?
+   - How to handle additional "List of..." / custom listings?
+ - Use \AtBeginDocument{} to make class patches more stable (make sure that packages loaded in preamble do not fuck up our modifications)?
