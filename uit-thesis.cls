@@ -1102,7 +1102,7 @@
   \vfil
   \begingroup
   \center
-  \fontsize{12pt}{14.4pt}\usefont{OT1}{bch}{m}{it}\selectfont
+  \fontsize{12pt}{14.4pt}\usefont{T1}{\rmdefault}{m}{it}\selectfont
 }{%
   \endcenter
   \endgroup
