@@ -359,7 +359,23 @@
 %:-------------------------- Fonts -----------------------
 
 \usepackage{opensans}
-\usepackage[osf]{XCharter}
+
+%\IfFileExists{XCharter.sty}{%
+  % Dependencies of XCharter
+  \usepackage{textcomp}
+  \usepackage{mweights}
+  \usepackage{fontaxes}
+  \usepackage{xkeyval}
+
+  % XCharter with old style figures
+  \usepackage[osf]{XCharter}
+
+  % For some reason, MiKTeX is unable to locate the installed XCharter.map file
+  % (it is probably not updmap'd correctly when installed, as XCharter.map is not properly added to the miktex\config\updmap.cfg file).
+  % This is a hotfix that informs PdfTex about the XCharter.map file, and uses it in addition to the standard pdftex\config\pdftex.map file)
+  % See http://sourceforge.net/p/miktex/discussion/33790/thread/e39cd270
+  \pdfmapfile{+XCharter.map}
+%}{}
 
 %:-------------------------- Symbols -----------------------
 
@@ -700,36 +716,6 @@
 \setlength{\headheight}{15pt}
 
 %:-------------------------- Black magic hacks -----------------------
-
-% I haven't deleted the below in case someone needs it later. The charter
-% extention, XCharter, provides emphasized smallcaps, however, so it is
-% superfluous here. - EIN
-% Used together with small caps to achieve fake emphasized (actually slanted) small caps
-%\newcommand{\faketextsl}[1]{%
-%   \tikz[baseline=(N.base)]%
-%   % The transform says:
-%   % x' = 1x + 0.22y + 0pt
-%   % y' = 0x + 1y    + 0pt
-%   % This gives a slant - adjust the value for each font!
-%   \pgfsys@transformcm{1}{0}{0.18}{1}{0pt}{0pt}% This is adjusted to look good with Charter BT
-%   \node[inner sep=0pt] (N) {#1};%
-%}
-
-% Redeﬁne the macro \textsc that switches to small capitals.
-% If the actual font is italic or slanted, switch to a fake slanted small caps, otherwise switch to ordinary small caps.
-% Note: this macro is based on a similar macro from the "slantsc" package.
-\DeclareRobustCommand\textsc[1]{%
-    \ifthenelse{\equal{\f@shape}{\scdefault}}{% If text already has small caps shape
-        % Do nothing
-        {#1}%
-    }{% Else
-        \ifthenelse{\equal{\f@shape}{\itdefault}\or\equal{\f@shape}{\sldefault}}{% If text is italicized or slanted
-            {\fontshape\scdefault\selectfont\faketextsl{#1}}%
-        }{%
-            {\fontshape\scdefault\selectfont{#1}}%
-        }%
-    }%
-}
 
 % Magic to define \upsc{} command that replaces upper-case letters with lower-case small-caps
 \ExplSyntaxOn
