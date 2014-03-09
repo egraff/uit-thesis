@@ -26,4 +26,8 @@ TODO:
  - Fix TOC stuff
    - Class option for list of abbreviations?
    - How to handle additional "List of..." / custom listings?
+     - Override \newlistof and \newlistentry?
+       - To make sure correct font is used...
+     - Override \@chapter?
+       - To control calls to \addtocontents and \addcontentsline.
  - Use \AtBeginDocument{} to make class patches more stable (make sure that packages loaded in preamble do not fuck up our modifications)?
