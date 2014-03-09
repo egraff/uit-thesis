@@ -408,6 +408,13 @@
 \setlength{\hoffset}{0.00cm}
 \setlength{\voffset}{0.00cm}
 
+% Get value of baselineskip of normal-sized font in \ult@normalbaselineskip
+\newdimen\ult@normalbaselineskip
+\begingroup
+\normalsize
+\global\ult@normalbaselineskip=\baselineskip
+\endgroup
+
 \ifult@parindent
   % No skip between paragraphs when using indentation
   \setlength{\parskip}{\z@}
@@ -423,9 +430,8 @@
   % Set paragraph skip length to two lines
   % Note: this reads the current value of \baselineskip for the normal font and font size, and stores it in parskip.
   % Changing \baselineskip later will NOT change \parskip
-  \setlength{\parskip}{\baselineskip}
+  \setlength{\parskip}{\ult@normalbaselineskip}
 \fi
-
 
 \linespread{1.0}
 
@@ -453,7 +459,7 @@
     \@startsection{paragraph}{4}% Paragraph = level 4
                   {\z@}% No left indentation of heading
                   % Absolute value = skip to leave above the heading. Positive value means that text following heading retains indentation.
-                  {2\baselineskip}% Default is "3.25ex \@plus1ex \@minus.2ex"
+                  {2\ult@normalbaselineskip}% Default is "3.25ex \@plus1ex \@minus.2ex"
                   % If positive, then skip to leave below heading, else negative of skip to leave to right of run-in heading.
                   {-1em}
                   {\normalfont\normalsize\bfseries \SS@parafont}% Style
@@ -469,18 +475,18 @@
       \put(\dimexpr 1in+\oddsidemargin,
            -\dimexpr 1in+\topmargin+\headheight+\headsep+\topskip)%
         {%
-          \vtop to\dimexpr\vsize+\baselineskip{
+          \vtop to\dimexpr\vsize+\ult@normalbaselineskip{
             \hrule
-            \leaders\vbox to\baselineskip{\hrule width\hsize\vfill}\vfill
+            \leaders\vbox to\ult@normalbaselineskip{\hrule width\hsize\vfill}\vfill
           }%
         }%
     \else
       \put(\dimexpr 1in+\evensidemargin,
            -\dimexpr 1in+\topmargin+\headheight+\headsep+\topskip)%
         {%
-          \vtop to\dimexpr\vsize+\baselineskip{
+          \vtop to\dimexpr\vsize+\ult@normalbaselineskip{
             \hrule
-            \leaders\vbox to\baselineskip{\hrule width\hsize\vfill}\vfill
+            \leaders\vbox to\ult@normalbaselineskip{\hrule width\hsize\vfill}\vfill
           }%
         }%
     \fi
@@ -881,7 +887,7 @@
 }
 
 % Align bottom of UiT slash with bottom of baseline
-\newlength{\chapterheadalign}\setlength{\chapterheadalign}{\z@ + 8\baselineskip}
+\newlength{\chapterheadalign}\setlength{\chapterheadalign}{\z@ + 8\ult@normalbaselineskip}
 
 % Align chapter name
 \newlength{\chapternamealign}\setlength{\chapternamealign}{\z@}
@@ -901,9 +907,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Pretty size that spans two baselines. Height is approx. \baselineskip + \fontcharht\font`B
-% baselineskip is set to 2.5 * parskip (baselineskip of normal font), so that every second
+% baselineskip is set to 2.5 * \ult@normalbaselineskip (baselineskip of normal font), so that every second
 % line aligns to the baseline of the normal font.
-\def\chaptitlefontsize {\fontsize{26}{2.5\parskip}}
+\def\chaptitlefontsize {\fontsize{26}{2.5\ult@normalbaselineskip}}
 
 % vbox used to measure chapter name height
 \newbox\ult@chaptername@vbox
@@ -918,8 +924,8 @@
 % Now, use our supahdupah chapter style! YEEEEEEAAAAHHHHHH!
 \titleformat{\chapter}[display]
   {}% Format
-  {\vspace*{\baselinesbeforemainchaphead\baselineskip} \vspace*{-\baselinesbeforefrontchaphead\baselineskip} \vspace*{\chapterheadalign} \printchapternum}% Label
-  {\z@ - \parskip + \chapternamealign + \baselinesafterchapnum\baselineskip}% Vertical distance between chapter number and chapter title
+  {\vspace*{\baselinesbeforemainchaphead\ult@normalbaselineskip} \vspace*{-\baselinesbeforefrontchaphead\ult@normalbaselineskip} \vspace*{\chapterheadalign} \printchapternum}% Label
+  {\z@ - \parskip + \chapternamealign + \baselinesafterchapnum\ult@normalbaselineskip}% Vertical distance between chapter number and chapter title
   {% Before-code plus chapter name (titlesec's explicit option is enabled, so #1 is chapter name)
     % Make sure Chapter title aligns to baseline
     %
@@ -957,9 +963,9 @@
     % It's probably \@@par that inserts a \parskip. Also note that \parskip does not change when changing font size...
     \vspace*{-\parskip}
     %
-    % Make sure total height + spacing corresponds to an even number of parskips (baselineskip for normal font)
+    % Make sure total height + spacing corresponds to an even number of baselineskips for normal font.
     \ifodd\value{ult@chapter@tmpnumlines}\else
-      \vspace*{0.5\parskip}% XXX: This value is hardcoded such that \baselineskip of \chaptitlefontsize + this value is an integer multiple of parskips
+      \vspace*{0.5\ult@normalbaselineskip}% XXX: This value is hardcoded such that \baselineskip of \chaptitlefontsize + this value is an integer multiple of \ult@normalbaselineskip.
     \fi
     %
     % Now, switch to normal font
@@ -970,8 +976,8 @@
 % Adjust spacing around chapter title
 \titlespacing*{\chapter}
   {\z@}          % Left margin = 0
-  {\z@ - \chapterheadtopvspace + \baselinesbeforefrontchaphead\baselineskip} % Vertical space before chapter head (50\p@ is standard from book.cls)
-  {\z@ + \baselinesafterchaptitle\baselineskip}        % Vertical space after title, before text (\ttl@chapafter is default)
+  {\z@ - \chapterheadtopvspace + \baselinesbeforefrontchaphead\ult@normalbaselineskip} % Vertical space before chapter head (50\p@ is standard from book.cls)
+  {\z@ + \baselinesafterchaptitle\ult@normalbaselineskip}        % Vertical space after title, before text (\ttl@chapafter is default)
 
 
 % The titlesec package overrides definition of \section, but sectsty overrides that definition in turn.
@@ -982,7 +988,7 @@
 
 % Now, define how \section is formatted.
 \titleformat{\section}[hang]
-  {\normalfont \vspace*{\baselineskip} \Large \bfseries \sectfont \selectfont \vspace*{-\baselineskip}}% Format
+  {\vspace*{\ult@normalbaselineskip} \Large \bfseries \sectfont \selectfont \vspace*{-\baselineskip}}% Format
   {\thesection\space}% Label
   {\z@}% Sep
   {#1}% Before-code: print section name (needed because we have enabled titlesec's explicit option)
@@ -991,8 +997,8 @@
 % Starred version makes sure we suppress indentation of text following section title
 \titlespacing*{\section}
   {\z@}% % Left margin = 0
-  {\z@ + \baselinesbeforesection\baselineskip}% % Vertical space before
-  {\z@ + \baselinesaftersection\baselineskip}%  % Vertical space after
+  {\z@ + \baselinesbeforesection\ult@normalbaselineskip}% % Vertical space before
+  {\z@ + \baselinesaftersection\ult@normalbaselineskip}%  % Vertical space after
 
 % NOTE: chapter head is printed as:
 %   #4{#8}\kern \z@ \strut \@@par \nobreak #5\@@par
