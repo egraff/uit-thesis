@@ -24,7 +24,16 @@
 % Option overrides
 \PassOptionsToClass{a4paper}{\baseclass}
 \PassOptionsToClass{twoside}{\baseclass}
+
+% Suppress book class options
+\DeclareOption{a5paper}{}
+\DeclareOption{b5paper}{}
+\DeclareOption{letterpaper}{}
+\DeclareOption{legalpaper}{}
+\DeclareOption{executivepaper}{}
+\DeclareOption{landscape}{}
 \DeclareOption{openany}{}
+\DeclareOption{twocolumn}{}
 
 % DVI of PDF?
 \ifx\pdfoutput\undefined
