@@ -37,7 +37,7 @@ _file: _ctrl_
 	@$(RM) -r $(BUILDFLD) > /dev/null
 
 _ctrl_:
-ifeq ($(BUILDFILE),)
+ifeq ($(FILE),)
 	@echo "Specify a FILE"
 	@exit 1
 endif
