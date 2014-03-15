@@ -953,11 +953,11 @@
 \def\baselinesafterchapnum{3}
 \def\baselinesafterchaptitle{2}
 
-\def\baselinesbeforesection{2}
-\def\baselinesaftersection{0}
+\def\baselinesbeforesection{3}
+\def\baselinesaftersection{1}
 
-\def\baselinesbeforesubsection{1}
-\def\baselinesaftersubsection{0}
+\def\baselinesbeforesubsection{2}
+\def\baselinesaftersubsection{1}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Pretty size that spans two baselines. Height is approx. \baselineskip + \fontcharht\font`B
@@ -1045,7 +1045,7 @@
 \titleformat{\section}[hang]
   {% Format
     \null%
-    \vspace*{-\baselineskip}%
+    \vspace*{-\parskip}%
     \Large \bfseries \sectfont \selectfont%
     \vspace*{-\baselineskip}%
   }%
@@ -1057,14 +1057,14 @@
 % Starred version makes sure we suppress indentation of text following section title
 \titlespacing*{\section}
   {\z@}% % Left margin = 0
-  {\z@ + \ult@normalbaselineskip + \baselinesbeforesection\ult@normalbaselineskip}% % Vertical space before
-  {\z@ + \baselinesaftersection\ult@normalbaselineskip}%  % Vertical space after
+  {\z@ + \baselinesbeforesection\ult@normalbaselineskip}% % Vertical space before
+  {\z@ - \parskip + \baselinesaftersection\ult@normalbaselineskip}%  % Vertical space after
 
 % Now, define how \subsection is formatted.
 \titleformat{\subsection}[hang]
   {% Format
     \null%
-    \vspace*{-\baselineskip}%
+    \vspace*{-\parskip}%
     \large \bfseries \subsectfont \selectfont%
     \vspace*{-\baselineskip}%
   }%
@@ -1076,8 +1076,8 @@
 % Starred version makes sure we suppress indentation of text following section title
 \titlespacing*{\subsection}
   {\z@}% % Left margin = 0
-  {\z@ + \ult@normalbaselineskip + \baselinesbeforesubsection\ult@normalbaselineskip}% % Vertical space before
-  {\z@ + \baselinesaftersubsection\ult@normalbaselineskip}%  % Vertical space after
+  {\z@ + \baselinesbeforesubsection\ult@normalbaselineskip}% % Vertical space before
+  {\z@ - \parskip + \baselinesaftersubsection\ult@normalbaselineskip}%  % Vertical space after
 
 % NOTE: chapter head is printed as:
 %   #4{#8}\kern \z@ \strut \@@par \nobreak #5\@@par
