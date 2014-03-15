@@ -411,6 +411,20 @@
   \pdfmapfile{+XCharter.map}
 %}{}
 
+\usepackage[activate={true,nocompatibility},final,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+
+\newif\ifult@microtypeloaded
+\AtBeginDocument{%
+  \@ifpackageloaded{microtype}
+  {%
+    \global\ult@microtypeloadedtrue}
+  {%
+    \global\ult@microtypeloadedfalse
+    \global\newif\ifMT@protrusion
+    \global\MT@protrusionfalse
+  }
+}
+
 %:-------------------------- Symbols -----------------------
 
 % AMS
@@ -537,6 +551,13 @@
 % Note: we do not use notoccite package, since it overwrites changes that
 % parskip does to \@starttoc
 \renewcommand*{\@starttoc}[1]{%
+  % If protrusion is enabled, disable it
+  \newif\ifult@MT@protrusion\ult@MT@protrusionfalse
+  \ifMT@protrusion
+    \global\ult@MT@protrusiontrue
+    \microtypesetup{protrusion=false}% disables protrusion locally in the document
+  \fi
+  %
   % First element in TOC will be a chapter. Compensate for vertical space
   % added by tocloft, so the first element isn't pushed down.
   \ifstrequal{#1}{toc}{\vspace*{-\ult@cftbeforechapskip}}{}
@@ -564,6 +585,11 @@
     \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
   \fi
   \@nobreakfalse
+  %
+  % If protrusion was enabled, re-enable it
+  \ifult@MT@protrusion
+    \microtypesetup{protrusion=true}% enables protrusion
+  \fi
 }
 
 %:-------------------------- Header/footer -----------------------
