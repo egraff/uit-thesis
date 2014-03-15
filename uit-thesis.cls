@@ -921,14 +921,14 @@
 %:-------------------------- Chapter and section style -----------------------
 
 % Alias sectsty internals
-\newcommand{\chapnumfont}{\SS@chapnumfont}     % use \chapternumberfont{} to change
-\newcommand{\chaptitlefont}{\SS@chaptitlefont} % use \chaptertitlefont{} to change
-\newcommand{\sectfont}{\SS@sectfont}           % use \sectionfont{} to change
-\newcommand{\subsectfont}{\SS@subsectfont}     % use \subsectionfont{} to change
+\newcommand{\chapnumfont}{\SS@chapnumfont}       % use \chapternumberfont{} to change
+\newcommand{\chaptitlefont}{\SS@chaptitlefont}   % use \chaptertitlefont{} to change
+\newcommand{\sectfont}{\SS@sectfont}             % use \sectionfont{} to change
+\newcommand{\subsectfont}{\SS@subsectfont}       % use \subsectionfont{} to change
+\newcommand{\subsubsectfont}{\SS@subsubsectfont} % use \subsubsectionfont{} to change
 
 % Use Open Sans (fos) instead of Charter BT (bch) as chapter and section title font
 % fosj is Open Sans with old style figures.
-% Note: \raggedright is used to prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
 \allsectionsfont{\rmfamily\upshape\bfseries\usefont{OT1}{fosj}{bx}{n}\selectfont}
 
 % Change font for chapter number
@@ -986,6 +986,9 @@
 
 \def\baselinesbeforesubsection{2}
 \def\baselinesaftersubsection{1}
+
+\def\baselinesbeforesubsubsection{2}
+\def\baselinesaftersubsubsection{1}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Pretty size that spans two baselines. Height is approx. \baselineskip + \fontcharht\font`B
@@ -1013,8 +1016,9 @@
     %
     \chaptitlefont\chaptitlefontsize
     %
-    % Prevent overfull hbox
+    % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
     \RaggedRight
+    %
     \selectfont
     %
     \vspace*{-\baselineskip}
@@ -1068,6 +1072,7 @@
 % using \@startsection, because it allows a higher degree of flexibility.
 \titleclass{\section}{straight}
 \titleclass{\subsection}{straight}
+\titleclass{\subsubsection}{straight}
 
 % Now, define how \section is formatted.
 \titleformat{\section}[hang]
@@ -1098,7 +1103,7 @@
   }%
   {\@seccntformat{subsection}}% Label
   {\z@}% Sep
-  {#1}% Before-code: print section name (needed because we have enabled titlesec's explicit option)
+  {#1}% Before-code: print subsection name (needed because we have enabled titlesec's explicit option)
   []% After-code
 
 % Starred version makes sure we suppress indentation of text following section title
@@ -1106,6 +1111,25 @@
   {\z@}% % Left margin = 0
   {\z@ + \baselinesbeforesubsection\ult@normalbaselineskip}% % Vertical space before
   {\z@ - \parskip + \baselinesaftersubsection\ult@normalbaselineskip}%  % Vertical space after
+
+% Now, define how \subsection is formatted.
+\titleformat{\subsubsection}[hang]
+  {% Format
+    \null%
+    \vspace*{-\parskip}%
+    \normalsize \bfseries \subsubsectfont \selectfont%
+    \vspace*{-\baselineskip}%
+  }%
+  {\@seccntformat{subsubsection}}% Label
+  {\z@}% Sep
+  {#1}% Before-code: print subsubsection name (needed because we have enabled titlesec's explicit option)
+  []% After-code
+
+% Starred version makes sure we suppress indentation of text following section title
+\titlespacing*{\subsubsection}
+  {\z@}% % Left margin = 0
+  {\z@ + \baselinesbeforesubsubsection\ult@normalbaselineskip}% % Vertical space before
+  {\z@ - \parskip + \baselinesaftersubsubsection\ult@normalbaselineskip}%  % Vertical space after
 
 % NOTE: chapter head is printed as:
 %   #4{#8}\kern \z@ \strut \@@par \nobreak #5\@@par
