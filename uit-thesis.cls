@@ -181,6 +181,31 @@
 % Now actually use the newly defined style.
 \urlstyle{leo}
 
+
+%:-------------------------- Book class overrides -----------------------
+
+\def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
+                       \if@mainmatter
+                         \refstepcounter{chapter}%
+                         \typeout{\@chapapp\space\thechapter.}%
+                         \addcontentsline{toc}{chapter}%
+                                   {\protect\numberline{\thechapter}#1}%
+                       \else
+                         \addcontentsline{toc}{chapter}{#1}%
+                       \fi
+                    \else
+                      \addcontentsline{toc}{chapter}{#1}%
+                    \fi
+                    \chaptermark{#1}%
+                    %\addtocontents{lof}{\protect\addvspace{10\p@}}%
+                    %\addtocontents{lot}{\protect\addvspace{10\p@}}%
+                    \if@twocolumn
+                      \@topnewpage[\@makechapterhead{#2}]%
+                    \else
+                      \@makechapterhead{#2}%
+                      \@afterheading
+                    \fi}
+
 %:-------------------------- Footnotes ----------------------------
 
 \debugdef{@makefnmark}
@@ -512,10 +537,26 @@
 % Note: we do not use notoccite package, since it overwrites changes that
 % parskip does to \@starttoc
 \renewcommand*{\@starttoc}[1]{%
+  % First element in TOC will be a chapter. Compensate for vertical space
+  % added by tocloft, so the first element isn't pushed down.
+  \ifstrequal{#1}{toc}{\vspace*{-\ult@cftbeforechapskip}}{}
+  %
+  % Make sure spacing is the same with class option 'parindent' and without
+  \vspace*{\parskip}
+  %
   \begingroup
-    \@fileswfalse  % Add modification from notoccite
+    % Add modification from notoccite.
+    % Note: this only has effect within the current local group
+    % (which is why it works!)
+    \@fileswfalse
+    %
     \makeatletter
+    %
+    % Retain modification from parskip.
+    % Note: this is only consistent because we compensate with \vspace*{\parskip} above
     \parskip\z@    % Retain modification from parskip
+    %
+    % Read auxillary file
     \@input{\jobname.#1}%
   \endgroup
   \if@filesw
@@ -1185,6 +1226,93 @@
 
 %:-------------------------- ToC lists -----------------------
 
+% TODO:
+% \l@part
+% \l@chapter
+% \l@section
+% \l@subsection
+% \l@subsubsection
+% \l@paragraph
+% \l@subparagraph
+% \l@figure
+% \l@table
+
+\newlength\ult@cftbeforechapskip
+  \setlength{\ult@cftbeforechapskip}{\ult@normalbaselineskip} % Default is 1.0em \@plus\p@
+\newlength\ult@cftchapindent
+  \setlength{\ult@cftchapindent}{\z@} % Default is 0em
+\newlength\ult@cftchapnumwidth
+  \setlength{\ult@cftchapnumwidth}{1.5em} % Default is 1.5em
+
+\newlength\ult@cftbeforesecskip
+  \setlength{\ult@cftbeforesecskip}{\z@} % Default is \z@ \@plus .2\p@
+\newlength\ult@cftsecindent
+  \setlength{\ult@cftsecindent}{1.5em} % Default is 1.5em
+\newlength\ult@cftsecnumwidth
+  \setlength{\ult@cftsecnumwidth}{2.3em} % Default is 2.3em
+
+\newcommand{\ult@cftchapfont}     % chapter titles
+           {\usefont{T1}{bch}{b}{n}\selectfont}
+\newcommand{\ult@cftsecfont}      % section titles
+           {\usefont{T1}{bch}{m}{n}\selectfont}
+\newcommand{\ult@cftchappagefont} % chapter page numbers
+           {\ult@cftchapfont}
+\newcommand{\ult@cftsecpagefont}  % section page numbers
+           {\ult@cftsecfont}
+
+% Skip
+\setlength{\cftbeforechapskip}{\ult@cftbeforechapskip}
+\setlength{\cftbeforesecskip}{\ult@cftbeforesecskip}
+\setlength{\cftbeforefigskip}{\ult@cftbeforesecskip}
+\setlength{\cftbeforetabskip}{\ult@cftbeforesecskip}
+
+% Indent
+\setlength{\cftchapindent}{\ult@cftchapindent}
+\setlength{\cftsecindent}{\ult@cftsecindent}
+\setlength{\cftfigindent}{\ult@cftsecindent}
+\setlength{\cfttabindent}{\ult@cftsecindent}
+
+% Num width
+\setlength{\cftchapnumwidth}{\ult@cftchapnumwidth}
+\setlength{\cftsecnumwidth}{\ult@cftsecnumwidth}
+\setlength{\cftfignumwidth}{\ult@cftsecnumwidth}
+\setlength{\cfttabnumwidth}{\ult@cftsecnumwidth}
+
+% Fonts
+\renewcommand{\cftchapfont}{\ult@cftchapfont}
+\renewcommand{\cftsecfont}{\ult@cftsecfont}
+\renewcommand{\cftsubsecfont}{\ult@cftsecfont}
+\renewcommand{\cftchappagefont}{\ult@cftchappagefont}
+\renewcommand{\cftsecpagefont}{\ult@cftsecpagefont}
+\renewcommand{\cftsubsecpagefont}{\ult@cftsecpagefont}
+
+\renewcommand{\cftfigfont}{\ult@cftsecfont}
+\renewcommand{\cfttabfont}{\ult@cftsecfont}
+
+\renewcommand{\cftfigpagefont}{\ult@cftsecpagefont}
+\renewcommand{\cfttabpagefont}{\ult@cftsecpagefont}
+
+% Override tocloft's \newlistentry
+\LetLtxMacro{\ult@savenewlistentry}{\newlistentry}
+\renewcommand{\newlistentry}[4][\@empty]{%
+  \ult@savenewlistentry[#1]{#2}{#3}{#4}%
+  \setlength{\@nameuse{cftbefore#2skip}}{\ult@cftbeforesecskip}
+  \setlength{\@nameuse{cft#2indent}}{\ult@cftsecindent}
+  \setlength{\@nameuse{cft#2numwidth}}{\ult@cftsecnumwidth}
+  \@namedef{cft#2font}{\ult@cftsecfont}
+  \@namedef{cft#2pagefont}{\ult@cftsecpagefont}
+}
+
+% Override tocloft's \newlistof
+\LetLtxMacro{\ult@savenewlistof}{\newlistof}
+\renewcommand{\newlistof}[4][\@empty]{%
+  \ult@savenewlistof[#1]{#2}{#3}{#4}%
+  
+}
+
+
+
+
 % Used to determine if document contains figures, tables, listings, etc.
 \usepackage[figure,table,lstlisting]{totalcount}
 
@@ -1217,9 +1345,6 @@
   \newlistof{listings}{lol}{\lstlistlistingname}
 \endgroup
 \let\l@lstlisting\l@listings
-\AtBeginDocument{\addtocontents{lol}{\protect\addvspace{10\p@}}}
-\setlength{\cftlistingsindent}{1.5em}
-\setlength{\cftlistingsnumwidth}{2.3em}
 
 % Use tocbibind to generate list of listings
 \renewcommand{\lstlistoflistings}{%

@@ -24,13 +24,19 @@
 \newglossaryentry{lage}
 {
   name={long ass glossary entry},
-  description={is a long ass entry with AAAAAAAA AAAAAA AAAAAAAAA AAA
-  AAA AAAAA AAAAA AAAAAAAAAAA AAAAAAAAAA AAAAAAAAAAAAAAAAA
-  AAAAAAAAAA AAAAAAAAAAAAAAAAAA AAAAAAA
-  AAAA AA AAAAAAA AAA AAAAAAAAAAAAAA AAAAAAAAAA
+  description={is a long ass entry with a lot of text describing the properties of the glossary entry. Hopefully this spans some lines now.
   },
 }
 
+
+\newcommand{\listdefinitionname}{My list of definitions}
+\newlistof{definition}{def}{\listdefinitionname}
+\newcommand{\definition}[1]{%
+  \refstepcounter{definition}%
+  \par\noindent\textbf{The Definition~\thedefinition. #1}%
+  \addcontentsline{def}{definition}
+    {\protect\numberline{\thechapter.\thedefinition}#1}\par%
+}
 
 \begin{document}
 
@@ -68,6 +74,8 @@ Fuck you very much.
 
 \tableofcontents
 
+\listofdefinition
+
 %:-------------------------- Mainmatter -----------------------
 \mainmatter
 
@@ -76,9 +84,6 @@ Fuck you very much.
 
 \section{First section}
 \lipsum[2-6]
-%lol
-
-%lol
 
 \section{Second section}
 \lipsum[6-7]
@@ -118,6 +123,8 @@ It is fun to use \emph{modern \upsc{OpenMP}} technology!
 Referencing figure \ref{fig:ex} to test link.\footnote{This is another
 footnote.}
 
+\definition{Some other definition}
+
 \begin{figure}\label{fig:ex}
 \centering
 \includegraphics[scale=0.1]{748443511_095ae916df_o.jpg}
@@ -127,6 +134,8 @@ footnote.}
 \chapter{Design}
 \lipsum[8-10]
 
+\definition{Another definition}
+
 \begin{table}
 \centering
 \begin{tabular}{|l|l|}
@@ -135,6 +144,16 @@ Content left & Content right\\
 \hline
 \end{tabular}
 \caption{A table}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|l|l|}
+\hline
+Content left & Content right\\
+\hline
+\end{tabular}
+\caption{Another table}
 \end{table}
 
 \newpage
