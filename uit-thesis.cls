@@ -997,7 +997,12 @@
 
 % Now, define how \section is formatted.
 \titleformat{\section}[hang]
-  {\vspace*{\ult@normalbaselineskip} \Large \bfseries \sectfont \selectfont \vspace*{-\baselineskip}}% Format
+  {% Format
+    \null%
+    \vspace*{-\baselineskip}%
+    \Large \bfseries \sectfont \selectfont%
+    \vspace*{-\baselineskip}%
+  }%
   {\thesection\space}% Label
   {\z@}% Sep
   {#1}% Before-code: print section name (needed because we have enabled titlesec's explicit option)
@@ -1006,7 +1011,7 @@
 % Starred version makes sure we suppress indentation of text following section title
 \titlespacing*{\section}
   {\z@}% % Left margin = 0
-  {\z@ + \baselinesbeforesection\ult@normalbaselineskip}% % Vertical space before
+  {\z@ + \ult@normalbaselineskip + \baselinesbeforesection\ult@normalbaselineskip}% % Vertical space before
   {\z@ + \baselinesaftersection\ult@normalbaselineskip}%  % Vertical space after
 
 % NOTE: chapter head is printed as:
