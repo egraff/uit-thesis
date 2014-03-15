@@ -54,7 +54,7 @@ _compare:
 		fi; \
 	done; echo ""; if [ -z "$${ERR}" ]; then \
 	echo "No diff was detected!"; rm -r ${DIFFLD}; else echo "diff on pages: $${ERR}"; \
-	echo "diff-image(s) is available in ${DIFFLD}"; fi
+	echo "diff-image(s) is available in `readlink -f ${DIFFLD}`"; fi
 
 _file: _ctrl_
 	@$(RM) $(PDFFILE)
