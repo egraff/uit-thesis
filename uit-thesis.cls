@@ -1008,7 +1008,7 @@
     \Large \bfseries \sectfont \selectfont%
     \vspace*{-\baselineskip}%
   }%
-  {\thesection\space}% Label
+  {\@seccntformat{section}}% Label
   {\z@}% Sep
   {#1}% Before-code: print section name (needed because we have enabled titlesec's explicit option)
   []% After-code
@@ -1027,7 +1027,7 @@
     \large \bfseries \subsectfont \selectfont%
     \vspace*{-\baselineskip}%
   }%
-  {\thesubsection\space}% Label
+  {\@seccntformat{subsection}}% Label
   {\z@}% Sep
   {#1}% Before-code: print section name (needed because we have enabled titlesec's explicit option)
   []% After-code
