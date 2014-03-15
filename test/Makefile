@@ -1,5 +1,5 @@
 # The file to test (without extension)
-BASENAME = `basename $(FILE)`
+BASENAME = `basename $(FILE) .tex`
 
 PROTOPDF = ./proto/proto.pdf
 DIFFLD = ./diffs
