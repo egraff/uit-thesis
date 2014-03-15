@@ -39,15 +39,19 @@ clean:
 	@echo "Done!"
 
 # Target specific variables
+_compare : RANGE="$(shell	A="$(shell echo ${BASENAME} \
+	| grep -Po "(\[.*\])" | sed "s/\[//;s/\]//;s/,/ /g"	)"; \
+	for a in $$A; do if [ -z "`echo "$$a" | grep -o "-"`" ]; then echo "$$a"; \
+	else seq `echo -n "$$a" | sed 's/-/ /'`; fi; done)"
 _compare : PAGES=$(shell pdfinfo $(PDFFILE)\
 	|grep -Po '(?<=^Pages:)\s*\d+$$'|grep -Po '\d+')
 _compare : LAST=$(shell expr $(PAGES) - 1)
-_compare : RANGE=$(shell seq 0 $(LAST))
+_compare : FULLRANGE=$(shell seq 0 $(LAST))
 _compare:
-	@echo "Testing ${PAGES} pages from document `readlink -f ${PDFFLD}`/${BASENAME}.pdf"
 	@mkdir -p $(DIFFLD)
-	@ERR=""; for p in ${RANGE}; do \
-		RES="$$(compare -metric ae ${PDFFILE}[$$p] ${PROTOPDF}[$$p] \
+	@ERR=""; R=`if [ -z ${RANGE} ]; then echo ${FULLRANGE}; else echo ${RANGE}; fi`; \
+		echo "Testing document `readlink -f ${PDFFLD}`/${BASENAME}.pdf"; \
+		for p in $$R; do RES="$$(compare -metric ae ${PDFFILE}[$$p] ${PROTOPDF}[$$p] \
 		${DIFFLD}/${BASENAME}_p$$p.png 2>&1)"; \
 		if [ "$${RES}" = "0" ]; then echo -n "."; rm ${DIFFLD}/${BASENAME}_p$$p.png; \
 		else echo -n "x"; ERR="$${ERR} $$p"; \
@@ -76,5 +80,5 @@ endif
 # Debug stuff
 
 # Makefile hack: print content of any variable in the Makefile
-print-%:
-	@echo '$*=$($*)'
+#print-%:
+#	@echo '$*=$($*)'
