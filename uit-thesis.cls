@@ -857,6 +857,7 @@
 \newcommand{\chapnumfont}{\SS@chapnumfont}     % use \chapternumberfont{} to change
 \newcommand{\chaptitlefont}{\SS@chaptitlefont} % use \chaptertitlefont{} to change
 \newcommand{\sectfont}{\SS@sectfont}           % use \sectionfont{} to change
+\newcommand{\subsectfont}{\SS@subsectfont}     % use \subsectionfont{} to change
 
 % Use Open Sans (fos) instead of Charter BT (bch) as chapter and section title font
 % fosj is Open Sans with old style figures.
@@ -913,6 +914,9 @@
 
 \def\baselinesbeforesection{2}
 \def\baselinesaftersection{0}
+
+\def\baselinesbeforesubsection{1}
+\def\baselinesaftersubsection{0}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Pretty size that spans two baselines. Height is approx. \baselineskip + \fontcharht\font`B
@@ -994,6 +998,7 @@
 % NOTE: We do this instead of renewing \section definition manually
 % using \@startsection, because it allows a higher degree of flexibility.
 \titleclass{\section}{straight}
+\titleclass{\subsection}{straight}
 
 % Now, define how \section is formatted.
 \titleformat{\section}[hang]
@@ -1013,6 +1018,25 @@
   {\z@}% % Left margin = 0
   {\z@ + \ult@normalbaselineskip + \baselinesbeforesection\ult@normalbaselineskip}% % Vertical space before
   {\z@ + \baselinesaftersection\ult@normalbaselineskip}%  % Vertical space after
+
+% Now, define how \subsection is formatted.
+\titleformat{\subsection}[hang]
+  {% Format
+    \null%
+    \vspace*{-\baselineskip}%
+    \large \bfseries \subsectfont \selectfont%
+    \vspace*{-\baselineskip}%
+  }%
+  {\thesubsection\space}% Label
+  {\z@}% Sep
+  {#1}% Before-code: print section name (needed because we have enabled titlesec's explicit option)
+  []% After-code
+
+% Starred version makes sure we suppress indentation of text following section title
+\titlespacing*{\subsection}
+  {\z@}% % Left margin = 0
+  {\z@ + \ult@normalbaselineskip + \baselinesbeforesubsection\ult@normalbaselineskip}% % Vertical space before
+  {\z@ + \baselinesaftersubsection\ult@normalbaselineskip}%  % Vertical space after
 
 % NOTE: chapter head is printed as:
 %   #4{#8}\kern \z@ \strut \@@par \nobreak #5\@@par
