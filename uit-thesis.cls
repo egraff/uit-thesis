@@ -926,6 +926,7 @@
 \newcommand{\sectfont}{\SS@sectfont}             % use \sectionfont{} to change
 \newcommand{\subsectfont}{\SS@subsectfont}       % use \subsectionfont{} to change
 \newcommand{\subsubsectfont}{\SS@subsubsectfont} % use \subsubsectionfont{} to change
+\newcommand{\parafont}{\SS@parafont}             % use \paragraphfont{} to change
 
 % Use Open Sans (fos) instead of Charter BT (bch) as chapter and section title font
 % fosj is Open Sans with old style figures.
@@ -1073,6 +1074,7 @@
 \titleclass{\section}{straight}
 \titleclass{\subsection}{straight}
 \titleclass{\subsubsection}{straight}
+\titleclass{\paragraph}{straight}
 
 % Now, define how \section is formatted.
 \titleformat{\section}[hang]
@@ -1130,6 +1132,20 @@
   {\z@}% % Left margin = 0
   {\z@ + \baselinesbeforesubsubsection\ult@normalbaselineskip}% % Vertical space before
   {\z@ - \parskip + \baselinesaftersubsubsection\ult@normalbaselineskip}%  % Vertical space after
+
+% Now, define how \paragraph is formatted.
+\titleformat{\paragraph}[runin]
+  {% Format
+    \null%
+    \vspace*{-\parskip}%
+    \normalsize \bfseries \parafont \selectfont%
+    \vspace*{-\baselineskip}%
+  }%
+  {\@seccntformat{paragraph}}% Label
+  {\z@}% Sep
+  {#1}% Before-code: print paragraph name (needed because we have enabled titlesec's explicit option)
+  []% After-code
+
 
 % NOTE: chapter head is printed as:
 %   #4{#8}\kern \z@ \strut \@@par \nobreak #5\@@par
