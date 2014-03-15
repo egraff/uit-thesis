@@ -44,16 +44,15 @@ _compare : PAGES=$(shell pdfinfo $(PDFFILE)\
 _compare : LAST=$(shell expr $(PAGES) - 1)
 _compare : RANGE=$(shell seq 0 $(LAST))
 _compare:
-	@echo "Testing ${PAGES} pages from document ${PDFFILE}"
+	@echo "Testing ${PAGES} pages from document `readlink -f ${PDFFLD}`/${BASENAME}.pdf"
 	@mkdir -p $(DIFFLD)
 	@ERR=""; for p in ${RANGE}; do \
 		RES="$$(compare -metric ae ${PDFFILE}[$$p] ${PROTOPDF}[$$p] \
 		${DIFFLD}/${BASENAME}_p$$p.png 2>&1)"; \
-		if [ "$${RES}" = "0" ]; then rm ${DIFFLD}/${BASENAME}_p$$p.png; \
-		else ERR="$${ERR} $$p"; \
+		if [ "$${RES}" = "0" ]; then echo -n "."; rm ${DIFFLD}/${BASENAME}_p$$p.png; \
+		else echo -n "x"; ERR="$${ERR} $$p"; \
 		fi; \
-		echo -n "."; \
-	done; echo ""; if [ -z $${ERR} ]; then \
+	done; echo ""; if [ -z "$${ERR}" ]; then \
 	echo "No diff was detected!"; rm -r ${DIFFLD}; else echo "diff on pages: $${ERR}"; \
 	echo "diff-image(s) is available in ${DIFFLD}"; fi
 
@@ -66,8 +65,6 @@ _file: _ctrl_
 	@$(BUILD)
 	@mv $(BUILDFLD)/$(OUTPUTNAME).pdf $(PDFFILE)
 	@$(RM) -r $(BUILDFLD) > /dev/null
-	@echo ""
-	@echo "PDF is saved as ${PDFFILE}"
 
 _ctrl_:
 ifeq ($(FILE),)
