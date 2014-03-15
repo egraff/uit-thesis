@@ -500,19 +500,6 @@
 %%% See http://tex.stackexchange.com/questions/31780/where-can-i-find-help-files-or-documentation-for-commands-like-startsection-fo
 %%% and http://www.tug.org/texlive/Contents/live/texmf-dist/doc/latex/base/source2e.pdf
 
-% Renew paragraph spacing to make sure we are strict about white space between paragraphs
-% Lines should always align to baseline grid, i.e. we do not allow "rubber" lengths
-% See http://en.wikibooks.org/wiki/LaTeX/Paragraph_Formatting and http://tex.stackexchange.com/questions/53008/align-baseline-in-multicol
-\renewcommand\paragraph{%
-    \@startsection{paragraph}{4}% Paragraph = level 4
-                  {\z@}% No left indentation of heading
-                  % Absolute value = skip to leave above the heading. Positive value means that text following heading retains indentation.
-                  {2\ult@normalbaselineskip}% Default is "3.25ex \@plus1ex \@minus.2ex"
-                  % If positive, then skip to leave below heading, else negative of skip to leave to right of run-in heading.
-                  {-1em}
-                  {\normalfont\normalsize\bfseries \SS@parafont}% Style
-}
-
 % BASELINE GRID
 \usepackage{atbegshi,picture}
 \ifult@drawbaselinegrid
