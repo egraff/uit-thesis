@@ -162,7 +162,7 @@
 \definecolor{pms5435}{cmyk}{0.32,0.09,0.08,0.07}
 
 % Running head color
-\definecolor{rheadcolor}{cmyk}{0.15,0,0,0.55}
+\definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
 \definecolor{rheadslashcolor}{cmyk}{0.6,0,0.2,0.1}
 
 %\colorlet{chapnumcol}{pms2229}
@@ -958,9 +958,11 @@
 }
 
 \newcommand{\printrheadslash}[1][]{
-  \begin{tikzpicture}[scale=0.076]
-    \draw[fill,color=rheadslashcolor] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;                % Draw UiT "slash"
-  \end{tikzpicture}
+  \raisebox{-1.2pt}{
+    \begin{tikzpicture}[scale=0.082]
+      \draw[fill,color=rheadslashcolor] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;                % Draw UiT "slash"
+    \end{tikzpicture}
+  }
 }
 
 % Align bottom of UiT slash with bottom of baseline
