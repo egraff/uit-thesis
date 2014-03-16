@@ -820,8 +820,9 @@
 % Translate=false because package 'babel' reverts renaming of the default glossary-/acronymnames
 \usepackage[toc,acronym,shortcuts,nonumberlist,nopostdot,translate=false]{glossaries}
 
-% Make glossarylistings start with Caps (This is for regular glossary entries, not acronyms)
-\renewcommand{\glsnamefont}[1]{\makefirstuc{#1}}
+% Format for glossary entry and acronyms in glossary lists
+% Use large smallcaps
+\renewcommand{\glsnamefont}[1]{\large\upsc{#1}}
 
 % Use smallcaps-magic!!! _o/ \o/ \o_
 % Must be used to support ACR-commands that are not aliased to GLS-commands
