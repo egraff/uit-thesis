@@ -773,7 +773,7 @@
 \let\headrule\@empty
 
 % fosj is opensans with old style figures
-\newcommand{\rheadfont}{\fontsize{10pt}{12pt}\usefont{OT1}{fosj}{l}{n}\selectfont}
+\newcommand{\rheadfont}{\fontsize{10pt}{12pt}\usefont{T1}{fosj}{l}{n}\selectfont}
 
 % Set pagenumber in the header.
 % RO = Right Odd: Page number is set to the right in the header on odd pages
@@ -931,9 +931,9 @@
 \newcommand{\subsubsectfont}{\SS@subsubsectfont} % use \subsubsectionfont{} to change
 \newcommand{\parafont}{\SS@parafont}             % use \paragraphfont{} to change
 
-% Use Open Sans (fos) instead of Charter BT (bch) as chapter and section title font
+% Use Open Sans (fos) as chapter and section title font
 % fosj is Open Sans with old style figures.
-\allsectionsfont{\rmfamily\upshape\bfseries\usefont{OT1}{fosj}{bx}{n}\selectfont}
+\allsectionsfont{\rmfamily\upshape\bfseries\usefont{T1}{fosj}{bx}{n}\selectfont}
 
 % Change font for chapter number
 \chapternumberfont{%
@@ -1660,14 +1660,14 @@
   % Faculty / department
   \begingroup
     \vskip \z@
-    \fontsize{10.3pt}{23pt}\usefont{OT1}{fos}{l}{n}\selectfont
+    \fontsize{10.3pt}{23pt}\usefont{T1}{fos}{l}{n}\selectfont
     \noindent\@thesisfaculty
     \vskip -\parskip
   \endgroup
   % Thesis title
   \begingroup
     \vskip 2\baselineskip
-    \fontsize{12.5pt}{15pt}\usefont{OT1}{fos}{b}{n}\selectfont
+    \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{b}{n}\selectfont
     \vspace*{-\baselineskip}
     \noindent\@title
     \vskip -\parskip
@@ -1678,7 +1678,7 @@
     \ifx\@subtitle\@empty\else
       \begingroup
         \vskip \ht\strutbox
-        \fontsize{12.5pt}{19pt}\usefont{OT1}{fos}{l}{it}\selectfont
+        \fontsize{12.5pt}{19pt}\usefont{T1}{fos}{l}{it}\selectfont
         \vspace*{-\baselineskip}
         \noindent\@subtitle
         \vskip -\parskip
@@ -1688,7 +1688,7 @@
   \fi
   % Separation line
   \begingroup
-    \fontsize{12.5pt}{15pt}\usefont{OT1}{fos}{l}{it}\selectfont
+    \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{l}{it}\selectfont
     \vspace*{-\baselineskip}
     \noindent ---
     \vskip -\parskip
@@ -1696,7 +1696,7 @@
   \endgroup
   % Name of author
   \begingroup
-    \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{sb}{n}\selectfont
+    \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{sb}{n}\selectfont
     \vspace*{-\baselineskip}
     \noindent\@author
     \vskip -\parskip
@@ -1704,7 +1704,7 @@
   \endgroup
   % Thesis description one-line / study program / month and year
   \begingroup
-    \fontsize{10.3pt}{13pt}\usefont{OT1}{fos}{l}{it}\selectfont
+    \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{l}{it}\selectfont
     \vspace*{-\baselineskip}
     \noindent\@thesisprogramme
     \vskip -\parskip
