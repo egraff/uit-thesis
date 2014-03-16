@@ -1,3 +1,9 @@
+# Programs used
+COMPARE := $(shell which compare 2>/dev/null)
+LATEXMK := $(shell which latexmk 2>/dev/null)
+PDFLATEX := $(shell which pdflatex 2>/dev/null)
+MAKEGLOSSARIES := $(shell which makeglossaries 2>/dev/null)
+
 # The file to test (without extension)
 BASENAME = `basename $(FILE) .tex`
 
@@ -21,15 +27,15 @@ DEFOPT = -output-directory=$(BUILDFLD) -interaction=nonstopmode 2>/dev/null 1>/d
 GLOSSOPT = -q
 
 # Command to build document
-BUILD = latexmk -pdf -bibtex -jobname=$(OUTPUTNAME) $(DEFOPT) $(BUILDFILE)
+BUILD = $(LATEXMK) -pdf -bibtex -jobname=$(OUTPUTNAME) $(DEFOPT) $(BUILDFILE)
 
 # Creates first auxiliary files required to build glossary
-LAMEBUILD = pdflatex -jobname=$(OUTPUTNAME) $(DEFOPT) $(BUILDFILE)
+LAMEBUILD = $(PDFLATEX) -jobname=$(OUTPUTNAME) $(DEFOPT) $(BUILDFILE)
 
 # Command to build glossary and glossarylists
 # (Not using -d option due to incompatibility with some systems)
 BUILDGLOSS = cd $(BUILDFLD) &&\
- makeglossaries $(GLOSSOPT) $(OUTPUTNAME) &&\
+ $(MAKEGLOSSARIES) $(GLOSSOPT) $(OUTPUTNAME) &&\
  cd - >/dev/null
 
 test: _file _compare
@@ -51,7 +57,7 @@ _compare:
 	@mkdir -p $(DIFFLD)
 	@ERR=""; R=`if [ -z ${RANGE} ]; then echo ${FULLRANGE}; else echo ${RANGE}; fi`; \
 		echo "Testing document `readlink -f ${PDFFLD}`/${BASENAME}.pdf"; \
-		for p in $$R; do RES="$$(compare -metric ae ${PDFFILE}[$$p] ${PROTOPDF}[$$p] \
+		for p in $$R; do RES="$$($(COMPARE) -metric ae ${PDFFILE}[$$p] ${PROTOPDF}[$$p] \
 		${DIFFLD}/${BASENAME}_p$$p.png 2>&1)"; \
 		if [ "$${RES}" = "0" ]; then echo -n "."; rm ${DIFFLD}/${BASENAME}_p$$p.png; \
 		else echo -n "x"; ERR="$${ERR} $$p"; \
@@ -71,11 +77,26 @@ _file: _ctrl_
 	@$(RM) -r $(BUILDFLD) > /dev/null
 
 _ctrl_:
-ifeq ($(FILE),)
-	@echo "Specify a FILE"
+ifndef COMPARE
+	@echo "Cannot find 'compare', install 'imagemagick' to fix this" >&2
 	@exit 1
 endif
-
+ifndef LATEXMK
+	@echo "Cannot find 'latexmk'" >&2
+	@exit 2
+endif
+ifndef PDFLATEX
+	@echo "Cannot find 'pdflatex'" >&2
+	@exit 3
+endif
+ifndef MAKEGLOSSARIES
+	@echo "Cannot find 'makeglossaries' >&2"
+	@exit 4
+endif
+ifeq ($(FILE),)
+	@echo "Specify a FILE" >&2
+	@exit 5
+endif
 
 # Debug stuff
 
