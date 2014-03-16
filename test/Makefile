@@ -63,7 +63,7 @@ _compare:
 		else echo -n "x"; ERR="$${ERR} $$p"; \
 		fi; \
 	done; echo ""; if [ -z "$${ERR}" ]; then \
-	echo "No diff was detected!"; rm -r ${DIFFLD}; else echo "diff on pages: $${ERR}"; \
+	echo "No diff was detected!"; else echo "diff on pages: $${ERR}"; \
 	echo "diff-image(s) is available in `readlink -f ${DIFFLD}`"; fi
 
 _file: _ctrl_
