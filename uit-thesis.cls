@@ -463,15 +463,22 @@
 \global\ult@normalbaselineskip=\baselineskip
 \endgroup
 
+% Save \parindent for current font size
+\newlength\ult@saveparindent
+\setlength{\ult@saveparindent}{\parindent}
+
+% Begin paragraphs with an empty line rather than an indent
+% Note: we use package parskip even if uit-thesis class is loaded with class option 'parindent',
+% just to make sure that the parskip package cannot be loaded later and fuck up our layout!
+\usepackage[parfill]{parskip}
+
 \ifult@parindent
+  % Restore the default \parindent
+  \setlength{\parindent}{\ult@saveparindent}
+
   % No skip between paragraphs when using indentation
   \setlength{\parskip}{\z@}
-
-  % NOTE: We retain the default \parindent
 \else
-  % Begin paragraphs with an empty line rather than an indent
-  \usepackage[parfill]{parskip}
-
   % Set indent at new paragraph to 0
   \setlength{\parindent}{\z@}
 
@@ -493,12 +500,21 @@
 
 \renewcommand{\baselinestretch}{1.0}\normalsize
 
-%%% NOTE
-%%% The \@startsection macro is defined as follows:
-%%%  \@startsection{<name>}{<level>}{<indent>}{<beforeskip>}{<afterskip>}{<style>}*[<altheading>]{<heading>}
-%%% where the part after the *, including the * is optional.
-%%% See http://tex.stackexchange.com/questions/31780/where-can-i-find-help-files-or-documentation-for-commands-like-startsection-fo
-%%% and http://www.tug.org/texlive/Contents/live/texmf-dist/doc/latex/base/source2e.pdf
+% Spacing for \item lists
+% \topsep is vertical spacing before first item
+% \parsep is spacing between items
+% \itemsep = \z@ <=> add nothing to \parsep between items
+\def\@listI{%
+  \leftmargin\leftmargini
+  \topsep\ult@normalbaselineskip
+  \advance\topsep by -\parskip
+  \parsep\parskip
+  \listparindent\parindent
+  \itemsep\ult@normalbaselineskip
+  \advance\itemsep by -\parskip
+}
+\let\@listi\@listI
+\@listi
 
 % BASELINE GRID
 \usepackage{atbegshi,picture}
@@ -1133,6 +1149,12 @@
   {#1}% Before-code: print paragraph name (needed because we have enabled titlesec's explicit option)
   []% After-code
 
+%%% NOTE
+%%% The \@startsection macro is defined as follows:
+%%%  \@startsection{<name>}{<level>}{<indent>}{<beforeskip>}{<afterskip>}{<style>}*[<altheading>]{<heading>}
+%%% where the part after the *, including the * is optional.
+%%% See http://tex.stackexchange.com/questions/31780/where-can-i-find-help-files-or-documentation-for-commands-like-startsection-fo
+%%% and http://www.tug.org/texlive/Contents/live/texmf-dist/doc/latex/base/source2e.pdf
 
 % NOTE: chapter head is printed as:
 %   #4{#8}\kern \z@ \strut \@@par \nobreak #5\@@par
