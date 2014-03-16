@@ -90,7 +90,7 @@ ifndef PDFLATEX
 	@exit 3
 endif
 ifndef MAKEGLOSSARIES
-	@echo "Cannot find 'makeglossaries' >&2"
+	@echo "Cannot find 'makeglossaries'" >&2
 	@exit 4
 endif
 ifeq ($(FILE),)
