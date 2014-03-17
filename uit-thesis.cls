@@ -516,6 +516,7 @@
 \@listi
 
 % BASELINE GRID
+% http://tex.stackexchange.com/questions/150619/drawing-a-background-grid-based-on-linespread-value
 \usepackage{atbegshi,picture}
 \ifult@drawbaselinegrid
 \AtBeginShipout{%
