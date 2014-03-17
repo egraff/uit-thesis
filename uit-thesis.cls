@@ -1688,13 +1688,244 @@
 \usepackage{xstring}
  \usetikzlibrary{arrows}
 \newcommand{\printthed}{
-\begin{tikzpicture}
-\draw [ultra thick,o-*] plot[smooth, tension=.7] coordinates {(-12,-8) (-12,1) (-8,1) (-8,-8)};
-\draw [ultra thick,o-*] plot[smooth, tension=.7] coordinates {(-12,1)};
-\draw [ultra thick,o-*] plot[smooth, tension=.7] coordinates {(-12,1) (-13,4) (-10,7) (-7,4) (-8,1)};
-\draw [ultra thick,o-*] plot[smooth, tension=.7] coordinates {(-10,6) (-10,7)};
-\draw [ultra thick,o-*] (-13,-11) ellipse (3 and 3);
-\draw [ultra thick,o-*] (-7,-11) ellipse (3 and 3);
+\begin{tikzpicture}[y=0.80pt,x=0.80pt,yscale=-1, inner sep=0pt, outer sep=0pt]
+\begin{scope}[cm={{0.15032,0.0,0.0,0.15032,(687.69171,514.56151)}},miter limit=4.00,line width=1.597pt]
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2786.7101,-1367.9041) .. controls (-2786.7101,-1367.9041) and
+    (-2797.9533,-1520.1411) .. (-3101.0019,-1132.0707) .. controls
+    (-3511.0303,-607.0069) and (-3327.5762,-521.3086) .. (-3217.9124,-534.4309) ..
+    controls (-3022.0493,-557.8676) and (-2794.3016,-925.5333) ..
+    (-2794.3016,-925.5333) .. controls (-2794.3016,-925.5333) and
+    (-2658.2818,-610.7784) .. (-2459.3821,-585.8766);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2797.3381,-1384.0170) .. controls (-2692.2596,-1466.0366) and
+    (-2425.9814,-1145.6598) .. (-2402.5755,-688.2351);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2779.1183,-956.2942) .. controls (-2779.1183,-956.2942) and
+    (-2560.6330,-725.3784) .. (-2401.1541,-695.4867) .. controls
+    (-2316.7703,-623.7343) and (-2444.2807,-673.0076) .. (-2444.2807,-673.0076);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2681.9459,-828.8564) .. controls (-2681.9459,-828.8564) and
+    (-2361.4997,-520.0828) .. (-2397.1286,-662.0771);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2718.3857,-830.3210) .. controls (-2718.3857,-830.3210) and
+    (-2562.8065,-632.6814) .. (-2462.2460,-644.1461);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2770.9901,-1266.4851) .. controls (-2770.9901,-1266.4851) and
+    (-2737.9867,-849.6432) .. (-3113.1485,-686.7705) .. controls
+    (-3325.7131,-594.4876) and (-3190.5828,-940.1815) .. (-3190.5828,-940.1815) ..
+    controls (-3190.5828,-940.1815) and (-3395.2357,-697.4748) ..
+    (-3269.5352,-598.8821) .. controls (-3148.2610,-503.7611) and
+    (-2829.3065,-868.1222) .. (-2793.3621,-1065.8372);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2760.8986,-1297.5935) .. controls (-2760.8986,-1297.5935) and
+    (-2835.2962,-1095.4507) .. (-2763.9353,-963.6182);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2583.8842,-958.0129) .. controls (-2567.8959,-990.3475) and
+    (-2562.3605,-915.8801) .. (-2468.6603,-939.5927) .. controls
+    (-2502.4592,-913.9053) and (-2512.4648,-886.0831) .. (-2490.0090,-842.7378) ..
+    controls (-2579.7589,-804.7920) and (-2568.2158,-858.5995) ..
+    (-2585.9235,-832.6466) .. controls (-2593.0189,-826.1517) and
+    (-2624.2725,-896.9944) .. (-2583.8842,-958.0129) -- cycle;
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2599.5802,-908.7520) .. controls (-2599.5802,-908.7520) and
+    (-2547.5100,-851.7847) .. (-2455.7161,-891.6619);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2520.5053,-945.8622) .. controls (-2520.5053,-945.8622) and
+    (-2570.7746,-822.2300) .. (-2517.0940,-834.6594);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-3204.7844,-536.3246) .. controls (-3304.7291,-515.4385) and
+    (-3314.9076,-555.0852) .. (-3333.1284,-549.7742) .. controls
+    (-3342.5947,-547.0150) and (-3365.6865,-475.9550) .. (-3302.1252,-497.3588);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2801.0295,-862.4825) .. controls (-2801.0295,-862.4825) and
+    (-3050.8703,-494.7833) .. (-3258.0776,-509.2841);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2797.4975,-868.6973) .. controls (-2815.8287,-855.9247) and
+    (-2989.8181,-474.3128) .. (-3238.7527,-487.5329);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2852.2518,-728.8680) .. controls (-2852.2518,-728.8680) and
+    (-3057.6670,-385.8845) .. (-3291.7146,-455.2813);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2685.1231,-739.4034) .. controls (-2685.1231,-735.2603) and
+    (-2677.2529,-564.1800) .. (-2662.2223,-553.8224);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-3281.1604,-456.9775) .. controls (-3281.1604,-456.9775) and
+    (-3305.0618,-443.6829) .. (-3336.4514,-459.5670) .. controls
+    (-3364.6339,-473.8281) and (-3349.3347,-497.8906) .. (-3340.7459,-495.8190);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-3326.0703,-454.4629) .. controls (-3312.0037,-456.7248) and
+    (-3350.3096,64.3455) .. (-3337.5251,149.4673);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-3265.9479,-457.6755) .. controls (-3265.9479,-457.6755) and
+    (-3305.7694,-335.8731) .. (-3276.3290,-91.8677) .. controls
+    (-3252.7095,103.8933) and (-3319.2388,478.5928) .. (-3328.9011,551.0969) ..
+    controls (-3335.2228,598.5318) and (-3288.5199,604.2066) ..
+    (-3288.5199,604.2066);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-3210.8387,921.1179) .. controls (-3242.2285,904.7599) and
+    (-3297.8420,806.2980) .. (-3305.3167,820.3446) .. controls
+    (-3311.2638,782.9671) and (-3320.3473,746.0723) .. (-3320.3473,746.0723) ..
+    controls (-3320.3473,746.0723) and (-3327.8625,611.4219) ..
+    (-3325.7152,579.3130) .. controls (-3323.5681,547.2040) and
+    (-3328.9362,339.0137) .. (-3332.1570,241.6511) .. controls
+    (-3335.3777,144.2885) and (-3337.5251,146.3600) .. (-3337.5251,146.3600);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2432.3047,-628.9332) .. controls (-2432.3047,-628.9332) and
+    (-2416.2900,-622.4134) .. (-2424.4169,-608.7182) .. controls
+    (-2428.7917,-601.3459) and (-2439.0924,-587.1995) .. (-2457.8808,-587.1998) ..
+    controls (-2461.1016,-576.8420) and (-2452.8676,-261.7344) ..
+    (-2442.1316,-183.0157) .. controls (-2431.3954,-104.2970) and
+    (-2374.5289,1364.2417) .. (-2370.2344,1410.8514);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-3333.3046,697.4691) .. controls (-3353.0427,706.2581) and
+    (-3415.2937,744.3429) .. (-3397.0740,797.0759) .. controls
+    (-3378.8542,849.8088) and (-3292.3100,921.5842) .. (-3287.7550,940.6266);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-3340.7167,872.4330) .. controls (-3340.7167,872.4330) and
+    (-3374.4975,1382.5149) .. (-3348.4879,1488.4631) .. controls
+    (-3334.8230,1544.1257) and (-3342.4145,1569.0273) .. (-3342.4145,1569.0273) ..
+    controls (-3342.4145,1569.0273) and (-3328.5045,1567.7983) ..
+    (-3319.6397,1681.8172) .. controls (-3311.7684,1783.0607) and
+    (-3318.5192,1918.3023) .. (-3316.6032,1995.2853) .. controls
+    (-3315.4755,2040.5893) and (-3287.6925,2156.3533) .. (-3299.9016,2206.2169) ..
+    controls (-3311.2659,2252.6302) and (-3305.9750,2264.8092) ..
+    (-3305.9750,2264.8092);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-3206.5443,194.0056) .. controls (-3206.5443,194.0056) and
+    (-3231.3810,277.5901) .. (-3146.4219,409.4463) .. controls
+    (-3097.0357,486.0934) and (-3107.7719,568.9552) .. (-3107.7719,568.9552);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-3148.8289,202.3655) .. controls (-3131.8729,234.9954) and
+    (-3148.2376,270.9435) .. (-3098.7285,311.3944) .. controls
+    (-3058.5621,330.4696) and (-3004.7620,272.1281) .. (-2957.5208,256.5632);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2947.6517,322.4794) .. controls (-2980.7067,354.1865) and
+    (-3064.4514,381.7564) .. (-3034.1958,564.1720) .. controls
+    (-3026.8437,608.5002) and (-3017.4944,723.8357) .. (-3017.4944,723.8357);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2843.6470,-464.1202) .. controls (-2847.9385,-472.8146) and
+    (-2875.3017,-19.2960) .. (-2864.1442,104.2236) .. controls
+    (-2854.9997,205.4609) and (-2848.9611,650.5954) .. (-2852.7569,752.3994);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2673.5953,-392.3448) .. controls (-2681.6787,-389.4204) and
+    (-2691.6365,-330.8249) .. (-2688.7784,-30.5383) .. controls
+    (-2685.8911,272.8240) and (-2725.9034,701.2633) .. (-2724.4589,727.4976);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2399.0003,1441.3359) .. controls (-2399.0003,1441.3359) and
+    (-2361.1394,1481.6904) .. (-2355.0660,1448.7324) .. controls
+    (-2352.1248,1432.7702) and (-2398.7795,1334.6587) .. (-2398.7795,1334.6587) ..
+    controls (-2398.7795,1334.6587) and (-2416.9995,1149.3611) ..
+    (-2425.3501,1084.9097) .. controls (-2433.7009,1020.4583) and
+    (-2429.9051,719.4412) .. (-2430.6642,659.3842) .. controls
+    (-2431.4235,599.3273) and (-2443.5701,484.3402) .. (-2443.5701,484.3402);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2382.0781,1453.3079) .. controls (-2382.0781,1453.3079) and
+    (-2367.3531,1638.0816) .. (-2362.3400,1703.0569) .. controls
+    (-2358.0196,1759.0522) and (-2496.7112,1850.2697) .. (-2496.7112,1850.2697);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2476.9731,1960.8624) .. controls (-2458.9406,1901.4002) and
+    (-2311.6093,1853.3671) .. (-2294.7749,1736.7475) .. controls
+    (-2284.1466,1670.8312) and (-2373.0505,1554.9952) .. (-2373.0505,1554.9952);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2347.8922,1837.8308) .. controls (-2347.8922,1837.8308) and
+    (-2349.4560,1917.8862) .. (-2346.3281,1968.8303) .. controls
+    (-2343.2005,2019.7746) and (-2341.5452,2063.4643) .. (-2343.8911,2115.1364) ..
+    controls (-2346.2370,2166.8084) and (-2323.6513,2459.3509) ..
+    (-2297.0648,2532.8562);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2840.6103,1760.9167) .. controls (-2860.1263,1863.3716) and
+    (-2916.1694,1853.7498) .. (-2899.0656,2033.3701) .. controls
+    (-2899.0656,2033.3701) and (-2909.6938,2116.8640) .. (-2905.8980,2140.3009);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2913.4896,1716.9726) .. controls (-2914.0739,1750.9623) and
+    (-2937.8977,1731.2109) .. (-2968.1491,1826.8328) .. controls
+    (-2976.7277,1853.9497) and (-2983.3321,1927.1719) .. (-2983.3321,1927.1719) ..
+    controls (-3037.0903,1845.0040) and (-3073.1447,1821.1102) ..
+    (-3100.2428,1767.5084) .. controls (-3135.6427,1697.4845) and
+    (-3138.2007,1628.3519) .. (-3138.2007,1628.3519);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-3213.3574,1675.9581) .. controls (-3213.3574,1675.9581) and
+    (-3162.5855,1828.7648) .. (-3109.3527,1938.1578) .. controls
+    (-3082.8272,1992.6673) and (-3017.4944,2014.3277) .. (-2992.4422,2173.2589);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2569.5905,-226.8220) .. controls (-2569.5905,-226.8220) and
+    (-2563.5173,-53.9752) .. (-2581.7370,-17.3551) .. controls (-2591.5044,2.2764)
+    and (-2581.7370,19.2650) .. (-2581.7370,19.2650);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2531.6326,-276.6253) .. controls (-2531.6326,-276.6253) and
+    (-2523.5813,-227.8031) .. (-2531.6324,-125.7505) .. controls
+    (-2537.9047,-46.2458) and (-2513.4126,-29.0735) .. (-2513.4126,-29.0735);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2504.3027,-32.0031) .. controls (-2504.3027,-32.0031) and
+    (-2448.1249,-125.7505) .. (-2443.5701,-177.0187);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2555.9255,690.1451) .. controls (-2555.9255,690.1451) and
+    (-2573.4689,763.9446) .. (-2598.4385,779.4981) .. controls
+    (-2670.7557,824.5447) and (-2694.0925,763.3853) .. (-2694.0925,763.3853);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2528.5959,739.9484) .. controls (-2528.5959,739.9484) and
+    (-2536.6623,754.6074) .. (-2513.4126,801.4702) .. controls
+    (-2505.6121,817.1931) and (-2489.1197,819.0480) .. (-2489.1197,819.0480);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2678.9095,838.0904) .. controls (-2678.9095,838.0904) and
+    (-2644.5456,834.1778) .. (-2622.7316,857.1328) .. controls
+    (-2601.9209,879.0319) and (-2602.9935,893.7528) .. (-2602.9935,893.7528);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2483.0463,854.2031) .. controls (-2483.0463,854.2031) and
+    (-2559.1374,846.6649) .. (-2581.7370,901.0770) .. controls
+    (-2602.2085,950.3651) and (-2602.9935,974.3170) .. (-2602.9935,974.3170);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2871.7359,870.3161) .. controls (-2870.7711,869.1525) and
+    (-2827.0211,1247.8097) .. (-2818.5948,1341.9827) .. controls
+    (-2810.9750,1427.1384) and (-2806.5419,1795.5502) .. (-2800.3748,1900.0730) ..
+    controls (-2794.9261,1992.4212) and (-2771.5268,2374.6695) ..
+    (-2768.4901,2393.7119) .. controls (-2765.4536,2412.7543) and
+    (-2754.8254,2609.0380) .. (-2751.7887,2617.8268);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2678.9095,980.1763) .. controls (-2678.9095,980.1763) and
+    (-2631.0411,1389.6121) .. (-2623.4496,1418.9082);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2628.8048,1385.9269) .. controls (-2628.8048,1385.9269) and
+    (-2610.5850,1482.6040) .. (-2609.0667,1567.5625) .. controls
+    (-2607.5483,1652.5211) and (-2604.5118,1737.4798) .. (-2599.9568,1749.1983);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2604.9531,1720.9011) .. controls (-2604.9531,1720.9011) and
+    (-2577.3350,1947.1375) .. (-2560.4806,2015.7925) .. controls
+    (-2546.8157,2071.4550) and (-2542.2608,2134.4416) .. (-2542.2608,2172.5266) ..
+    controls (-2542.2608,2210.6114) and (-2530.4731,2358.2978) ..
+    (-2531.9915,2383.1994);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2538.8650,2356.2066) .. controls (-2538.8650,2356.2066) and
+    (-2480.0096,2591.4605) .. (-2486.0830,2631.0101);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-3041.2077,2414.7021) .. controls (-3054.2936,2434.8853) and
+    (-3031.8680,2407.7116) .. (-3129.2441,2358.7704) .. controls
+    (-3230.1636,2311.1249) and (-3268.8138,2294.5525) .. (-3268.8138,2294.5525) ..
+    controls (-3268.8138,2294.5525) and (-3404.6829,2250.5159) ..
+    (-3532.9227,2323.5541) .. controls (-3655.5874,2393.4172) and
+    (-3741.2037,2592.8549) .. (-3741.2037,2592.8549) .. controls
+    (-3741.2037,2592.8549) and (-3818.5847,2877.4244) .. (-3837.8288,2945.0178) ..
+    controls (-3848.2304,2981.5527) and (-3840.1002,3060.9338) ..
+    (-3805.6203,3208.1039) .. controls (-3779.0209,3321.6384) and
+    (-3693.6823,3405.2555) .. (-3580.1616,3479.4763) .. controls
+    (-3502.0728,3530.5316) and (-2944.5827,3531.2650) .. (-2923.1102,3431.8308);
+  \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
+    width=1.597pt] (-2293.9729,2520.3509) .. controls (-2293.9729,2520.3509) and
+    (-2296.1202,2514.1362) .. (-2274.6480,2516.2078) .. controls
+    (-2253.1755,2518.2793) and (-2229.5562,2468.5623) .. (-2229.5562,2468.5623) ..
+    controls (-2229.5562,2468.5623) and (-2150.1087,2383.6289) ..
+    (-2006.2446,2352.5557) .. controls (-1862.3805,2321.4825) and
+    (-1778.6385,2340.1264) .. (-1660.5410,2375.3427) .. controls
+    (-1542.4436,2410.5590) and (-1432.9350,2596.9980) .. (-1432.9350,2596.9980) ..
+    controls (-1432.9350,2596.9980) and (-1311.3431,2684.0029) ..
+    (-1339.2571,2996.8064) .. controls (-1367.1711,3309.6097) and
+    (-1441.5238,3274.3934) .. (-1484.4685,3328.2536) .. controls
+    (-1519.3282,3371.9740) and (-1649.8048,3452.5462) .. (-1832.3191,3442.1886) ..
+    controls (-2014.8335,3431.8308) and (-2214.5256,3427.6877) ..
+    (-2298.2673,3386.2569);
+\end{scope}
+
 \end{tikzpicture}
 }
 % \end{egg}
@@ -1718,13 +1949,26 @@
   \newgeometry{top=16.5mm,bottom=10mm,right=7mm,left=59mm}
   %
   \begin{titlepage}%
-  \AddToShipoutPicture*{%
-    \put(-3,-110.5){% This is the correct position
-      \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill%
-        \centering%
-        \includegraphics[width=199.5mm,height=199.5mm,keepaspectratio]{\@ThesisFrontpageImage}%
-        \vfill%
+  %
+  %\begin{egg}%
+  \IfEndWith{\@author}{arlberg}{%
+    \AddToShipoutPicture*{%
+      \put(140,50){
+        \begingroup
+          \printthed
+        \endgroup%
+      }%
+    }%
+  }{%
+  %\end{egg}
+    \AddToShipoutPicture*{%
+      \put(-3,-110.5){% This is the correct position
+        \parbox[b][\paperheight]{\paperwidth}{%
+          \vfill%
+          \centering%
+          \includegraphics[width=199.5mm,height=199.5mm,keepaspectratio]{\@ThesisFrontpageImage}%
+          \vfill%
+        }%
       }%
     }%
   }
@@ -1790,15 +2034,6 @@
     \noindent\@thesisprogramme
     \vskip -\parskip
   \endgroup
-  %
-  % \begin{egg}
-  \IfEndWith{\@author}{arlberg}{%
-    \vspace*{600\p@}
-    \begingroup
-      \printthed
-    \endgroup%
-  }{}
-  % \end{egg}
   %
   \end{titlepage}%
   %
