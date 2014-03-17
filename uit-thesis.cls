@@ -774,6 +774,7 @@
 
 % fosj is opensans with old style figures
 \newcommand{\rheadfont}{\fontsize{10pt}{12pt}\usefont{T1}{fosj}{l}{n}\selectfont}
+\newcommand{\rheadfmt}[1]{\textsc{\MakeLowercase{#1}}}
 
 % Set pagenumber in the header.
 % RO = Right Odd: Page number is set to the right in the header on odd pages
@@ -782,11 +783,11 @@
 
 % Set \leftmark to show to the right in header on even pages. Only upper case on first letter of chapter name
 % This will make sure that chapter title is written to the right on even/verso pages
-\fancyhead[RE]{\rheadfont\textcolor{rheadcolor}{\nouppercase{\leftmark}}}
+\fancyhead[RE]{\rheadfont\textcolor{rheadcolor}{\leftmark}}
 
 % Redefine what is in \sectionmark so that \rightmark contains section number and section name (e.g. "2.1 My Sections Name")
 \renewcommand{\sectionmark}[1]{%
-  \markright{\thesection\ \printrheadslash\ #1}% \leftmark (right even) is set to section number + title after start of new section
+  \markright{\thesection \printrheadslash \rheadfmt{#1}}% \leftmark (right even) is set to section number + title after start of new section
 }
 
 % Redefine "plain" pagestyle (used on first page of each chapter)
@@ -963,8 +964,8 @@
 }
 
 \newcommand{\printrheadslash}[1][]{
-  \raisebox{-1.2pt}{
-    \begin{tikzpicture}[scale=0.082]
+  \raisebox{-0.6pt}{
+    \begin{tikzpicture}[scale=0.074]
       \draw[fill,color=rheadslashcolor] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;                % Draw UiT "slash"
     \end{tikzpicture}
   }
@@ -1532,7 +1533,7 @@
   % Set \leftmark to the left on odd pages
   % This will make sure that chapter title is written in front matter where section title is normally written in main matter,
   % that is, to the left on odd/recto pages (in addition to the right on even/verso pages, where it is already written)
-  \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\nouppercase{\leftmark}}}
+  \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\leftmark}}
 
   % Make sure that abbreviations are not expanded
   \glsunsetall
@@ -1573,13 +1574,13 @@
   % Note that we do not use \@chapapp (contains "chapter type"), because we do not want to write "Chapter" before the chapter number.
   \renewcommand{\chaptermark}[1]{%
     % Note: we use two number signs (#) because we have renewcommand within renewcommand
-    \markboth{\@chapapp\ \thechapter\ \printrheadslash\ ##1}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
+    \markboth{\rheadfmt{\@chapapp}\ \thechapter \printrheadslash \rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
              {}%                 % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
   }
   
   % Set odd pages to have have \rightmark instead of \leftmark
   % This will make sure that section title is written to the left in running headers on odd (recto) pages
-  \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\nouppercase{\rightmark}}}
+  \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\rightmark}}
   
   % Reset glossaries so every abbreviation will expand on first use
   \glsresetall
