@@ -510,8 +510,7 @@
   \advance\topsep by -\parskip
   \parsep\parskip
   \listparindent\parindent
-  \itemsep\ult@normalbaselineskip
-  \advance\itemsep by -\parskip
+  \itemsep\z@
 }
 \let\@listi\@listI
 \@listi
