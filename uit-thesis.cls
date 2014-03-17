@@ -1518,6 +1518,79 @@
 
 %:-------------------------- Book class overrides -----------------------
 
+% List of glossary entries that has been unset or reset (and must be remembered as such...)
+\newcommand*{\ult@glsstates}{,}
+\let\ult@saveglsreset\glsreset
+\let\ult@saveglsunset\glsunset
+
+% Macros for remembering gls entry states (unset or reset)
+\newcommand*{\ult@unsetgls}[1]{%
+  \gls@ifnotmeasuring
+  {%
+    \glsdoifexists{#1}%
+    {%
+      \csname ifglo@#1@flag\endcsname% True means unset
+        \global\eappto\ult@glsstates{-#1,}% Append gls entry to list (minus indicates that glsentry is unset)
+      \fi
+    }%
+  }%
+}
+\newcommand*{\ult@rememberglsstates}[1][\@glo@types]{%
+  \forallglsentries[#1]{\@glsentry}%
+  {%
+     \ult@unsetgls{\@glsentry}%
+  }%
+}
+\newcommand*{\ult@preserveglsstates}{%
+  \renewcommand*{\glsreset}[1]{%
+    \gls@ifnotmeasuring
+    {%
+      \glsdoifexists{##1}%
+      {%
+        \global\eappto\ult@glsstates{+##1,}% Append gls entry to list (plus indicates that glsentry is reset)
+      }%
+    }%
+  }%
+  \renewcommand*{\glsunset}[1]{%
+    \gls@ifnotmeasuring
+    {%
+      \glsdoifexists{##1}%
+      {%
+        \global\eappto\ult@glsstates{-##1,}% Append gls entry to list (minus indicates that glsentry is unset)
+      }%
+    }%
+  }%
+}
+\newcommand*{\ult@restoreglsstates}{%
+  % Restore \glsreset and \glsunset
+  \let\glsreset\ult@saveglsreset
+  \let\glsunset\ult@saveglsunset
+  %
+  % Reset all gls entries, so these will expand
+  \glsresetall
+  %
+  % Re-apply overridden gls states
+  \@for{\@glsentry}:=\ult@glsstates\do% Iterate over entries in \ult@glsstates
+  {%
+    \ifx\@glsentry\@empty% Ignore empty entries
+    \else%
+      \StrLeft{\@glsentry}{1}[\firstchar]% Get leftmost character
+      \StrGobbleLeft{\@glsentry}{1}[\@glsentry]% Remove leftmost character
+      \IfStrEq{\firstchar}{+}{% If entry starts with a plus (indicates reset)
+        \glsreset{\@glsentry}
+      }%
+      {% If not
+        \IfStrEq{\firstchar}{-}{% If entry start with a minus (indicates unset)
+          \glsunset{\@glsentry}
+        }%
+        {% If not
+          \@latex@error{BUG in \@backslashchar ult@restoreglsstates}\@ehd
+        }%
+      }%
+    \fi%
+  }%
+}
+
 % Frontmatter
 \let\ult@savefrontmatter\frontmatter
 \renewcommand\frontmatter{%
@@ -1535,8 +1608,14 @@
   % that is, to the left on odd/recto pages (in addition to the right on even/verso pages, where it is already written)
   \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\leftmark}}
 
+  % Remember current gls states (if any gls entries have been unset)
+  \ult@rememberglsstates
+
   % Make sure that abbreviations are not expanded
   \glsunsetall
+
+  % Make sure that we retain future state modifications
+  \ult@preserveglsstates
 }
 
 % Table of Contents
@@ -1582,8 +1661,8 @@
   % This will make sure that section title is written to the left in running headers on odd (recto) pages
   \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\rightmark}}
   
-  % Reset glossaries so every abbreviation will expand on first use
-  \glsresetall
+  % Reset glossaries so every abbreviation will expand on first use (except those that have been unset)
+  \ult@restoreglsstates
 }
 
 % Backmatter
