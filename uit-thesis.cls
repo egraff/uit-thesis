@@ -199,6 +199,13 @@
                     \chaptermark{#1}%
                     %\addtocontents{lof}{\protect\addvspace{10\p@}}%
                     %\addtocontents{lot}{\protect\addvspace{10\p@}}%
+                    %
+                    % Add space between entries belonging to different
+                    % chapters in ToC lists
+                    \ult@foralltoclists{\ult@this@toclistext}{%
+                      \addtocontents{\ult@this@toclistext}%
+                                    {\protect\addvspace{\ult@cftbeforechapskip}}%
+                    }
                     \if@twocolumn
                       \@topnewpage[\@makechapterhead{#2}]%
                     \else
@@ -561,9 +568,12 @@
     \microtypesetup{protrusion=false}% disables protrusion locally in the document
   \fi
   %
-  % First element in TOC will be a chapter. Compensate for vertical space
+  % First element in ToC will be a chapter. Compensate for vertical space
   % added by tocloft, so the first element isn't pushed down.
-  \ifstrequal{#1}{toc}{\vspace*{-\ult@cftbeforechapskip}}{}
+  % Also, elements in ToC lists that belong to different chapters are separated
+  % with spacing, and this spacing will be present before the very first element.
+  % Hence, we compensate for both these cases...
+  \vspace*{-\ult@cftbeforechapskip}
   %
   % Make sure spacing is the same with class option 'parindent' and without
   \vspace*{\parskip}
@@ -1316,6 +1326,15 @@
 % \l@figure
 % \l@table
 
+% List of ToC lists (e.g. lof for List of Figures, lot for List of Tables, ...)
+\newcommand*{\ult@toclists}{,}
+\newcommand*{\ult@foralltoclists}[2]{%
+  \@for#1:=\ult@toclists\do{\ifx#1\@empty\else#2\fi}%
+}
+
+\eappto\ult@toclists{lof,} % Append List of Figures to \ult@toclists
+\eappto\ult@toclists{lot,} % Append List of Tables to \ult@toclists
+
 \newlength\ult@cftbeforechapskip
   \setlength{\ult@cftbeforechapskip}{\ult@normalbaselineskip} % Default is 1.0em \@plus\p@
 \newlength\ult@cftchapindent
@@ -1386,7 +1405,9 @@
 \LetLtxMacro{\ult@savenewlistof}{\newlistof}
 \renewcommand{\newlistof}[4][\@empty]{%
   \ult@savenewlistof[#1]{#2}{#3}{#4}%
-  
+  %
+  % Append list extension to \ult@toclists
+  \eappto\ult@toclists{#3,}
 }
 
 
