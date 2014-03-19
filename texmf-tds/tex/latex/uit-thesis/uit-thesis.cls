@@ -307,7 +307,7 @@
 
 
 \ifpdf
-  
+
   \usepackage[pdftex,%                       %
               plainpages=false,%             %
               pdfpagelabels=false,%          % Don't index pages using logical page numbers in PDF reader (such as ii, iii, iv, ...)
@@ -320,20 +320,20 @@
               hyperindex,%                   %
               hyperfigures%                  %
              ]{hyperref}
-  
+
   % Used for adding figures in thesis
   \usepackage[pdftex]{graphicx}
-  
+
   % Make it easy to include PDFs using \includepdf macro. Note that PDF links will be lost when including!
   \usepackage{pdfpages}
-  
+
 \else
-  
+
   \usepackage[dvips,bookmarks,pagebackref,hyperindex,hyperfigures]{hyperref}
 
   % Used for adding figures in thesis
   \usepackage{graphicx}
-  
+
 \fi
 
 \usepackage[all]{hypcap} % Correct a problem with hyperref
@@ -815,7 +815,7 @@
 
 % Magic to define \upsc{} command that replaces upper-case letters with lower-case small-caps
 \ExplSyntaxOn
-\cs_generate_variant:Nn \tl_rescan:nn { nV } 
+\cs_generate_variant:Nn \tl_rescan:nn { nV }
 \NewDocumentCommand \upsc { m }
   {
     \tl_set:Nx \l_tmpa_tl {#1}
@@ -855,10 +855,10 @@
         {% plural subsequent use
            \glscapscase
            {% no case change
-             \upsc{\glsentryshortpl{\glslabel}}\glsinsert 
+             \upsc{\glsentryshortpl{\glslabel}}\glsinsert
            }%
            {% first letter upper case
-             \upsc{\Glsentryshortpl{\glslabel}}\glsinsert 
+             \upsc{\Glsentryshortpl{\glslabel}}\glsinsert
            }%
            {% all caps
              \MakeTextUppercase{\upsc{\glsentryshortpl{\glslabel}}\glsinsert}% XXX
@@ -867,10 +867,10 @@
         {% singular subsequent use
            \glscapscase
            {% no case change
-             \upsc{\glsentryshort{\glslabel}}\glsinsert 
+             \upsc{\glsentryshort{\glslabel}}\glsinsert
            }%
            {% first letter upper case
-             \upsc{\Glsentryshort{\glslabel}}\glsinsert 
+             \upsc{\Glsentryshort{\glslabel}}\glsinsert
            }%
            {% all caps
              \MakeTextUppercase{\upsc{\glsentryshort{\glslabel}}\glsinsert}%  XXX
@@ -1519,7 +1519,7 @@
       \CatchFileDef{\ult@read@buf}% Macro we dump file contents into
                    {##1}% File name
                    {\makeatletter\endlinechar=-1\relax}% Scancode magic
-      
+
       % If file contents is equal to \null, then ignore...
       % This will prevent an additional blank page being inserted,
       % since we suppress the \null from being output.
@@ -1682,7 +1682,7 @@
 \let\ult@savemainmatter\mainmatter
 \renewcommand\mainmatter{%
   \ult@savemainmatter
-  
+
   % Redefine \chaptermark, so it contains chapter number in front of chapter name (e.g. "2 My Chapers Name")
   % Note that we do not use \@chapapp (contains "chapter type"), because we do not want to write "Chapter" before the chapter number.
   \renewcommand{\chaptermark}[1]{%
@@ -1690,11 +1690,11 @@
     \markboth{\rheadfmt{\@chapapp}\ \thechapter \printrheadslash \rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
              {}%                 % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
   }
-  
+
   % Set odd pages to have have \rightmark instead of \leftmark
   % This will make sure that section title is written to the left in running headers on odd (recto) pages
   \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\rightmark}}
-  
+
   % Reset glossaries so every abbreviation will expand on first use (except those that have been unset)
   \ult@restoreglsstates
 }
@@ -1703,12 +1703,12 @@
 \let\ult@savebackmatter\backmatter
 \renewcommand\backmatter{%
   \ult@savebackmatter
-  
+
   % Redefine headers for appendices
   \pagestyle{empty}
-  
+
   \printglossary
-  
+
   % Blank back cover
   \clearversopage
 }
