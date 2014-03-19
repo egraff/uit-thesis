@@ -11,7 +11,10 @@
 
 % Add external glossaryentries
 \loadglsentries{acronyms}
-\newacronym{api}{API}{application programming interface}
+\newacronym{api}{API}{application programming interface}\glsunset{api}
+\newacronym{2api}{2API}{application programming interface}
+\newacronym{d3}{D3}{Data-Driven Documents}
+\newacronym{html5}{HTML5}{version 5 of the HyperText Markup Language standard}
 \newglossaryentry{thesis}
 {
   name=thesis,
@@ -23,13 +26,19 @@
 \newglossaryentry{lage}
 {
   name={long ass glossary entry},
-  description={is a long ass entry with AAAAAAAA AAAAAA AAAAAAAAA AAA
-  AAA AAAAA AAAAA AAAAAAAAAAA AAAAAAAAAA AAAAAAAAAAAAAAAAA
-  AAAAAAAAAA AAAAAAAAAAAAAAAAAA AAAAAAA
-  AAAA AA AAAAAAA AAA AAAAAAAAAAAAAA AAAAAAAAAA
+  description={is a long ass entry with a lot of text describing the properties of the glossary entry. Hopefully this spans some lines now.
   },
 }
 
+
+\newcommand{\listdefinitionname}{My list of definitions}
+\newlistof{definition}{def}{\listdefinitionname}
+\newcommand{\definition}[1]{%
+  \refstepcounter{definition}%
+  \par\noindent\textbf{The Definition~\thedefinition. #1}%
+  \addcontentsline{def}{definition}
+    {\protect\numberline{\thechapter.\thedefinition}#1}\par%
+}
 
 \begin{document}
 
@@ -46,122 +55,92 @@
 %:-------------------------- Frontmatter -----------------------
 \frontmatter
 
+\begin{dedication}
+To Leslie.
+
+Fuck you very much.
+\end{dedication}
+
+\begin{epigraph}
+\epigraphitem{Simplicity is prerequisite for reliability.}{Edsger Dijkstra}
+\epigraphitem{Beware of bugs in the above code;\\I have only proved it correct, not tried it.}{Donald Knuth}
+\end{epigraph}
+
+\begin{abstract}
+\lipsum[2-3]
+\end{abstract}
+
+\begin{acknowledge}
+\lipsum[4-8]
+\end{acknowledge}
+
 \tableofcontents
+
+\listofdefinition
 
 %:-------------------------- Mainmatter -----------------------
 \mainmatter
 
 \chapter{Introduction}
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-%
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-%
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-%
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\newline
 \lipsum[1]
-\lipsum[1]
-\lipsum[1-7]
+
+\section{First section}
+\lipsum[2-6]
+
+\section{Second section}
+\lipsum[6]
+
+\begin{itemize}
+\item The first item is a glorious item! It may span several lines and even several paragraphs. Hopefully this spans some lines
+now. Sed feugiat. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Et requiem morbi et nunc. Aliquam dolor odio.
+
+This is the second paragraph of that first item. Gorgeous, gorgeous, gorgeous! Nulla non mauris vitae wisi pisuere convallis. Sed eu nulla nec eros scelerisque pharetra. Nullam varius.
+\item The second item is a peculiar and rather scrumptious item, I would say. Quite, quite interesting.
+\end{itemize}
+
+\lipsum[7]
+
+\begin{enumerate}
+\item The first item is a glorious item! It may span several lines and even several paragraphs. Hopefully this spans some lines
+now. Sed feugiat. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Et requiem morbi et nunc. Aliquam dolor odio.
+
+This is the second paragraph of that first item. Gorgeous, gorgeous, gorgeous! Nulla non mauris vitae wisi pisuere convallis. Sed eu nulla nec eros scelerisque pharetra. Nullam varius.
+\item The second item is a peculiar and rather scrumptious item, I would say. Quite, quite interesting.
+\end{enumerate}
+
+\newpage
+
+\section{Third section}
+\lipsum[6-8]
+
+\begin{description}
+\item[Entry A] with definition A.
+\item[Entry B] with definitioin B.
+\item[Entry C] with definition C.
+\end{description}
+
+\section{Fourth section}
+\lipsum[6-7]
+
+\subsection{A subsection}
+\lipsum[8-10]
+
+\subsubsection{A subsubsection}
+\lipsum[10-11]
+
+\paragraph{A paragraph}
+\lipsum[12]
+
+\section{Fifth section}
+\lipsum[6-7]
+
+\subsection{A subsection}
+\lipsum[8-9]
 
 
+We can use the \ac{api} to \ac{2api} do stuff, and write about what we did in a \gls{thesis}!
 
-We can use the \ac{api} to do stuff, and write about what we did in a \gls{thesis}!
+This is some stuff, {\sc smallcaps {\em smallcapsemphasized}} {\em regularemphasized}
 
 \Gls{lage}: a test glossary entry.
 
@@ -172,10 +151,12 @@ footnote. Words and etc. Semantic web technologies are technologies that enable
 semantification of the Web as we know it today. Hopefully this spans some lines
 now.}
 
-It is fun to use \emph{modern \upsc{OpenMP}} technology!
+It is fun to use \emph{modern \upsc{OpenMP}} technology! And it is fun to use \ac{d3} and \ac{html5}.
 
 Referencing figure \ref{fig:ex} to test link.\footnote{This is another
 footnote.}
+
+\definition{Some other definition}
 
 \begin{figure}\label{fig:ex}
 \centering
@@ -186,6 +167,8 @@ footnote.}
 \chapter{Design}
 \lipsum[8-10]
 
+\definition{Another definition}
+
 \begin{table}
 \centering
 \begin{tabular}{|l|l|}
@@ -194,6 +177,16 @@ Content left & Content right\\
 \hline
 \end{tabular}
 \caption{A table}
+\end{table}
+
+\begin{table}
+\centering
+\begin{tabular}{|l|l|}
+\hline
+Content left & Content right\\
+\hline
+\end{tabular}
+\caption{Another table}
 \end{table}
 
 \newpage
@@ -239,6 +232,14 @@ main(m1,s) char *s; {
 }
 \end{lstlisting}
 
+\chapter{The single-line chapter title}
+\lipsum[1-2]
+
+\chapter{This is a long chapter title that spans two lines}
+\lipsum[3-4]
+
+\chapter{This is an even longer chapter title that spans three lines}
+\lipsum[5-6]
 
 \backmatter
 
