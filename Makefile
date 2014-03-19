@@ -23,28 +23,35 @@ define prompt-texmf
 	fi
 endef
 
-detect-texmf:
-	@echo "Using texmf tree in \"$(TEXMF)\"."
-ifndef TEXMF
+# If TEXMFHOME is defined, we use it! Else, we try TEXMFLOCAL
+try-texmf-home:
 ifneq ($(ULTTEXMFHOME),)
-	$(prompt-texmf)
-  TEXMF = $(ULTTEXMFHOME)
-else
+  try-texmf-local:  ULTTEXMFLOCAL = $(ULTTEXMFHOME)
+endif
+
+# Try TEXMFHOME first. If TEXMFHOME is defined, it will override ULTTEXMFLOCAL
+try-texmf-local: try-texmf-home
+# If neither TEXMFHOME nor TEXMFLOCAL is defined
 ifeq ($(ULTTEXMFLOCAL),)
 	@echo -e "Cannot locate your home texmf tree. Specify manually with\n\n    make install TEXMF=/path/to/texmf\n"
 	@exit 1
 else
-	$(prompt-texmf)
   TEXMF = $(ULTTEXMFLOCAL)
 endif
+
+ifdef TEXMF
+detect-texmf:
+else
+detect-texmf: try-texmf-local
 endif
-endif
+	@echo "Using texmf tree in \"$(TEXMF)\"."
+	$(prompt-texmf)
+ULTTEXMF = $(subst \,/,$(TEXMF))
+LATEXROOT = $(ULTTEXMF)/tex/latex/$(NAME)
+LOCALLATEXROOT = texmf-tds/tex/latex/$(NAME)
 
 check-texmf: detect-texmf
 	@test -d "$(ULTTEXMF)" || mkdir -p "$(ULTTEXMF)"
-  ULTTEXMF = $(subst \,/,$(TEXMF))
-  LATEXROOT = $(ULTTEXMF)/tex/latex/$(NAME)
-  LOCALLATEXROOT = texmf-tds/tex/latex/$(NAME)
 
 uninstall: check-texmf
 	@echo "$(ULTTEXMF)/tex/latex/$(NAME)"
