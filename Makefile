@@ -24,13 +24,7 @@ define prompt-texmf
 endef
 
 # If TEXMFHOME is defined, we use it! Else, we try TEXMFLOCAL
-try-texmf-home:
-ifneq ($(ULTTEXMFHOME),)
-  try-texmf-local:  ULTTEXMFLOCAL = $(ULTTEXMFHOME)
-endif
-
-# Try TEXMFHOME first. If TEXMFHOME is defined, it will override ULTTEXMFLOCAL
-try-texmf-local: try-texmf-home
+try-texmf-local:
 # If neither TEXMFHOME nor TEXMFLOCAL is defined
 ifeq ($(ULTTEXMFLOCAL),)
 	@echo -e "Cannot locate your home texmf tree. Specify manually with\n\n    make install TEXMF=/path/to/texmf\n"
@@ -39,10 +33,16 @@ else
   TEXMF = $(ULTTEXMFLOCAL)
 endif
 
+# Try TEXMFHOME first. If TEXMFHOME is defined, it will override ULTTEXMFLOCAL
+try-texmf-home: try-texmf-local
+ifneq ($(ULTTEXMFHOME),)
+  ULTTEXMFLOCAL = $(ULTTEXMFHOME)
+endif
+
 ifdef TEXMF
 detect-texmf:
 else
-detect-texmf: try-texmf-local
+detect-texmf: try-texmf-home
 endif
 	@echo "Using texmf tree in \"$(TEXMF)\"."
 	$(prompt-texmf)
