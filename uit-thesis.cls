@@ -420,6 +420,17 @@
 
 \usepackage[activate={true,nocompatibility},final,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
 
+% this is necessary so that smallcapped italics & bolds also get spaced
+\DeclareMicrotypeSet{mysmallcaps}
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2},
+     shape    = {sc,si,scit}
+   }
+\microtypesetup{tracking=mysmallcaps}
+
+% the default tracking is kind of huge, this sets tracking to 5.5% of an em
+\SetTracking{encoding = *, shape = {sc,si,scit}}{55}
+
+
 \newif\ifult@microtypeloaded
 \AtBeginDocument{%
   \@ifpackageloaded{microtype}
