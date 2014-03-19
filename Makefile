@@ -65,7 +65,7 @@ uninstall: check-texmf
 install: check-texmf uninstall
 	@echo "Installing into \"$(LATEXROOT)\"..."
 	@test -d "$(LATEXROOT)" || mkdir -p "$(LATEXROOT)"
-	cp -r -v "$(LOCALLATEXROOT)"/* "$(LATEXROOT)/"
+	@cp -r -v "$(LOCALLATEXROOT)"/* "$(LATEXROOT)/"
 	@if [ $$? -ne 0 ]; then \
 		echo "Failed to copy class files to texmf directory" ; \
 		exit 1 ; \
