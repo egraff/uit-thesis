@@ -2004,11 +2004,11 @@
   }{%
   %\end{egg}
     \AddToShipoutPicture*{%
-      \put(-3,-110.5){% This is the correct position
+      \put(0,-110.5){% This is the correct position
         \parbox[b][\paperheight]{\paperwidth}{%
           \vfill%
           \centering%
-          \includegraphics[width=199.5mm,height=199.5mm,keepaspectratio]{\@ThesisFrontpageImage}%
+          \includegraphics[width=190.5mm,height=199.5mm,keepaspectratio=false]{\@ThesisFrontpageImage}%
           \vfill%
         }%
       }%
