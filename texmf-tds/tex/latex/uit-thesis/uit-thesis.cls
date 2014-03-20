@@ -1093,6 +1093,7 @@
     \kern \z@ \strut
     %
     % Compensate for extra line added by strut
+    \vspace*{-\parskip}
     \vspace*{-\baselineskip}
   ]
 
