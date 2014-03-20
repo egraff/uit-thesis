@@ -1421,6 +1421,14 @@
   %
   % Append list extension to \ult@toclists
   \eappto\ult@toclists{#3,}
+  %
+  % Override \listof... macro to use tocbibind to generate list
+  % (will also add list to ToC).
+  \@namedef{listof#2}{%
+    \begingroup
+      \tocfile{#4}{#3}
+    \endgroup%
+  }
 }
 
 
