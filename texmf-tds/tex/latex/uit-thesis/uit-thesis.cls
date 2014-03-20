@@ -354,6 +354,9 @@
 % Enables adding figures and tables side by side
 \usepackage{subfigure}
 
+% Floats
+\usepackage{float}
+
 % Listings
 \usepackage{listings}
 
@@ -1440,6 +1443,22 @@
   }
 }
 
+% Override float package's \listof (for lists that do not use tocloft)
+% See: http://tex.stackexchange.com/questions/58469/why-are-listof-and-listoffigures-styled-differently
+\renewcommand*{\listof}[2]{%
+  \@ifundefined{ext@#1}{\float@error{#1}}{%
+    \expandafter\let\csname l@#1\endcsname \l@figure  % <- use layout of figure
+    %
+    % Append list extension to \ult@toclists
+    % Note: this is safe even if it has already been added to \ult@toclists...
+    \eappto\ult@toclists{\@nameuse{ext@#1},}
+    %
+    % Use tocbibind to render list
+    \begingroup
+      \tocfile{#2}{\@nameuse{ext@#1}}
+    \endgroup%
+  }%
+}
 
 
 
