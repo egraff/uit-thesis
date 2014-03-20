@@ -500,10 +500,8 @@
 % Strict linespacing, don't allow LaTeX to put extra spacing between lines
 \lineskip=\z@
 
-% Make sure that line spacing defined by \baselineskip will be preserved under all circumstances!
-% See http://tex.stackexchange.com/questions/49072/is-changing-lineskiplimit-to-some-negative-value-a-good-idea-and-what-the-valu
-% Note: this could be a potential source of future text formatting bugs (if lines are written on top of each other)
-\lineskiplimit=-2\ult@normalbaselineskip % WTF?
+% Note: this breaks tables, figures, and probably other environments too if set < \z@.
+\lineskiplimit=\z@
 
 \renewcommand{\baselinestretch}{1.0}\normalsize
 
@@ -995,7 +993,7 @@
 % Align bottom of UiT slash with bottom of baseline
 \newlength{\chapterheadalign}
 %\setlength{\chapterheadalign}{\z@ + 8\ult@normalbaselineskip}
-\setlength{\chapterheadalign}{\z@ + 8\ult@normalbaselineskip - \ult@chapslash@height}
+\setlength{\chapterheadalign}{\z@ + 8\ult@normalbaselineskip}
 
 % Align chapter name
 \newlength{\chapternamealign}\setlength{\chapternamealign}{\z@}
@@ -1037,7 +1035,12 @@
 
 % Now, use our supahdupah chapter style! YEEEEEEAAAAHHHHHH!
 \titleformat{\chapter}[display]
-  {}% Format
+  {% Format
+    % Make sure that line spacing defined by \baselineskip will be preserved under all circumstances!
+    % See http://tex.stackexchange.com/questions/49072/is-changing-lineskiplimit-to-some-negative-value-a-good-idea-and-what-the-valu
+    % Note: this could be a potential source of future text formatting bugs (if lines are written on top of each other)
+    \lineskiplimit=-\maxdimen
+  }%
   {\vspace*{\baselinesbeforemainchaphead\ult@normalbaselineskip} \vspace*{-\baselinesbeforefrontchaphead\ult@normalbaselineskip} \vspace*{\chapterheadalign} \printchapternum}% Label
   {\z@ - \parskip + \chapternamealign + \baselinesafterchapnum\ult@normalbaselineskip}% Vertical distance between chapter number and chapter title
   {% Before-code plus chapter name (titlesec's explicit option is enabled, so #1 is chapter name)
@@ -1086,6 +1089,11 @@
     % Now, switch to normal font
     \normalsize\normalfont\selectfont
     %
+    % Strut the fuck up!
+    \kern \z@ \strut
+    %
+    % Compensate for extra line added by strut
+    \vspace*{-\baselineskip}
   ]
 
 % Adjust spacing around chapter title
