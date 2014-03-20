@@ -9,10 +9,10 @@ all: help
 help:
 	@echo 'uit-thesis makefile targets:'
 	@echo ' '
-	@echo '                  help  -  (this message)'
+	@echo '          help  -  (this message)'
 	@echo ' '
-	@echo '               install  -  install the uit-thesis class into your home texmf tree'
-	@echo '             uninstall  -  remove the uit-thesis class from your home texmf tree'
+	@echo '       install  -  install the uit-thesis class into your home texmf tree'
+	@echo '     uninstall  -  remove the uit-thesis class from your home texmf tree'
 
 define prompt-texmf
 	@while [ -z "$$CONTINUE" ]; do \
