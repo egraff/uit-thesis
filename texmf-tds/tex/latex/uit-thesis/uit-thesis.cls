@@ -838,14 +838,24 @@
 
 % Use smallcaps-magic!!! _o/ \o/ \o_
 % Must be used to support ACR-commands that are not aliased to GLS-commands
-\renewcommand*{\firstacronymfont}[1]{\upsc{#1}}
-\renewcommand*{\acronymfont}[1]{\upsc{#1}}
+\renewcommand*{\firstacronymfont}[1]{\upsc{#1}}% WTF?
+\renewcommand*{\acronymfont}[1]{#1}
 
 % Customize glossary abbreviations to replace upper-case letters with lower-case small-caps
 \renewcommand*{\CustomAcronymFields}{%
   name={\the\glsshorttok},% name is abbreviated form (how it appears in 'List of Abbreviations')
-  description={\the\glslongtok},% description is long form
+  text={\the\glsshorttok},% \glstext, \Glstext, \GLStext
+  first={\the\glslongtok\space (\the\glsshorttok)},% \glsfirst, \Glsfirst, \GLSfirst
+  plural={\the\glsshorttok\noexpand\acrpluralsuffix},% \glsplural, \Glsplural, \GLSplural
+  firstplural={\the\glslongtok\noexpand\acrpluralsuffix\space (\the\glsshorttok)},%
+  short={\upsc{\the\glsshorttok}},% \acs, \Acs, ..., and all use of singular abbrev in parentheses
+  shortplural={\upsc{\the\glsshorttok}\noexpand\acrpluralsuffix},% \acp, \Acp, ..., and all use of singular abbrev in parentheses
+  long={\the\glslongtok},% \acl and \Acl, \acf and \Acf, long-form in first \ac and \Ac
+  longplural={\the\glslongtok\noexpand\acrpluralsuffix},% \aclp, \Aclp, and all long plural forms in \acf, \Acf, \ac, \Ac, ... Note: this may be overridden in \newacronym
+  description={\the\glslongtok},% description is long form (how it appears in 'List of Abbreviations')
+  descriptionplural={\noexpand\expandonce\noexpand\@glo@longpl}
 }
+
 \renewcommand*{\SetCustomDisplayStyle}[1]{%
   \defglsentryfmt[#1]{%
     \ifdefempty\glscustomtext
@@ -854,28 +864,28 @@
       {% Subsequent use
         \glsifplural
         {% plural subsequent use
-           \glscapscase
-           {% no case change
-             \upsc{\glsentryshortpl{\glslabel}}\glsinsert
-           }%
-           {% first letter upper case
-             \upsc{\Glsentryshortpl{\glslabel}}\glsinsert
-           }%
-           {% all caps
-             \MakeTextUppercase{\upsc{\glsentryshortpl{\glslabel}}\glsinsert}% XXX
-           }%
+          \glscapscase
+          {% no case change
+            {\glsentryshortpl{\glslabel}}\glsinsert
+          }%
+          {% first letter upper case
+            {\glsentryshortpl{\glslabel}}\glsinsert% Note: we do *not* use \Glsentryshortpl since we use smallcaps
+          }%
+          {% all caps
+            \MakeTextUppercase{\glsentryplural{\glslabel}\glsinsert}%
+          }%
         }%
         {% singular subsequent use
-           \glscapscase
-           {% no case change
-             \upsc{\glsentryshort{\glslabel}}\glsinsert
-           }%
-           {% first letter upper case
-             \upsc{\Glsentryshort{\glslabel}}\glsinsert
-           }%
-           {% all caps
-             \MakeTextUppercase{\upsc{\glsentryshort{\glslabel}}\glsinsert}%  XXX
-           }%
+          \glscapscase
+          {% no case change
+            {\glsentryshort{\glslabel}}\glsinsert
+          }%
+          {% first letter upper case
+            {\glsentryshort{\glslabel}}\glsinsert% Note: we do *not* use \Glsentryshort since we use smallcaps
+          }%
+          {% all caps
+            \MakeTextUppercase{\glsentrytext{\glslabel}\glsinsert}%
+          }%
         }%
       }%
       {% First use
@@ -883,50 +893,40 @@
         {% plural first use
           \glscapscase
           {% no case change
-            \glsentrylongpl{\glslabel}\glsinsert\space
-               (\upsc{\glsentryshortpl{\glslabel}})%
+            \glsentrylongpl{\glslabel}\glsinsert\space ({\glsentryshortpl{\glslabel}})%
           }%
           {% first letter upper case
-            \Glsentrylongpl{\glslabel}\glsinsert\space
-               (\upsc{\glsentryshortpl{\glslabel}})%
+            \Glsentrylongpl{\glslabel}\glsinsert\space ({\glsentryshortpl{\glslabel}})%
           }%
           {% All caps
-            \MakeTextUppercase{%
-               \glsentrylongpl{\glslabel}\glsinsert\space
-               (\upsc{\glsentryshortpl{\glslabel}})}%
+            \MakeTextUppercase{\glsentrylongpl{\glslabel}\glsinsert}\space ({\glsentryshortpl{\glslabel}})%
           }%
         }%
         {% singular first use
           \glscapscase
           {% no case change
-            \glsentrylong{\glslabel}\glsinsert\space
-               (\upsc{\glsentryshort{\glslabel}})%
+            \glsentrylong{\glslabel}\glsinsert\space ({\glsentryshort{\glslabel}})%
           }%
           {% first letter upper case
-            \Glsentrylong{\glslabel}\glsinsert\space
-               (\upsc{\glsentryshort{\glslabel}})%
+            \Glsentrylong{\glslabel}\glsinsert\space ({\glsentryshort{\glslabel}})%
           }%
           {% All caps
-            \MakeTextUppercase{%
-               \glsentrylong{\glslabel}\glsinsert\space
-               (\upsc{\glsentryshort{\glslabel}})}%
+            \MakeTextUppercase{\glsentrylong{\glslabel}\glsinsert}\space ({\glsentryshort{\glslabel}})%
           }%
         }%
       }%
-   }%
-   {% custom text provided by \glsdisp
-      \ifglsused{\glslabel}%
-      {% subsequent use
-        \glscustomtext
-      }%
-      {% first use
-        \glscustomtext % When using ACR-style, e.g. \acl, \acs
-      }%
-   }%
+    }%
+    {% custom text provided by \glsdisp
+      \glscustomtext\glsinsert % When using ACR-style, e.g. \acl, \acs
+    }%
   }%
 }
 \SetCustomStyle % Apply magic smallcaps glossaries style
 
+% Prevent case-change since we're using smallcaps
+\let\@Acrshort\@acrshort
+\let\@ACRshort\@acrshort
+\let\@Acrshortpl\@acrshortpl
 
 % Prevent grouping together abbreviations starting on same letter in list of
 % abbreviations.
