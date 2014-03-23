@@ -357,6 +357,9 @@
 % Floats
 \usepackage{float}
 
+% set captions other than text face thing
+\usepackage[hang,bf,small]{caption}
+
 % Listings
 \usepackage{listings}
 
