@@ -351,14 +351,14 @@
   hidelinks% Remove color and border
 }
 
-% Enables adding figures and tables side by side
-\usepackage{subfigure}
-
 % Floats
 \usepackage{float}
 
 % set captions other than text face thing
 \usepackage[hang,bf,small]{caption}
+
+% Enables adding figures and tables side by side
+\usepackage{subcaption}
 
 % Listings
 \usepackage{listings}
@@ -387,8 +387,7 @@
            ]{tocbibind}
 
 % Styling of actual Table of Contents
-\usepackage[subfigure,% % Needed to be compatible with subfigure package
-            titles%     % Retain chapter headers
+\usepackage[titles%     % Retain chapter headers
            ]{tocloft}
 
 %:-------------------------- Things we need to do magic -----------------------
