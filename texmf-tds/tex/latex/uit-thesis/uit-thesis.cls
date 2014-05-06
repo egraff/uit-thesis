@@ -1060,6 +1060,7 @@
     \chaptitlefont\chaptitlefontsize
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
+    \microtypesetup{protrusion=false,spacing=false}
     \RaggedRight
     %
     \selectfont
