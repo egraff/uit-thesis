@@ -455,6 +455,7 @@
 %:-------------------------- Page layout -----------------------
 
 % Geometry is needed to set frontpage layout
+% Enable option 'showframe' for debugging...
 \usepackage[pass]{geometry}
 
 % Used to modify layout
@@ -2024,7 +2025,7 @@
   \renewcommand\thepage{Title}
   %
   % Set custom geometry for the frontpage text
-  \newgeometry{top=16.5mm,bottom=10mm,right=7mm,left=59mm}
+  \newgeometry{top=16.5mm,bottom=10mm,right=12mm,left=59mm}
   %
   \begin{titlepage}%
   %
@@ -2070,6 +2071,8 @@
   % Thesis title
   \begingroup
     \vskip 2\baselineskip
+    \microtypesetup{protrusion=false,spacing=false}
+    \RaggedRight
     \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{b}{n}\selectfont
     \vspace*{-\baselineskip}
     \noindent\@title
@@ -2081,7 +2084,9 @@
     \ifx\@subtitle\@empty\else
       \begingroup
         \vskip \ht\strutbox
-        \fontsize{12.5pt}{19pt}\usefont{T1}{fos}{l}{it}\selectfont
+        \microtypesetup{protrusion=false,spacing=false}
+        \RaggedRight
+        \fontsize{11.4pt}{14pt}\usefont{T1}{fos}{l}{it}\selectfont
         \vspace*{-\baselineskip}
         \noindent\@subtitle
         \vskip -\parskip
@@ -2091,6 +2096,7 @@
   \fi
   % Separation line
   \begingroup
+    \vspace*{2pt}
     \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{l}{it}\selectfont
     \vspace*{-\baselineskip}
     \noindent ---
