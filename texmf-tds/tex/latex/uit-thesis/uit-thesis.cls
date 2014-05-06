@@ -424,6 +424,11 @@
   \pdfmapfile{+XCharter.map}
 %}{}
 
+% In his Elements of Typographic Style, Robert Bringhurst recommends that you use the
+% same amount of space after an end-of-sentence fullstop as there is between words.
+% See http://tex.stackexchange.com/questions/26996/implementing-a-sort-of-tightened-frenchspacing
+\frenchspacing
+
 \usepackage[activate={true,nocompatibility},final,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
 
 \newif\ifult@microtypeloaded
