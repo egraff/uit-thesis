@@ -2029,7 +2029,7 @@
   \begin{titlepage}%
   %
   %\begin{egg}%
-  \IfEndWith{\@author}{arlberg}{%
+  \IfEndWith{\@author}{arlberq}{%
     \AddToShipoutPicture*{%
       \put(140,50){
         \begingroup
