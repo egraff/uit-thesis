@@ -806,7 +806,7 @@
 
 % Redefine what is in \sectionmark so that \rightmark contains section number and section name (e.g. "2.1 My Sections Name")
 \renewcommand{\sectionmark}[1]{%
-  \markright{\thesection \printrheadslash \rheadfmt{#1}}% \leftmark (right even) is set to section number + title after start of new section
+  \markright{\rheadfmt{\thesection}\printrheadslash \rheadfmt{#1}}% \leftmark (right even) is set to section number + title after start of new section
 }
 
 % Redefine "plain" pagestyle (used on first page of each chapter)
@@ -1732,7 +1732,7 @@
   % Note that we do not use \@chapapp (contains "chapter type"), because we do not want to write "Chapter" before the chapter number.
   \renewcommand{\chaptermark}[1]{%
     % Note: we use two number signs (#) because we have renewcommand within renewcommand
-    \markboth{\rheadfmt{\@chapapp}\ \thechapter \printrheadslash \rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
+    \markboth{\rheadfmt{\@chapapp\ \thechapter}\printrheadslash \rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
              {}%                 % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
   }
 
