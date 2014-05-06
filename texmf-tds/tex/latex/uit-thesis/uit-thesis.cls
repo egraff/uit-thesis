@@ -2064,7 +2064,7 @@
   % Faculty / department
   \begingroup
     \vskip \z@
-    \fontsize{10.3pt}{23pt}\usefont{T1}{fos}{l}{n}\selectfont
+    \fontsize{10.3pt}{15pt}\usefont{T1}{fos}{l}{n}\selectfont
     \noindent\@thesisfaculty
     \vskip -\parskip
   \endgroup
