@@ -427,6 +427,11 @@
   \pdfmapfile{+XCharter.map}
 %}{}
 
+% In his Elements of Typographic Style, Robert Bringhurst recommends that you use the
+% same amount of space after an end-of-sentence fullstop as there is between words.
+% See http://tex.stackexchange.com/questions/26996/implementing-a-sort-of-tightened-frenchspacing
+\frenchspacing
+
 \usepackage[activate={true,nocompatibility},final,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
 
 \newif\ifult@microtypeloaded
@@ -454,6 +459,7 @@
 %:-------------------------- Page layout -----------------------
 
 % Geometry is needed to set frontpage layout
+% Enable option 'showframe' for debugging...
 \usepackage[pass]{geometry}
 
 % Used to modify layout
@@ -804,7 +810,7 @@
 
 % Redefine what is in \sectionmark so that \rightmark contains section number and section name (e.g. "2.1 My Sections Name")
 \renewcommand{\sectionmark}[1]{%
-  \markright{\thesection \printrheadslash \rheadfmt{#1}}% \leftmark (right even) is set to section number + title after start of new section
+  \markright{\rheadfmt{\thesection}\printrheadslash \rheadfmt{#1}}% \leftmark (right even) is set to section number + title after start of new section
 }
 
 % Redefine "plain" pagestyle (used on first page of each chapter)
@@ -1058,6 +1064,7 @@
     \chaptitlefont\chaptitlefontsize
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
+    \microtypesetup{protrusion=false,spacing=false}
     \RaggedRight
     %
     \selectfont
@@ -1729,7 +1736,7 @@
   % Note that we do not use \@chapapp (contains "chapter type"), because we do not want to write "Chapter" before the chapter number.
   \renewcommand{\chaptermark}[1]{%
     % Note: we use two number signs (#) because we have renewcommand within renewcommand
-    \markboth{\rheadfmt{\@chapapp}\ \thechapter \printrheadslash \rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
+    \markboth{\rheadfmt{\@chapapp\ \thechapter}\printrheadslash \rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
              {}%                 % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
   }
 
@@ -2022,12 +2029,12 @@
   \renewcommand\thepage{Title}
   %
   % Set custom geometry for the frontpage text
-  \newgeometry{top=16.5mm,bottom=10mm,right=7mm,left=59mm}
+  \newgeometry{top=16.5mm,bottom=10mm,right=12mm,left=59mm}
   %
   \begin{titlepage}%
   %
   %\begin{egg}%
-  \IfEndWith{\@author}{arlberg}{%
+  \IfEndWith{\@author}{arlberq}{%
     \AddToShipoutPicture*{%
       \put(140,50){
         \begingroup
@@ -2061,13 +2068,15 @@
   % Faculty / department
   \begingroup
     \vskip \z@
-    \fontsize{10.3pt}{23pt}\usefont{T1}{fos}{l}{n}\selectfont
+    \fontsize{10.3pt}{15pt}\usefont{T1}{fos}{l}{n}\selectfont
     \noindent\@thesisfaculty
     \vskip -\parskip
   \endgroup
   % Thesis title
   \begingroup
     \vskip 2\baselineskip
+    \microtypesetup{protrusion=false,spacing=false}
+    \RaggedRight
     \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{b}{n}\selectfont
     \vspace*{-\baselineskip}
     \noindent\@title
@@ -2079,7 +2088,9 @@
     \ifx\@subtitle\@empty\else
       \begingroup
         \vskip \ht\strutbox
-        \fontsize{12.5pt}{19pt}\usefont{T1}{fos}{l}{it}\selectfont
+        \microtypesetup{protrusion=false,spacing=false}
+        \RaggedRight
+        \fontsize{11.4pt}{14pt}\usefont{T1}{fos}{l}{it}\selectfont
         \vspace*{-\baselineskip}
         \noindent\@subtitle
         \vskip -\parskip
@@ -2089,6 +2100,7 @@
   \fi
   % Separation line
   \begingroup
+    \vspace*{2pt}
     \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{l}{it}\selectfont
     \vspace*{-\baselineskip}
     \noindent ---
