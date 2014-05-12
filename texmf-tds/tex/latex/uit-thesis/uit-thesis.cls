@@ -370,9 +370,16 @@
   \hypersetup{pdftitle={#1}}%
 }
 
+% Used to hold author name as string
+\global\let\ult@author\@empty
+
+% Make sure we get an error if using \maketitle without specifying \author{}, not just warning...
+\def\@author{\@latex@error{No \noexpand\author given}\@ehc}
+
 % Override \author to update pdfauthor
 \let\ult@saveauthor\author
 \def\author#1{%
+  \gdef\ult@author{#1}%
   \ult@saveauthor{#1}%
   \hypersetup{pdfauthor={#1}}%
 }
@@ -2010,10 +2017,14 @@
 % \end{egg}
 
 % Custom variables for the frontpage
-\def\thesisfaculty#1{\def\@thesisfaculty{#1}}
-\def\thesisprogramme#1{\def\@thesisprogramme{#1}}
-\def\ThesisFrontpageImage#1{\def\@ThesisFrontpageImage{#1}}
-\def\ThesisFrontpageLogo#1{\def\@ThesisFrontpageLogo{#1}}
+\def\thesisfaculty#1{\gdef\@thesisfaculty{#1}}
+\def\thesisprogramme#1{\gdef\@thesisprogramme{#1}}
+\def\ThesisFrontpageImage#1{\gdef\@ThesisFrontpageImage{#1}}
+\def\ThesisFrontpageLogo#1{\gdef\@ThesisFrontpageLogo{#1}}
+
+% Error if \maketitle is used without defining \thesisfaculty{} and \thesisprogramme{}
+\def\@thesisfaculty{\@latex@error{No \noexpand\thesisfaculty given}\@ehc}
+\def\@thesisprogramme{\@latex@error{No \noexpand\thesisprogramme given}\@ehc}
 
 \ThesisFrontpageImage{frontpage_image.pdf}
 \ThesisFrontpageLogo{frontpage_overlay_logo.pdf}
@@ -2030,7 +2041,7 @@
   \begin{titlepage}%
   %
   %\begin{egg}%
-  \IfEndWith{\@author}{arlberq}{%
+  \IfEndWith{\ult@author}{arlberq}{%
     \AddToShipoutPicture*{%
       \put(140,50){
         \begingroup
