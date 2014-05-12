@@ -307,7 +307,7 @@
 
 
 \ifpdf
-  
+
   \usepackage[pdftex,%                       %
               plainpages=false,%             %
               pdfpagelabels=false,%          % Don't index pages using logical page numbers in PDF reader (such as ii, iii, iv, ...)
@@ -320,20 +320,20 @@
               hyperindex,%                   %
               hyperfigures%                  %
              ]{hyperref}
-  
+
   % Used for adding figures in thesis
   \usepackage[pdftex]{graphicx}
-  
+
   % Make it easy to include PDFs using \includepdf macro. Note that PDF links will be lost when including!
   \usepackage{pdfpages}
-  
+
 \else
-  
+
   \usepackage[dvips,bookmarks,pagebackref,hyperindex,hyperfigures]{hyperref}
 
   % Used for adding figures in thesis
   \usepackage{graphicx}
-  
+
 \fi
 
 \usepackage[all]{hypcap} % Correct a problem with hyperref
@@ -351,8 +351,14 @@
   hidelinks% Remove color and border
 }
 
+% Floats
+\usepackage{float}
+
+% set captions other than text face thing
+\usepackage[hang,bf,small]{caption}
+
 % Enables adding figures and tables side by side
-\usepackage{subfigure}
+\usepackage{subcaption}
 
 % Listings
 \usepackage{listings}
@@ -381,8 +387,7 @@
            ]{tocbibind}
 
 % Styling of actual Table of Contents
-\usepackage[subfigure,% % Needed to be compatible with subfigure package
-            titles%     % Retain chapter headers
+\usepackage[titles%     % Retain chapter headers
            ]{tocloft}
 
 %:-------------------------- Things we need to do magic -----------------------
@@ -417,6 +422,11 @@
   % See http://sourceforge.net/p/miktex/discussion/33790/thread/e39cd270
   \pdfmapfile{+XCharter.map}
 %}{}
+
+% In his Elements of Typographic Style, Robert Bringhurst recommends that you use the
+% same amount of space after an end-of-sentence fullstop as there is between words.
+% See http://tex.stackexchange.com/questions/26996/implementing-a-sort-of-tightened-frenchspacing
+\frenchspacing
 
 \usepackage[activate={true,nocompatibility},final,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
 
@@ -456,6 +466,7 @@
 %:-------------------------- Page layout -----------------------
 
 % Geometry is needed to set frontpage layout
+% Enable option 'showframe' for debugging...
 \usepackage[pass]{geometry}
 
 % Used to modify layout
@@ -511,10 +522,8 @@
 % Strict linespacing, don't allow LaTeX to put extra spacing between lines
 \lineskip=\z@
 
-% Make sure that line spacing defined by \baselineskip will be preserved under all circumstances!
-% See http://tex.stackexchange.com/questions/49072/is-changing-lineskiplimit-to-some-negative-value-a-good-idea-and-what-the-valu
-% Note: this could be a potential source of future text formatting bugs (if lines are written on top of each other)
-\lineskiplimit=-2\ult@normalbaselineskip % WTF?
+% Note: this breaks tables, figures, and probably other environments too if set < \z@.
+\lineskiplimit=\z@
 
 \renewcommand{\baselinestretch}{1.0}\normalsize
 
@@ -808,7 +817,7 @@
 
 % Redefine what is in \sectionmark so that \rightmark contains section number and section name (e.g. "2.1 My Sections Name")
 \renewcommand{\sectionmark}[1]{%
-  \markright{\thesection \printrheadslash \rheadfmt{#1}}% \leftmark (right even) is set to section number + title after start of new section
+  \markright{\rheadfmt{\thesection}\printrheadslash \rheadfmt{#1}}% \leftmark (right even) is set to section number + title after start of new section
 }
 
 % Redefine "plain" pagestyle (used on first page of each chapter)
@@ -826,7 +835,7 @@
 
 % Magic to define \upsc{} command that replaces upper-case letters with lower-case small-caps
 \ExplSyntaxOn
-\cs_generate_variant:Nn \tl_rescan:nn { nV } 
+\cs_generate_variant:Nn \tl_rescan:nn { nV }
 \NewDocumentCommand \upsc { m }
   {
     \tl_set:Nx \l_tmpa_tl {#1}
@@ -848,14 +857,24 @@
 
 % Use smallcaps-magic!!! _o/ \o/ \o_
 % Must be used to support ACR-commands that are not aliased to GLS-commands
-\renewcommand*{\firstacronymfont}[1]{\upsc{#1}}
-\renewcommand*{\acronymfont}[1]{\upsc{#1}}
+\renewcommand*{\firstacronymfont}[1]{\upsc{#1}}% WTF?
+\renewcommand*{\acronymfont}[1]{#1}
 
 % Customize glossary abbreviations to replace upper-case letters with lower-case small-caps
 \renewcommand*{\CustomAcronymFields}{%
   name={\the\glsshorttok},% name is abbreviated form (how it appears in 'List of Abbreviations')
-  description={\the\glslongtok},% description is long form
+  text={\the\glsshorttok},% \glstext, \Glstext, \GLStext
+  first={\the\glslongtok\space (\the\glsshorttok)},% \glsfirst, \Glsfirst, \GLSfirst
+  plural={\the\glsshorttok\noexpand\acrpluralsuffix},% \glsplural, \Glsplural, \GLSplural
+  firstplural={\the\glslongtok\noexpand\acrpluralsuffix\space (\the\glsshorttok)},%
+  short={\upsc{\the\glsshorttok}},% \acs, \Acs, ..., and all use of singular abbrev in parentheses
+  shortplural={\upsc{\the\glsshorttok}\noexpand\acrpluralsuffix},% \acp, \Acp, ..., and all use of singular abbrev in parentheses
+  long={\the\glslongtok},% \acl and \Acl, \acf and \Acf, long-form in first \ac and \Ac
+  longplural={\the\glslongtok\noexpand\acrpluralsuffix},% \aclp, \Aclp, and all long plural forms in \acf, \Acf, \ac, \Ac, ... Note: this may be overridden in \newacronym
+  description={\the\glslongtok},% description is long form (how it appears in 'List of Abbreviations')
+  descriptionplural={\noexpand\expandonce\noexpand\@glo@longpl}
 }
+
 \renewcommand*{\SetCustomDisplayStyle}[1]{%
   \defglsentryfmt[#1]{%
     \ifdefempty\glscustomtext
@@ -864,28 +883,28 @@
       {% Subsequent use
         \glsifplural
         {% plural subsequent use
-           \glscapscase
-           {% no case change
-             \upsc{\glsentryshortpl{\glslabel}}\glsinsert 
-           }%
-           {% first letter upper case
-             \upsc{\Glsentryshortpl{\glslabel}}\glsinsert 
-           }%
-           {% all caps
-             \MakeTextUppercase{\upsc{\glsentryshortpl{\glslabel}}\glsinsert}% XXX
-           }%
+          \glscapscase
+          {% no case change
+            {\glsentryshortpl{\glslabel}}\glsinsert
+          }%
+          {% first letter upper case
+            {\glsentryshortpl{\glslabel}}\glsinsert% Note: we do *not* use \Glsentryshortpl since we use smallcaps
+          }%
+          {% all caps
+            \MakeTextUppercase{\glsentryplural{\glslabel}\glsinsert}%
+          }%
         }%
         {% singular subsequent use
-           \glscapscase
-           {% no case change
-             \upsc{\glsentryshort{\glslabel}}\glsinsert 
-           }%
-           {% first letter upper case
-             \upsc{\Glsentryshort{\glslabel}}\glsinsert 
-           }%
-           {% all caps
-             \MakeTextUppercase{\upsc{\glsentryshort{\glslabel}}\glsinsert}%  XXX
-           }%
+          \glscapscase
+          {% no case change
+            {\glsentryshort{\glslabel}}\glsinsert
+          }%
+          {% first letter upper case
+            {\glsentryshort{\glslabel}}\glsinsert% Note: we do *not* use \Glsentryshort since we use smallcaps
+          }%
+          {% all caps
+            \MakeTextUppercase{\glsentrytext{\glslabel}\glsinsert}%
+          }%
         }%
       }%
       {% First use
@@ -893,50 +912,40 @@
         {% plural first use
           \glscapscase
           {% no case change
-            \glsentrylongpl{\glslabel}\glsinsert\space
-               (\upsc{\glsentryshortpl{\glslabel}})%
+            \glsentrylongpl{\glslabel}\glsinsert\space ({\glsentryshortpl{\glslabel}})%
           }%
           {% first letter upper case
-            \Glsentrylongpl{\glslabel}\glsinsert\space
-               (\upsc{\glsentryshortpl{\glslabel}})%
+            \Glsentrylongpl{\glslabel}\glsinsert\space ({\glsentryshortpl{\glslabel}})%
           }%
           {% All caps
-            \MakeTextUppercase{%
-               \glsentrylongpl{\glslabel}\glsinsert\space
-               (\upsc{\glsentryshortpl{\glslabel}})}%
+            \MakeTextUppercase{\glsentrylongpl{\glslabel}\glsinsert}\space ({\glsentryshortpl{\glslabel}})%
           }%
         }%
         {% singular first use
           \glscapscase
           {% no case change
-            \glsentrylong{\glslabel}\glsinsert\space
-               (\upsc{\glsentryshort{\glslabel}})%
+            \glsentrylong{\glslabel}\glsinsert\space ({\glsentryshort{\glslabel}})%
           }%
           {% first letter upper case
-            \Glsentrylong{\glslabel}\glsinsert\space
-               (\upsc{\glsentryshort{\glslabel}})%
+            \Glsentrylong{\glslabel}\glsinsert\space ({\glsentryshort{\glslabel}})%
           }%
           {% All caps
-            \MakeTextUppercase{%
-               \glsentrylong{\glslabel}\glsinsert\space
-               (\upsc{\glsentryshort{\glslabel}})}%
+            \MakeTextUppercase{\glsentrylong{\glslabel}\glsinsert}\space ({\glsentryshort{\glslabel}})%
           }%
         }%
       }%
-   }%
-   {% custom text provided by \glsdisp
-      \ifglsused{\glslabel}%
-      {% subsequent use
-        \glscustomtext
-      }%
-      {% first use
-        \glscustomtext % When using ACR-style, e.g. \acl, \acs
-      }%
-   }%
+    }%
+    {% custom text provided by \glsdisp
+      \glscustomtext\glsinsert % When using ACR-style, e.g. \acl, \acs
+    }%
   }%
 }
 \SetCustomStyle % Apply magic smallcaps glossaries style
 
+% Prevent case-change since we're using smallcaps
+\let\@Acrshort\@acrshort
+\let\@ACRshort\@acrshort
+\let\@Acrshortpl\@acrshortpl
 
 % Prevent grouping together abbreviations starting on same letter in list of
 % abbreviations.
@@ -1006,7 +1015,7 @@
 % Align bottom of UiT slash with bottom of baseline
 \newlength{\chapterheadalign}
 %\setlength{\chapterheadalign}{\z@ + 8\ult@normalbaselineskip}
-\setlength{\chapterheadalign}{\z@ + 8\ult@normalbaselineskip - \ult@chapslash@height}
+\setlength{\chapterheadalign}{\z@ + 8\ult@normalbaselineskip}
 
 % Align chapter name
 \newlength{\chapternamealign}\setlength{\chapternamealign}{\z@}
@@ -1048,7 +1057,12 @@
 
 % Now, use our supahdupah chapter style! YEEEEEEAAAAHHHHHH!
 \titleformat{\chapter}[display]
-  {}% Format
+  {% Format
+    % Make sure that line spacing defined by \baselineskip will be preserved under all circumstances!
+    % See http://tex.stackexchange.com/questions/49072/is-changing-lineskiplimit-to-some-negative-value-a-good-idea-and-what-the-valu
+    % Note: this could be a potential source of future text formatting bugs (if lines are written on top of each other)
+    \lineskiplimit=-\maxdimen
+  }%
   {\vspace*{\baselinesbeforemainchaphead\ult@normalbaselineskip} \vspace*{-\baselinesbeforefrontchaphead\ult@normalbaselineskip} \vspace*{\chapterheadalign} \printchapternum}% Label
   {\z@ - \parskip + \chapternamealign + \baselinesafterchapnum\ult@normalbaselineskip}% Vertical distance between chapter number and chapter title
   {% Before-code plus chapter name (titlesec's explicit option is enabled, so #1 is chapter name)
@@ -1057,6 +1071,7 @@
     \chaptitlefont\chaptitlefontsize
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
+    \microtypesetup{protrusion=false,spacing=false}
     \RaggedRight
     %
     \selectfont
@@ -1097,6 +1112,12 @@
     % Now, switch to normal font
     \normalsize\normalfont\selectfont
     %
+    % Strut the fuck up!
+    \kern \z@ \strut
+    %
+    % Compensate for extra line added by strut
+    \vspace*{-\parskip}
+    \vspace*{-\baselineskip}
   ]
 
 % Adjust spacing around chapter title
@@ -1432,8 +1453,32 @@
   %
   % Append list extension to \ult@toclists
   \eappto\ult@toclists{#3,}
+  %
+  % Override \listof... macro to use tocbibind to generate list
+  % (will also add list to ToC).
+  \@namedef{listof#2}{%
+    \begingroup
+      \tocfile{#4}{#3}
+    \endgroup%
+  }
 }
 
+% Override float package's \listof (for lists that do not use tocloft)
+% See: http://tex.stackexchange.com/questions/58469/why-are-listof-and-listoffigures-styled-differently
+\renewcommand*{\listof}[2]{%
+  \@ifundefined{ext@#1}{\float@error{#1}}{%
+    \expandafter\let\csname l@#1\endcsname \l@figure  % <- use layout of figure
+    %
+    % Append list extension to \ult@toclists
+    % Note: this is safe even if it has already been added to \ult@toclists...
+    \eappto\ult@toclists{\@nameuse{ext@#1},}
+    %
+    % Use tocbibind to render list
+    \begingroup
+      \tocfile{#2}{\@nameuse{ext@#1}}
+    \endgroup%
+  }%
+}
 
 
 
@@ -1530,7 +1575,7 @@
       \CatchFileDef{\ult@read@buf}% Macro we dump file contents into
                    {##1}% File name
                    {\makeatletter\endlinechar=-1\relax}% Scancode magic
-      
+
       % If file contents is equal to \null, then ignore...
       % This will prevent an additional blank page being inserted,
       % since we suppress the \null from being output.
@@ -1693,19 +1738,19 @@
 \let\ult@savemainmatter\mainmatter
 \renewcommand\mainmatter{%
   \ult@savemainmatter
-  
+
   % Redefine \chaptermark, so it contains chapter number in front of chapter name (e.g. "2 My Chapers Name")
   % Note that we do not use \@chapapp (contains "chapter type"), because we do not want to write "Chapter" before the chapter number.
   \renewcommand{\chaptermark}[1]{%
     % Note: we use two number signs (#) because we have renewcommand within renewcommand
-    \markboth{\rheadfmt{\@chapapp}\ \thechapter \printrheadslash \rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
+    \markboth{\rheadfmt{\@chapapp\ \thechapter}\printrheadslash \rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
              {}%                 % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
   }
-  
+
   % Set odd pages to have have \rightmark instead of \leftmark
   % This will make sure that section title is written to the left in running headers on odd (recto) pages
   \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\rightmark}}
-  
+
   % Reset glossaries so every abbreviation will expand on first use (except those that have been unset)
   \ult@restoreglsstates
 }
@@ -1714,12 +1759,12 @@
 \let\ult@savebackmatter\backmatter
 \renewcommand\backmatter{%
   \ult@savebackmatter
-  
+
   % Redefine headers for appendices
   \pagestyle{empty}
-  
+
   \printglossary
-  
+
   % Blank back cover
   \clearversopage
 }
@@ -1991,12 +2036,12 @@
   \renewcommand\thepage{Title}
   %
   % Set custom geometry for the frontpage text
-  \newgeometry{top=16.5mm,bottom=10mm,right=7mm,left=59mm}
+  \newgeometry{top=16.5mm,bottom=10mm,right=12mm,left=59mm}
   %
   \begin{titlepage}%
   %
   %\begin{egg}%
-  \IfEndWith{\@author}{arlberg}{%
+  \IfEndWith{\@author}{arlberq}{%
     \AddToShipoutPicture*{%
       \put(140,50){
         \begingroup
@@ -2007,11 +2052,11 @@
   }{%
   %\end{egg}
     \AddToShipoutPicture*{%
-      \put(-3,-110.5){% This is the correct position
+      \put(0,-110.5){% This is the correct position
         \parbox[b][\paperheight]{\paperwidth}{%
           \vfill%
           \centering%
-          \includegraphics[width=199.5mm,height=199.5mm,keepaspectratio]{\@ThesisFrontpageImage}%
+          \includegraphics[width=190.5mm,height=199.5mm,keepaspectratio=false]{\@ThesisFrontpageImage}%
           \vfill%
         }%
       }%
@@ -2030,13 +2075,15 @@
   % Faculty / department
   \begingroup
     \vskip \z@
-    \fontsize{10.3pt}{23pt}\usefont{T1}{fos}{l}{n}\selectfont
+    \fontsize{10.3pt}{15pt}\usefont{T1}{fos}{l}{n}\selectfont
     \noindent\@thesisfaculty
     \vskip -\parskip
   \endgroup
   % Thesis title
   \begingroup
     \vskip 2\baselineskip
+    \microtypesetup{protrusion=false,spacing=false}
+    \RaggedRight
     \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{b}{n}\selectfont
     \vspace*{-\baselineskip}
     \noindent\@title
@@ -2048,7 +2095,9 @@
     \ifx\@subtitle\@empty\else
       \begingroup
         \vskip \ht\strutbox
-        \fontsize{12.5pt}{19pt}\usefont{T1}{fos}{l}{it}\selectfont
+        \microtypesetup{protrusion=false,spacing=false}
+        \RaggedRight
+        \fontsize{11.4pt}{14pt}\usefont{T1}{fos}{l}{it}\selectfont
         \vspace*{-\baselineskip}
         \noindent\@subtitle
         \vskip -\parskip
@@ -2058,6 +2107,7 @@
   \fi
   % Separation line
   \begingroup
+    \vspace*{2pt}
     \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{l}{it}\selectfont
     \vspace*{-\baselineskip}
     \noindent ---
