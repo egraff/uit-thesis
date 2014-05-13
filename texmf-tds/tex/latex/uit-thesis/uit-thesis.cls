@@ -1137,7 +1137,14 @@
   {% Format
     \null%
     \vspace*{-\parskip}%
-    \Large \bfseries \sectfont \selectfont%
+    \Large \bfseries \sectfont
+    %
+    % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
+    \microtypesetup{protrusion=false,spacing=false}
+    \RaggedRight
+    %
+    \selectfont
+    %
     \vspace*{-\baselineskip}%
   }%
   {\@seccntformat{section}}% Label
@@ -1156,7 +1163,14 @@
   {% Format
     \null%
     \vspace*{-\parskip}%
-    \large \bfseries \subsectfont \selectfont%
+    \large \bfseries \subsectfont
+    %
+    % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
+    \microtypesetup{protrusion=false,spacing=false}
+    \RaggedRight
+    %
+    \selectfont
+    %
     \vspace*{-\baselineskip}%
   }%
   {\@seccntformat{subsection}}% Label
@@ -1175,7 +1189,14 @@
   {% Format
     \null%
     \vspace*{-\parskip}%
-    \normalsize \bfseries \subsubsectfont \selectfont%
+    \normalsize \bfseries \subsubsectfont
+    %
+    % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
+    \microtypesetup{protrusion=false,spacing=false}
+    \RaggedRight
+    %
+    \selectfont
+    %
     \vspace*{-\baselineskip}%
   }%
   {\@seccntformat{subsubsection}}% Label
