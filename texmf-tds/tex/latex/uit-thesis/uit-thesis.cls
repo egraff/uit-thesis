@@ -420,8 +420,8 @@
   \usepackage{fontaxes}
   \usepackage{xkeyval}
 
-  % XCharter with old style figures
-  \usepackage[osf]{XCharter}
+  % XCharter
+  \usepackage[scaled=.98,sups]{XCharter}% lining figures in math
 
   % For some reason, MiKTeX is unable to locate the installed XCharter.map file
   % (it is probably not updmap'd correctly when installed, as XCharter.map is not properly added to the miktex\config\updmap.cfg file).
@@ -453,6 +453,13 @@
 
 % AMS
 \usepackage{amsfonts, amsmath, amssymb, amsthm, amscd, xspace}
+
+\usepackage[scaled=1.04,varqu,varl]{zi4}% inconsolata typewriter
+\usepackage[type1]{cabin}% sans serif
+\usepackage[libertine,bigdelims,scaled=1.07]{newtxmath}
+\usepackage[cal=boondoxo,bb=boondox,frak=boondox]{mathalfa}
+
+\useosf % oldstyle figures in text
 
 \usepackage{mathtools}
 \usepackage{wasysym} % Math symbols
