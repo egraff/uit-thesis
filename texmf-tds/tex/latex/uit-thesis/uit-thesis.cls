@@ -316,7 +316,7 @@
               pdfpagelayout={TwoPageRight},% % Display two pages, odd-numbered pages to the right
               pdfdisplaydoctitle,%           % Display document title instead of filename in title bar
               bookmarks,%                    % Show bookmarks bar when displaying document
-              pagebackref,%                  % Allow back references inside bibilography.
+              pagebackref=false,%            % No back references inside bibilography.
               hyperindex,%                   %
               hyperfigures%                  %
              ]{hyperref}
