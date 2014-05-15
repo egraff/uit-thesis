@@ -316,7 +316,7 @@
               pdfpagelayout={TwoPageRight},% % Display two pages, odd-numbered pages to the right
               pdfdisplaydoctitle,%           % Display document title instead of filename in title bar
               bookmarks,%                    % Show bookmarks bar when displaying document
-              pagebackref,%                  % Allow back references inside bibilography.
+              pagebackref=false,%            % No back references inside bibilography.
               hyperindex,%                   %
               hyperfigures%                  %
              ]{hyperref}
@@ -370,9 +370,16 @@
   \hypersetup{pdftitle={#1}}%
 }
 
+% Used to hold author name as string
+\global\let\ult@author\@empty
+
+% Make sure we get an error if using \maketitle without specifying \author{}, not just warning...
+\def\@author{\@latex@error{No \noexpand\author given}\@ehc}
+
 % Override \author to update pdfauthor
 \let\ult@saveauthor\author
 \def\author#1{%
+  \gdef\ult@author{#1}%
   \ult@saveauthor{#1}%
   \hypersetup{pdfauthor={#1}}%
 }
@@ -452,6 +459,9 @@
     \global\MT@protrusionfalse
   }
 }
+
+% Allows us to scale font sizes relatively
+\usepackage{scalefnt}
 
 %:-------------------------- Symbols -----------------------
 
@@ -833,6 +843,13 @@
 
 %:-------------------------- Black magic hacks -----------------------
 
+\DeclareRobustCommand{\scaledsc}[1]{%
+  \begingroup%
+  \scalefont{1.12}%
+  \textsc{#1}%
+  \endgroup%
+}
+
 % Magic to define \upsc{} command that replaces upper-case letters with lower-case small-caps
 \ExplSyntaxOn
 \cs_generate_variant:Nn \tl_rescan:nn { nV }
@@ -840,7 +857,7 @@
   {
     \tl_set:Nx \l_tmpa_tl {#1}
     \regex_replace_all:nnN { ([A-Z]+) }
-      { \c{textsc} \cB\{ \c{lowercase} \cB\{ \1 \cE\} \cE\} } \l_tmpa_tl
+      { \c{scaledsc} \cB\{ \c{lowercase} \cB\{ \1 \cE\} \cE\} } \l_tmpa_tl
     \tl_use:N \l_tmpa_tl
   }
 \ExplSyntaxOff
@@ -1141,7 +1158,14 @@
   {% Format
     \null%
     \vspace*{-\parskip}%
-    \Large \bfseries \sectfont \selectfont%
+    \Large \bfseries \sectfont
+    %
+    % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
+    \microtypesetup{protrusion=false,spacing=false}
+    \RaggedRight
+    %
+    \selectfont
+    %
     \vspace*{-\baselineskip}%
   }%
   {\@seccntformat{section}}% Label
@@ -1160,7 +1184,14 @@
   {% Format
     \null%
     \vspace*{-\parskip}%
-    \large \bfseries \subsectfont \selectfont%
+    \large \bfseries \subsectfont
+    %
+    % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
+    \microtypesetup{protrusion=false,spacing=false}
+    \RaggedRight
+    %
+    \selectfont
+    %
     \vspace*{-\baselineskip}%
   }%
   {\@seccntformat{subsection}}% Label
@@ -1179,7 +1210,14 @@
   {% Format
     \null%
     \vspace*{-\parskip}%
-    \normalsize \bfseries \subsubsectfont \selectfont%
+    \normalsize \bfseries \subsubsectfont
+    %
+    % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
+    \microtypesetup{protrusion=false,spacing=false}
+    \RaggedRight
+    %
+    \selectfont
+    %
     \vspace*{-\baselineskip}%
   }%
   {\@seccntformat{subsubsection}}% Label
@@ -2021,10 +2059,14 @@
 % \end{egg}
 
 % Custom variables for the frontpage
-\def\thesisfaculty#1{\def\@thesisfaculty{#1}}
-\def\thesisprogramme#1{\def\@thesisprogramme{#1}}
-\def\ThesisFrontpageImage#1{\def\@ThesisFrontpageImage{#1}}
-\def\ThesisFrontpageLogo#1{\def\@ThesisFrontpageLogo{#1}}
+\def\thesisfaculty#1{\gdef\@thesisfaculty{#1}}
+\def\thesisprogramme#1{\gdef\@thesisprogramme{#1}}
+\def\ThesisFrontpageImage#1{\gdef\@ThesisFrontpageImage{#1}}
+\def\ThesisFrontpageLogo#1{\gdef\@ThesisFrontpageLogo{#1}}
+
+% Error if \maketitle is used without defining \thesisfaculty{} and \thesisprogramme{}
+\def\@thesisfaculty{\@latex@error{No \noexpand\thesisfaculty given}\@ehc}
+\def\@thesisprogramme{\@latex@error{No \noexpand\thesisprogramme given}\@ehc}
 
 \ThesisFrontpageImage{frontpage_image.pdf}
 \ThesisFrontpageLogo{frontpage_overlay_logo.pdf}
@@ -2041,7 +2083,7 @@
   \begin{titlepage}%
   %
   %\begin{egg}%
-  \IfEndWith{\@author}{arlberq}{%
+  \IfEndWith{\ult@author}{arlberq}{%
     \AddToShipoutPicture*{%
       \put(140,50){
         \begingroup
