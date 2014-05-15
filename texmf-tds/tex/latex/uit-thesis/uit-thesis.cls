@@ -449,6 +449,9 @@
   }
 }
 
+% Allows us to scale font sizes relatively
+\usepackage{scalefnt}
+
 %:-------------------------- Symbols -----------------------
 
 % AMS
@@ -829,6 +832,13 @@
 
 %:-------------------------- Black magic hacks -----------------------
 
+\DeclareRobustCommand{\scaledsc}[1]{%
+  \begingroup%
+  \scalefont{1.12}%
+  \textsc{#1}%
+  \endgroup%
+}
+
 % Magic to define \upsc{} command that replaces upper-case letters with lower-case small-caps
 \ExplSyntaxOn
 \cs_generate_variant:Nn \tl_rescan:nn { nV }
@@ -836,7 +846,7 @@
   {
     \tl_set:Nx \l_tmpa_tl {#1}
     \regex_replace_all:nnN { ([A-Z]+) }
-      { \c{textsc} \cB\{ \c{lowercase} \cB\{ \1 \cE\} \cE\} } \l_tmpa_tl
+      { \c{scaledsc} \cB\{ \c{lowercase} \cB\{ \1 \cE\} \cE\} } \l_tmpa_tl
     \tl_use:N \l_tmpa_tl
   }
 \ExplSyntaxOff
