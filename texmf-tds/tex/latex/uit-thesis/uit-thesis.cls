@@ -1762,11 +1762,11 @@
   \fi
 
   \ifult@printlistoftables
-	\listoftables
+    \listoftables
   \fi
 
   \ifult@printlistoflistings
-	\lstlistoflistings
+    \lstlistoflistings
   \fi
 
   \printacronyms
