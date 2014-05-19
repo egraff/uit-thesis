@@ -52,7 +52,7 @@
 \ult@parindentfalse % Default to false
 \DeclareOption{parindent}{\ult@parindenttrue}
 
-% Option for turning on printing of list of abbreviations
+% Option for turning off printing of list of abbreviations
 \newif\ifult@notloa
 \ult@notloafalse % Default to false
 \DeclareOption{notloa}{\ult@notloatrue}
