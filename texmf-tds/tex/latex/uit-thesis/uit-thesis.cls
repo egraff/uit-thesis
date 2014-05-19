@@ -52,6 +52,21 @@
 \ult@parindentfalse % Default to false
 \DeclareOption{parindent}{\ult@parindenttrue}
 
+% Option for ignoring drawing of List of Figures
+\newif\ifult@printlistoffigures
+\ult@printlistoffigurestrue % Default to true
+\DeclareOption{skiplistoffigures}{\ult@printlistoffiguresfalse}
+
+% Option for ignoring drawing of List of Tables
+\newif\ifult@printlistoftables
+\ult@printlistoftablestrue % Default to true
+\DeclareOption{skiplistoftables}{\ult@printlistoftablesfalse}
+
+% Option for ignoring drawing list of listings
+\newif\ifult@printlistoflistings
+\ult@printlistoflistingstrue % Default to true
+\DeclareOption{skiplistoflistings}{\ult@printlistoflistingsfalse}
+
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
@@ -1741,12 +1756,18 @@
   % 3: Abbreviations
   % 4: Symbols
   % 5: Preface
+  
+  \ifult@printlistoffigures
+    \listoffigures
+  \fi
 
-  \listoffigures
+  \ifult@printlistoftables
+	\listoftables
+  \fi
 
-  \listoftables
-
-  \lstlistoflistings
+  \ifult@printlistoflistings
+	\lstlistoflistings
+  \fi
 
   \printacronyms
 }
