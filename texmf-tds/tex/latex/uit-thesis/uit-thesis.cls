@@ -55,17 +55,17 @@
 % Option for ignoring drawing of List of Figures
 \newif\ifult@printlistoffigures
 \ult@printlistoffigurestrue % Default to true
-\DeclareOption{skiplistoffigures}{\ult@printlistoffiguresfalse}
+\DeclareOption{notlof}{\ult@printlistoffiguresfalse}
 
 % Option for ignoring drawing of List of Tables
 \newif\ifult@printlistoftables
 \ult@printlistoftablestrue % Default to true
-\DeclareOption{skiplistoftables}{\ult@printlistoftablesfalse}
+\DeclareOption{notlot}{\ult@printlistoftablesfalse}
 
 % Option for ignoring drawing list of listings
 \newif\ifult@printlistoflistings
 \ult@printlistoflistingstrue % Default to true
-\DeclareOption{skiplistoflistings}{\ult@printlistoflistingsfalse}
+\DeclareOption{notlol}{\ult@printlistoflistingsfalse}
 
 % Now, process!
 \ProcessOptions\relax
