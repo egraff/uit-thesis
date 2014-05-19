@@ -1787,7 +1787,7 @@
 
   \lstlistoflistings
 
-  % Ommit list of abbreviations if 'notloa' classoption is used
+  % Omit list of abbreviations if 'notloa' classoption is used
   \ifult@notloa\else
     \printacronyms
   \fi
