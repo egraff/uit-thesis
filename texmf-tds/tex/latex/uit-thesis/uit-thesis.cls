@@ -1756,7 +1756,7 @@
   % 3: Abbreviations
   % 4: Symbols
   % 5: Preface
-  
+
   \ifult@printlistoffigures
     \listoffigures
   \fi
