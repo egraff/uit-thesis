@@ -53,14 +53,14 @@
 \DeclareOption{parindent}{\ult@parindenttrue}
 
 % Option for turning on printing of list of abbreviations
-\newif\ifult@loa
-\ult@loafalse % Default to false
-\DeclareOption{loa}{\ult@loatrue}
+\newif\ifult@notloa
+\ult@notloafalse % Default to false
+\DeclareOption{notloa}{\ult@notloatrue}
 
 % Option for turning off printing of glossary in the backmatter.
-\newif\ifult@nogloss
-\ult@noglossfalse % Default to print glossary
-\DeclareOption{nogloss}{\ult@noglosstrue}
+\newif\ifult@notglo
+\ult@notglofalse % Default to print glossary
+\DeclareOption{notglo}{\ult@notglotrue}
 
 % Now, process!
 \ProcessOptions\relax
@@ -1788,8 +1788,8 @@
   \lstlistoflistings
 
   % Print list of abbreviations if 'loa' classoption is used
-  \ifult@loa%
-    \printacronyms%
+  \ifult@notloa\else
+    \printacronyms
   \fi
 }
 
@@ -1823,7 +1823,7 @@
   \pagestyle{empty}
 
   % Print glossary by default, turn off with 'nogloss' classoption
-  \ifult@nogloss\else%
+  \ifult@notglo\else%
     \printglossary%
   \fi
 
