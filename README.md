@@ -10,7 +10,6 @@ TODO:
    - Does newest version support hyperlinks if used with hyperref?
  - Use autoref / add macros for referencing Figure, Chapter, Section, Listing, etc.
  - Add class option for color on UiT line?
- - Add class option for font? (Vil Jan-Ove bruke CM, eller klare vi å overtale han til å bruke Charter?)
  - Fix TOC stuff
    - Class option for list of abbreviations?
    - How to handle additional "List of..." / custom listings in ToC?
