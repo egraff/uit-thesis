@@ -412,6 +412,10 @@
 % Add macro for subtitle
 \def\subtitle#1{\gdef\@subtitle{#1}}
 
+% Pretty tables 
+\usepackage{ctable}
+
+
 %:-------------------------- Table of Contents (TOC) -----------------------C
 
 % ToC support for list of figures, list of tables, bibliography, index, etc.
