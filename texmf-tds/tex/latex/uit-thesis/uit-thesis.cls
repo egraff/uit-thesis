@@ -52,6 +52,16 @@
 \ult@parindentfalse % Default to false
 \DeclareOption{parindent}{\ult@parindenttrue}
 
+% Option for turning off printing of list of abbreviations
+\newif\ifult@notloa
+\ult@notloafalse % Default to false
+\DeclareOption{notloa}{\ult@notloatrue}
+
+% Option for turning off printing of glossary in the backmatter.
+\newif\ifult@notglo
+\ult@notglofalse % Default to print glossary
+\DeclareOption{notglo}{\ult@notglotrue}
+
 % Option for ignoring drawing of List of Figures
 \newif\ifult@printlistoffigures
 \ult@printlistoffigurestrue % Default to true
@@ -331,7 +341,7 @@
               pdfpagelayout={TwoPageRight},% % Display two pages, odd-numbered pages to the right
               pdfdisplaydoctitle,%           % Display document title instead of filename in title bar
               bookmarks,%                    % Show bookmarks bar when displaying document
-              pagebackref,%                  % Allow back references inside bibilography.
+              pagebackref=false,%            % No back references inside bibilography.
               hyperindex,%                   %
               hyperfigures%                  %
              ]{hyperref}
@@ -435,8 +445,8 @@
   \usepackage{fontaxes}
   \usepackage{xkeyval}
 
-  % XCharter with old style figures
-  \usepackage[osf]{XCharter}
+  % XCharter
+  \usepackage[scaled=.98,sups]{XCharter}% lining figures in math
 
   % For some reason, MiKTeX is unable to locate the installed XCharter.map file
   % (it is probably not updmap'd correctly when installed, as XCharter.map is not properly added to the miktex\config\updmap.cfg file).
@@ -452,6 +462,17 @@
 
 \usepackage[activate={true,nocompatibility},final,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
 
+% this is necessary so that smallcapped italics & bolds also get spaced
+\DeclareMicrotypeSet{ultsmallcaps}
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2},
+     shape    = {sc,si,scit}
+   }
+\microtypesetup{tracking=ultsmallcaps}
+
+% the default tracking is kind of huge, this sets tracking to 5.5% of an em
+\SetTracking{encoding = *, shape = {sc,si,scit}}{55}
+
+
 \newif\ifult@microtypeloaded
 \AtBeginDocument{%
   \@ifpackageloaded{microtype}
@@ -464,10 +485,20 @@
   }
 }
 
+% Allows us to scale font sizes relatively
+\usepackage{scalefnt}
+
 %:-------------------------- Symbols -----------------------
 
 % AMS
 \usepackage{amsfonts, amsmath, amssymb, amsthm, amscd, xspace}
+
+\usepackage[scaled=1.04,varqu,varl]{zi4}% inconsolata typewriter
+\usepackage[type1]{cabin}% sans serif
+\usepackage[libertine,bigdelims,scaled=1.07]{newtxmath}
+\usepackage[cal=boondoxo,bb=boondox,frak=boondox]{mathalfa}
+
+\useosf % oldstyle figures in text
 
 \usepackage{mathtools}
 \usepackage{wasysym} % Math symbols
@@ -844,6 +875,14 @@
 
 %:-------------------------- Black magic hacks -----------------------
 
+\DeclareRobustCommand{\scaledsc}[1]{%
+  \begingroup%
+  \scalefont{1.12}%
+  \microtypesetup{tracking=false}% Disable tracking to reduce letterspacing for acronyms and similar
+  \textsc{#1}%
+  \endgroup%
+}
+
 % Magic to define \upsc{} command that replaces upper-case letters with lower-case small-caps
 \ExplSyntaxOn
 \cs_generate_variant:Nn \tl_rescan:nn { nV }
@@ -851,7 +890,7 @@
   {
     \tl_set:Nx \l_tmpa_tl {#1}
     \regex_replace_all:nnN { ([A-Z]+) }
-      { \c{textsc} \cB\{ \c{lowercase} \cB\{ \1 \cE\} \cE\} } \l_tmpa_tl
+      { \c{scaledsc} \cB\{ \c{lowercase} \cB\{ \1 \cE\} \cE\} } \l_tmpa_tl
     \tl_use:N \l_tmpa_tl
   }
 \ExplSyntaxOff
@@ -1769,7 +1808,10 @@
     \lstlistoflistings
   \fi
 
-  \printacronyms
+  % Omit list of abbreviations if 'notloa' classoption is used
+  \ifult@notloa\else
+    \printacronyms
+  \fi
 }
 
 % Mainmatter
@@ -1801,7 +1843,10 @@
   % Redefine headers for appendices
   \pagestyle{empty}
 
-  \printglossary
+  % Print glossary by default, turn off with 'notglo' classoption
+  \ifult@notglo\else%
+    \printglossary%
+  \fi
 
   % Blank back cover
   \clearversopage
