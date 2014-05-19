@@ -1787,7 +1787,7 @@
 
   \lstlistoflistings
 
-  % Print list of abbreviations if 'loa' classoption is used
+  % Ommit list of abbreviations if 'notloa' classoption is used
   \ifult@notloa\else
     \printacronyms
   \fi
@@ -1822,7 +1822,7 @@
   % Redefine headers for appendices
   \pagestyle{empty}
 
-  % Print glossary by default, turn off with 'nogloss' classoption
+  % Print glossary by default, turn off with 'notglo' classoption
   \ifult@notglo\else%
     \printglossary%
   \fi
