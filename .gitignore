@@ -33,3 +33,6 @@
 *.tdo
 *.fls
 .build
+*.pdf
+*.def
+*.lol
