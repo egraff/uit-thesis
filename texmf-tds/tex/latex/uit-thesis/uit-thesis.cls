@@ -52,6 +52,31 @@
 \ult@parindentfalse % Default to false
 \DeclareOption{parindent}{\ult@parindenttrue}
 
+% Option for turning off printing of list of abbreviations
+\newif\ifult@printlistofabbreviations
+\ult@printlistofabbreviationstrue % Default to true
+\DeclareOption{notloa}{\ult@printlistofabbreviationsfalse}
+
+% Option for turning off printing of glossary in the backmatter.
+\newif\ifult@printglossary
+\ult@printglossarytrue % Default to print glossary
+\DeclareOption{notglo}{\ult@printglossaryfalse}
+
+% Option for ignoring drawing of List of Figures
+\newif\ifult@printlistoffigures
+\ult@printlistoffigurestrue % Default to true
+\DeclareOption{notlof}{\ult@printlistoffiguresfalse}
+
+% Option for ignoring drawing of List of Tables
+\newif\ifult@printlistoftables
+\ult@printlistoftablestrue % Default to true
+\DeclareOption{notlot}{\ult@printlistoftablesfalse}
+
+% Option for ignoring drawing list of listings
+\newif\ifult@printlistoflistings
+\ult@printlistoflistingstrue % Default to true
+\DeclareOption{notlol}{\ult@printlistoflistingsfalse}
+
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
@@ -1771,13 +1796,21 @@
   % 4: Symbols
   % 5: Preface
 
-  \listoffigures
+  \ifult@printlistoffigures
+    \listoffigures
+  \fi
 
-  \listoftables
+  \ifult@printlistoftables
+    \listoftables
+  \fi
 
-  \lstlistoflistings
+  \ifult@printlistoflistings
+    \lstlistoflistings
+  \fi
 
-  \printacronyms
+  \ifult@printlistofabbreviations
+    \printacronyms
+  \fi
 }
 
 % Mainmatter
@@ -1809,7 +1842,9 @@
   % Redefine headers for appendices
   \pagestyle{empty}
 
-  \printglossary
+  \ifult@printglossary
+    \printglossary
+  \fi
 
   % Blank back cover
   \clearversopage
