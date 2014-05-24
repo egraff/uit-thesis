@@ -478,7 +478,6 @@
 % AMS
 \usepackage{amsfonts, amsmath, amssymb, amsthm, amscd, xspace}
 
-\usepackage[scaled=1.04,varqu,varl]{zi4}% inconsolata typewriter
 \usepackage[type1]{cabin}% sans serif
 \usepackage[libertine,bigdelims,scaled=1.07]{newtxmath}
 \usepackage[cal=boondoxo,bb=boondox,frak=boondox]{mathalfa}
