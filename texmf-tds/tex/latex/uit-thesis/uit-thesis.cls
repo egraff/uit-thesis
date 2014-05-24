@@ -53,14 +53,29 @@
 \DeclareOption{parindent}{\ult@parindenttrue}
 
 % Option for turning off printing of list of abbreviations
-\newif\ifult@notloa
-\ult@notloafalse % Default to false
-\DeclareOption{notloa}{\ult@notloatrue}
+\newif\ifult@printlistofabbreviations
+\ult@printlistofabbreviationstrue % Default to true
+\DeclareOption{notloa}{\ult@printlistofabbreviationsfalse}
 
 % Option for turning off printing of glossary in the backmatter.
-\newif\ifult@notglo
-\ult@notglofalse % Default to print glossary
-\DeclareOption{notglo}{\ult@notglotrue}
+\newif\ifult@printglossary
+\ult@printglossarytrue % Default to print glossary
+\DeclareOption{notglo}{\ult@printglossaryfalse}
+
+% Option for ignoring drawing of List of Figures
+\newif\ifult@printlistoffigures
+\ult@printlistoffigurestrue % Default to true
+\DeclareOption{notlof}{\ult@printlistoffiguresfalse}
+
+% Option for ignoring drawing of List of Tables
+\newif\ifult@printlistoftables
+\ult@printlistoftablestrue % Default to true
+\DeclareOption{notlot}{\ult@printlistoftablesfalse}
+
+% Option for ignoring drawing list of listings
+\newif\ifult@printlistoflistings
+\ult@printlistoflistingstrue % Default to true
+\DeclareOption{notlol}{\ult@printlistoflistingsfalse}
 
 % Now, process!
 \ProcessOptions\relax
@@ -1780,14 +1795,19 @@
   % 4: Symbols
   % 5: Preface
 
-  \listoffigures
+  \ifult@printlistoffigures
+    \listoffigures
+  \fi
 
-  \listoftables
+  \ifult@printlistoftables
+    \listoftables
+  \fi
 
-  \lstlistoflistings
+  \ifult@printlistoflistings
+    \lstlistoflistings
+  \fi
 
-  % Omit list of abbreviations if 'notloa' classoption is used
-  \ifult@notloa\else
+  \ifult@printlistofabbreviations
     \printacronyms
   \fi
 }
@@ -1821,9 +1841,8 @@
   % Redefine headers for appendices
   \pagestyle{empty}
 
-  % Print glossary by default, turn off with 'notglo' classoption
-  \ifult@notglo\else%
-    \printglossary%
+  \ifult@printglossary
+    \printglossary
   \fi
 
   % Blank back cover
