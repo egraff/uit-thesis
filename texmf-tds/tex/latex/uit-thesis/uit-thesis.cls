@@ -852,13 +852,20 @@
 % LE = Left Even: Page number is set to the left in the header on even pages
 \fancyhead[RO,LE]{\rheadfont\textcolor{rheadcolor}{\thepage}}
 
-% Set \leftmark to show to the right in header on even pages. Only upper case on first letter of chapter name
+% Set \leftmark to show to the right in header on even pages.
 % This will make sure that chapter title is written to the right on even/verso pages
 \fancyhead[RE]{\rheadfont\textcolor{rheadcolor}{\leftmark}}
 
 % Redefine what is in \sectionmark so that \rightmark contains section number and section name (e.g. "2.1 My Sections Name")
 \renewcommand{\sectionmark}[1]{%
   \markright{\rheadfmt{\thesection}\printrheadslash \rheadfmt{#1}}% \leftmark (right even) is set to section number + title after start of new section
+}
+
+% Redefine "chapter mark" for Toc lists (\tocetcmark command is originally defined in tocbibind...)
+% Note: this also applies to running heads for ToC itself, due to the use of \prw@mkboth in our definition later.
+\renewcommand{\tocetcmark}[1]{%
+  \markboth{\rheadfmt{#1}}% \leftmark
+           {\rheadfmt{#1}}% \rightmark
 }
 
 % Redefine "plain" pagestyle (used on first page of each chapter)
@@ -1759,7 +1766,7 @@
   % Redefine what is in \chaptermark so that \leftmark contains chapter name. Thus "Abstract" and "Acknowledgements" will be written in header
   \renewcommand{\chaptermark}[1]{%
     % Note: we use two number signs (#) because we have renewcommand within renewcommand
-    \markboth{##1}% % \leftmark (will be written to the right on even/verso pages and to the left on odd/recto pages) is set to chapter title after start of new chapters
+    \markboth{\rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages and to the left on odd/recto pages) is set to chapter title after start of new chapters
              {}%    % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
     }
 
@@ -1779,10 +1786,15 @@
 }
 
 % Table of Contents
-\let\ult@savetableofcontents\tableofcontents
 \renewcommand\tableofcontents{%
-  % Call original \tableofcontents
-  \ult@savetableofcontents
+  % Modified version of original \tableofcontents (we use tocloft, and our running heads style),
+  % so we do not invoke original \tableofcontents.
+  % Note: we do *not* use tocbibind's \tocfile (and use tocbibind with nottoc option), since we
+  % do not want to include ToC as entry in ToC
+  \toc@start
+  \chapter*{\contentsname}\prw@mkboth{\contentsname}
+  \@starttoc{toc}
+  \toc@finish
 
   \renewcommand\tableofcontents{%
     \@latex@error{Duplicate \@backslashchar tableofcontents}\@ehd
