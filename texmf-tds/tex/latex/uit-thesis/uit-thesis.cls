@@ -1064,11 +1064,18 @@
 \setlength{\ult@chapslash@height}{\ht\ult@chapslashbox}
 
 \newcommand{\printrheadslash}[1][]{
+  \begingroup
+  % This is a hotfix for a problem with using tikzpicture in running head (triggered when verbatim environment crosses a page boundary)
+  % See issue #23 on GitHub. Hopefully, we'll find a better solution later.
+  % Note: we only restore dollar catcode inside the local group.
+  \catcode`\$=3%
+  %
   \raisebox{-0.6pt}{
     \begin{tikzpicture}[scale=0.074]
       \ult@chapslashtikz % Draw UiT "slash"
     \end{tikzpicture}
   }
+  \endgroup
 }
 
 % Align bottom of UiT slash with bottom of baseline
