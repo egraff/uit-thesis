@@ -379,8 +379,11 @@
 % Floats
 \usepackage{float}
 
-% set captions other than text face thing
-\usepackage[hang,bf,small]{caption}
+% Small, hanging indentation with bold label.
+% hypcap option is used to make sure that hyperlink to
+% e.g. figure points to the top of the figure rather than
+% to the caption.
+\usepackage[hang,bf,small,hypcap]{caption}
 
 % Enables adding figures and tables side by side
 \usepackage{subcaption}
