@@ -915,10 +915,6 @@
 % Translate=false because package 'babel' reverts renaming of the default glossary-/acronymnames
 \usepackage[toc,acronym,shortcuts,nonumberlist,nopostdot,translate=false]{glossaries}
 
-% Format for glossary entry and acronyms in glossary lists
-% Use large smallcaps
-\renewcommand{\glsnamefont}[1]{\large\upsc{#1}}
-
 % Use smallcaps-magic!!! _o/ \o/ \o_
 % Must be used to support ACR-commands that are not aliased to GLS-commands
 \renewcommand*{\firstacronymfont}[1]{\upsc{#1}}% WTF?
@@ -926,7 +922,7 @@
 
 % Customize glossary abbreviations to replace upper-case letters with lower-case small-caps
 \renewcommand*{\CustomAcronymFields}{%
-  name={\the\glsshorttok},% name is abbreviated form (how it appears in 'List of Abbreviations')
+  name={\large\upsc{\the\glsshorttok}},% name is abbreviated form (how it appears in 'List of Abbreviations')
   text={\the\glsshorttok},% \glstext, \Glstext, \GLStext
   first={\the\glslongtok\space (\the\glsshorttok)},% \glsfirst, \Glsfirst, \GLSfirst
   plural={\the\glsshorttok\noexpand\acrpluralsuffix},% \glsplural, \Glsplural, \GLSplural
