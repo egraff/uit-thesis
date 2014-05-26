@@ -500,7 +500,12 @@
 \usepackage[libertine,bigdelims,scaled=1.07]{newtxmath}
 \usepackage[cal=boondoxo,bb=boondox,frak=boondox]{mathalfa}
 
-\useosf % oldstyle figures in text
+% Use oldstyle figures in text
+% Note: we have to do this manually instead of using XCharter's \useosf command, since last version of XCharter breaks \useof
+\edef\XCharter@figurestyle{TOsF}\edef\XCharter@altone{1}
+\AtEndPreamble{%
+\renewcommand*{\rmdefault}{XCharter-\XCharter@figurestyle}
+\normalfont}
 
 \usepackage{mathtools}
 \usepackage{wasysym} % Math symbols
