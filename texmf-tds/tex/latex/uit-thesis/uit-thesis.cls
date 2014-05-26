@@ -1774,6 +1774,9 @@
 \renewcommand\frontmatter{%
   \ult@savefrontmatter
 
+  % Clear running heads
+  \markboth{}{}
+
   % Redefine what is in \chaptermark so that \leftmark contains chapter name. Thus "Abstract" and "Acknowledgements" will be written in header
   \renewcommand{\chaptermark}[1]{%
     % Note: we use two number signs (#) because we have renewcommand within renewcommand
@@ -1839,6 +1842,9 @@
 \let\ult@savemainmatter\mainmatter
 \renewcommand\mainmatter{%
   \ult@savemainmatter
+
+  % Clear running heads
+  \markboth{}{}
 
   % Redefine \chaptermark, so it contains chapter number in front of chapter name (e.g. "2 My Chapers Name")
   % Note that we do not use \@chapapp (contains "chapter type"), because we do not want to write "Chapter" before the chapter number.
