@@ -77,6 +77,11 @@
 \ult@printlistoflistingstrue % Default to true
 \DeclareOption{notlol}{\ult@printlistoflistingsfalse}
 
+% Option to render namings in norwegian
+\newif\ifult@usenorwegian
+\ult@usenorwegianfalse % Default to true
+\DeclareOption{norwegian}{\ult@usenorwegiantrue}
+
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
@@ -95,9 +100,18 @@
 % Correct font encoding / language support in output (hyphenations, etc.)
 \RequirePackage[T1]{fontenc}
 
-% American patterns
-\RequirePackage[english=usenglishmax]{hyphsubst}
-\RequirePackage[USenglish]{babel}
+% Language patters
+\ifult@usenorwegian
+  \RequirePackage[norsk]{babel}
+  % Is this required?
+  \ifx\l@norsk\@undefined
+    \@nopatterns{Norsk}
+    \adddialect\l@norsk0
+  \fi
+\else
+  \RequirePackage[english=usenglishmax]{hyphsubst}
+  \RequirePackage[USenglish]{babel}
+\fi
 
 % To modify the heading styles more thoroughly use the titlesec package
 \RequirePackage[explicit]{titlesec}
@@ -109,6 +123,29 @@
 
 % Support for subscript and superscript using \textsuperscript{} and \textsubscript{}
 \RequirePackage{fixltx2e}
+
+%:-------------------------- Language definitions -----------------------
+
+% Acknowledgements
+\ifult@usenorwegian
+  \def\languagedefinedackname{Takksigelser}
+\else
+  \def\languagedefinedackname{Acknowledgements}
+\fi
+
+% List of listings
+\ifult@usenorwegian
+  \def\languagedefinedlistlistingname{Listinger}
+\else
+  \def\languagedefinedlistlistingname{List of Listings}
+\fi
+
+% List of abbreviations
+\ifult@usenorwegian
+  \def\languagedefinedacronymname{Abbreviasjoner}
+\else
+  \def\languagedefinedacronymname{List of Abbreviations}
+\fi
 
 %:-------------------------- DEBUG -----------------------
 
@@ -1364,8 +1401,9 @@
 
 %:------------------------ Environments ----------------------
 % Environment names
+% Abstract name is overriden by babel if a different language is defined.
 \newcommand{\abstractname}{Abstract}
-\newcommand{\ackname}{Acknowledgements}
+\newcommand{\ackname}{\languagedefinedackname}
 
 % Control-ifs
 \newif\ifult@hasacknowledgement\ult@hasacknowledgementfalse
@@ -1610,7 +1648,7 @@
 }
 
 % List of Listings
-\renewcommand{\lstlistlistingname}{List of Listings}
+\renewcommand{\lstlistlistingname}{\languagedefinedlistlistingname}
 \let\ult@lstlistoflistings\lstlistoflistings
 \renewcommand\lstlistoflistings{%
   \iftotallstlistings% Only output list if count > 0
@@ -1623,7 +1661,7 @@
 
 
 % List of Abbreviations
-\renewcommand{\acronymname}{List of Abbreviations}
+\renewcommand{\acronymname}{\languagedefinedacronymname}
 
 % Override \printglossary to prevent blank page from being inserted
 % when acronym/glossary list is empty.
