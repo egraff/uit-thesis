@@ -437,6 +437,9 @@
 % To read LaTeX macro from file
 \usepackage{catchfile}
 
+% e-Tex tools, macros, hooks, etc.
+\usepackage{etoolbox}
+
 %:-------------------------- Fonts -----------------------
 
 \usepackage{opensans}
