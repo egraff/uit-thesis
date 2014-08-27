@@ -1,13 +1,15 @@
 # Programs used
-COMPARE := $(shell which compare 2>/dev/null)
-LATEXMK := $(shell which latexmk 2>/dev/null)
-PDFLATEX := $(shell which pdflatex 2>/dev/null)
-MAKEGLOSSARIES := $(shell which makeglossaries 2>/dev/null)
+COMPARE := "$(shell which compare 2>/dev/null)"
+LATEXMK := "$(shell which latexmk 2>/dev/null)"
+PDFLATEX := "$(shell which pdflatex 2>/dev/null)"
+MAKEGLOSSARIES := "$(shell which makeglossaries 2>/dev/null)"
+GS := "$(shell which gc 2>/dev/null || which gswin64c 2>/dev/null || which gswin32c 2>/dev/null)"
 
 # The file to test (without extension)
-BASENAME = `basename $(FILE) .tex`
+BASENAME = $(shell basename $(FILE) .tex)
 
 PROTOPDF = ./proto/proto.pdf
+TMPFLD = ./tmp
 DIFFLD = ./diffs
 PDFFLD = ./pdfs
 
@@ -21,7 +23,7 @@ OUTPUTNAME = output
 BUILDFLD = ./.build
 
 # Extra options, these must be available for both pdflatex and latexmk
-DEFOPT = -output-directory=$(BUILDFLD) -interaction=nonstopmode 2>/dev/null 1>/dev/null
+DEFOPT = -output-directory=$(BUILDFLD) -interaction=nonstopmode &>/dev/null
 
 # Options for glossary
 GLOSSOPT = -q
@@ -38,6 +40,11 @@ BUILDGLOSS = cd $(BUILDFLD) &&\
  $(MAKEGLOSSARIES) $(GLOSSOPT) $(OUTPUTNAME) &&\
  cd - >/dev/null
 
+FILES := `ls -v | grep -o "^test.*\.tex"`
+
+all:
+	@for f in $(FILES); do $(MAKE) test FILE=$$f; echo ""; done
+
 test: _file _compare
 
 clean:
@@ -46,21 +53,25 @@ clean:
 
 # Target specific variables
 _compare : RANGE="$(shell	A="$(shell echo ${BASENAME} \
-	| grep -Po "(\[.*\])" | sed "s/\[//;s/\]//;s/,/ /g"	)"; \
+	| grep -o "(\[.*\])" | sed "s/\[//;s/\]//;s/,/ /g"	)"; \
 	for a in $$A; do if [ -z "`echo "$$a" | grep -o "-"`" ]; then echo "$$a"; \
 	else seq `echo -n "$$a" | sed 's/-/ /'`; fi; done)"
-_compare : PAGES=$(shell pdfinfo $(PDFFILE)\
-	|grep -Po '(?<=^Pages:)\s*\d+$$'|grep -Po '\d+')
+_compare : LOLKUK=$(shell echo $(RANGE))
+_compare : PAGES=$(shell pdfinfo $(PDFFILE) | awk '$$1 ~ /^Pages:/ {print $$2}')
 _compare : LAST=$(shell expr $(PAGES) - 1)
 _compare : FULLRANGE=$(shell seq 0 $(LAST))
 _compare:
 	@mkdir -p $(DIFFLD)
+	@mkdir -p $(TMPFLD)
+	echo "LOLKUK $(LOLKUK)"
+	@$(GS) -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -o $(TMPFLD)/test%d.png -sDEVICE=pngalpha -dFirstPage=1 -dLastPage=$(LAST) -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 $(PDFFLD)/$(BASENAME).pdf
+	@$(GS) -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -o $(TMPFLD)/proto%d.png -sDEVICE=pngalpha -dFirstPage=1 -dLastPage=$(LAST) -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 $(PROTOPDF)
 	@ERR=""; R=`if [ -z ${RANGE} ]; then echo ${FULLRANGE}; else echo ${RANGE}; fi`; \
 		echo "Testing document `readlink -f ${PDFFLD}`/${BASENAME}.pdf"; \
-		for p in $$R; do RES="$$($(COMPARE) -metric ae ${PDFFILE}[$$p] ${PROTOPDF}[$$p] \
+		for p in $$R; do RES="$$($(COMPARE) -metric ae ${TMPFLD}/test$$p.png ${TMPFLD}/proto$$p.png \
 		${DIFFLD}/${BASENAME}_p$$p.png 2>&1)"; \
-		if [ "$${RES}" = "0" ]; then echo -n "."; rm ${DIFFLD}/${BASENAME}_p$$p.png; \
-		else echo -n "x"; ERR="$${ERR} $$p"; \
+		if [ "$${RES}" = "0" ]; then echo -ne "\e[1;32m.\e[0m"; rm ${DIFFLD}/${BASENAME}_p$$p.png; \
+		else echo -ne "\e[1;31mx\e[0m"; ERR="$${ERR} $$p"; \
 		fi; \
 	done; echo ""; if [ -z "$${ERR}" ]; then \
 	echo "No diff was detected!"; else echo "diff on pages: $${ERR}"; \
@@ -94,7 +105,7 @@ ifndef MAKEGLOSSARIES
 	@exit 4
 endif
 ifeq ($(FILE),)
-	@echo "Specify a FILE" >&2
+	@echo "Specify which test to run as a FILE argument" >&2
 	@exit 5
 endif
 

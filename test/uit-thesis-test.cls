@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{uit-thesis-test}
 
-\def\baseclass{../uit-thesis}
+\def\baseclass{uit-thesis}
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{\baseclass}}
 
