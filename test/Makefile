@@ -56,14 +56,12 @@ _compare : RANGE="$(shell	A="$(shell echo ${BASENAME} \
 	| grep -o "(\[.*\])" | sed "s/\[//;s/\]//;s/,/ /g"	)"; \
 	for a in $$A; do if [ -z "`echo "$$a" | grep -o "-"`" ]; then echo "$$a"; \
 	else seq `echo -n "$$a" | sed 's/-/ /'`; fi; done)"
-_compare : LOLKUK=$(shell echo $(RANGE))
 _compare : PAGES=$(shell pdfinfo $(PDFFILE) | awk '$$1 ~ /^Pages:/ {print $$2}')
 _compare : LAST=$(shell expr $(PAGES) - 1)
 _compare : FULLRANGE=$(shell seq 0 $(LAST))
 _compare:
 	@mkdir -p $(DIFFLD)
 	@mkdir -p $(TMPFLD)
-	echo "LOLKUK $(LOLKUK)"
 	@$(GS) -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -o $(TMPFLD)/test%d.png -sDEVICE=pngalpha -dFirstPage=1 -dLastPage=$(LAST) -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 $(PDFFLD)/$(BASENAME).pdf
 	@$(GS) -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -o $(TMPFLD)/proto%d.png -sDEVICE=pngalpha -dFirstPage=1 -dLastPage=$(LAST) -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 $(PROTOPDF)
 	@ERR=""; R=`if [ -z ${RANGE} ]; then echo ${FULLRANGE}; else echo ${RANGE}; fi`; \
