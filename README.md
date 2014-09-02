@@ -25,5 +25,5 @@ texhash
 initexmf --admin -u
 initexmf --admin --mkmaps
 initexmf -u
-initexmf --admin -u
+initexmf --mkmaps
 ```
