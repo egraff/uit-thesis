@@ -201,7 +201,7 @@
 
 % Define a new 'leo' style for the package that will use a smaller font.
 \def\url@leostyle{%
-  \@ifundefined{select}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}%
 }
 % Now actually use the newly defined style.
 \urlstyle{leo}
