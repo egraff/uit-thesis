@@ -4,6 +4,7 @@ LATEXMK := "$(shell which latexmk 2>/dev/null)"
 PDFLATEX := "$(shell which pdflatex 2>/dev/null)"
 MAKEGLOSSARIES := "$(shell which makeglossaries 2>/dev/null)"
 GS := "$(shell which gc 2>/dev/null || which gswin64c 2>/dev/null || which gswin32c 2>/dev/null)"
+GS_OPTS =  -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pngalpha -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2
 
 # The file to test (without extension)
 BASENAME = $(shell basename $(FILE) .tex)
@@ -62,8 +63,8 @@ _compare : FULLRANGE=$(shell seq 0 $(LAST))
 _compare:
 	@mkdir -p $(DIFFLD)
 	@mkdir -p $(TMPFLD)
-	@$(GS) -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -o $(TMPFLD)/test%d.png -sDEVICE=pngalpha -dFirstPage=1 -dLastPage=$(LAST) -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 $(PDFFLD)/$(BASENAME).pdf
-	@$(GS) -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -o $(TMPFLD)/proto%d.png -sDEVICE=pngalpha -dFirstPage=1 -dLastPage=$(LAST) -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 $(PROTOPDF)
+	@$(GS) $(GS_OPTS) -o $(TMPFLD)/test%d.png -dFirstPage=1 -dLastPage=$(LAST) $(PDFFLD)/$(BASENAME).pdf
+	@$(GS) $(GS_OPTS) -o $(TMPFLD)/proto%d.png -dFirstPage=1 -dLastPage=$(LAST) $(PROTOPDF)
 	@ERR=""; R=`if [ -z ${RANGE} ]; then echo ${FULLRANGE}; else echo ${RANGE}; fi`; \
 		echo "Testing document `readlink -f ${PDFFLD}`/${BASENAME}.pdf"; \
 		for p in $$R; do RES="$$($(COMPARE) -metric ae ${TMPFLD}/test$$p.png ${TMPFLD}/proto$$p.png \
