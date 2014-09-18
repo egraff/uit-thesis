@@ -138,7 +138,7 @@ def _cleanup(*dirs):
 def _cleanupIfEmpty(*dirs):
 	echo(debug.INFO, "Cleanup if empty dir")
 	for dir in dirs:
-		echo(debug.INFO, "DIR:",dir)
+		echo(debug.INFO, "Cleanup dir:",dir)
 		if len(os.listdir(dir)) is 0:
 			for file in os.listdir(dir):
 				echo(debug.INFO, "rm FILE:",join(dir,file).replace("\\","/"))
@@ -146,19 +146,13 @@ def _cleanupIfEmpty(*dirs):
 			echo(debug.INFO, "rmdir", dir)
 			os.rmdir(dir)
 		else:
-			echo(debug.WARNING, dir, "is not empty, will not cleanup because you said not to")
-	
+			echo(debug.INFO, dir, "is not empty, will not cleanup")
 	
 def testFiles(FILES, protodir=join(SCRIPTDIR, "proto").replace("\\", "/"), tmpdir=join(SCRIPTDIR, "tmp").replace("\\", "/"), diffdir=join(SCRIPTDIR, "diffs").replace("\\", "/")):
 	controlAndCreateDirs(tmpdir, diffdir)
-	#try:
 	for file in FILES:
 		protofile = join(protodir, os.path.basename(file)).replace("\\","/").replace("test", "proto")
 		_testFile(file, FILES[file], protofile, tmpdir, diffdir)
-		echo(debug.WARNING, "REMEMBER TO REMOVE BREAK")
-		break
-	#except Exception as e:
-	#	echo(debug.FUCK, "EXCEPTION: ", e) 
 	_cleanup(tmpdir)
 	_cleanupIfEmpty(diffdir)
 	
@@ -166,27 +160,23 @@ def _testFile(file, range, protofile, tmpdir, diffdir):
 	basename = os.path.basename(file)
 	echo(debug.INFO, "Testing file '" + basename + "'")
 	noext = os.path.splitext(basename)[0]
-	_genPNG(file, noext, tmpdir)
-	_genPNG(protofile, "proto_" + noext ,tmpdir)
+	_genPNG(file, range, noext, tmpdir)
+	_genPNG(protofile, range, "proto_" + noext ,tmpdir)
 	_compare(noext, range, tmpdir, diffdir)
-	
-	
 
-def _genPNG(srcfile, noext, tmpdir):
-	lastpage = _getPDFPages(srcfile)
-	outfile = join(tmpdir, noext+"_%d.png").replace("\\","/")	
-	outfilecmd = GS + GSOPTS + "-o " + outfile + " -dFirstPage=1 " + "-dLastPage=" + str(lastpage) + " " + srcfile
-	echo(debug.DEBUG, "CMD: ", outfilecmd)
-	gen = subprocess.Popen(outfilecmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	gen.wait()
+def _genPNG(srcfile, range, noext, tmpdir):
+	for page in range:
+		#lastpage = _getPDFPages(srcfile)
+		outfile = join(tmpdir, noext+"_"+str(page)+".png").replace("\\","/")#%d.png").replace("\\","/")	
+		outfilecmd = GS + GSOPTS + "-o " + outfile + " -dFirstPage=" + str(page) + " -dLastPage=" + str(page) + " " + srcfile
+		echo(debug.INFO, "CMD: ", outfilecmd)
+		gen = subprocess.Popen(outfilecmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		gen.wait()
+		stderr = gen.stderr.readlines()
+		if len(stderr) is not 0:
+			raise Exception(stderr)
 	
-	stderr = gen.stderr.readlines()
-	if len(stderr) is not 0:
-		raise Exception(stderr)
-	
-def _compare(noext, range, tmpdir, diffdir):
-	echo(debug.DEBUG, "IN COMPARE")
-	
+def _compare(noext, range, tmpdir, diffdir):	
 	for page in range:
 		src =  join(tmpdir, noext+"_"+str(page)+".png").replace("\\","/")
 		proto =  join(tmpdir, "proto_" + noext+"_"+str(page)+".png").replace("\\","/")
@@ -197,13 +187,18 @@ def _compare(noext, range, tmpdir, diffdir):
 		cmp = subprocess.Popen(cmpcmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		cmp.wait()
 		
+		stderr = cmp.stderr.readlines()
+		diffnum = stderr[0]
 		
-		echo(debug.DEBUG, "result was: ", cmp.stderr.readlines())
-	
-	#${TMPFLD}/test$$p.png ${TMPFLD}/proto$$p.png ${DIFFLD}/${BASENAME}_p$$p.png"
+		if int(diffnum) is 0:
+			echo(debug.INFO, "Page", page, "in document '" + noext + "' is OK!")
+			os.remove(diff)
+		else:
+			echo(debug.WARNING, "Page", page, "in document '" + noext + "' has diff: ", diffnum)
+			
+		os.remove(src)
+		os.remove(proto)
 		
-
-	
 
 
 def printDict(dict):
