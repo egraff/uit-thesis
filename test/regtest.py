@@ -5,12 +5,14 @@ import re
 import subprocess
 
 
+
 class debug:
 	INFO	= "\\033[1;34m"
 	DEBUG	= "\\033[1;32m"
 	WARNING = "\\033[1;33m"
 	ERROR = "\\033[1;31m"
 	FUCK = "\\033[1;41m"
+dlvl = [debug.INFO, debug.DEBUG, debug.WARNING, debug.ERROR, debug.FUCK]
 
 DEBUGLEVEL = debug.INFO
 	
@@ -24,11 +26,8 @@ SCRIPTDIR = os.path.relpath(os.path.dirname(os.path.realpath(__file__))).replace
 
 def echo(*string):
 	color = ""
-	
-	col = [debug.INFO, debug.DEBUG, debug.WARNING, debug.ERROR, debug.FUCK]
-	
-	if string[0] in col:
-		if col.index(string[0]) < col.index(DEBUGLEVEL):
+	if string[0] in dlvl:
+		if dlvl.index(string[0]) < dlvl.index(DEBUGLEVEL):
 			return
 		color = string[0]
 		string = string[1:]
@@ -164,11 +163,12 @@ def _testFile(file, range, protofile, tmpdir, diffdir):
 	_genPNG(protofile, range, "proto_" + noext ,tmpdir)
 	_compare(noext, range, tmpdir, diffdir)
 
-def _genPNG(srcfile, range, noext, tmpdir):
-	for page in range:
-		#lastpage = _getPDFPages(srcfile)
-		outfile = join(tmpdir, noext+"_"+str(page)+".png").replace("\\","/")#%d.png").replace("\\","/")	
-		outfilecmd = GS + GSOPTS + "-o " + outfile + " -dFirstPage=" + str(page) + " -dLastPage=" + str(page) + " " + srcfile
+def _genPNG(srcfile, range, noext, tmpdir):	
+	#for page in range:
+		lastpage = _getPDFPages(srcfile)
+		outfile = join(tmpdir, noext+"_%d.png").replace("\\","/")#%d.png").replace("\\","/")	
+		#outfilecmd = GS + GSOPTS + "-o " + outfile + " -dFirstPage=" + str(page) + " -dLastPage=" + str(page) + " " + srcfile
+		outfilecmd = GS + GSOPTS + "-o " + outfile + " -dFirstPage=1" + " -dLastPage=" + str(lastpage) + " " + srcfile
 		echo(debug.INFO, "CMD: ", outfilecmd)
 		gen = subprocess.Popen(outfilecmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		gen.wait()
@@ -176,7 +176,7 @@ def _genPNG(srcfile, range, noext, tmpdir):
 		if len(stderr) is not 0:
 			raise Exception(stderr)
 	
-def _compare(noext, range, tmpdir, diffdir):	
+def _compare(noext, range, tmpdir, diffdir):
 	for page in range:
 		src =  join(tmpdir, noext+"_"+str(page)+".png").replace("\\","/")
 		proto =  join(tmpdir, "proto_" + noext+"_"+str(page)+".png").replace("\\","/")
@@ -190,17 +190,15 @@ def _compare(noext, range, tmpdir, diffdir):
 		stderr = cmp.stderr.readlines()
 		diffnum = stderr[0]
 		
+		
 		if int(diffnum) is 0:
 			echo(debug.INFO, "Page", page, "in document '" + noext + "' is OK!")
 			os.remove(diff)
 		else:
 			echo(debug.WARNING, "Page", page, "in document '" + noext + "' has diff: ", diffnum)
-			
 		os.remove(src)
 		os.remove(proto)
 		
-
-
 def printDict(dict):
 	for k in dict:
 		print k,":",dict[k]

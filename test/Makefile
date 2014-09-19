@@ -27,6 +27,7 @@ BUILDFLD = ./.build
 DEFOPT = -output-directory=$(BUILDFLD) -interaction=nonstopmode &>/dev/null
 
 # Options for glossary
+
 GLOSSOPT = -q
 
 # Command to build document
@@ -44,6 +45,7 @@ BUILDGLOSS = cd $(BUILDFLD) &&\
 FILES := `ls -v | grep -o "^test.*\.tex"`
 
 all:
+	@echo "FILES: $(FILES)"
 	@for f in $(FILES); do $(MAKE) test FILE=$$f; echo ""; done
 
 test: _file _compare
@@ -53,28 +55,9 @@ clean:
 	@echo "Done!"
 
 # Target specific variables
-_compare : RANGE="$(shell	A="$(shell echo ${BASENAME} \
-	| grep -o "(\[.*\])" | sed "s/\[//;s/\]//;s/,/ /g"	)"; \
-	for a in $$A; do if [ -z "`echo "$$a" | grep -o "-"`" ]; then echo "$$a"; \
-	else seq `echo -n "$$a" | sed 's/-/ /'`; fi; done)"
-_compare : PAGES=$(shell pdfinfo $(PDFFILE) | awk '$$1 ~ /^Pages:/ {print $$2}')
-_compare : LAST=$(shell expr $(PAGES) - 1)
-_compare : FULLRANGE=$(shell seq 0 $(LAST))
-_compare:
-	@mkdir -p $(DIFFLD)
-	@mkdir -p $(TMPFLD)
-	@$(GS) $(GS_OPTS) -o $(TMPFLD)/test%d.png -dFirstPage=1 -dLastPage=$(LAST) $(PDFFLD)/$(BASENAME).pdf
-	@$(GS) $(GS_OPTS) -o $(TMPFLD)/proto%d.png -dFirstPage=1 -dLastPage=$(LAST) $(PROTOPDF)
-	@ERR=""; R=`if [ -z ${RANGE} ]; then echo ${FULLRANGE}; else echo ${RANGE}; fi`; \
-		echo "Testing document `readlink -f ${PDFFLD}`/${BASENAME}.pdf"; \
-		for p in $$R; do RES="$$($(COMPARE) -metric ae ${TMPFLD}/test$$p.png ${TMPFLD}/proto$$p.png \
-		${DIFFLD}/${BASENAME}_p$$p.png 2>&1)"; \
-		if [ "$${RES}" = "0" ]; then echo -ne "\e[1;32m.\e[0m"; rm ${DIFFLD}/${BASENAME}_p$$p.png; \
-		else echo -ne "\e[1;31mx\e[0m"; ERR="$${ERR} $$p"; \
-		fi; \
-	done; echo ""; if [ -z "$${ERR}" ]; then \
-	echo "No diff was detected!"; else echo "diff on pages: $${ERR}"; \
-	echo "diff-image(s) is available in `readlink -f ${DIFFLD}`"; fi
+_compare : 
+	@echo "COMPARE"
+	python regtest.py
 
 _file: _ctrl_
 	@$(RM) $(PDFFILE)
