@@ -8,13 +8,15 @@ import subprocess
 
 class debug:
 	INFO	= "\\033[1;34m"
-	DEBUG	= "\\033[1;32m"
+	DEBUG	= "\\033[0;32m"
 	WARNING = "\\033[1;33m"
 	ERROR = "\\033[1;31m"
 	FUCK = "\\033[1;41m"
-dlvl = [debug.INFO, debug.DEBUG, debug.WARNING, debug.ERROR, debug.FUCK]
+	GREEN = "\\033[1;32m"
+	WHITE = "\\033[1;37m"
+dlvl = [debug.INFO, debug.DEBUG, debug.WARNING, debug.ERROR, debug.FUCK, debug.WHITE, debug.GREEN]
 
-DEBUGLEVEL = debug.INFO
+DEBUGLEVEL = debug.ERROR
 	
 GS = None
 GSOPTS = " -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pngalpha -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 "
@@ -34,6 +36,10 @@ def echo(*string):
 	s = "echo -e \"" + color + " ".join([str(x) for x in string]) + "\\033[0m"
 	subprocess.Popen(s).wait()
 
+def printDict(dict):
+	for k in dict:
+		print k,":",dict[k]	
+
 def genFileList(dir=join(SCRIPTDIR, "pdfs")):
 	dir = dir.replace("\\", "/")
 	FILES = {}
@@ -41,14 +47,14 @@ def genFileList(dir=join(SCRIPTDIR, "pdfs")):
 		if f.startswith("test") and f.endswith(".pdf"):
 			try:
 				file =  join(dir, f).replace("\\","/")
-				FILES[file] = _getRange(file)
+				FILES[file] = _genRange(file)
 			except Exception as e:
 				echo(debug.WARNING, "FILE: ", file)
 				echo(debug.WARNING, "EXCEPTION: ", e)
 
 	return FILES
-
-def _getRange(file):
+	
+def _genRange(file):
 	basename = os.path.basename(file)
 	noext = os.path.splitext(basename)[0]
 	
@@ -84,7 +90,6 @@ def _getRange(file):
 	return newrange
 	
 def _getPDFPages(file):
-	
 	# use pdfinfo to extract number of pages in pdf file
 	output = subprocess.check_output(["pdfinfo", file])
 	pages = re.findall(r"\d+", re.search(r"Pages:.*", output).group())[0]
@@ -154,54 +159,67 @@ def testFiles(FILES, protodir=join(SCRIPTDIR, "proto").replace("\\", "/"), tmpdi
 		_testFile(file, FILES[file], protofile, tmpdir, diffdir)
 	_cleanup(tmpdir)
 	_cleanupIfEmpty(diffdir)
-	
-def _testFile(file, range, protofile, tmpdir, diffdir):
-	basename = os.path.basename(file)
-	echo(debug.INFO, "Testing file '" + basename + "'")
-	noext = os.path.splitext(basename)[0]
-	_genPNG(file, range, noext, tmpdir)
-	_genPNG(protofile, range, "proto_" + noext ,tmpdir)
-	_compare(noext, range, tmpdir, diffdir)
 
-def _genPNG(srcfile, range, noext, tmpdir):	
-	#for page in range:
-		lastpage = _getPDFPages(srcfile)
-		outfile = join(tmpdir, noext+"_%d.png").replace("\\","/")#%d.png").replace("\\","/")	
-		#outfilecmd = GS + GSOPTS + "-o " + outfile + " -dFirstPage=" + str(page) + " -dLastPage=" + str(page) + " " + srcfile
-		outfilecmd = GS + GSOPTS + "-o " + outfile + " -dFirstPage=1" + " -dLastPage=" + str(lastpage) + " " + srcfile
-		echo(debug.INFO, "CMD: ", outfilecmd)
-		gen = subprocess.Popen(outfilecmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-		gen.wait()
-		stderr = gen.stderr.readlines()
-		if len(stderr) is not 0:
-			raise Exception(stderr)
+def _testFile(file, range, protofile, tmpdir, diffdir):
+	echo(debug.WHITE, "Comparing '" + file + "' with '" + protofile + "'")
+	_genPNG(range, tmpdir, file, protofile)
+	_compare(file, protofile, range, tmpdir, diffdir)
+
+def _genPNG(range, tmpdir, *srcfiles):
+	echo(debug.WHITE, "Creating PNG pages")
+	__PNGProcs = []
+	for file in srcfiles:
+		basename = os.path.basename(file)
+		noext = os.path.splitext(basename)[0]
+		for page in range:
+			__PNGProcs.append(__genPNGPageProc(file, page, noext, tmpdir))
+	for proc in __PNGProcs:
+		proc.wait()
 	
-def _compare(noext, range, tmpdir, diffdir):
+def __genPNGPageProc(srcfile, page, noext, tmpdir):
+	outfile = join(tmpdir, noext+"_"+ str(page) + ".png").replace("\\","/")
+	outfilecmd = GS + GSOPTS + "-o " + outfile + " -dFirstPage=" + str(page) + " -dLastPage=" + str(page) + " " + srcfile
+	echo(debug.INFO, "CMD: ", outfilecmd)
+	return subprocess.Popen(outfilecmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+def _compare(srcfile, protofile, range, tmpdir, diffdir):
+	echo(debug.WHITE, "Comparing pages")
+	__CMPProcs = []
+	srcfilenoext = os.path.basename(os.path.splitext(srcfile)[0])
+	protofilenoext = os.path.basename(os.path.splitext(protofile)[0])
+	
 	for page in range:
-		src =  join(tmpdir, noext+"_"+str(page)+".png").replace("\\","/")
-		proto =  join(tmpdir, "proto_" + noext+"_"+str(page)+".png").replace("\\","/")
-		diff =  join(diffdir, "diff_"+noext+"_"+str(page)+".png").replace("\\","/")
+		__CMPProcs.append(__compareProc(srcfilenoext, protofilenoext, page, tmpdir, diffdir))
 		
-		cmpcmd = CMP + CMPOPTS + src + " " + proto + " " + diff
-		echo(debug.INFO, "cmpcmd: ", cmpcmd)
-		cmp = subprocess.Popen(cmpcmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-		cmp.wait()
-		
-		stderr = cmp.stderr.readlines()
-		diffnum = stderr[0]
-		
-		
+	errorpages = []
+	errors = 0
+	for page, noext, src, proto, diff, proc in __CMPProcs:
+		proc.wait()
+		diffnum = proc.stderr.readlines()[0]
+
 		if int(diffnum) is 0:
-			echo(debug.INFO, "Page", page, "in document '" + noext + "' is OK!")
+			echo(debug.INFO, "Page", "{:>4}".format(page), "in document '" + noext + "' is OK!")
 			os.remove(diff)
 		else:
-			echo(debug.WARNING, "Page", page, "in document '" + noext + "' has diff: ", diffnum)
+			errors += 1
+			errorpages.append(page)
+			echo(debug.WARNING, "Page", "{:>4}".format(page), "in document '" + noext + "' has diff: ", "{:>10}".format(diffnum))
 		os.remove(src)
 		os.remove(proto)
-		
-def printDict(dict):
-	for k in dict:
-		print k,":",dict[k]
+	if errors is not 0:
+		echo(debug.ERROR, "'" + srcfile + "' and '" + protofile + "' has diffs in '" + str(errors) +"' pages:")
+		echo(debug.ERROR, errorpages)
+		echo(debug.ERROR, "PNGs containing diffs are avilable in '" + diffdir + "'\n")
+	else:
+		echo(debug.GREEN, "'" + srcfile + "' and '" + protofile + "' has no diffs!\n")
+
+def __compareProc(srcfilenoext, protofilenoext, page, tmpdir, diffdir):
+	src =  join(tmpdir, srcfilenoext+"_"+str(page)+".png").replace("\\","/")
+	proto =  join(tmpdir, protofilenoext+"_"+str(page)+".png").replace("\\","/")
+	diff =  join(diffdir, "diff_"+srcfilenoext+"_"+str(page)+".png").replace("\\","/")
+	cmpcmd = CMP + CMPOPTS + src + " " + proto + " " + diff
+	echo(debug.INFO, "cmpcmd: ", cmpcmd)
+	return (page, srcfilenoext, src, proto, diff, subprocess.Popen(cmpcmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE))
 		
 if __name__ == '__main__':
 	try:
