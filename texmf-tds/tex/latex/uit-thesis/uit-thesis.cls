@@ -483,7 +483,8 @@
 \AtBeginDocument{%
   \@ifpackageloaded{microtype}
   {%
-    \global\ult@microtypeloadedtrue}
+    \global\ult@microtypeloadedtrue
+  }
   {%
     \global\ult@microtypeloadedfalse
     \global\newif\ifMT@protrusion
