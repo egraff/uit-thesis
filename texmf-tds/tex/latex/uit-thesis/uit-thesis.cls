@@ -170,12 +170,30 @@
 }
 
 % Disallowed packages
-% Disallowed packages
 \ult@disallowpackage[Package subfigure is deprecated. The subcaption package (already included by the document class) is used instead.]{subfigure}
 \ult@disallowpackage[Package subfig is incompatible with the uit-thesis document class. The subcaption package (already included) is used instead.]{subfig}
 \ult@disallowpackage[Package easyeqn is incompatible with hyperref.]{easyeqn}
 \ult@disallowpackage[Package mathenv is incompatible with hyperref.]{mathenv}
 \ult@disallowpackage[The uit-thesis document class already provides beautiful chapter headings. Why would you want to change them?]{fncychap}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{tocbasic}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{tocstyle}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{typearea}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{titlepage}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrpage}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrpage2}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrdate}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrtime}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scraddr}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrextend}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrbase}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrlfile}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrwfile}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrhack}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrlayer}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrlayer-scrpage}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrlayer-notecolumn}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrjura}
+\ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrlogo}
 
 %:-------------------------- Colors -----------------------
 
