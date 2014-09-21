@@ -170,8 +170,12 @@
 }
 
 % Disallowed packages
-\ult@disallowpackage[Package subfigure is deprecated. The subcaption package (already included by the document class) is used instead]{subfigure}
-\ult@disallowpackage[Package subfig is incompatible with the uit-thesis document class. The subcaption package (already included) is used instead]{subfig}
+% Disallowed packages
+\ult@disallowpackage[Package subfigure is deprecated. The subcaption package (already included by the document class) is used instead.]{subfigure}
+\ult@disallowpackage[Package subfig is incompatible with the uit-thesis document class. The subcaption package (already included) is used instead.]{subfig}
+\ult@disallowpackage[Package easyeqn is incompatible with hyperref.]{easyeqn}
+\ult@disallowpackage[Package mathenv is incompatible with hyperref.]{mathenv}
+\ult@disallowpackage[The uit-thesis document class already provides beautiful chapter headings. Why would you want to change them?]{fncychap}
 
 %:-------------------------- Colors -----------------------
 
@@ -340,6 +344,8 @@
 
 %:-------------------------- Figures, graphics, includes, etc.  -----------------------
 
+% Floats (should be loaded before hyperref)
+\usepackage{float}
 
 \ifpdf
 
@@ -385,9 +391,6 @@
   anchorcolor=green,
   hidelinks% Remove color and border
 }
-
-% Floats
-\usepackage{float}
 
 % Small, hanging indentation with bold label.
 % hypcap option is used to make sure that hyperlink to
@@ -2303,7 +2306,7 @@
         \ifx\ult@tmp@disallowpackagereason\@empty
           \@latex@error{The use of package #1 has been disallowed by the uit-thesis document class}\@ehd%
         \else
-          \@latex@error{The use of package #1 has been disallowed by the uit-thesis document class.^^J^^J\ult@tmp@disallowpackagereason}\@ehd%
+          \@latex@error{The use of package #1 has been disallowed by the uit-thesis document class.^^J^^J\ult@tmp@disallowpackagereason^^J}\@ehd%
         \fi
       \endgroup
     \else
