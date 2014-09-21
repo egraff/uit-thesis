@@ -62,6 +62,11 @@
 \ult@printglossarytrue % Default to print glossary
 \DeclareOption{notglo}{\ult@printglossaryfalse}
 
+% Option for resetting expansion of acronyms at start of each chapter
+\newif\ifult@resetallglsperchapter
+\ult@resetallglsperchapterfalse % Default to false
+\DeclareOption{glsresetperchapter}{\ult@resetallglsperchaptertrue}
+
 % Option for ignoring drawing of List of Figures
 \newif\ifult@printlistoffigures
 \ult@printlistoffigurestrue % Default to true
@@ -1188,6 +1193,14 @@
     % Compensate for extra line added by strut
     \vspace*{-\parskip}
     \vspace*{-\baselineskip}
+    %
+    %
+    %
+    % If requested, reset gls expansion on each new chapter
+    \ifult@resetallglsperchapter
+      % Reset glossaries so every abbreviation will expand on first use (except those that have been unset)
+      \ult@restoreglsstates
+    \fi
   ]
 
 % Adjust spacing around chapter title
@@ -1849,7 +1862,7 @@
   % Clear running heads
   \markboth{}{}
 
-  % Redefine \chaptermark, so it contains chapter number in front of chapter name (e.g. "2 My Chapers Name")
+  % Redefine \chaptermark, so it contains chapter number in front of chapter name (e.g. "2 My Chapter's Name")
   % Note that we do not use \@chapapp (contains "chapter type"), because we do not want to write "Chapter" before the chapter number.
   \renewcommand{\chaptermark}[1]{%
     % Note: we use two number signs (#) because we have renewcommand within renewcommand
