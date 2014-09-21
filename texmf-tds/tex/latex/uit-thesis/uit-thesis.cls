@@ -163,6 +163,16 @@
   }%
 }
 
+% Used to prevent package from being loaded.
+% Macro is used as \ult@disallowpackage{packagename} or \ult@disallowpackage[Reason for disallowing package]{packagename}.
+\newcommand\ult@disallowpackage[2][\@empty]{%
+  \expandafter\edef\csname ult@disallowpackage@#2\endcsname{#1}
+}
+
+% Disallowed packages
+\ult@disallowpackage[Package subfigure is deprecated. The subcaption package (already included by the document class) is used instead]{subfigure}
+\ult@disallowpackage[Package subfig is incompatible with the uit-thesis document class. The subcaption package (already included) is used instead]{subfig}
+
 %:-------------------------- Colors -----------------------
 
 % Text coloring with support for 68 standard color names
@@ -2279,8 +2289,26 @@
 
 \let\ult@save@onefilewithoptions\@onefilewithoptions
 \def\@onefilewithoptions#1[#2][#3]#4{%
+  % Note: the \AtBeginDocument is set to \@firstofone in the \document macro.
+  % It can therefore be used to test if command is used before or after \begin{document}...\end{document},
+  % that is, if we're in the preamble or not. Since \@onefilewithoptions is defined with \@onlypreamble in
+  % the LaTeX kernel, we don't want to take any action if we're not in the preable, since it's an error anyways.
   \ifx\AtBeginDocument\@firstofone\else
-    \@latex@warning{Are you sure you are allowed to use the #1 package?}%
+    % We're in the preamble
+    %
+    % Test if the package is allowed
+    \ifcsname ult@disallowpackage@#1\endcsname
+      \begingroup
+        \expandafter\let\expandafter\ult@tmp@disallowpackagereason\csname ult@disallowpackage@#1\endcsname
+        \ifx\ult@tmp@disallowpackagereason\@empty
+          \@latex@error{The use of package #1 has been disallowed by the uit-thesis document class}\@ehd%
+        \else
+          \@latex@error{The use of package #1 has been disallowed by the uit-thesis document class.^^J^^J\ult@tmp@disallowpackagereason}\@ehd%
+        \fi
+      \endgroup
+    \else
+      \@latex@warning{Are you sure you are allowed to use the #1 package?}%
+    \fi
   \fi
   \ult@save@onefilewithoptions#1[{#2}][{#3}]#4%
 }
