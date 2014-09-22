@@ -200,6 +200,7 @@
 \usepackage[obeyspaces,hyphens]{url}
 
 % Define a new 'leo' style for the package that will use a smaller font.
+% http://www.kronto.org/thesis/tips/url-formatting.html
 \def\url@leostyle{%
   \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\small\ttfamily}}%
 }
@@ -251,9 +252,9 @@
 
 \typeout{^^J ^^J ============================================= ^^J ^^J}
 
-\usepackage[norule, % drop the small rule before footnotes
+\usepackage[norule,%    % Drop the small rule before footnotes
             splitrule,% % If a footnote is split, draw a full width rule above the continued part of the footnote as a visual cue to readers
-            bottom%    % Make sure footnotes are pushed to the bottom of the page (instead of being placed after the actual page break)
+            bottom%     % Make sure footnotes are pushed to the bottom of the page (instead of being placed after the actual page break)
            ]{footmisc}
 
 \debugdef{footnote}
@@ -334,7 +335,7 @@
 \ifpdf
 
   \usepackage[pdftex,%                       %
-              plainpages=false,%             %
+              plainpages=false,%             % "Physical" page numbers and logical page numbers are not the same
               pdfpagelabels=false,%          % Don't index pages using logical page numbers in PDF reader (such as ii, iii, iv, ...)
               pdfpagemode={UseOutlines},%    % Show bookmarks
               pdfstartview={FitV},%          % Fit height of page to PDF viewer window
@@ -388,7 +389,7 @@
 % Enables adding figures and tables side by side
 \usepackage{subcaption}
 
-% Listings
+% Listings (e.g. used for code examples)
 \usepackage{listings}
 
 % Override \title to update pdftitle
@@ -505,7 +506,7 @@
 \usepackage[cal=boondoxo,bb=boondox,frak=boondox]{mathalfa}
 
 % Use oldstyle figures in text
-% Note: we have to do this manually instead of using XCharter's \useosf command, since last version of XCharter breaks \useof
+% Note: we have to do this manually instead of using XCharter's \useosf command, since last version of XCharter breaks \useosf
 \edef\XCharter@figurestyle{TOsF}\edef\XCharter@altone{1}
 \AtEndPreamble{%
 \renewcommand*{\rmdefault}{XCharter-\XCharter@figurestyle}
