@@ -201,14 +201,13 @@ def testFiles(FILES):
 
   controlAndCreateDirs(TMPDIR, DIFFDIR)
 
-  for i in range(30):
-    for file in FILES:
-      didFail, error = _testFile(file, FILES[file])
-      if didFail:
-        num_failed += 1
-        errors.append((file, error))
+  for file in FILES:
+    didFail, error = _testFile(file, FILES[file])
+    if didFail:
+      num_failed += 1
+      errors.append((file, error))
 
-      NUM_TESTS_RUN += 1
+    NUM_TESTS_RUN += 1
 
   _cleanup(TMPDIR)
   _cleanupIfEmpty(DIFFDIR)
