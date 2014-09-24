@@ -1,16 +1,13 @@
 
-import os
-from os.path import join
+import os, sys
 import re
 import subprocess
 
-
-
 SCRIPTDIR = os.path.relpath(os.path.dirname(os.path.realpath(__file__))).replace("\\", "/")
-PDFSDIR   = join(SCRIPTDIR, "pdfs").replace("\\", "/")
-PROTODIR  = join(SCRIPTDIR, "proto").replace("\\", "/")
-TMPDIR    = join(SCRIPTDIR, "tmp").replace("\\", "/")
-DIFFDIR   = join(SCRIPTDIR, "diffs").replace("\\", "/")
+PDFSDIR   = os.path.join(SCRIPTDIR, "pdfs").replace("\\", "/")
+PROTODIR  = os.path.join(SCRIPTDIR, "proto").replace("\\", "/")
+TMPDIR    = os.path.join(SCRIPTDIR, "tmp").replace("\\", "/")
+DIFFDIR   = os.path.join(SCRIPTDIR, "diffs").replace("\\", "/")
 
 TESTFILEPREFIX  = "test"
 PROTOFILEPREFIX = "proto"
@@ -19,14 +16,16 @@ class debug:
 	INFO	= "\\033[1;34m"
 	DEBUG	= "\\033[0;32m"
 	WARNING = "\\033[1;33m"
+	YELLOW = "\\033[1;33m"
 	ERROR = "\\033[1;31m"
 	FUCK = "\\033[1;41m"
 	GREEN = "\\033[1;32m"
 	WHITE = "\\033[1;37m"
-dlvl = [debug.INFO, debug.DEBUG, debug.WARNING, debug.ERROR, debug.FUCK, debug.WHITE, debug.GREEN]
+dlvl = [debug.INFO, debug.DEBUG, debug.WARNING, debug.FUCK, debug.WHITE, debug.GREEN, debug.YELLOW, debug.ERROR]
 
-DEBUGLEVEL = debug.ERROR
+DEBUGLEVEL = debug.WARNING
 
+SHOWDETAILEDINFO = False
 
 GS = None
 GSOPTS = " -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pngalpha -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 "
@@ -41,7 +40,7 @@ def echo(*string):
 			return
 		color = string[0]
 		string = string[1:]
-	s = "echo -e \"" + color + " ".join([str(x) for x in string]) + "\\033[0m"
+	s = "echo -e \"" + color + " ".join([str(x) for x in string]) + "\\033[0m\\c"
 	subprocess.Popen(s).wait()
 
 def printDict(dict):
@@ -53,16 +52,20 @@ def genFileList():
 	for f in os.listdir(PDFSDIR):
 		if f.startswith(TESTFILEPREFIX) and f.endswith(".pdf"):
 			try:
-				file =  join(PDFSDIR, f).replace("\\","/")
+				file = "%s/%s" % (PDFSDIR, f)
 				if " " in file:
 					raise Exception("Filename cannot contain space")
-				protofile = join(PROTODIR, f).replace("\\","/").replace(TESTFILEPREFIX, PROTOFILEPREFIX)
+				protofile = "%s/%s" % (PROTODIR, f)
 				if not os.path.exists(protofile):
-					raise Exception("Protofile '" + protofile + "' does not exist")
+					raise Exception("Protofile '%s' does not exist" % (protofile,))
+				if _getPDFPages(file) != _getPDFPages(protofile):
+					raise Exception("File '%s' and protofile '%s' do not have the same number of pages" % (file, protofile,))
 				FILES[file] = _genRange(file)
 			except Exception as e:
-				echo(debug.ERROR, "FILE: ", file)
-				echo(debug.ERROR, "EXCEPTION: ", e)
+				echo(debug.FUCK, "FILE: ", file)
+				echo(debug.WHITE, "\n")
+				echo(debug.FUCK, "EXCEPTION: ", e)
+				echo(debug.WHITE, "\n")
 	return FILES
 	
 def _genRange(file):
@@ -112,7 +115,7 @@ def _getGhostScript():
 		whichGc = subprocess.Popen(["sh", "-c", "which gc || which gswin64c || which gswin32c"], env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		whichGc.wait()
 		gs = whichGc.stdout.readline().strip()
-		if gs is '':
+		if gs == '':
 			raise Exception("")
 		gs = os.path.basename(gs)
 	except:
@@ -125,7 +128,7 @@ def _getCompare():
 		whichCmp = subprocess.Popen(["sh", "-c", "which compare"], env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		whichCmp.wait()
 		cmp = whichCmp.stdout.readline().strip()
-		if cmp is '':
+		if cmp == '':
 			raise Exception("")
 		cmp = os.path.basename(cmp)
 	except:
@@ -138,101 +141,128 @@ def controlAndCreateDirs(*dirs):
 		if os.path.exists(dir):
 			dirstodelete.append(dir)
 	if len(dirstodelete) > 0:
-		raise Exception("Dir '" + "', '".join(dirstodelete) + "' must be deleted or renamed")
+		raise Exception("Directories '%s' must be deleted or renamed" % ("', '".join(dirstodelete),))
 	for dir in dirs:
-		echo(debug.INFO, "mkdir", dir)
+		echo(debug.INFO, "mkdir", dir + "\n")
 		os.makedirs(dir)
 
 def _cleanup(*dirs):
-	echo(debug.INFO, "Cleanup dir")
+	echo(debug.INFO, "Cleanup dir\n")
 	for dir in dirs:
-		echo(debug.INFO, "DIR:",dir)
+		echo(debug.INFO, "DIR:", dir + "\n")
 		for file in os.listdir(dir):
-			echo(debug.INFO, "rm FILE:",join(dir,file).replace("\\","/"))
-			os.remove(join(dir,file).replace("\\","/"))
-		echo(debug.INFO, "rmdir", dir)
+			echo(debug.INFO, "rm FILE:", os.path.join(dir, file).replace("\\", "/") + "\n")
+			os.remove(os.path.join(dir, file).replace("\\", "/"))
+		echo(debug.INFO, "rmdir", dir + "\n")
 		os.rmdir(dir)
 		
 def _cleanupIfEmpty(*dirs):
-	echo(debug.INFO, "Cleanup if empty dir")
+	echo(debug.INFO, "Cleanup if empty dir\n")
 	for dir in dirs:
-		echo(debug.INFO, "Cleanup dir:",dir)
-		if len(os.listdir(dir)) is 0:
+		echo(debug.INFO, "Cleanup dir:", dir + "\n")
+		if len(os.listdir(dir)) == 0:
 			for file in os.listdir(dir):
-				echo(debug.INFO, "rm FILE:",join(dir,file).replace("\\","/"))
-				os.remove(join(dir,file).replace("\\","/"))
-			echo(debug.INFO, "rmdir", dir)
+				echo(debug.INFO, "rm FILE:", os.path.join(dir, file).replace("\\", "/") + "\n")
+				os.remove(os.path.join(dir, file).replace("\\", "/"))
+			echo(debug.INFO, "rmdir", dir + "\n")
 			os.rmdir(dir)
 		else:
-			echo(debug.INFO, dir, "is not empty, will not cleanup")
+			echo(debug.INFO, dir, "is not empty, will not cleanup\n")
 	
 def testFiles(FILES):
+	num_failed = 0
+	errors = []
+	
 	controlAndCreateDirs(TMPDIR, DIFFDIR)
 	for file in FILES:
-		_testFile(file, FILES[file])
+		didFail, error = _testFile(file, FILES[file])
+		if didFail:
+			num_failed += 1
+			errors.append((file, error))
 	_cleanup(TMPDIR)
 	_cleanupIfEmpty(DIFFDIR)
+	return (num_failed, errors)
 
 def _testFile(file, range):
-	protofile = join(PROTODIR, os.path.basename(file)).replace("\\","/").replace(TESTFILEPREFIX, PROTOFILEPREFIX)
-	echo(debug.WHITE, "Comparing '" + file + "' with '" + protofile + "'")
-	_genPNG(range, file, protofile)
-	_compare(file, protofile, range)
+	protofile = "%s/%s" % (PROTODIR, os.path.basename(file))
+	echo(debug.INFO, "Comparing '%s' with '%s'\n" % (file, protofile))
 
-def _genPNG(range, *srcfiles):
-	echo(debug.WHITE, "Creating PNG pages")
+	file_tmp  = "%s/%s" % (TMPDIR, os.path.basename(file))
+	proto_tmp = "%s/%s_%s" % (TMPDIR, PROTOFILEPREFIX, os.path.basename(file))
+
+	_genPNG(range, (file, file_tmp), (protofile, proto_tmp))
+	return _compare(file, protofile, file_tmp, proto_tmp, range)
+
+def _genPNG(pagerange, *inputOutputFilePairs):
+	echo(debug.INFO, "Creating PNG pages\n")
 	__PNGProcs = []
-	for file in srcfiles:
-		basename = os.path.basename(file)
-		noext = os.path.splitext(basename)[0]
-		for page in range:
-			__PNGProcs.append(__genPNGPageProc(file, page, noext))
+	for tup in inputOutputFilePairs:
+		inputFile, outputFile = tup
+		for page in pagerange:
+			echo(debug.INFO, "%s => %s (page %s)\n" % (inputFile, outputFile, page))
+			__PNGProcs.append(__genPNGPageProc(inputFile, page, os.path.splitext(outputFile)[0]))
 	for proc in __PNGProcs:
 		proc.wait()
+		if proc.returncode != 0:
+			print "FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUCK"
+			print proc.stdout.readlines(), proc.stderr.readlines()
 	
 def __genPNGPageProc(srcfile, page, noext):
-	outfile = join(TMPDIR, noext+"_"+ str(page) + ".png").replace("\\","/")
-	outfilecmd = GS + GSOPTS + "-o " + outfile + " -dFirstPage=" + str(page) + " -dLastPage=" + str(page) + " " + srcfile
-	echo(debug.INFO, "CMD: ", outfilecmd)
-	return subprocess.Popen(outfilecmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	outfile = "%s_%s.png" % (noext, page)
+	outfilecmd = GS + GSOPTS + "-o %s -dFirstPage=%s -dLastPage=%s %s" % (outfile, page, page, srcfile)
+	echo(debug.INFO, "CMD: %s\n" % (outfilecmd,))
+	gsCmd = subprocess.Popen(outfilecmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	return gsCmd
 
-def _compare(srcfile, protofile, range):
-	echo(debug.WHITE, "Comparing pages")
+def _compare(srcfilename, protofilename, srcfile, protofile, range):
+	echo(debug.INFO, "Comparing pages\n")
 	__CMPProcs = []
-	srcfilenoext = os.path.basename(os.path.splitext(srcfile)[0])
-	protofilenoext = os.path.basename(os.path.splitext(protofile)[0])
+	srcfilenoext = os.path.splitext(srcfile)[0]
+	protofilenoext = os.path.splitext(protofile)[0]
 	
 	for page in range:
 		__CMPProcs.append(__compareProc(srcfilenoext, protofilenoext, page))
 		
 	errorpages = []
-	errors = 0
+	numerrors = 0
 	for page, noext, src, proto, diff, proc in __CMPProcs:
 		proc.wait()
 		diffnum = proc.stderr.readlines()[0]
-
-		if int(diffnum) is 0:
-			echo(debug.INFO, "Page", "{:>4}".format(page), "in document '" + noext + "' is OK!")
+		
+		if int(diffnum) == 0:
+			echo(debug.INFO, "Page", "{:>4}".format(page), "in document '" + srcfilename + "' is OK!\n")
 			os.remove(diff)
 		else:
-			errors += 1
+			numerrors += 1
 			errorpages.append(page)
-			echo(debug.WARNING, "Page", "{:>4}".format(page), "in document '" + noext + "' has diff: ", "{:>10}".format(diffnum))
+			if SHOWDETAILEDINFO:
+				echo(debug.WARNING, "Page", "{:>4}".format(page), "in document '" + srcfilename + "' has diff: ", "{:>10}".format(diffnum) + "\n")
 		os.remove(src)
 		os.remove(proto)
-	if errors is not 0:
-		echo(debug.ERROR, "'" + srcfile + "' and '" + protofile + "' has diffs in '" + str(errors) +"' pages:")
-		echo(debug.ERROR, errorpages)
-		echo(debug.ERROR, "PNGs containing diffs are avilable in '" + DIFFDIR + "'\n")
+	
+	if numerrors != 0:
+		if SHOWDETAILEDINFO:
+			echo(debug.ERROR, "'%s' and '%s' has diffs in '%s' pages:\n" % (srcfilename, protofilename, numerrors))
+			echo(debug.ERROR, errorpages, "\n")
+			return (True, None)
+		else:
+			echo(debug.ERROR, "F")
+			error = "diffs in %s pages: %s" % (numerrors, repr(errorpages))
+			return (True, error)
 	else:
-		echo(debug.GREEN, "'" + srcfile + "' and '" + protofile + "' has no diffs!\n")
+		if SHOWDETAILEDINFO:
+			echo(debug.GREEN, "'%s' and '%s' has no diffs!\n" % (srcfilename, protofilename))
+		else:
+			echo(debug.GREEN, ".")
+		
+		return (False, None)
 
 def __compareProc(srcfilenoext, protofilenoext, page):
-	src =  join(TMPDIR, srcfilenoext+"_"+str(page)+".png").replace("\\","/")
-	proto =  join(TMPDIR, protofilenoext+"_"+str(page)+".png").replace("\\","/")
-	diff =  join(DIFFDIR, "diff_"+srcfilenoext+"_"+str(page)+".png").replace("\\","/")
+	src   = "%s_%s.png" % (srcfilenoext, page)
+	proto = "%s_%s.png" % (protofilenoext, page)
+	diff  = "%s/diff_%s_%s.png" % (DIFFDIR, os.path.basename(srcfilenoext), page)
 	cmpcmd = CMP + CMPOPTS + src + " " + proto + " " + diff
-	echo(debug.INFO, "cmpcmd: ", cmpcmd)
+	echo(debug.INFO, "cmpcmd: %s\n" % (cmpcmd,))
 	return (page, srcfilenoext, src, proto, diff, subprocess.Popen(cmpcmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE))
 		
 if __name__ == '__main__':
@@ -240,7 +270,25 @@ if __name__ == '__main__':
 		GS  = _getGhostScript()
 		CMP = _getCompare()
 		f = genFileList()
-		testFiles(f)
+		num_failed, errors = testFiles(f)
+		echo(debug.WHITE, "\n\n")
+		
+		if num_failed > 0:
+			if not SHOWDETAILEDINFO:
+				# Error summary
+				echo(debug.WHITE, "\nFailures:\n\n")
+				for i in range(len(errors)):
+					file, err = errors[i]
+					echo(debug.WHITE, "  %s) %s\n" % (i + 1, file,))
+					echo(debug.ERROR, "    " + err + "\n\n")
+			
+			echo(debug.ERROR, "\nRan %s tests, %s failed\n" % (len(f), num_failed))
+			echo(debug.YELLOW, "PNGs containing diffs are avilable in '%s'\n\n" % (DIFFDIR,))
+			sys.exit(1)
+		else:
+			echo(debug.GREEN, "Ran %s tests, %s failed\n\n" % (len(f), num_failed))
+			sys.exit(0)
 	except Exception as e:
+		echo(debug.WHITE, "\n")
 		echo(debug.FUCK, e)
-
+		echo(debug.WHITE, "\n")

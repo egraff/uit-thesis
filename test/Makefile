@@ -3,8 +3,6 @@ COMPARE := "$(shell which compare 2>/dev/null)"
 LATEXMK := "$(shell which latexmk 2>/dev/null)"
 PDFLATEX := "$(shell which pdflatex 2>/dev/null)"
 MAKEGLOSSARIES := "$(shell which makeglossaries 2>/dev/null)"
-GS := "$(shell which gc 2>/dev/null || which gswin64c 2>/dev/null || which gswin32c 2>/dev/null)"
-GS_OPTS =  -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pngalpha -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2
 
 # The file to test (without extension)
 BASENAME = $(shell basename $(FILE) .tex)
@@ -24,7 +22,7 @@ OUTPUTNAME = output
 BUILDFLD = ./.build
 
 # Extra options, these must be available for both pdflatex and latexmk
-DEFOPT = -output-directory=$(BUILDFLD) -interaction=nonstopmode &>/dev/null
+DEFOPT = -output-directory=$(BUILDFLD)/$(BASENAME) -interaction=nonstopmode &>/dev/null
 
 # Options for glossary
 
@@ -38,36 +36,46 @@ LAMEBUILD = $(PDFLATEX) -jobname=$(OUTPUTNAME) $(DEFOPT) $(BUILDFILE)
 
 # Command to build glossary and glossarylists
 # (Not using -d option due to incompatibility with some systems)
-BUILDGLOSS = cd $(BUILDFLD) &&\
+BUILDGLOSS = cd $(BUILDFLD)/$(BASENAME) &&\
  $(MAKEGLOSSARIES) $(GLOSSOPT) $(OUTPUTNAME) &&\
  cd - >/dev/null
 
 FILES := `ls -v | grep -o "^test.*\.tex"`
 
-all:
-	@echo "FILES: $(FILES)"
-	@for f in $(FILES); do $(MAKE) test FILE=$$f; echo ""; done
+.PHONY: test _compare
 
-test: _file _compare
+all: test _compare
+
+test:
+	@echo "FILES: $(FILES)"
+	@echo ""
+	@for f in $(FILES); do $(MAKE) --no-print-directory _file FILE=$$f RETAINBUILDFLD=y; done
+	@echo ""
+	@$(RM) -r $(BUILDFLD)
 
 clean:
 	@$(RM) -r ${PDFFLD} ${DIFFLD} ${BUILDFLD}
 	@echo "Done!"
 
 # Target specific variables
-_compare : 
-	@echo "COMPARE"
-	python regtest.py
+_compare: 
+	@echo "Running comparison tests..."
+	@echo ""
+	@python regtest.py
 
 _file: _ctrl_
+	@echo "Building $(FILE)..."
 	@$(RM) $(PDFFILE)
-	@mkdir -p $(BUILDFLD)
+	@mkdir -p $(BUILDFLD)/$(BASENAME)
 	@mkdir -p $(PDFFLD)
 	@$(LAMEBUILD)
 	@$(BUILDGLOSS)
 	@$(BUILD)
-	@mv $(BUILDFLD)/$(OUTPUTNAME).pdf $(PDFFILE)
-	@$(RM) -r $(BUILDFLD) > /dev/null
+	@mv $(BUILDFLD)/$(BASENAME)/$(OUTPUTNAME).pdf $(PDFFILE)
+	@$(RM) -r $(BUILDFLD)/$(BASENAME)
+ifndef RETAINBUILDFLD
+	@$(RM) -r $(BUILDFLD)
+endif
 
 _ctrl_:
 ifndef COMPARE
