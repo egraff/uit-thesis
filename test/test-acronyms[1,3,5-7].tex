@@ -1,0 +1,173 @@
+\documentclass[10pt]{uit-thesis-test}
+
+% The number list should consist of numbers and number ranges (7-12, e.g.)
+% separated by commas or spaces. The order is not random but MUST BE THE
+% ORDER THAT THE PAGES ARE PRODUCED; normally this means the numbers must
+% always increase.  If an invalid page number appears on the list, no pages
+% will be output until the list is re-synchronized or the document ends.
+% 
+% Any time the document's page number does not increment normally,
+% selectp.sty tries to re-synchronize the page number with the \outputonly
+% list of numbers.  This is necessary when \includeonly is used. 
+% 
+% Pages that are labeled with roman numerals or letters should still be
+% listed with a normal arabic number; page xi should be referred to as 6.
+% 
+% In LaTeX, unfortunately, pages i and 1 are both number 1, so it is
+% tricky to skip over all the roman-numbered pages and then print
+% page 1.  If there are 3 roman-numbered pages,
+%   1-3      will print pages i,ii,iii; not pages 1,2,3
+%   1-3,1-5  will print pages i,ii,iii,1,2,3,4,5
+%   1-3,8-12 will print pages i,ii,iii,8,9,10,11,19
+%   1,1-5    will print i,1,2,3,4,5
+%   1-6      prints pages i,ii,iii only, not pages 4,5,6  !!!
+%   0,2-6    prints pages 2,3,4,5,6, since there is no page 0 and the
+%            outputonly page list is resynchronized when the actual page
+%            number goes back to 1)
+% 
+% The last example is illuminating.  LaTeX looks for page 0, but can't find
+% it. It skips pages until the page number goes from 3(iii) to 1, at which
+% point it resynchronizes by reading "2" from the list, waiting for page 2
+% to be produced, and then writing page 2. Selectp then reads "-6", and
+% CONTINUES outputting pages until it has done page 6.  As long as the
+% numbers of the intervening pages are less than 6 (the end of the range),
+% those pages will be printed. 
+% 
+% If there are no roman numeral pages, the number list is simple, because
+% the numbers must increase monotonically.
+%\outputonly{1,3,1}
+
+\makeglossaries
+
+\newacronym[\glslongpluralkey={dynamic-link Libraries}]{dll}{DLL}{dynamic-link Library}
+
+\begin{document}
+
+\frontmatter
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{Test}
+
+\section{GLS}
+\subsection{Subsequent use}
+\glsunset{dll}
+
+Plural, no case change: \acp{dll}, \glspl{dll}\\
+Plural, first letter upper case: \Acp{dll}, \Glspl{dll}\\
+Plural, all caps: \GLSpl{dll}\\
+Singular, no case change: \ac{dll}, \gls{dll}\\
+Singular, first letter upper case: \Ac{dll}, \Gls{dll}\\
+Singular, all caps: \GLS{dll}
+
+\subsection{First use}
+Plural, no case change: \glsreset{dll}\acp{dll}, \glsreset{dll}\glspl{dll}\\
+Plural, first letter upper case: \glsreset{dll}\Acp{dll}, \glsreset{dll}\Glspl{dll}\\
+Plural, all caps: \glsreset{dll}\GLSpl{dll}\\
+Singular, no case change: \glsreset{dll}\ac{dll}, \glsreset{dll}\gls{dll}\\
+Singular, first letter upper case: \glsreset{dll}\Ac{dll}, \glsreset{dll}\Gls{dll}\\
+Singular, all caps: \glsreset{dll}\GLS{dll}
+
+\section{ACR}
+\subsection{Subsequent use}
+\glsunset{dll}
+
+Short, no case change: \acs{dll}, \acrshort{dll}\\
+Short, first letter upper case: \Acs{dll}, \Acrshort{dll}\\
+Short plural, no case change: \acsp{dll}, \acrshortpl{dll}\\
+Short plural, first letter upper case: \Acsp{dll}, \Acrshortpl{dll}\\
+Long, no case change: \acl{dll}, \acrlong{dll}\\
+Long, first letter upper case: \Acl{dll}, \Acrlong{dll}\\
+Long plural, no case change: \aclp{dll}, \acrlongpl{dll}\\
+Long plural, first letter upper case: \Aclp{dll}, \Acrlongpl{dll}\\
+Full, no case change: \acf{dll}, \acrfull{dll}\\
+Full, first letter upper case: \Acf{dll}, \Acrfull{dll}\\
+Full plural, no case change: \acfp{dll}, \acrfullpl{dll}\\
+Full plural, first letter upper case: \Acfp{dll}, \Acrfullpl{dll}
+
+\subsection{First use}
+Short, no case change: \glsreset{dll}\acs{dll}, \glsreset{dll}\acrshort{dll}\\
+Short, first letter upper case: \glsreset{dll}\Acs{dll}, \glsreset{dll}\Acrshort{dll}\\
+Short plural, no case change: \glsreset{dll}\acsp{dll}, \glsreset{dll}\acrshortpl{dll}\\
+Short plural, first letter upper case: \glsreset{dll}\Acsp{dll}, \glsreset{dll}\Acrshortpl{dll}\\
+Long, no case change: \glsreset{dll}\acl{dll}, \glsreset{dll}\acrlong{dll}\\
+Long, first letter upper case: \glsreset{dll}\Acl{dll}, \glsreset{dll}\Acrlong{dll}\\
+Long plural, no case change: \glsreset{dll}\aclp{dll}, \glsreset{dll}\acrlongpl{dll}\\
+Long plural, first letter upper case: \glsreset{dll}\Aclp{dll}, \glsreset{dll}\Acrlongpl{dll}\\
+Full, no case change: \glsreset{dll}\acf{dll}, \glsreset{dll}\acrfull{dll}\\
+Full, first letter upper case: \glsreset{dll}\Acf{dll}, \glsreset{dll}\Acrfull{dll}\\
+Full plural, no case change: \glsreset{dll}\acfp{dll}, \glsreset{dll}\acrfullpl{dll}\\
+Full plural, first letter upper case: \glsreset{dll}\Acfp{dll}, \glsreset{dll}\Acrfullpl{dll}
+
+\section{Other}
+Glstext, no case change, first use: \glsreset{dll}\glstext{dll}\\
+Glstext, no case change, subsequent use: \glstext{dll}\\
+Glstext, first letter upper case, first use: \glsreset{dll}\Glstext{dll}\\
+Glstext, first letter upper case, subsequent use: \Glstext{dll}\\
+Glstext, all caps, first use: \glsreset{dll}\GLStext{dll}\\
+Glstext, all caps, subsequent use: \GLStext{dll}
+
+Glsfirst, no case change, first use: \glsreset{dll}\glsfirst{dll}\\
+Glsfirst, no case change, subsequent use: \glsfirst{dll}\\
+Glsfirst, first letter upper case, first use: \glsreset{dll}\Glsfirst{dll}\\
+Glsfirst, first letter upper case, subsequent use: \Glsfirst{dll}\\
+Glsfirst, all caps, first use: \glsreset{dll}\GLSfirst{dll}\\
+Glsfirst, all caps, subsequent use: \GLSfirst{dll}
+
+Glsplural, no case change, first use: \glsreset{dll}\glsplural{dll}\\
+Glsplural, no case change, subsequent use: \glsplural{dll}\\
+Glsplural, first letter upper case, first use: \glsreset{dll}\Glsplural{dll}\\
+Glsplural, first letter upper case, subsequent use: \Glsplural{dll}\\
+Glsplural, all caps, first use: \glsreset{dll}\GLSplural{dll}\\
+Glsplural, all caps, subsequent use: \GLSplural{dll}
+
+Glsfirstplural, no case change, first use: \glsreset{dll}\glsfirstplural{dll}\\
+Glsfirstplural, no case change, subsequent use: \glsfirstplural{dll}\\
+Glsfirstplural, first letter upper case, first use: \glsreset{dll}\Glsfirstplural{dll}\\
+Glsfirstplural, first letter upper case, subsequent use: \Glsfirstplural{dll}\\
+Glsfirstplural, all caps, first use: \glsreset{dll}\GLSfirstplural{dll}\\
+Glsfirstplural, all caps, subsequent use: \GLSfirstplural{dll}
+
+%Glsdisp, first use: \glsreset{dll}\glsdisp{dll}\\
+%Glsdisp, subsequent use: \glsdisp{dll}
+
+%Lol: \glsentrytype{dll}\\
+%\makeatletter
+%\newcommand*{\LOL@Gls}[2][]{%
+%  \new@ifnextchar[{\LOL@Gls@{#1}{#2}}{\LOL@Gls@{#1}{#2}[]}%
+%}
+%\def\LOL@Gls@#1#2[#3]{%
+%  \glsdoifexists{#2}%
+%  {%
+%    \edef\@glo@type{\glsentrytype{#2}tt}%
+%    \let\glsifplural\@secondoftwo
+%    \let\glscapscase\@secondofthree
+%    \let\glscustomtext\@empty
+%    \def\glsinsert{#3}%
+%      \def\@glo@text{\csname gls@\@glo@type @entryfmt\endcsname}%
+%    \ifglsused{#2}%
+%    {%
+%      \debugdef{gls@acronym@entryfmt}
+%      \gls@acronym@entryfmt
+%      %\@gls@link[#1]{#2}{\@glo@text}%
+%    }%
+%    {%
+%      BBB
+%    }%
+%    \ifKV@glslink@local
+%      \glslocalunset{#2}%
+%    \else
+%      \glsunset{#2}%
+%    \fi
+%  }%
+%}
+%%Second expansion singular: \LOL@Gls{dll}\\ % This gets us in trouble
+%%Short: \Glsentryshort{dll}\\
+%%\@Gls@entry@field{dll}{short}
+%%\letcs\@glo@text{glo@\glsdetoklabel{dll}@short}%
+%%  \xmakefirstuc{\@glo@text}%
+%\makeatother
+
+\end{document}

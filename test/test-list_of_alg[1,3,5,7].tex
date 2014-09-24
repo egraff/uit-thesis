@@ -1,0 +1,61 @@
+\documentclass{uit-thesis-test}
+
+% The number list should consist of numbers and number ranges (7-12, e.g.)
+% separated by commas or spaces. The order is not random but MUST BE THE
+% ORDER THAT THE PAGES ARE PRODUCED; normally this means the numbers must
+% always increase.  If an invalid page number appears on the list, no pages
+% will be output until the list is re-synchronized or the document ends.
+% 
+% Any time the document's page number does not increment normally,
+% selectp.sty tries to re-synchronize the page number with the \outputonly
+% list of numbers.  This is necessary when \includeonly is used. 
+% 
+% Pages that are labeled with roman numerals or letters should still be
+% listed with a normal arabic number; page xi should be referred to as 6.
+% 
+% In LaTeX, unfortunately, pages i and 1 are both number 1, so it is
+% tricky to skip over all the roman-numbered pages and then print
+% page 1.  If there are 3 roman-numbered pages,
+%   1-3      will print pages i,ii,iii; not pages 1,2,3
+%   1-3,1-5  will print pages i,ii,iii,1,2,3,4,5
+%   1-3,8-12 will print pages i,ii,iii,8,9,10,11,19
+%   1,1-5    will print i,1,2,3,4,5
+%   1-6      prints pages i,ii,iii only, not pages 4,5,6  !!!
+%   0,2-6    prints pages 2,3,4,5,6, since there is no page 0 and the
+%            outputonly page list is resynchronized when the actual page
+%            number goes back to 1)
+% 
+% The last example is illuminating.  LaTeX looks for page 0, but can't find
+% it. It skips pages until the page number goes from 3(iii) to 1, at which
+% point it resynchronizes by reading "2" from the list, waiting for page 2
+% to be produced, and then writing page 2. Selectp then reads "-6", and
+% CONTINUES outputting pages until it has done page 6.  As long as the
+% numbers of the intervening pages are less than 6 (the end of the range),
+% those pages will be printed. 
+% 
+% If there are no roman numeral pages, the number list is simple, because
+% the numbers must increase monotonically.
+%\outputonly{1,3,1,3}
+
+\makeglossaries
+
+\usepackage[chapter]{algorithm}% http://ctan.org/pkg/algorithms
+
+\begin{document}
+
+\frontmatter
+
+\tableofcontents
+\listofalgorithms
+
+\mainmatter
+
+\chapter{A chapter}
+\begin{algorithm}BLABLABBLAB = yo\caption{An algorithm}\end{algorithm}
+
+\begin{algorithm}\caption{An algorithm}\end{algorithm}
+\chapter{A chapter}
+\begin{algorithm}\caption{An algorithm}\end{algorithm}
+\begin{algorithm}\caption{An algorithm}\end{algorithm}
+
+\end{document}
