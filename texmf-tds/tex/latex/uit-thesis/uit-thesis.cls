@@ -397,6 +397,10 @@
 % Listings (e.g. used for code examples)
 \usepackage{listings}
 
+% Pretty tables
+\usepackage{booktabs}
+\usepackage{tabularx}
+
 % Override \title to update pdftitle
 \let\ult@savetitle\title
 \def\title#1{%
