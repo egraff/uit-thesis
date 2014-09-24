@@ -27,6 +27,8 @@ DEBUGLEVEL = debug.WARNING
 
 SHOWDETAILEDINFO = False
 
+NUM_DOTS_PER_LINE = 80
+
 GS = None
 GSOPTS = " -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pngalpha -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 "
 CMP = None
@@ -191,17 +193,22 @@ def _cleanupIfEmpty(*dirs):
     else:
       echo(debug.INFO, dir, "is not empty, will not cleanup\n")
 
+NUM_TESTS_RUN = 0
 def testFiles(FILES):
+  global NUM_TESTS_RUN
   num_failed = 0
   errors = []
 
   controlAndCreateDirs(TMPDIR, DIFFDIR)
 
-  for file in FILES:
-    didFail, error = _testFile(file, FILES[file])
-    if didFail:
-      num_failed += 1
-      errors.append((file, error))
+  for i in range(30):
+    for file in FILES:
+      didFail, error = _testFile(file, FILES[file])
+      if didFail:
+        num_failed += 1
+        errors.append((file, error))
+
+      NUM_TESTS_RUN += 1
 
   _cleanup(TMPDIR)
   _cleanupIfEmpty(DIFFDIR)
@@ -248,6 +255,8 @@ def __genPNGPageProc(srcfile, page, noext):
   return gsCmd
 
 def _compare(srcfilename, protofilename, srcfile, protofile, range):
+  global NUM_TESTS_RUN
+
   echo(debug.INFO, "Comparing pages\n")
 
   __CMPProcs = []
@@ -274,9 +283,6 @@ def _compare(srcfilename, protofilename, srcfile, protofile, range):
       if SHOWDETAILEDINFO:
         echo(debug.WARNING, "Page", "{:>4}".format(page), "in document '" + srcfilename + "' has diff: ", "{:>10}".format(diffnum) + "\n")
 
-    os.remove(src)
-    os.remove(proto)
-
   if numerrors != 0:
     if SHOWDETAILEDINFO:
       echo(debug.ERROR, "'%s' and '%s' has diffs in '%s' pages:\n" % (srcfilename, protofilename, numerrors))
@@ -292,7 +298,7 @@ def _compare(srcfilename, protofilename, srcfile, protofile, range):
     if SHOWDETAILEDINFO:
       echo(debug.GREEN, "'%s' and '%s' has no diffs!\n" % (srcfilename, protofilename))
     else:
-      echo(debug.GREEN, ".")
+      echo(debug.GREEN, ".%s" % ("\n" if NUM_TESTS_RUN % NUM_DOTS_PER_LINE == (NUM_DOTS_PER_LINE - 1) else "",))
 
     return (False, None)
 
