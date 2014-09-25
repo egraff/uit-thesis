@@ -120,9 +120,9 @@ def _getGhostScript():
   gs = None
 
   try:
-    whichGc = subprocess.Popen(["sh", "-c", "which gc || which gswin64c || which gswin32c"], env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    whichGc.wait()
-    gs = whichGc.stdout.readline().strip()
+    whichGs = subprocess.Popen(["sh", "-c", "which gs || which gswin64c || which gswin32c"], env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    whichGs.wait()
+    gs = whichGs.stdout.readline().strip()
 
     if gs == '':
       raise Exception("")
@@ -146,7 +146,7 @@ def _getCompare():
 
     cmp = os.path.basename(cmp)
   except:
-    raise Exception("Compare was not found")
+    raise Exception("Compare (ImageMagick) was not found")
 
   return cmp
 
