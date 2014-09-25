@@ -249,7 +249,7 @@ def __genPNGPageProc(srcfile, page, noext):
 
   echo(debug.INFO, "CMD: %s\n" % (outfilecmd,))
 
-  gsCmd = subprocess.Popen(outfilecmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  gsCmd = subprocess.Popen(outfilecmd, shell=True, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
   return gsCmd
 
@@ -310,7 +310,7 @@ def __compareProc(srcfilenoext, protofilenoext, page):
 
   echo(debug.INFO, "cmpcmd: %s\n" % (cmpcmd,))
 
-  return (page, srcfilenoext, src, proto, diff, subprocess.Popen(cmpcmd, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE))
+  return (page, srcfilenoext, src, proto, diff, subprocess.Popen(cmpcmd, shell=True, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE))
 
 if __name__ == '__main__':
   try:
