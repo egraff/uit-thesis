@@ -44,8 +44,8 @@ def echo(*string):
     color = string[0]
     string = string[1:]
 
-  s = "echo -e \"" + color + " ".join([str(x) for x in string]) + "\\033[0m\\c"
-  subprocess.Popen(s).wait()
+  s = "sh -c \"printf \\\"" + color + " ".join([str(x).replace("\n", "\\n") for x in string]) + "\\033[0m\\\"\""
+  subprocess.Popen(s, shell=True).wait()
 
 def genFileList():
   FILES = {}
