@@ -40,7 +40,7 @@ BUILDGLOSS = cd $(BUILDFLD)/$(BASENAME) &&\
  $(MAKEGLOSSARIES) $(GLOSSOPT) $(OUTPUTNAME) &&\
  cd - >/dev/null
 
-FILES := `ls -v | grep -o "^test.*\.tex"`
+FILES := $(shell ls -v | grep -o "^test.*\.tex")
 
 .PHONY: test _compare
 
