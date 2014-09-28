@@ -33,7 +33,8 @@ GS = None
 GSOPTS = " -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pngalpha -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 "
 CMP = None
 CMPOPTS = " -metric ae "
-
+PDFINFO = None
+PDFINFOOPTS = " "
 
 def echo(*string):
   color = ""
@@ -111,10 +112,28 @@ def _genRange(file):
 
 def _getPDFPages(file):
   # use pdfinfo to extract number of pages in pdf file
-  output = subprocess.check_output(["pdfinfo", file])
+  output = subprocess.check_output([PDFINFO, file])
   pages = re.findall(r"\d+", re.search(r"Pages:.*", output).group())[0]
 
   return int(pages)
+
+def _getPDFInfo():
+  pi = None
+
+  try:
+    whichPi = subprocess.Popen(["sh", "-c", "which pdfinfo"], env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    whichPi.wait()
+
+    pi = whichPi.stdout.readline().strip()
+
+    if pi == '':
+      raise Exception("")
+
+    pi = os.path.basename(pi)
+  except:
+    raise Exception("PDFInfo was not found")
+
+  return pi
 
 def _getGhostScript():
   gs = None
@@ -316,6 +335,7 @@ if __name__ == '__main__':
   try:
     GS  = _getGhostScript()
     CMP = _getCompare()
+    PDFINFO = _getPDFInfo()
     f = genFileList()
 
     num_failed, errors = testFiles(f)

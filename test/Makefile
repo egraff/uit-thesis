@@ -12,8 +12,8 @@ TMPFLD = ./tmp
 DIFFLD = ./diffs
 PDFFLD = ./pdfs
 
-BUILDFILE = ./${BASENAME}.tex#
-PDFFILE = ${PDFFLD}/${BASENAME}.pdf#
+BUILDFILE = ./$(BASENAME).tex
+PDFFILE = $(PDFFLD)/$(BASENAME).pdf
 
 # All files produced while making the document will have this basename
 OUTPUTNAME = output
@@ -22,14 +22,14 @@ OUTPUTNAME = output
 BUILDFLD = ./.build
 
 # Extra options, these must be available for both pdflatex and latexmk
-DEFOPT = -output-directory=$(BUILDFLD)/$(BASENAME) -interaction=nonstopmode &>/dev/null
+DEFOPT = -output-directory=$(BUILDFLD)/$(BASENAME) -interaction=nonstopmode
 
 # Options for glossary
 
 GLOSSOPT = -q
 
 # Command to build document
-BUILD = $(LATEXMK) -pdf -bibtex -jobname=$(OUTPUTNAME) $(DEFOPT) $(BUILDFILE)
+BUILD = $(LATEXMK) -pdf -bibtex -jobname=$(OUTPUTNAME) $(BUILDFILE) $(DEFOPT)
 
 # Creates first auxiliary files required to build glossary
 LAMEBUILD = $(PDFLATEX) -jobname=$(OUTPUTNAME) $(DEFOPT) $(BUILDFILE)
@@ -54,7 +54,7 @@ test:
 	@$(RM) -r $(BUILDFLD)
 
 clean:
-	@$(RM) -r ${PDFFLD} ${DIFFLD} ${BUILDFLD}
+	@$(RM) -r $(PDFFLD) $(DIFFLD) $(BUILDFLD)
 	@echo "Done!"
 
 # Target specific variables
