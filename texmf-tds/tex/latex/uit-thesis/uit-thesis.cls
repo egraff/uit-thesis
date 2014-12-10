@@ -180,6 +180,7 @@
 \ult@disallowpackage[Package easyeqn is incompatible with hyperref.]{easyeqn}
 \ult@disallowpackage[Package mathenv is incompatible with hyperref.]{mathenv}
 \ult@disallowpackage[The uit-thesis document class already provides beautiful chapter headings. Why would you want to change them?]{fncychap}
+\ult@disallowpackage[The uit-thesis document class uses the floatrow package instead of the float package.]{float}
 \ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{tocbasic}
 \ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{tocstyle}
 \ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{typearea}
@@ -369,7 +370,11 @@
 %:-------------------------- Figures, graphics, includes, etc.  -----------------------
 
 % Floats (should be loaded before hyperref)
-\usepackage{float}
+\usepackage{floatrow}
+
+% Setup caption position
+\floatsetup{capposition=top}
+\floatsetup[figure]{capposition=bottom}
 
 \ifpdf
 
