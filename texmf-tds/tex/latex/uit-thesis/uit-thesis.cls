@@ -425,12 +425,25 @@
 % Enables adding figures and tables side by side
 \usepackage{subcaption}
 
-% Listings (e.g. used for code examples)
-\usepackage{listings}
 
-% Pretty tables
-\usepackage{booktabs}
-\usepackage{tabularx}
+%:-------------------------- Things we need to do magic -----------------------
+
+% For sweet-ass drawings and transformations and shit
+\usepackage{tikz}
+
+% Needed by our black magic hacks below
+\usepackage{l3regex}
+\usepackage{xparse}
+
+% To read LaTeX macro from file
+\usepackage{catchfile}
+
+% e-Tex tools, macros, hooks, etc.
+\usepackage{etoolbox}
+
+
+%:-------------------------- Title and subtitle  -----------------------
+
 
 % Override \title to update pdftitle
 \let\ult@savetitle\title
@@ -466,21 +479,6 @@
 \usepackage[titles%     % Retain chapter headers
            ]{tocloft}
 
-%:-------------------------- Things we need to do magic -----------------------
-
-% For sweet-ass drawings and transformations and shit
-\usepackage{tikz}
-
-% Needed by our black magic hacks below
-\usepackage{l3regex}
-\usepackage{xparse}
-
-% To read LaTeX macro from file
-\usepackage{catchfile}
-
-% e-Tex tools, macros, hooks, etc.
-\usepackage{etoolbox}
-
 %:-------------------------- Fonts -----------------------
 
 \usepackage{opensans}
@@ -501,6 +499,30 @@
   % See http://sourceforge.net/p/miktex/discussion/33790/thread/e39cd270
   \pdfmapfile{+XCharter.map}
 %}{}
+
+% Save font family for XCharter with lining figures
+\global\let\ult@fontfamilylfstyle\@empty
+\begingroup
+\lfstyle
+\global\let\ult@fontfamilylfstyle\f@family\relax
+\endgroup
+
+% Save font family for XCharter with old style figures
+\global\let\ult@fontfamilyosfstyle\@empty
+\begingroup
+\osfstyle
+\global\let\ult@fontfamilyosfstyle\f@family\relax
+\endgroup
+
+\newcommand{\ult@setlfstyledefault}{%
+  \renewcommand*{\rmdefault}{\ult@fontfamilylfstyle}%
+  \normalfont%
+}
+
+\newcommand{\ult@setosfstyledefault}{%
+  \renewcommand*{\rmdefault}{\ult@fontfamilyosfstyle}%
+  \normalfont%
+}
 
 % In his Elements of Typographic Style, Robert Bringhurst recommends that you use the
 % same amount of space after an end-of-sentence fullstop as there is between words.
@@ -535,6 +557,20 @@
 
 % Allows us to scale font sizes relatively
 \usepackage{scalefnt}
+
+
+%:-------------------------- Listings, tables, etc.  -----------------------
+
+% Listings (e.g. used for code examples)
+\usepackage{listings}
+
+% Don't use old style numbers for line numbers or in listing content
+\lst@AddToHookAtTop{Init}{\ult@setlfstyledefault}
+
+% Pretty tables
+\usepackage{booktabs}
+\usepackage{tabularx}
+
 
 %:-------------------------- Symbols -----------------------
 
