@@ -199,6 +199,7 @@
 \ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrlayer-notecolumn}
 \ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrjura}
 \ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrlogo}
+\ult@disallowpackage[The uit-thesis document class uses the float package, which isn't compatible with floatrow.]{floatrow}
 
 %:-------------------------- Colors -----------------------
 
@@ -245,8 +246,68 @@
 \urlstyle{leo}
 
 
+%:-------------------------- Things we need to do magic -----------------------
+
+% Needed by our black magic hacks below
+\usepackage{l3regex}
+\usepackage{xparse}
+
+% To read LaTeX macro from file
+\usepackage{catchfile}
+
+% e-Tex tools, macros, hooks, etc.
+\usepackage{etoolbox}
+
+% Convenient
+\usepackage{expl3}
+
+% Allows us to do hardcore patching
+\usepackage{xpatch}
+
+
+%:-------------------------- Floats -----------------------
+
+% Floats (should be loaded before hyperref)
+\usepackage{float}
+
+% Note: we load newfloat package before we override \@chapter, because
+% newfloat tries really hard to override it, and we don't really want it to.
+% Now, it should patch the default \@chapter command of the book class.
+% If newfloat was included after we have patched \@chapter, then it would
+% patch \addtocontents instead.
+% See http://ctan.mackichan.com/macros/latex/contrib/caption/newfloat.pdf
+\usepackage{newfloat}
+
+\xapptocmd{\floatname}{%
+  % Define the macro \<Name of float>name, so hyperref's \autoref{} will work.
+  \@namedef{#1name}{#1}
+  %
+  % If babel is used, we must make sure that our new name is retained.
+  \begingroup
+    \ifcsname languagename\endcsname
+      \ifcsname captions\languagename\endcsname
+        % Add name definition to \captions<Language name> macro.
+        % Because \floatname might be called multiple times for the same float,
+        % we make sure that our definition is only added once (by using xpatch to
+        % remove possible previous occurences first).
+        \expandafter\xpatchcmd\csname captions\languagename\endcsname
+          {\@namedef{#1name}{\@nameuse{fname@#1}}}
+          {}
+          {}
+          {}
+        % Now, add our definition.
+        \expandafter\g@addto@macro\csname captions\languagename\endcsname
+          {\@namedef{#1name}{\@nameuse{fname@#1}}}%
+      \fi
+    \fi
+  \endgroup
+}
+{}
+{\@latex@error{Failed to patch \@backslashchar floatname}\@ehd}
+
 %:-------------------------- Book class overrides -----------------------
 
+% Override \@chapter to get a consistent look of all ToC lists
 \def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
                        \if@mainmatter
                          \refstepcounter{chapter}%
@@ -275,6 +336,65 @@
                       \@makechapterhead{#2}%
                       \@afterheading
                     \fi}
+
+%:-------------------------- Figures, graphics, includes, etc.  -----------------------
+
+\ifpdf
+
+  \usepackage[pdftex,%                       %
+              plainpages=false,%             % "Physical" page numbers and logical page numbers are not the same
+              pdfpagelabels=false,%          % Don't index pages using logical page numbers in PDF reader (such as ii, iii, iv, ...)
+              pdfpagemode={UseOutlines},%    % Show bookmarks
+              pdfstartview={FitV},%          % Fit height of page to PDF viewer window
+              pdfpagelayout={TwoPageRight},% % Display two pages, odd-numbered pages to the right
+              pdfdisplaydoctitle,%           % Display document title instead of filename in title bar
+              bookmarks,%                    % Show bookmarks bar when displaying document
+              pagebackref=false,%            % No back references inside bibilography.
+              hyperindex,%                   %
+              hyperfigures%                  %
+             ]{hyperref}
+
+  % Used for adding figures in thesis
+  \usepackage[pdftex]{graphicx}
+
+  % Make it easy to include PDFs using \includepdf macro. Note that PDF links will be lost when including!
+  \usepackage{pdfpages}
+
+\else
+
+  \usepackage[dvips,bookmarks,pagebackref,hyperindex,hyperfigures]{hyperref}
+
+  % Used for adding figures in thesis
+  \usepackage{graphicx}
+
+\fi
+
+\usepackage[all]{hypcap} % Correct a problem with hyperref
+
+\hypersetup{%
+  bookmarksopen=true,
+  bookmarksnumbered=true,
+  breaklinks=true,
+  linktocpage,
+  colorlinks=false,% Should never be set to true, as it reduces quality of print...
+  linkcolor=blue,
+  urlcolor =blue,
+  citecolor=red,
+  anchorcolor=green,
+  hidelinks% Remove color and border
+}
+
+% Small, hanging indentation with bold label.
+% hypcap option is used to make sure that hyperlink to
+% e.g. figure points to the top of the figure rather than
+% to the caption.
+\usepackage[hang,bf,small,hypcap]{caption}
+
+% Enables adding figures and tables side by side
+\usepackage{subcaption}
+
+% For sweet-ass drawings and transformations and shit
+\usepackage{tikz}
 
 %:-------------------------- Footnotes ----------------------------
 
@@ -365,82 +485,6 @@
   \ftn@font#1%
   \par\egroup
 }
-
-%:-------------------------- Figures, graphics, includes, etc.  -----------------------
-
-% Floats (should be loaded before hyperref)
-\usepackage{float}
-
-\ifpdf
-
-  \usepackage[pdftex,%                       %
-              plainpages=false,%             % "Physical" page numbers and logical page numbers are not the same
-              pdfpagelabels=false,%          % Don't index pages using logical page numbers in PDF reader (such as ii, iii, iv, ...)
-              pdfpagemode={UseOutlines},%    % Show bookmarks
-              pdfstartview={FitV},%          % Fit height of page to PDF viewer window
-              pdfpagelayout={TwoPageRight},% % Display two pages, odd-numbered pages to the right
-              pdfdisplaydoctitle,%           % Display document title instead of filename in title bar
-              bookmarks,%                    % Show bookmarks bar when displaying document
-              pagebackref=false,%            % No back references inside bibilography.
-              hyperindex,%                   %
-              hyperfigures%                  %
-             ]{hyperref}
-
-  % Used for adding figures in thesis
-  \usepackage[pdftex]{graphicx}
-
-  % Make it easy to include PDFs using \includepdf macro. Note that PDF links will be lost when including!
-  \usepackage{pdfpages}
-
-\else
-
-  \usepackage[dvips,bookmarks,pagebackref,hyperindex,hyperfigures]{hyperref}
-
-  % Used for adding figures in thesis
-  \usepackage{graphicx}
-
-\fi
-
-\usepackage[all]{hypcap} % Correct a problem with hyperref
-
-\hypersetup{%
-  bookmarksopen=true,
-  bookmarksnumbered=true,
-  breaklinks=true,
-  linktocpage,
-  colorlinks=false,% Should never be set to true, as it reduces quality of print...
-  linkcolor=blue,
-  urlcolor =blue,
-  citecolor=red,
-  anchorcolor=green,
-  hidelinks% Remove color and border
-}
-
-% Small, hanging indentation with bold label.
-% hypcap option is used to make sure that hyperlink to
-% e.g. figure points to the top of the figure rather than
-% to the caption.
-\usepackage[hang,bf,small,hypcap]{caption}
-
-% Enables adding figures and tables side by side
-\usepackage{subcaption}
-
-
-%:-------------------------- Things we need to do magic -----------------------
-
-% For sweet-ass drawings and transformations and shit
-\usepackage{tikz}
-
-% Needed by our black magic hacks below
-\usepackage{l3regex}
-\usepackage{xparse}
-
-% To read LaTeX macro from file
-\usepackage{catchfile}
-
-% e-Tex tools, macros, hooks, etc.
-\usepackage{etoolbox}
-
 
 %:-------------------------- Title and subtitle  -----------------------
 
@@ -1612,7 +1656,21 @@
 \renewcommand{\cftfigpagefont}{\ult@cftsecpagefont}
 \renewcommand{\cfttabpagefont}{\ult@cftsecpagefont}
 
+
 % Override tocloft's \newlistentry
+% First, allow \newlistentry (and hence, also \newlistof) command, even if entry has already been defined.
+% This allows us to use \newlistof to generate list definition after e.g. defining a float using \newfloat.
+% For example:
+%        \newfloat{algorithm}{htbp}{loalgorithm}[chapter]
+%        \newlistof{algorithm}{loalgorithm}{List of Algorithms}
+%
+\xpatchcmd{\newlistentry}
+    {{\PackageError{tocloft}{#2 has been previously defined}{\@eha}}}
+    {{}}
+    {}
+    {\@latex@error{Failed to patch \@backslashchar newlistentry}\@ehd}
+%
+% Now, override the macro, so we may override default styling on new list entries.
 \LetLtxMacro{\ult@savenewlistentry}{\newlistentry}
 \renewcommand{\newlistentry}[4][\@empty]{%
   \ult@savenewlistentry[#1]{#2}{#3}{#4}%
@@ -1622,6 +1680,7 @@
   \@namedef{cft#2font}{\ult@cftsecfont}
   \@namedef{cft#2pagefont}{\ult@cftsecpagefont}
 }
+
 
 % Override tocloft's \newlistof
 \LetLtxMacro{\ult@savenewlistof}{\newlistof}
@@ -1657,7 +1716,12 @@
   }%
 }
 
-
+% Override newfloat package's \newfloat@list@of to use our \listof command,
+% because it relies on the ability to first make customizations, and then typeset
+% the list using \listoffigures, which won't work in this template.
+\renewcommand*{\newfloat@list@of}[2]{%
+  \listof{#1}{\@nameuse{list#1name}}%
+}
 
 % Used to determine if document contains figures, tables, listings, etc.
 \usepackage[figure,table,lstlisting]{totalcount}
