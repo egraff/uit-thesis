@@ -281,6 +281,7 @@
 \xapptocmd{\floatname}{%
   % Define the macro \<Name of float>name, so hyperref's \autoref{} will work.
   \@namedef{#1name}{#1}
+  \@namedef{#1autorefname}{#1}
   %
   % If babel is used, we must make sure that our new name is retained.
   \begingroup
@@ -298,6 +299,16 @@
         % Now, add our definition.
         \expandafter\g@addto@macro\csname captions\languagename\endcsname
           {\@namedef{#1name}{\@nameuse{fname@#1}}}%
+      \fi
+      % Now, do the same with <Name of float>autorefname
+      \ifcsname extras\languagename\endcsname
+        \expandafter\xpatchcmd\csname extras\languagename\endcsname
+          {\@namedef{#1autorefname}{\@nameuse{fname@#1}}}
+          {}
+          {}
+          {}
+        \expandafter\g@addto@macro\csname extras\languagename\endcsname
+          {\@namedef{#1autorefname}{\@nameuse{fname@#1}}}%
       \fi
     \fi
   \endgroup
