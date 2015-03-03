@@ -2383,7 +2383,8 @@
         \fi
       \endgroup
     \else
-      \@latex@warning{Are you sure you are allowed to use the #1 package?}%
+      % Warn if package hasn't been previously loaded
+      \@ifpackageloaded{#1}{}{\@latex@warning{Are you sure you are allowed to use the #1 package?}}%
     \fi
   \fi
   \ult@save@onefilewithoptions#1[{#2}][{#3}]#4%
