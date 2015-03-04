@@ -1237,24 +1237,24 @@
   {% Before-code plus chapter name (titlesec's explicit option is enabled, so #1 is chapter name)
     % Make sure Chapter title aligns to baseline
     %
-    \chaptitlefont\chaptitlefontsize
+    \chaptitlefont\chaptitlefontsize%
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
-    \microtypesetup{protrusion=false,spacing=false}
-    \RaggedRight
+    \microtypesetup{protrusion=false,spacing=false}%
+    \RaggedRight%
     %
-    \selectfont
+    \selectfont%
     %
-    \vspace*{-\baselineskip}
+    \vspace*{-\baselineskip}%
     %
     % Measure number of text lines in chapter name
-    \newdimen\ult@chapter@tmptotalheight
-    \setbox0=\vbox{#1\relax \kern \z@ \strut}
-    \ult@chapter@tmptotalheight=\ht0 \advance\ult@chapter@tmptotalheight by \dp0
-    \setbox0=\vbox{Bq \kern \z@ \strut}
-    \newdimen\ult@chapter@tmpstrutheight
-    \ult@chapter@tmpstrutheight=\ht0 \advance\ult@chapter@tmpstrutheight by \dp0
-    \setcounter{ult@chapter@tmpnumlines}{\DivideLengths{\ult@chapter@tmptotalheight}{\ult@chapter@tmpstrutheight}}
+    \newdimen\ult@chapter@tmptotalheight%
+    \setbox0=\vbox{#1\relax \kern \z@ \strut}%
+    \ult@chapter@tmptotalheight=\ht0 \advance\ult@chapter@tmptotalheight by \dp0%
+    \setbox0=\vbox{Bq \kern \z@ \strut}%
+    \newdimen\ult@chapter@tmpstrutheight%
+    \ult@chapter@tmpstrutheight=\ht0 \advance\ult@chapter@tmpstrutheight by \dp0%
+    \setcounter{ult@chapter@tmpnumlines}{\DivideLengths{\ult@chapter@tmptotalheight}{\ult@chapter@tmpstrutheight}}%
     %
     % Print chapter name
     #1% Important not to add spaces behind chapter name
