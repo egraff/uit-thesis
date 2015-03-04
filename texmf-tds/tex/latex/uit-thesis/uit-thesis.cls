@@ -1321,8 +1321,12 @@
     % Note: this could be a potential source of future text formatting bugs (if lines are written on top of each other)
     \lineskiplimit=-\maxdimen
     %
+    % This \null is needed to ensure space between consecutive chapter/section/subsection/... headers
     \null%
-    \vspace*{-\parskip}%
+    % And this is to compensate for \null after page break
+    \if@nobreak\else
+      \vspace*{-\parskip}
+    \fi
     %
     \sectfontsize \bfseries \sectfont
     %
@@ -1390,8 +1394,13 @@
 % Now, define how \subsection is formatted.
 \titleformat{\subsection}[hang]
   {% Format
+    % This \null is needed to ensure space between consecutive chapter/section/subsection/... headers
     \null%
-    \vspace*{-\parskip}%
+    % And this is to compensate for \null after page break
+    \if@nobreak\else
+      \vspace*{-\parskip}
+    \fi
+    %
     \large \bfseries \subsectfont
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
@@ -1416,8 +1425,13 @@
 % Now, define how \subsection is formatted.
 \titleformat{\subsubsection}[hang]
   {% Format
+    % This \null is needed to ensure space between consecutive chapter/section/subsection/... headers
     \null%
-    \vspace*{-\parskip}%
+    % And this is to compensate for \null after page break
+    \if@nobreak\else
+      \vspace*{-\parskip}
+    \fi
+    %
     \normalsize \bfseries \subsubsectfont
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
