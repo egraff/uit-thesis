@@ -1212,6 +1212,9 @@
 % baseline of the normal font.
 \def\sectfontsize {\fontsize\@xivpt{1.5\ult@normalbaselineskip}}
 
+% \large (of 10pt and 11pt) modified to skip exactly 1 base line
+\def\subsectfontsize {\fontsize\@xiipt{\ult@normalbaselineskip}}
+
 % vboxes used to measure height of chapter name, section name, etc.
 \newbox\ult@chaptername@vbox
 \newbox\ult@sectionname@vbox
@@ -1401,7 +1404,7 @@
       \vspace*{-\parskip}
     \fi
     %
-    \large \bfseries \subsectfont
+    \subsectfontsize \bfseries \subsectfont
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
     \microtypesetup{protrusion=false,spacing=false}
