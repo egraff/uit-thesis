@@ -179,6 +179,7 @@
 \ult@disallowpackage[Package subfig is incompatible with the uit-thesis document class. The subcaption package (already included) is used instead.]{subfig}
 \ult@disallowpackage[Package easyeqn is incompatible with hyperref.]{easyeqn}
 \ult@disallowpackage[Package mathenv is incompatible with hyperref.]{mathenv}
+\ult@disallowpackage[Package pstcol is not allowed. The uit-thesis document class uses the xcolor package instead.]{pstcol}
 \ult@disallowpackage[The uit-thesis document class already provides beautiful chapter headings. Why would you want to change them?]{fncychap}
 \ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{tocbasic}
 \ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{tocstyle}
@@ -202,11 +203,10 @@
 
 %:-------------------------- Colors -----------------------
 
-% Text coloring with support for 68 standard color names
-\usepackage[usenames,dvipsnames]{color}
-
-% Table colors
-\usepackage[table]{xcolor}
+% Text coloring, table colors, etc.
+% Note: the xcolor package will pretend that the color package has been loaded, to prevent the color package
+% from being loaded as well. Same goes for the colortbl package.
+\usepackage[dvipsnames,table,hyperref]{xcolor}
 
 % Text highlighting
 \usepackage{soul}
