@@ -172,6 +172,11 @@
 % Macro is used as \ult@disallowpackage{packagename} or \ult@disallowpackage[Reason for disallowing package]{packagename}.
 \newcommand\ult@disallowpackage[2][\@empty]{%
   \expandafter\edef\csname ult@disallowpackage@#2\endcsname{#1}
+  \AtBeginDocument{
+    \@ifpackageloaded{#2}{
+      \@latex@error{Package #2 has been loaded even if it was disallowed}\@ehd%
+    }{}
+  }
 }
 
 % Disallowed packages
