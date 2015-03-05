@@ -1252,7 +1252,7 @@
     %
     % Measure number of text lines in chapter name
     \newdimen\ult@chapter@tmptotalheight%
-    \setbox0=\vbox{#1\relax \kern \z@ \strut}%
+    \setbox0=\vbox{\leavevmode #1\relax \kern \z@ \strut}%
     \ult@chapter@tmptotalheight=\ht0 \advance\ult@chapter@tmptotalheight by \dp0%
     \setbox0=\vbox{Bq \kern \z@ \strut}%
     \newdimen\ult@chapter@tmpstrutheight%
@@ -1346,7 +1346,7 @@
   {% Before-code:
     % Measure number of text lines in section name
     \newdimen\ult@section@tmptotalheight%
-    \setbox0=\vbox{#1\relax \kern \z@ \strut}%
+    \setbox0=\vbox{\leavevmode #1\relax \kern \z@ \strut}%
     \ult@section@tmptotalheight=\ht0 \advance\ult@section@tmptotalheight by \dp0%
     \setbox0=\vbox{Bq \kern \z@ \strut}%
     \newdimen\ult@section@tmpstrutheight%
