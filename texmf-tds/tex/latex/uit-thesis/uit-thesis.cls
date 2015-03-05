@@ -284,40 +284,40 @@
 
 %:-------------------------- Footnotes ----------------------------
 
-\debugdef{@makefnmark}
-\debugdef{@makefntext}
-\debugdef{@footnotemark} % Uses \@makefnmark
-\debugdef{@thefnmark}
-\debugdef{footnote}
-\debugdef{@footnotetext}
-\debugdef{@mpfootnotetext}
-\debugdef{@xfootnotemark}
+%\debugdef{@makefnmark}
+%\debugdef{@makefntext}
+%\debugdef{@footnotemark} % Uses \@makefnmark
+%\debugdef{@thefnmark}
+%\debugdef{footnote}
+%\debugdef{@footnotetext}
+%\debugdef{@mpfootnotetext}
+%\debugdef{@xfootnotemark}
 
-\typeout{^^J ^^J ============================================= ^^J ^^J}
+%\typeout{^^J ^^J ============================================= ^^J ^^J}
 
 \usepackage[norule,%    % Drop the small rule before footnotes
             splitrule,% % If a footnote is split, draw a full width rule above the continued part of the footnote as a visual cue to readers
             bottom%     % Make sure footnotes are pushed to the bottom of the page (instead of being placed after the actual page break)
            ]{footmisc}
 
-\debugdef{footnote}
-\debugdef{@footnotetext}
-\debugdef{@mpfootnotetext}
-\debugdef{@xfootnotemark}
+%\debugdef{footnote}
+%\debugdef{@footnotetext}
+%\debugdef{@mpfootnotetext}
+%\debugdef{@xfootnotemark}
 
-\debugdef{@makefnmark}
-\debugdef{@makefntext}
-\debugdef{@footnotemark} % Uses \@makefnmark
-\debugdef{@thefnmark}
+%\debugdef{@makefnmark}
+%\debugdef{@makefntext}
+%\debugdef{@footnotemark} % Uses \@makefnmark
+%\debugdef{@thefnmark}
 
-\debugdef{par}
-\debugdef{@par}
-\debugdef{@@par}
-\debugdef{@setpar}
-\debugdef{parshape}
+%\debugdef{par}
+%\debugdef{@par}
+%\debugdef{@@par}
+%\debugdef{@setpar}
+%\debugdef{parshape}
 
-\debugdef{hangfootparskip}
-\debugdef{hangfootparindent}
+%\debugdef{hangfootparskip}
+%\debugdef{hangfootparindent}
 
 
 % The actual marker symbol (per footnote)
