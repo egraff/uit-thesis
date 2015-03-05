@@ -172,6 +172,11 @@
 % Macro is used as \ult@disallowpackage{packagename} or \ult@disallowpackage[Reason for disallowing package]{packagename}.
 \newcommand\ult@disallowpackage[2][\@empty]{%
   \expandafter\edef\csname ult@disallowpackage@#2\endcsname{#1}
+  \AtBeginDocument{
+    \@ifpackageloaded{#2}{
+      \@latex@error{Package #2 has been loaded even if it was disallowed}\@ehd%
+    }{}
+  }
 }
 
 % Disallowed packages
@@ -338,8 +343,8 @@
                     %
                     % Add space between entries belonging to different
                     % chapters in ToC lists
-                    \ult@foralltoclists{\ult@this@toclistext}{%
-                      \addtocontents{\ult@this@toclistext}%
+                    \ult@foralltoclists{\ult@this@toclist@ext}{%
+                      \addtocontents{\ult@this@toclist@ext}%
                                     {\protect\addvspace{\ult@cftbeforechapskip}}%
                     }
                     \if@twocolumn
@@ -410,40 +415,40 @@
 
 %:-------------------------- Footnotes ----------------------------
 
-\debugdef{@makefnmark}
-\debugdef{@makefntext}
-\debugdef{@footnotemark} % Uses \@makefnmark
-\debugdef{@thefnmark}
-\debugdef{footnote}
-\debugdef{@footnotetext}
-\debugdef{@mpfootnotetext}
-\debugdef{@xfootnotemark}
+%\debugdef{@makefnmark}
+%\debugdef{@makefntext}
+%\debugdef{@footnotemark} % Uses \@makefnmark
+%\debugdef{@thefnmark}
+%\debugdef{footnote}
+%\debugdef{@footnotetext}
+%\debugdef{@mpfootnotetext}
+%\debugdef{@xfootnotemark}
 
-\typeout{^^J ^^J ============================================= ^^J ^^J}
+%\typeout{^^J ^^J ============================================= ^^J ^^J}
 
 \usepackage[norule,%    % Drop the small rule before footnotes
             splitrule,% % If a footnote is split, draw a full width rule above the continued part of the footnote as a visual cue to readers
             bottom%     % Make sure footnotes are pushed to the bottom of the page (instead of being placed after the actual page break)
            ]{footmisc}
 
-\debugdef{footnote}
-\debugdef{@footnotetext}
-\debugdef{@mpfootnotetext}
-\debugdef{@xfootnotemark}
+%\debugdef{footnote}
+%\debugdef{@footnotetext}
+%\debugdef{@mpfootnotetext}
+%\debugdef{@xfootnotemark}
 
-\debugdef{@makefnmark}
-\debugdef{@makefntext}
-\debugdef{@footnotemark} % Uses \@makefnmark
-\debugdef{@thefnmark}
+%\debugdef{@makefnmark}
+%\debugdef{@makefntext}
+%\debugdef{@footnotemark} % Uses \@makefnmark
+%\debugdef{@thefnmark}
 
-\debugdef{par}
-\debugdef{@par}
-\debugdef{@@par}
-\debugdef{@setpar}
-\debugdef{parshape}
+%\debugdef{par}
+%\debugdef{@par}
+%\debugdef{@@par}
+%\debugdef{@setpar}
+%\debugdef{parshape}
 
-\debugdef{hangfootparskip}
-\debugdef{hangfootparindent}
+%\debugdef{hangfootparskip}
+%\debugdef{hangfootparindent}
 
 
 % The actual marker symbol (per footnote)
@@ -498,6 +503,9 @@
   \par\egroup
 }
 
+\usepackage[skins]{tcolorbox}
+\usepackage{picture}
+\usepackage{atbegshi}
 %:-------------------------- Title and subtitle  -----------------------
 
 
@@ -745,7 +753,6 @@
 
 % BASELINE GRID
 % http://tex.stackexchange.com/questions/150619/drawing-a-background-grid-based-on-linespread-value
-\usepackage{atbegshi,picture}
 \ifult@drawbaselinegrid
 \AtBeginShipout{%
   \AtBeginShipoutUpperLeft{%
