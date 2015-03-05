@@ -175,6 +175,7 @@
 }
 
 % Disallowed packages
+\ult@disallowpackage[Pacakge notoccite should not be loaded. The uit-thesis template already integrates the changes from notoccite.]{notoccite}
 \ult@disallowpackage[Package subfigure is deprecated. The subcaption package (already included by the document class) is used instead.]{subfigure}
 \ult@disallowpackage[Package subfig is incompatible with the uit-thesis document class. The subcaption package (already included) is used instead.]{subfig}
 \ult@disallowpackage[Package easyeqn is incompatible with hyperref.]{easyeqn}
