@@ -1,0 +1,42 @@
+\documentclass[baselinegrid,parindent]{uit-thesis-test}
+
+\usepackage{lipsum}
+
+\makeglossaries
+
+\begin{document}
+
+\mainmatter
+
+\chapter{Chapter}
+\lipsum[1]
+
+\section{This is a single-line section header}
+\lipsum[3-8]
+
+\section{This should be at the beginning of a page}
+\lipsum[9]
+
+\section{This is a section header that should span exactly two lines, with aligned indentation}
+This text should be placed perfectly on a baseline below the section heading.
+
+\lipsum[10]
+
+\section{This section header will span three lines. The indentation should be aligned, and the third line should also be aligned to baseline}
+\lipsum[11-16]
+
+\section{This is a section header that should span exactly three lines, and be placed at the beginning of the page}
+
+\lipsum[17-20]
+
+
+
+
+\section{This should also be at the beginning of a page}
+\section{A}
+test
+
+\newpage
+\section{And this should be at the beginning of a page}
+
+\end{document}

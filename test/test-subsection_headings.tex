@@ -1,0 +1,47 @@
+\documentclass[baselinegrid]{uit-thesis-test}
+
+\usepackage{lipsum}
+
+\makeglossaries
+
+\begin{document}
+
+\mainmatter
+
+\chapter{Chapter}
+\section{Section}
+\subsection{This is a single-line subsection header}
+\lipsum[1]
+\lipsum[3-7]
+
+\subsection{This should be at the beginning of a page}
+\lipsum[8]
+
+\subsection{This is a subsection header that should span exactly two lines, with aligned indentation}
+This text should be placed perfectly on a baseline below the section heading.
+
+\lipsum[9]
+
+\subsection{This subsection header will span three lines. The indentation should be aligned, and the third line should also be aligned to baseline}
+\lipsum[10-15]
+
+\subsection{This is a subsection header that should span exactly three lines, and be placed at the beginning of the page}
+
+\lipsum[16-18]
+
+blah blah
+
+blah blah
+
+blah blah
+
+
+
+\subsection{This should also be at the beginning of a page}
+\subsection{A}
+test
+
+\newpage
+\subsection{And this should be at the beginning of a page}
+
+\end{document}

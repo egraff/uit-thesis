@@ -175,10 +175,12 @@
 }
 
 % Disallowed packages
+\ult@disallowpackage[Pacakge notoccite should not be loaded. The uit-thesis template already integrates the changes from notoccite.]{notoccite}
 \ult@disallowpackage[Package subfigure is deprecated. The subcaption package (already included by the document class) is used instead.]{subfigure}
 \ult@disallowpackage[Package subfig is incompatible with the uit-thesis document class. The subcaption package (already included) is used instead.]{subfig}
 \ult@disallowpackage[Package easyeqn is incompatible with hyperref.]{easyeqn}
 \ult@disallowpackage[Package mathenv is incompatible with hyperref.]{mathenv}
+\ult@disallowpackage[Package pstcol is not allowed. The uit-thesis document class uses the xcolor package instead.]{pstcol}
 \ult@disallowpackage[The uit-thesis document class already provides beautiful chapter headings. Why would you want to change them?]{fncychap}
 \ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{tocbasic}
 \ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{tocstyle}
@@ -203,11 +205,10 @@
 
 %:-------------------------- Colors -----------------------
 
-% Text coloring with support for 68 standard color names
-\usepackage[usenames,dvipsnames]{color}
-
-% Table colors
-\usepackage[table]{xcolor}
+% Text coloring, table colors, etc.
+% Note: the xcolor package will pretend that the color package has been loaded, to prevent the color package
+% from being loaded as well. Same goes for the colortbl package.
+\usepackage[dvipsnames,table,hyperref]{xcolor}
 
 % Text highlighting
 \usepackage{soul}
@@ -1263,11 +1264,20 @@
 % line aligns to the baseline of the normal font.
 \def\chaptitlefontsize {\fontsize{26}{2.5\ult@normalbaselineskip}}
 
-% vbox used to measure chapter name height
-\newbox\ult@chaptername@vbox
+% \Large (of 10pt and 11pt) modified to skip 1.5 normal base lines, so that every second line aligns to
+% baseline of the normal font.
+\def\sectfontsize {\fontsize\@xivpt{1.5\ult@normalbaselineskip}}
 
-% Used for counting number of lines in chapter title
+% \large (of 10pt and 11pt) modified to skip exactly 1 base line
+\def\subsectfontsize {\fontsize\@xiipt{\ult@normalbaselineskip}}
+
+% vboxes used to measure height of chapter name, section name, etc.
+\newbox\ult@chaptername@vbox
+\newbox\ult@sectionname@vbox
+
+% Used for counting number of lines in chapter title, section title, etc.
 \newcounter{ult@chapter@tmpnumlines}
+\newcounter{ult@section@tmpnumlines}
 
 % Override \rightskip for \RaggedRight. This could be adjusted.
 % See ftp://ftp.rz.uni-wuerzburg.de/pub/tex/latex2e/contrib/ms/ragged2e.pdf
@@ -1286,24 +1296,24 @@
   {% Before-code plus chapter name (titlesec's explicit option is enabled, so #1 is chapter name)
     % Make sure Chapter title aligns to baseline
     %
-    \chaptitlefont\chaptitlefontsize
+    \chaptitlefont\chaptitlefontsize%
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
-    \microtypesetup{protrusion=false,spacing=false}
-    \RaggedRight
+    \microtypesetup{protrusion=false,spacing=false}%
+    \RaggedRight%
     %
-    \selectfont
+    \selectfont%
     %
-    \vspace*{-\baselineskip}
+    \vspace*{-\baselineskip}%
     %
     % Measure number of text lines in chapter name
-    \newdimen\ult@chapter@tmptotalheight
-    \setbox0=\vbox{#1\relax \kern \z@ \strut}
-    \ult@chapter@tmptotalheight=\ht0 \advance\ult@chapter@tmptotalheight by \dp0
-    \setbox0=\vbox{Bq \kern \z@ \strut}
-    \newdimen\ult@chapter@tmpstrutheight
-    \ult@chapter@tmpstrutheight=\ht0 \advance\ult@chapter@tmpstrutheight by \dp0
-    \setcounter{ult@chapter@tmpnumlines}{\DivideLengths{\ult@chapter@tmptotalheight}{\ult@chapter@tmpstrutheight}}
+    \newdimen\ult@chapter@tmptotalheight%
+    \setbox0=\vbox{\leavevmode #1\relax \kern \z@ \strut}%
+    \ult@chapter@tmptotalheight=\ht0 \advance\ult@chapter@tmptotalheight by \dp0%
+    \setbox0=\vbox{Bq \kern \z@ \strut}%
+    \newdimen\ult@chapter@tmpstrutheight%
+    \ult@chapter@tmpstrutheight=\ht0 \advance\ult@chapter@tmpstrutheight by \dp0%
+    \setcounter{ult@chapter@tmpnumlines}{\DivideLengths{\ult@chapter@tmptotalheight}{\ult@chapter@tmpstrutheight}}%
     %
     % Print chapter name
     #1% Important not to add spaces behind chapter name
@@ -1365,9 +1375,19 @@
 % Now, define how \section is formatted.
 \titleformat{\section}[hang]
   {% Format
+    % Make sure that line spacing defined by \baselineskip will be preserved under all circumstances!
+    % See http://tex.stackexchange.com/questions/49072/is-changing-lineskiplimit-to-some-negative-value-a-good-idea-and-what-the-valu
+    % Note: this could be a potential source of future text formatting bugs (if lines are written on top of each other)
+    \lineskiplimit=-\maxdimen
+    %
+    % This \null is needed to ensure space between consecutive chapter/section/subsection/... headers
     \null%
-    \vspace*{-\parskip}%
-    \Large \bfseries \sectfont
+    % And this is to compensate for \null after page break
+    \if@nobreak\else
+      \vspace*{-\parskip}
+    \fi
+    %
+    \sectfontsize \bfseries \sectfont
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
     \microtypesetup{protrusion=false,spacing=false}
@@ -1379,21 +1399,68 @@
   }%
   {\@seccntformat{section}}% Label
   {\z@}% Sep
-  {#1}% Before-code: print section name (needed because we have enabled titlesec's explicit option)
-  []% After-code
+  {% Before-code:
+    % Measure number of text lines in section name
+    \newdimen\ult@section@tmptotalheight%
+    \setbox0=\vbox{\leavevmode #1\relax \kern \z@ \strut}%
+    \ult@section@tmptotalheight=\ht0 \advance\ult@section@tmptotalheight by \dp0%
+    \setbox0=\vbox{Bq \kern \z@ \strut}%
+    \newdimen\ult@section@tmpstrutheight%
+    \ult@section@tmpstrutheight=\ht0 \advance\ult@section@tmpstrutheight by \dp0%
+    \setcounter{ult@section@tmpnumlines}{\DivideLengths{\ult@section@tmptotalheight}{\ult@section@tmpstrutheight}}%
+    %
+    % Print section name (needed because we have enabled titlesec's explicit option)
+    #1% Important not to add spaces behind section name
+  }%
+  [% After-code
+    % Make sure that normal text following section title aligns to baseline
+    %
+    % The titlesec package inserts something like
+    %  \kern \z@ \strut \@@par \nobreak
+    % before this.
+    %
+    % Note: this only works as long as \lineskiplimit=-\maxdimen. Without that, the solution is infinitely more complex.
+    % For the old solution, see e.g. commit be2341c37a93c0af6f665bd3d4a0b445c310e1d2
+    %
+    % Note: we have confirmed that this is needed (try changing value of \parskip right before \@@par).
+    % It's probably \@@par that inserts a \parskip. Also note that \parskip does not change when changing font size...
+    \vspace*{-\parskip}
+    %
+    % Make sure total height + spacing corresponds to an even number of baselineskips for normal font.
+    \ifodd\value{ult@section@tmpnumlines}\else
+      \vspace*{0.5\ult@normalbaselineskip}% XXX: This value is hardcoded such that \baselineskip of \sectfontsize + this value is an integer multiple of \ult@normalbaselineskip.
+    \fi
+    %
+    % Now, switch to normal font
+    \normalsize\normalfont\selectfont%
+    %
+    % Add a strut, to make sure that following text is placed perfectly on baseline.
+    % Note: we cannot use \kern\z@ before strut, because that will ruin the \nobreak that we want between a section header
+    % and the following text (we do not want to have a section header at the end of a page, and the following text at the next page).
+    \strut
+    %
+    % Compensate for extra line added by strut
+    \vspace*{-\parskip}
+    \vspace*{-\baselineskip}
+  ]%
 
 % Starred version makes sure we suppress indentation of text following section title
 \titlespacing*{\section}
   {\z@}% % Left margin = 0
   {\z@ + \baselinesbeforesection\ult@normalbaselineskip}% % Vertical space before
-  {\z@ - \parskip + \baselinesaftersection\ult@normalbaselineskip}%  % Vertical space after
+  {\z@ + \baselinesaftersection\ult@normalbaselineskip}%  % Vertical space after
 
 % Now, define how \subsection is formatted.
 \titleformat{\subsection}[hang]
   {% Format
+    % This \null is needed to ensure space between consecutive chapter/section/subsection/... headers
     \null%
-    \vspace*{-\parskip}%
-    \large \bfseries \subsectfont
+    % And this is to compensate for \null after page break
+    \if@nobreak\else
+      \vspace*{-\parskip}
+    \fi
+    %
+    \subsectfontsize \bfseries \subsectfont
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
     \microtypesetup{protrusion=false,spacing=false}
@@ -1417,8 +1484,13 @@
 % Now, define how \subsection is formatted.
 \titleformat{\subsubsection}[hang]
   {% Format
+    % This \null is needed to ensure space between consecutive chapter/section/subsection/... headers
     \null%
-    \vspace*{-\parskip}%
+    % And this is to compensate for \null after page break
+    \if@nobreak\else
+      \vspace*{-\parskip}
+    \fi
+    %
     \normalsize \bfseries \subsubsectfont
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
