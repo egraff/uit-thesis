@@ -271,8 +271,8 @@
                     %
                     % Add space between entries belonging to different
                     % chapters in ToC lists
-                    \ult@foralltoclists{\ult@this@toclistext}{%
-                      \addtocontents{\ult@this@toclistext}%
+                    \ult@foralltoclists{\ult@this@toclist@ext}{%
+                      \addtocontents{\ult@this@toclist@ext}%
                                     {\protect\addvspace{\ult@cftbeforechapskip}}%
                     }
                     \if@twocolumn
@@ -436,6 +436,8 @@
 
 % For sweet-ass drawings and transformations and shit
 \usepackage{tikz}
+\usepackage[skins]{tcolorbox}
+\usepackage{picture}
 
 % Needed by our black magic hacks below
 \usepackage{l3regex}
@@ -446,6 +448,7 @@
 
 % e-Tex tools, macros, hooks, etc.
 \usepackage{etoolbox}
+\usepackage{atbegshi}
 
 
 %:-------------------------- Title and subtitle  -----------------------
@@ -695,7 +698,6 @@
 
 % BASELINE GRID
 % http://tex.stackexchange.com/questions/150619/drawing-a-background-grid-based-on-linespread-value
-\usepackage{atbegshi,picture}
 \ifult@drawbaselinegrid
 \AtBeginShipout{%
   \AtBeginShipoutUpperLeft{%
