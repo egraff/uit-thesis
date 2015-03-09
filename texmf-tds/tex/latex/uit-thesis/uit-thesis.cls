@@ -267,6 +267,7 @@
 
 % Convenient
 \usepackage{expl3}
+\usepackage{xstring}
 
 % Allows us to do hardcore patching
 \usepackage{xpatch}
@@ -415,6 +416,7 @@
 \usepackage{tikz}
 \usepackage[skins]{tcolorbox}
 \usepackage{picture}
+\usepackage{eso-pic}
 
 %:-------------------------- Footnotes ----------------------------
 
@@ -1440,7 +1442,6 @@
 
 % Align bottom of UiT slash with bottom of baseline
 \newlength{\chapterheadalign}
-%\setlength{\chapterheadalign}{\z@ + 8\ult@normalbaselineskip}
 \setlength{\chapterheadalign}{\z@ + 8\ult@normalbaselineskip}
 
 % Align chapter name
@@ -2061,20 +2062,14 @@
 \endgroup
 \let\l@lstlisting\l@listings
 
-% Use tocbibind to generate list of listings
-\renewcommand{\lstlistoflistings}{%
-  \begingroup
-    \tocfile{\lstlistlistingname}{lol}
-  \endgroup%
-}
 
 % List of Listings
 \renewcommand{\lstlistlistingname}{List of Listings}
-\let\ult@lstlistoflistings\lstlistoflistings
 \renewcommand\lstlistoflistings{%
   \iftotallstlistings% Only output list if count > 0
     \cleardoublepage
-    \ult@lstlistoflistings
+    % Use tocbibind to generate list of listings
+    \listoflistings
   \fi
 }
 % Make sure \listoflistings has effect at most once!
@@ -2339,11 +2334,8 @@
 
 %:-------------------------- Frontpage stuffs -----------------------
 
-\usepackage{eso-pic}
-
 % \begin{egg}
-\usepackage{xstring}
- \usetikzlibrary{arrows}
+\usetikzlibrary{arrows}
 \newcommand{\printthed}{
 \begin{tikzpicture}[y=0.80pt,x=0.80pt,yscale=-1, inner sep=0pt, outer sep=0pt]
 \begin{scope}[cm={{0.15032,0.0,0.0,0.15032,(687.69171,514.56151)}},miter limit=4.00,line width=1.597pt]
