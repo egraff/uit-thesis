@@ -598,20 +598,8 @@
 % See http://tex.stackexchange.com/questions/26996/implementing-a-sort-of-tightened-frenchspacing
 \frenchspacing
 
-% Change the meaning of the standard "ambidextrous" ASCII quotation mark
-% when used as input character in the source of a LaTeX document.
-% It will be redefined as an active character (in the TeX sense)
-% that will, when in text-mode, alternate between an opening and closing
-% quotation mark. For a US English document, this will correspond to a
-% left double "curved" quotation mark (normally typeset as ``) and a
-% right double "curved" quotation mark (normally typeset as ''), respectively.
-% The actual definitions of the opening and closing quotation marks are,
-% however, language-specific.
-%
-% The csquotes package also provides convenient macros for typesetting
-% various kinds of quotations.
+% The csquotes package provides convenient macros for typesetting various kinds of quotations.
 \usepackage{csquotes}
-\MakeOuterQuote{"}
 
 \usepackage[activate={true,nocompatibility},final,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
 
