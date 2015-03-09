@@ -501,6 +501,7 @@
 % Needed by our black magic hacks below
 \usepackage{l3regex}
 \usepackage{xparse}
+\usepackage{xpatch}
 
 % To read LaTeX macro from file
 \usepackage{catchfile}
@@ -649,6 +650,156 @@
 
 % Don't use old style numbers for line numbers or in listing content
 \lst@AddToHookAtTop{Init}{\ult@setlfstyledefault}
+
+% Insane hack that allows us to create listing environments that are counted and referenced separately
+% (\lstnewenvironment is really, really stupid...)
+% We provide the command \newcustomlstenvironment instead, which behaves almost identical to \lstnewenvironment.
+% Example:
+%   \newcustomlstenvironment{alglisting}{loalg}{Algorithm}[1][]{
+%     \lstset{...,#1}
+%   }{}
+%
+% Then, you can either use \begin{alglisting}...\end{alglisting}, or use the \lstinputalglisting command.
+% Tip: create a convenient \listofalglisting macro by using:
+%   \newlistof{alglisting}{loalg}{List of Algorithms}
+% after defining the new listing environment. It is also possible to use \listof{alglisting}{List of Algorithms} instead.
+\AtBeginDocument{
+  \global\@namedef{cmdname@lst@MakeCaption}{lst@MakeCaption}
+
+  \@ifpackageloaded{caption}{
+    % If hyperref is loaded before caption, then hyperref will have wrapped \lst@MakeCaption first in \NROrg@lst@MakeCaption
+    \xpatchcmd\caption@ORI@lst@MakeCaption{\NROrg@lst@MakeCaption}{\NROrg@lst@MakeCaption}
+      {%
+        \global\@namedef{cmdname@lst@MakeCaption}{NROrg@lst@MakeCaption}
+        \global\@namedef{cmdname@caption@lst@MakeCaption}{lst@MakeCaption}
+      }{%
+        \global\@namedef{cmdname@lst@MakeCaption}{caption@ORI@lst@MakeCaption}
+        \global\@namedef{cmdname@caption@lst@MakeCaption}{NROrg@lst@MakeCaption}
+      }
+  }{}
+  \@ifpackageloaded{hyperref}{
+    % If caption is loaded before hyperref, then caption will have wrapped \lst@MakeCaption first in \caption@ORI@lst@MakeCaption
+    \xpatchcmd\NROrg@lst@MakeCaption{\caption@ORI@lst@MakeCaption}{\caption@ORI@lst@MakeCaption}
+      {\global\@namedef{cmdname@lst@MakeCaption}{caption@ORI@lst@MakeCaption}}{\global\@namedef{cmdname@lst@MakeCaption}{NROrg@lst@MakeCaption}}
+  }{}
+
+  % Define convenient macro for patching the actual (potentially wrapped) \lst@MakeCaption
+  \gdef\@patch@lst@MakeCaption#1#2{
+    \expandafter\xpatchcmd\csname\cmdname@lst@MakeCaption\endcsname{#1}{#2}{}{\@latex@error{Failed to patch \@backslashchar lst@MakeCaption}\@ehd}
+  }
+
+  % Define convenient macro for patching the caption package's re-implementation of \lst@MakeCaption
+  \gdef\@patch@caption@lst@MakeCaption#1#2{
+    \@ifundefined{cmdname@caption@lst@MakeCaption}{}{
+      \expandafter\xpatchcmd\csname\cmdname@caption@lst@MakeCaption\endcsname{#1}{#2}{}{\@latex@error{Failed to patch caption's \@backslashchar lst@MakeCaption}\@ehd}
+    }
+  }
+
+  % Patch ToC-stuff in \lst@MakeCaption
+  \global\@namedef{ext@lstlisting}{lol}
+  \global\@patch@lst@MakeCaption
+    {\addcontentsline{lol}{lstlisting}}
+    {\addcontentsline{\@nameuse{ext@lstlisting}}{lstlisting}}
+  \global\@patch@lst@MakeCaption
+    {\addcontentsline{lol}{lstlisting}}
+    {\addcontentsline{\@nameuse{ext@lstlisting}}{lstlisting}}
+}
+
+\gdef\@customlstenvironmenthook#1{
+  % Override listing name as shown in caption
+  \def\lstlistingname{\@nameuse{#1name}}
+  % Override counter as shown in caption
+  \expandafter\let\csname c@lstlisting\expandafter\endcsname\csname c@#1\endcsname
+  \expandafter\let\csname thelstlisting\expandafter\endcsname\csname the#1\endcsname
+  \expandafter\let\csname theHlstlisting\expandafter\endcsname\csname theH#1\endcsname
+  %
+  % Prepend #1- to \theHlstnumber to make this hyperref counter unique too
+  % (otherwise, hyperref will complain with "destination with the same identifier
+  % (name{lstnumber.X.Y.Z}) has been already used, duplicate ignored").
+  % Thanks to Heiko "the man" Oberdiek!!
+  % (see https://groups.google.com/forum/#!msg/comp.text.tex/vO5PaIkhfkE/ouW-6192yd4J)
+  \begingroup
+    \global\let\gtmp@theHlstnumber\theHlstnumber
+    \toks@\expandafter{\theHlstnumber}%
+    \xdef\gtmp@theHlstnumber{#1-\the\toks@}%
+  \endgroup
+  \let\theHlstnumber\gtmp@theHlstnumber
+  %
+  % Patch \lst@MakeCaption to use the counter of our customized lstlisting environment.
+  \@patch@lst@MakeCaption
+    {\ifx\lst@@caption\@empty\expandafter\lst@HRefStepCounter\else
+      \expandafter\refstepcounter\fi {lstlisting}}
+    {\ifx\lst@@caption\@empty\expandafter\lst@HRefStepCounter\else
+      \expandafter\refstepcounter\fi {#1}}
+  %
+  % Patch ToC output from \lst@MakeCaption so we get a separate "List of ..." for each environment.
+  \@patch@lst@MakeCaption
+    {\addcontentsline{\@nameuse{ext@lstlisting}}{lstlisting}\lst@name}
+    {\addcontentsline{\@nameuse{ext@#1}}{#1}\lst@name}
+  \@patch@lst@MakeCaption
+    {\addcontentsline{\@nameuse{ext@lstlisting}}{lstlisting}{\protect\numberline{\thelstlisting}\lst@@caption}}
+    {\addcontentsline{\@nameuse{ext@#1}}{#1}{\protect\numberline\expandafter{\csname the#1\endcsname}\lst@@caption}}
+  %
+  % Now, patch caption's implementation of \lst@MakeCaption, so we may style each environment differently using \captionsetup
+  \@patch@caption@lst@MakeCaption
+    {\caption@setoptions{lstlisting}}
+    {\caption@setoptions{#1}}
+  \@patch@caption@lst@MakeCaption
+    {\caption@begin{lstlisting}}
+    {\caption@begin{#1}}
+}
+
+% Usage: \newcustomlstenvironment
+%          {<Environment name>}{<Aux extension>}{<Caption/autref name>}
+%          [<number>][<opt. default arg.>]{<starting code>}{ending code>} <-- These are passed directly to \lstnewenvironment
+\lst@UserCommand\newcustomlstenvironment#1#2#3#4#{%
+  \newcustomlstenvironment@{#1}{#2}{#3}{#4}
+}
+\gdef\newcustomlstenvironment@#1#2#3#4#5#6{
+  % Define separate counter for our customized lstlisting environment.
+  % Note: only supports numbering with or without chapter number first (same as lstlisting).
+  \lst@ifnumberbychapter
+    \newcounter{#1}[chapter]
+    \global\@namedef{the#1}%
+      {\ifnum \c@chapter>\z@ \thechapter.\fi \arabic{#1}}
+  \else
+    \newcounter{#1}
+    \global\@namedef{the#1}{\arabic{#1}}
+  \fi
+  %
+  % Hyperref has separate counter that needs a unique name.
+  % Again, thanks to Mr. Oberdiek!
+  \global\@namedef{theH#1}%
+    {lst.#1-\csname the\@ifundefined{theHchapter}{}{H}chapter\endcsname .\arabic{#1}}
+  %
+  % Override autoref names for our environment.
+  \global\@namedef{#1name}{#3}
+  \global\@namedef{#1autorefname}{#3}
+  %
+  % Define aux extension
+  \global\@namedef{ext@#1}{#2}
+  %
+  % Create new listing environment as usual, by calling \lstnewenvironment
+  % Note: #4 contains something like "[N][]", corresponding to [<number>][<opt. default arg.>]
+  %       arguments of \lstnewenvironment (see listings doc, §4.16).
+  \lstnewenvironment{#1}#4{
+    \@customlstenvironmenthook{#1}
+    %
+    % Contents passed to {<starting code} of \lstnewenvrionment (e.g. \lstset{#1,..})
+    #5%
+  }{%
+    % Contents passed to {<ending code>} of \lstnewenvrionment
+    #6%
+  }
+  \expandafter\newcommand\csname lstinput#1\endcsname[2][]{
+    \begingroup
+      \@customlstenvironmenthook{#1}
+      #5%
+      \lstinputlisting[##1]{##2}
+      #6%
+    \endgroup
+  }
+}
 
 % Pretty tables
 \usepackage{booktabs}
