@@ -1143,17 +1143,20 @@
   \fill[color=chapnumcol] (0,0) -- (1.15,3.15) -- (1.4,3.15) -- (0.25,0) -- cycle;
 }
 
-% Define how chapter number is drawn
-\newcommand{\printchapternum}[1][]{
-  % Strutbox for numbers, to make sure that numbers are given correct vertical positions
-  \newbox\ult@chapnummetabox%
+% Strutbox for numbers, to make sure that numbers are given correct vertical positions
+\newbox\ult@chapnummetabox%
+\newbox\ult@chapnumbox%
+\AtBeginDocument{
   \setbox\ult@chapnummetabox\hbox{\Huge\bfseries\chapnumfont 0123456789}%
-  \newbox\ult@chapnumbox%
   \setbox\ult@chapnumbox\hbox{%
     \vrule\@height\ht\ult@chapnummetabox
           \@depth\dp\ult@chapnummetabox
           \@width\z@%
   }%
+}
+
+% Define how chapter number is drawn
+\newcommand{\printchapternum}[1][]{
   \begin{tikzpicture}
     %\tikzstyle{every rectangle node}=[draw]                                                             % Just for debugging, not used!
     %\draw[fill,color=red] (0,0) rectangle (3.15cm,3.15cm);                                              % Just for debugging, not used!
@@ -1223,9 +1226,13 @@
 % \large (of 10pt and 11pt) modified to skip exactly 1 base line
 \def\subsectfontsize {\fontsize\@xiipt{\ult@normalbaselineskip}}
 
-% vboxes used to measure height of chapter name, section name, etc.
+% Used to measure height of chapter name, section name, etc.
 \newbox\ult@chaptername@vbox
+\newdimen\ult@chapter@tmptotalheight
+\newdimen\ult@chapter@tmpstrutheight
 \newbox\ult@sectionname@vbox
+\newdimen\ult@section@tmptotalheight
+\newdimen\ult@section@tmpstrutheight
 
 % Used for counting number of lines in chapter title, section title, etc.
 \newcounter{ult@chapter@tmpnumlines}
@@ -1259,11 +1266,9 @@
     \vspace*{-\baselineskip}%
     %
     % Measure number of text lines in chapter name
-    \newdimen\ult@chapter@tmptotalheight%
     \setbox0=\vbox{\leavevmode #1\relax \kern \z@ \strut}%
     \ult@chapter@tmptotalheight=\ht0 \advance\ult@chapter@tmptotalheight by \dp0%
     \setbox0=\vbox{Bq \kern \z@ \strut}%
-    \newdimen\ult@chapter@tmpstrutheight%
     \ult@chapter@tmpstrutheight=\ht0 \advance\ult@chapter@tmpstrutheight by \dp0%
     \setcounter{ult@chapter@tmpnumlines}{\DivideLengths{\ult@chapter@tmptotalheight}{\ult@chapter@tmpstrutheight}}%
     %
@@ -1353,11 +1358,9 @@
   {\z@}% Sep
   {% Before-code:
     % Measure number of text lines in section name
-    \newdimen\ult@section@tmptotalheight%
     \setbox0=\vbox{\leavevmode #1\relax \kern \z@ \strut}%
     \ult@section@tmptotalheight=\ht0 \advance\ult@section@tmptotalheight by \dp0%
     \setbox0=\vbox{Bq \kern \z@ \strut}%
-    \newdimen\ult@section@tmpstrutheight%
     \ult@section@tmpstrutheight=\ht0 \advance\ult@section@tmpstrutheight by \dp0%
     \setcounter{ult@section@tmpnumlines}{\DivideLengths{\ult@section@tmptotalheight}{\ult@section@tmpstrutheight}}%
     %
