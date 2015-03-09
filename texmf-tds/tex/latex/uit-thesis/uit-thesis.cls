@@ -432,6 +432,65 @@
 \usepackage{subcaption}
 
 
+%:-------------------------- References -----------------------
+
+% Allows us to rename autoref reference names for e.g. Figure, Table, Section, Subsection, etc.
+% Used as \renamerefname[language-name]{ident}{new name}.
+%   If 'language-name' is empty, then current language is used.
+%   'ident' is identifier, e.g. float name. For example, figure, section, lstlisting.
+%   'new name' is new reference name, e.g. Figure, Section, Code Listing.
+%
+% Example: if the current \languagename is USenglish, then you may either write
+%   \renamerefname[USenglish]{lstlisting}{Code Listing}
+% or
+%   \renamerefname{lstlisting}{Code Listing}
+\newcommand\renamerefname[3][\@empty]{
+  \begingroup
+    \def\ult@tmp@langname{\@empty}
+    \ifx#1\@empty
+      % If no language was specified, use current language.
+      \global\@namedef{#2name}{#3}
+      \global\@namedef{#2autorefname}{#3}
+      \ifcsname languagename\endcsname
+        \let\ult@tmp@langname\languagename\relax
+      \fi
+    \else
+      \def\ult@tmp@langname{#1}
+      \ifcsname languagename\endcsname
+        \ifx#1\languagename
+          % Only we have a current language, only change these if requested language = current language
+          \global\@namedef{#2name}{#3}
+          \global\@namedef{#2autorefname}{#3}
+        \fi
+      \fi
+    \fi
+    % If we have a language
+    \ifx\ult@tmp@langname\@empty\else
+      \ifcsname captions\ult@tmp@langname\endcsname
+        % Add name definition to \captions<Language name> macro.
+        \expandafter\g@addto@macro\csname captions\ult@tmp@langname\endcsname
+          {\@namedef{#2name}{#3}}%
+      \fi
+      \ifcsname extras\ult@tmp@langname\endcsname
+        % Add autorefname definition to \extras<Language name> macro.
+        \expandafter\g@addto@macro\csname extras\ult@tmp@langname\endcsname
+          {\@namedef{#2autorefname}{#3}}%
+    \fi
+  \endgroup
+}
+
+% For some reason, hyperref has let some reference names have first capital letter, whereas others do not.
+% Make sure all default reference names use first capital letter.
+\renamerefname[USenglish]{section}{Section}
+\renamerefname[USenglish]{footnote}{Footnote}
+\renamerefname[USenglish]{item}{Item}
+\renamerefname[USenglish]{Chapter}{Chapter}
+\renamerefname[USenglish]{subsection}{Subsection}
+\renamerefname[USenglish]{paragraph}{Paragraph}
+\renamerefname[USenglish]{subparagraph}{Subparagraph}
+\renamerefname[USenglish]{FancyVerbLine}{Line}
+\renamerefname[USenglish]{page}{Page}
+
 %:-------------------------- Things we need to do magic -----------------------
 
 % For sweet-ass drawings and transformations and shit
