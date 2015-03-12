@@ -510,23 +510,22 @@
 
 %:-------------------------- References -----------------------
 
-% Allows us to rename autoref reference names for e.g. Figure, Table, Section, Subsection, etc.
-% Used as \renamerefname[language-name]{ident}{new name}.
+% Allows us to rename name definitions for e.g. Figure, Table, Section, Subsection, etc.
+% Used as \renamedefname[language-name]{ident}{new name}.
 %   If 'language-name' is empty, then current language is used.
 %   'ident' is identifier, e.g. float name. For example, figure, section, lstlisting.
 %   'new name' is new reference name, e.g. Figure, Section, Code Listing.
 %
 % Example: if the current \languagename is USenglish, then you may either write
-%   \renamerefname[USenglish]{lstlisting}{Code Listing}
+%   \renamedefname[USenglish]{lstlisting}{Code Listing}
 % or
-%   \renamerefname{lstlisting}{Code Listing}
-\newcommand\renamerefname[3][\@empty]{
+%   \renamedefname{lstlisting}{Code Listing}
+\newcommand\renamedefname[3][\@empty]{
   \begingroup
     \def\ult@tmp@langname{\@empty}
     \ifx#1\@empty
       % If no language was specified, use current language.
       \global\@namedef{#2name}{#3}
-      \global\@namedef{#2autorefname}{#3}
       \ifcsname languagename\endcsname
         \let\ult@tmp@langname\languagename\relax
       \fi
@@ -536,7 +535,6 @@
         \ifx#1\languagename
           % Only we have a current language, only change these if requested language = current language
           \global\@namedef{#2name}{#3}
-          \global\@namedef{#2autorefname}{#3}
         \fi
       \fi
     \fi
@@ -547,6 +545,40 @@
         \expandafter\g@addto@macro\csname captions\ult@tmp@langname\endcsname
           {\@namedef{#2name}{#3}}%
       \fi
+    \fi
+  \endgroup
+}
+
+% Allows us to rename autoref reference names for e.g. Figure, Table, Section, Subsection, etc.
+% Used as \renameautorefname[language-name]{ident}{new name}.
+%   If 'language-name' is empty, then current language is used.
+%   'ident' is identifier, e.g. float name. For example, figure, section, lstlisting.
+%   'new name' is new reference name, e.g. Figure, Section, Code Listing.
+%
+% Example: if the current \languagename is USenglish, then you may either write
+%   \renameautorefname[USenglish]{lstlisting}{Code Listing}
+% or
+%   \renameautorefname{lstlisting}{Code Listing}
+\newcommand\renameautorefname[3][\@empty]{
+  \begingroup
+    \def\ult@tmp@langname{\@empty}
+    \ifx#1\@empty
+      % If no language was specified, use current language.
+      \global\@namedef{#2autorefname}{#3}
+      \ifcsname languagename\endcsname
+        \let\ult@tmp@langname\languagename\relax
+      \fi
+    \else
+      \def\ult@tmp@langname{#1}
+      \ifcsname languagename\endcsname
+        \ifx#1\languagename
+          % Only we have a current language, only change these if requested language = current language
+          \global\@namedef{#2autorefname}{#3}
+        \fi
+      \fi
+    \fi
+    % If we have a language
+    \ifx\ult@tmp@langname\@empty\else
       \ifcsname extras\ult@tmp@langname\endcsname
         % Add autorefname definition to \extras<Language name> macro.
         \expandafter\g@addto@macro\csname extras\ult@tmp@langname\endcsname
@@ -557,18 +589,18 @@
 
 % For some reason, hyperref has let some reference names have first capital letter, whereas others do not.
 % Make sure all default reference names use first capital letter.
-\renamerefname[USenglish]{section}{Section}
-\renamerefname[USenglish]{footnote}{Footnote}
-\renamerefname[USenglish]{item}{Item}
-\renamerefname[USenglish]{Chapter}{Chapter}
-\renamerefname[USenglish]{subsection}{Subsection}
-\renamerefname[USenglish]{paragraph}{Paragraph}
-\renamerefname[USenglish]{subparagraph}{Subparagraph}
-\renamerefname[USenglish]{FancyVerbLine}{Line}
-\renamerefname[USenglish]{page}{Page}
+\renameautorefname[USenglish]{section}{Section}
+\renameautorefname[USenglish]{footnote}{Footnote}
+\renameautorefname[USenglish]{item}{Item}
+\renameautorefname[USenglish]{chapter}{Chapter}
+\renameautorefname[USenglish]{subsection}{Subsection}
+\renameautorefname[USenglish]{paragraph}{Paragraph}
+\renameautorefname[USenglish]{subparagraph}{Subparagraph}
+\renameautorefname[USenglish]{FancyVerbLine}{Line}
+\renameautorefname[USenglish]{page}{Page}
+
 
 %:-------------------------- Title and subtitle  -----------------------
-
 
 % Override \title to update pdftitle
 \let\ult@savetitle\title
@@ -2064,7 +2096,7 @@
 
 
 % List of Listings
-\renewcommand{\lstlistlistingname}{List of Listings}
+\renamedefname[USenglish]{lstlistlisting}{List of Listings}
 \renewcommand\lstlistoflistings{%
   \iftotallstlistings% Only output list if count > 0
     \cleardoublepage
@@ -2077,7 +2109,7 @@
 
 
 % List of Abbreviations
-\renewcommand{\acronymname}{List of Abbreviations}
+\renamedefname[USenglish]{acronym}{List of Abbreviations}
 
 % Override \printglossary to prevent blank page from being inserted
 % when acronym/glossary list is empty.
