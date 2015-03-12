@@ -129,29 +129,6 @@
 % Support for subscript and superscript using \textsuperscript{} and \textsubscript{}
 \RequirePackage{fixltx2e}
 
-%:-------------------------- Language definitions -----------------------
-
-% Acknowledgements
-\ifult@usenorwegian
-  \def\languagedefinedackname{Takksigelser}
-\else
-  \def\languagedefinedackname{Acknowledgements}
-\fi
-
-% List of listings
-\ifult@usenorwegian
-  \def\languagedefinedlistlistingname{Listinger}
-\else
-  \def\languagedefinedlistlistingname{List of Listings}
-\fi
-
-% List of abbreviations
-\ifult@usenorwegian
-  \def\languagedefinedacronymname{Abbreviasjoner}
-\else
-  \def\languagedefinedacronymname{List of Abbreviations}
-\fi
-
 %:-------------------------- DEBUG -----------------------
 
 % Used to halt LaTeX compilation
@@ -635,6 +612,20 @@
 \renameautorefname[USenglish]{subparagraph}{Subparagraph}
 \renameautorefname[USenglish]{FancyVerbLine}{Line}
 \renameautorefname[USenglish]{page}{Page}
+
+\renameautorefname[norsk]{section}{seksjon}
+\renameautorefname[norsk]{footnote}{fotnote}
+\renameautorefname[norsk]{item}{element}
+\renameautorefname[norsk]{chapter}{kapittel}
+\renameautorefname[norsk]{subsection}{underseksjon}
+\renameautorefname[norsk]{paragraph}{avsnitt}
+\renameautorefname[norsk]{subparagraph}{underavsnitt}
+\renameautorefname[norsk]{FancyVerbLine}{Line}
+\renameautorefname[norsk]{page}{side}
+\renameautorefname[norsk]{equation}{formel}
+\renameautorefname[norsk]{table}{tabell}
+\renameautorefname[norsk]{figure}{figur}
+\renameautorefname[norsk]{lstlisting}{listing}
 
 
 %:-------------------------- Title and subtitle  -----------------------
@@ -1873,9 +1864,12 @@
 
 %:------------------------ Environments ----------------------
 % Environment names
+
 % Abstract name is overriden by babel if a different language is defined.
-\newcommand{\abstractname}{Abstract}
-\newcommand{\ackname}{\languagedefinedackname}
+\renamedefname[USenglish]{abstract}{Abstract}
+
+\renamedefname[USenglish]{ack}{Acknowledgements}
+\renamedefname[norsk]{ack}{Takksigelser}
 
 % Control-ifs
 \newif\ifult@hasacknowledgement\ult@hasacknowledgementfalse
