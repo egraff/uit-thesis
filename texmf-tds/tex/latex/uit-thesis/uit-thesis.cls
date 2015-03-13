@@ -82,6 +82,11 @@
 \ult@printlistoflistingstrue % Default to true
 \DeclareOption{notlol}{\ult@printlistoflistingsfalse}
 
+% Option to render namings in norwegian
+\newif\ifult@usenorwegian
+\ult@usenorwegianfalse % Default to true
+\DeclareOption{norwegian}{\ult@usenorwegiantrue}
+
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
@@ -100,9 +105,18 @@
 % Correct font encoding / language support in output (hyphenations, etc.)
 \RequirePackage[T1]{fontenc}
 
-% American patterns
-\RequirePackage[english=usenglishmax]{hyphsubst}
-\RequirePackage[USenglish]{babel}
+% Language patters
+\ifult@usenorwegian
+  \RequirePackage[norsk]{babel}
+  % Is this required?
+  \ifx\l@norsk\@undefined
+    \@nopatterns{Norsk}
+    \adddialect\l@norsk0
+  \fi
+\else
+  \RequirePackage[english=usenglishmax]{hyphsubst}
+  \RequirePackage[USenglish]{babel}
+\fi
 
 % To modify the heading styles more thoroughly use the titlesec package
 \RequirePackage[explicit]{titlesec}
@@ -635,6 +649,20 @@
 \renameautorefname[USenglish]{subparagraph}{Subparagraph}
 \renameautorefname[USenglish]{FancyVerbLine}{Line}
 \renameautorefname[USenglish]{page}{Page}
+
+\renameautorefname[norsk]{section}{seksjon}
+\renameautorefname[norsk]{footnote}{fotnote}
+\renameautorefname[norsk]{item}{element}
+\renameautorefname[norsk]{chapter}{kapittel}
+\renameautorefname[norsk]{subsection}{underseksjon}
+\renameautorefname[norsk]{paragraph}{avsnitt}
+\renameautorefname[norsk]{subparagraph}{underavsnitt}
+\renameautorefname[norsk]{FancyVerbLine}{Line}
+\renameautorefname[norsk]{page}{side}
+\renameautorefname[norsk]{equation}{formel}
+\renameautorefname[norsk]{table}{tabell}
+\renameautorefname[norsk]{figure}{figur}
+\renameautorefname[norsk]{lstlisting}{listing}
 
 
 %:-------------------------- Title and subtitle  -----------------------
@@ -1873,8 +1901,12 @@
 
 %:------------------------ Environments ----------------------
 % Environment names
-\newcommand{\abstractname}{Abstract}
-\newcommand{\ackname}{Acknowledgements}
+
+% Abstract name is overriden by babel if a different language is defined.
+\renamedefname[USenglish]{abstract}{Abstract}
+
+\renamedefname[USenglish]{ack}{Acknowledgements}
+\renamedefname[norsk]{ack}{Takksigelser}
 
 % Control-ifs
 \newif\ifult@hasacknowledgement\ult@hasacknowledgementfalse
@@ -2134,6 +2166,7 @@
 
 % List of Listings
 \renamedefname[USenglish]{lstlistlisting}{List of Listings}
+\renamedefname[norsk]{lstlistlisting}{Listinger}
 \renewcommand\lstlistoflistings{%
   \iftotallstlistings% Only output list if count > 0
     \cleardoublepage
@@ -2147,6 +2180,7 @@
 
 % List of Abbreviations
 \renamedefname[USenglish]{acronym}{List of Abbreviations}
+\renamedefname[norsk]{acronym}{Forkortelser}
 
 % Override \printglossary to prevent blank page from being inserted
 % when acronym/glossary list is empty.
