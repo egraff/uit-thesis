@@ -403,6 +403,43 @@
   hidelinks% Remove color and border
 }
 
+
+% Define \Autoref macro that does the same as hyperref's \autoref, except it capitalizes the first letter
+% in the reference name.
+\def\defspecialpatch
+{%
+  \begingroup
+    \catcode`\#=12
+    \@defspecialpatch
+}
+\def\@defspecialpatch#1#2#3#4
+{%
+  \endgroup
+  \def#1{%
+    \xpatchcmd{#2}{#3}{#4}
+      {}
+      {\@latex@error{Failed to patch \string#2}\@ehc}
+  }%
+}
+\defspecialpatch\patchautorefmakefirstuc
+  {\HyRef@autosetref}
+  {%
+    \HyRef@currentHtag
+    \expandafter\@firstoffive#1\@empty\@empty\@empty
+    \null%
+  }%
+  {%
+    \expandafter\expandafter\expandafter\makefirstuc\expandafter\expandafter\expandafter{\HyRef@currentHtag\expandafter\@firstoffive#1\@empty\@empty\@empty}%
+    \null%
+  }
+\newcommand{\Autoref}[1]{%
+  \begingroup%
+    \patchautorefmakefirstuc
+    \autoref{#1}%
+  \endgroup%
+}
+
+
 % Small, hanging indentation with bold label.
 % hypcap option is used to make sure that hyperlink to
 % e.g. figure points to the top of the figure rather than
