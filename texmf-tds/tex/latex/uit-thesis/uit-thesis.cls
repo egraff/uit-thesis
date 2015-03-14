@@ -583,6 +583,7 @@
         % Add autorefname definition to \extras<Language name> macro.
         \expandafter\g@addto@macro\csname extras\ult@tmp@langname\endcsname
           {\@namedef{#2autorefname}{#3}}%
+      \fi
     \fi
   \endgroup
 }
