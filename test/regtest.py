@@ -30,7 +30,7 @@ SHOWDETAILEDINFO = False
 NUM_DOTS_PER_LINE = 80
 
 GS = None
-GSOPTS = " -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pngalpha -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 "
+GSOPTS = " -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pngalpha -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 -r150 "
 CMP = None
 CMPOPTS = " -metric ae "
 PDFINFO = None
