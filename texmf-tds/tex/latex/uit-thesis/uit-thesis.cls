@@ -942,9 +942,36 @@
 
 %:-------------------------- Page layout -----------------------
 
+\newlength\ult@gm@topmargin
+\setlength\ult@gm@topmargin\topmargin
+
+\newlength\ult@gm@textheight
+\setlength\ult@gm@textheight\textheight
+
+\newlength\ult@gm@textwidth
+\setlength\ult@gm@textwidth\textwidth
+
+\newlength\ult@gm@headheight
+\setlength\ult@gm@headheight\headheight
+
 % Geometry is needed to set frontpage layout
 % Enable option 'showframe' for debugging...
-\usepackage[pass]{geometry}
+\usepackage[a4paper,ignorehead,ignorefoot,twoside,top=\the\topmargin,textheight=\the\textheight,textwidth=\the\textwidth]{geometry}
+
+% Calculate differences between geometry dimensions and LaTeX dimensions
+\addtolength\ult@gm@topmargin{\ult@gm@topmargin}
+\addtolength\ult@gm@topmargin{-\topmargin}
+
+\addtolength\ult@gm@textheight{\ult@gm@textheight}
+\addtolength\ult@gm@textheight{-\textheight}
+
+\addtolength\ult@gm@textwidth{\ult@gm@textwidth}
+\addtolength\ult@gm@textwidth{-\the\textwidth}
+
+% Update geometry to preserve book class' dimensions
+\geometry{top=\the\ult@gm@topmargin,textheight=\the\ult@gm@textheight,textwidth=\the\ult@gm@textwidth}
+
+
 
 % Used to modify layout
 \usepackage{layout}
