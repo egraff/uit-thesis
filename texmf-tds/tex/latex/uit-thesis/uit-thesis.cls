@@ -971,7 +971,9 @@
 % Update geometry to preserve book class' dimensions
 \geometry{top=\the\ult@gm@topmargin,textheight=\the\ult@gm@textheight,textwidth=\the\ult@gm@textwidth}
 
-
+% Make sure width of running heads is updated when geometry is changed
+\gappto\Gm@process{\fancy@setoffs}
+\gappto\Gm@changelayout{\fancy@setoffs}
 
 % Used to modify layout
 \usepackage{layout}
