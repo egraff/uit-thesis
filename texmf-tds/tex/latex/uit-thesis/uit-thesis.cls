@@ -3,6 +3,8 @@
 
 %:-------------------------- Basic class options -----------------------
 
+% e-Tex tools, macros, hooks, etc.
+\RequirePackage{etoolbox}
 
 % We're based on the standard 'book' class
 \def\baseclass{book}
@@ -81,6 +83,10 @@
 \newif\ifult@printlistoflistings
 \ult@printlistoflistingstrue % Default to true
 \DeclareOption{notlol}{\ult@printlistoflistingsfalse}
+
+% Extra options for glossaries package
+\newcommand*{\ult@glossariesextraoptions}{,}
+\DeclareOption{xindy}{\gappto\ult@glossariesextraoptions{xindy,}}
 
 % Now, process!
 \ProcessOptions\relax
@@ -257,13 +263,10 @@
 % Needed by our black magic hacks below
 \usepackage{l3regex}
 \usepackage{xparse}
+\usepackage{atbegshi}
 
 % To read LaTeX macro from file
 \usepackage{catchfile}
-
-% e-Tex tools, macros, hooks, etc.
-\usepackage{etoolbox}
-\usepackage{atbegshi}
 
 % Convenient
 \usepackage{expl3}
@@ -1369,7 +1372,7 @@
 
 % Used for abreviations and list of abreviations
 % Translate=false because package 'babel' reverts renaming of the default glossary-/acronymnames
-\usepackage[toc,acronym,shortcuts,nonumberlist,nopostdot,translate=false]{glossaries}
+\usepackage[toc,acronym,shortcuts,nonumberlist,nopostdot,translate=false,\ult@glossariesextraoptions]{glossaries}
 
 % Use smallcaps-magic!!! _o/ \o/ \o_
 % Must be used to support ACR-commands that are not aliased to GLS-commands
