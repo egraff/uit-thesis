@@ -2207,29 +2207,36 @@
 \LetLtxMacro{\ult@saveprintglossary}{\printglossary}
 \renewcommand{\printglossary}[1][type=\glsdefaulttype]{%
   % Override \@input@ that is used by \printglossary
-  \let\ult@save@input@\@input@
+  \let\ult@save@input@\@input@%
   \renewcommand\@input@[1]{%
     \IfFileExists{##1}{%
       % See http://tex.stackexchange.com/questions/14145/how-do-i-create-a-macro-which-reads-the-content-of-a-file-when-the-macro-is-defi
       \CatchFileDef{\ult@read@buf}% Macro we dump file contents into
                    {##1}% File name
                    {\makeatletter\endlinechar=-1\relax}% Scancode magic
-
+      %
       % If file contents is equal to \null, then ignore...
       % This will prevent an additional blank page being inserted,
       % since we suppress the \null from being output.
-      \expandafter\ifx\ult@read@buf\null\else
+      \expandafter\ifx\ult@read@buf\null\else%
         % Call on saved \@input@ command
-        \ult@save@input@{##1}
+        \ult@save@input@{##1}%
       \fi%
-    }{}% Don't output anything if file does not exist!
+    }{% If file does not exist
+      % Create it, because \@print@glossary tests if file does not exist, and outputs \null if it didn't
+      % (which results in an annoying, blank page...)
+      \newwrite\ult@tmp@glossary@file%
+      \immediate\openout\ult@tmp@glossary@file=##1%
+      \immediate\write\ult@tmp@glossary@file{}%
+      \immediate\closeout\ult@tmp@glossary@file%
+    }%
   }%
   %
   % Now, that we have overridden \@input@, call saved \printglossary
   \ult@saveprintglossary[#1]%
   %
   % Finally, restore \@input@ so we don't fuck up for other stuff
-  \let\@input@\ult@save@input@
+  \let\@input@\ult@save@input@%
 }
 
 % Make sure \printacronyms has effect at most once!
