@@ -2011,12 +2011,12 @@
 \newlength\ult@cftbeforechapskip
   \setlength{\ult@cftbeforechapskip}{\ult@normalbaselineskip} % Default is 1.0em \@plus\p@
 \newlength\ult@cftchapindent
-  \setlength{\ult@cftchapindent}{\z@} % Default is 0em
+  \setlength{\ult@cftchapindent}{0em} % Default is 0em
 \newlength\ult@cftchapnumwidth
   \setlength{\ult@cftchapnumwidth}{1.5em} % Default is 1.5em
 
 \newlength\ult@cftbeforesecskip
-  \setlength{\ult@cftbeforesecskip}{\z@} % Default is \z@ \@plus .2\p@
+  \setlength{\ult@cftbeforesecskip}{0pt} % Default is \z@ \@plus .2\p@
 \newlength\ult@cftsecindent
   \setlength{\ult@cftsecindent}{1.5em} % Default is 1.5em
 \newlength\ult@cftsecnumwidth
@@ -2034,6 +2034,8 @@
 % Skip
 \setlength{\cftbeforechapskip}{\ult@cftbeforechapskip}
 \setlength{\cftbeforesecskip}{\ult@cftbeforesecskip}
+\setlength{\cftbeforesubsecskip}{\ult@cftbeforesecskip}
+\setlength{\cftbeforesubsubsecskip}{\ult@cftbeforesecskip}
 \setlength{\cftbeforefigskip}{\ult@cftbeforesecskip}
 \setlength{\cftbeforetabskip}{\ult@cftbeforesecskip}
 
@@ -2053,6 +2055,7 @@
 \renewcommand{\cftchapfont}{\ult@cftchapfont}
 \renewcommand{\cftsecfont}{\ult@cftsecfont}
 \renewcommand{\cftsubsecfont}{\ult@cftsecfont}
+\renewcommand{\cftsubsubsecfont}{\ult@cftsecfont}
 \renewcommand{\cftchappagefont}{\ult@cftchappagefont}
 \renewcommand{\cftsecpagefont}{\ult@cftsecpagefont}
 \renewcommand{\cftsubsecpagefont}{\ult@cftsecpagefont}
