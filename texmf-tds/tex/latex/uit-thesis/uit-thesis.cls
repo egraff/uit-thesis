@@ -145,7 +145,7 @@
 % Used to prevent given LaTeX macro from being called more than once
 \newcommand\ult@once[1]{%
   % Save original macro
-  \expandafter\let\csname ult@once@save\expandafter\@gobble\string#1\endcsname#1
+  \expandafter\let\csname ult@once@save\expandafter\@gobble\string#1\endcsname#1\relax%
   %
   % DEBUG
   %\typeout{DEBUG \expandafter\meaning\csname ult@once@savelistoffigures\endcsname}
@@ -162,7 +162,7 @@
       % Re-define macro
       \expandafter\renewcommand\csname\expandafter\@gobble\string#1\endcsname{%
         % Error on third usage
-        \@latex@error{Duplicate call to \@backslashchar\expandafter\@gobble\string#1}\@ehd
+        \@latex@error{Duplicate call to \@backslashchar\expandafter\@gobble\string#1}\@ehd%
       }%
     }%
   }%
@@ -1087,47 +1087,50 @@
 % parskip does to \@starttoc
 \renewcommand*{\@starttoc}[1]{%
   % If protrusion is enabled, disable it
-  \newif\ifult@MT@protrusion\ult@MT@protrusionfalse
-  \ifMT@protrusion
-    \global\ult@MT@protrusiontrue
+  \newif\ifult@MT@protrusion\ult@MT@protrusionfalse%
+  \ifMT@protrusion%
+    \global\ult@MT@protrusiontrue%
     \microtypesetup{protrusion=false}% disables protrusion locally in the document
-  \fi
+  \fi%
   %
   % First element in ToC will be a chapter. Compensate for vertical space
   % added by tocloft, so the first element isn't pushed down.
   % Also, elements in ToC lists that belong to different chapters are separated
   % with spacing, and this spacing will be present before the very first element.
   % Hence, we compensate for both these cases...
-  \vspace*{-\ult@cftbeforechapskip}
+  \vspace*{-\ult@cftbeforechapskip}%
   %
   % Make sure spacing is the same with class option 'parindent' and without
-  \vspace*{\parskip}
+  \vspace*{\parskip}%
   %
-  \begingroup
+  \begingroup%
     % Add modification from notoccite.
     % Note: this only has effect within the current local group
     % (which is why it works!)
-    \@fileswfalse
+    \@fileswfalse%
     %
-    \makeatletter
+    % Make sure @ have right catcode before reading input file
+    \makeatletter%
     %
     % Retain modification from parskip.
     % Note: this is only consistent because we compensate with \vspace*{\parskip} above
-    \parskip\z@    % Retain modification from parskip
+    \parskip\z@% Retain modification from parskip
+    %
+    %
     %
     % Read auxillary file
     \@input{\jobname.#1}%
-  \endgroup
-  \if@filesw
-    \expandafter\newwrite\csname tf@#1\endcsname
-    \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
-  \fi
-  \@nobreakfalse
+  \endgroup%
+  \if@filesw%
+    \expandafter\newwrite\csname tf@#1\endcsname%
+    \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax%
+  \fi%
+  \@nobreakfalse%
   %
   % If protrusion was enabled, re-enable it
-  \ifult@MT@protrusion
+  \ifult@MT@protrusion%
     \microtypesetup{protrusion=true}% enables protrusion
-  \fi
+  \fi%
 }
 
 %:-------------------------- Header/footer -----------------------
@@ -2363,37 +2366,37 @@
   % so we do not invoke original \tableofcontents.
   % Note: we do *not* use tocbibind's \tocfile (and use tocbibind with nottoc option), since we
   % do not want to include ToC as entry in ToC
-  \toc@start
-  \chapter*{\contentsname}\prw@mkboth{\contentsname}
-  \@starttoc{toc}
-  \toc@finish
-
+  \toc@start%
+  \chapter*{\contentsname}\prw@mkboth{\contentsname}%
+  \@starttoc{toc}%
+  \toc@finish%
+  %
   \renewcommand\tableofcontents{%
-    \@latex@error{Duplicate \@backslashchar tableofcontents}\@ehd
-  }
-
+    \@latex@error{Duplicate \@backslashchar tableofcontents}\@ehd%
+  }%
+  %
   % LISTS
   % 1: Figures/illustrations
   % 2: Tables
   % 3: Abbreviations
   % 4: Symbols
   % 5: Preface
-
-  \ifult@printlistoffigures
-    \listoffigures
-  \fi
-
-  \ifult@printlistoftables
-    \listoftables
-  \fi
-
-  \ifult@printlistoflistings
-    \lstlistoflistings
-  \fi
-
-  \ifult@printlistofabbreviations
-    \printacronyms
-  \fi
+  %
+  \ifult@printlistoffigures%
+    \listoffigures%
+  \fi%
+  %
+  \ifult@printlistoftables%
+    \listoftables%
+  \fi%
+  %
+  \ifult@printlistoflistings%
+    \lstlistoflistings%
+  \fi%
+  %
+  \ifult@printlistofabbreviations%
+    %\printacronyms%
+  \fi%
 }
 
 % Mainmatter
