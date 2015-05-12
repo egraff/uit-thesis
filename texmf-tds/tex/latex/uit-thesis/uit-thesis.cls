@@ -27,6 +27,21 @@
 \PassOptionsToClass{a4paper}{\baseclass}
 \PassOptionsToClass{twoside}{\baseclass}
 
+% Class options for thesis type (master thesis default)
+\DeclareOption{master}{}
+\newif\ifult@phdthesisprofile
+\ult@phdthesisprofilefalse % Default to false
+\DeclareOption{phd}{\ult@phdthesisprofiletrue}
+
+% Class options for thesis language (english default)
+\DeclareOption{eng}{}
+\newif\ifult@norwegianlanguage
+\ult@norwegianlanguagefalse % Default to false
+\DeclareOption{nor}{\ult@norwegianlanguagetrue}
+\newif\ifult@samilanguage
+\ult@samilanguagefalse % Default to false
+\DeclareOption{sami}{\ult@samilanguagetrue}
+
 % Suppress book class options
 \DeclareOption{a5paper}{}
 \DeclareOption{b5paper}{}
@@ -237,11 +252,26 @@
 \definecolor{pms5435}{cmyk}{0.32,0.09,0.08,0.07}
 
 % Running head color
+\ifult@phdthesisprofile
+
+\definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
+%\definecolor{rheadslashcolor}{cmyk}{0.6,0,0.2,0.1}
+\colorlet{rheadslashcolor}{pms1797}
+
+\colorlet{chapnumcol}{pms1797}
+%\definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
+
+\else
+
 \definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
 \definecolor{rheadslashcolor}{cmyk}{0.6,0,0.2,0.1}
 
 %\colorlet{chapnumcol}{pms2229}
 \definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
+
+\fi
+
+
 
 %:-------------------------- URLs -----------------------
 
@@ -2684,15 +2714,51 @@
 \def\thesisfaculty#1{\gdef\@thesisfaculty{#1}}
 \def\thesisprogramme#1{\gdef\@thesisprogramme{#1}}
 \def\ThesisFrontpageImage#1{\gdef\@ThesisFrontpageImage{#1}}
+
+\def\thesislanguage#1{\gdef\@thesislanguage{#1}}
+
+% Frontpage graphics
+\def\ThesisFrontpagePattern#1{\gdef\@ThesisFrontpagePattern{#1}}
 \def\ThesisFrontpageLogo#1{\gdef\@ThesisFrontpageLogo{#1}}
+\def\ThesisFrontpageProfile#1{\gdef\@ThesisFrontpageProfile{#1}}
 
 % Error if \maketitle is used without defining \thesisfaculty{} and \thesisprogramme{}
 \def\@thesisfaculty{\@latex@error{No \noexpand\thesisfaculty given}\@ehc}
 \def\@thesisprogramme{\@latex@error{No \noexpand\thesisprogramme given}\@ehc}
 
-\ThesisFrontpageImage{frontpage_image.pdf}
-\ThesisFrontpageLogo{frontpage_overlay_logo.pdf}
-%\ThesisFrontpageLogo{original_frontpage_ref.pdf} % Use this to check title alignment
+% Default (master) frontpage graphics
+\ThesisFrontpagePattern{master_pattern_both.pdf}
+\ThesisFrontpageLogo{Logo_eng_pos.pdf}
+\ThesisFrontpageProfile{master_profile_en.pdf}
+
+% Phd frontpage graphics
+\ifult@phdthesisprofile
+\ThesisFrontpagePattern{phd_pattern_both.pdf}
+\ThesisFrontpageLogo{Logo_eng_pos.pdf}
+\ThesisFrontpageProfile{phd_profile_en.pdf}
+\fi
+
+% Norwegian language
+\ifult@norwegianlanguage
+\ThesisFrontpageLogo{Logo_norsk_pos.pdf}
+\ifult@phdthesisprofile
+\ThesisFrontpageProfile{phd_profile_nor.pdf}
+\else
+\ThesisFrontpageProfile{master_profile_nor.pdf}
+\fi
+\fi
+
+% Sami language
+\ifult@samilanguage
+\ThesisFrontpageLogo{Logo_samisk_pos.pdf}
+\ifult@phdthesisprofile
+\ThesisFrontpageProfile{phd_profile_sami.pdf}
+\else
+\ThesisFrontpageProfile{master_profile_sami.pdf}
+\fi
+\fi
+
+% \ThesisFrontpagePattern{original_frontpage_ref.pdf} % Use this to check title alignment
 
 \if@titlepage
 \renewcommand\maketitle{
@@ -2715,27 +2781,37 @@
     }%
   }{%
   %\end{egg}
-    \AddToShipoutPicture*{%
-      \put(0,-110.5){% This is the correct position
-        \parbox[b][\paperheight]{\paperwidth}{%
-          \vfill%
-          \centering%
-          \includegraphics[width=190.5mm,height=199.5mm,keepaspectratio=false]{\@ThesisFrontpageImage}%
-          \vfill%
-        }%
-      }%
-    }%
   }
   \AddToShipoutPicture*{%
     \put(-3,0){% For some reason, (-3, 0) is the magic position
       \parbox[b][\paperheight]{\paperwidth}{%
         \vfill%
         \centering%
-        \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\@ThesisFrontpageLogo}%
+        \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\@ThesisFrontpagePattern}%
         \vfill%
       }%
     }%
   }
+  \AddToShipoutPicture*{%
+    \put(221,-350.5){% This is the correct position
+      \parbox[b][\paperheight]{\paperwidth}{%
+        \vfill%
+        \centering%
+        \includegraphics[width=24mm,height=24mm,keepaspectratio=false]{\@ThesisFrontpageLogo}%
+        \vfill%
+      }%
+    }%
+  }%
+  \AddToShipoutPicture*{%
+    \put(-234.5,339.5){% This is the correct position
+      \parbox[b][\paperheight]{\paperwidth}{%
+        \vfill%
+        \centering%
+        \includegraphics[width=90mm,height=90mm,keepaspectratio=false]{\@ThesisFrontpageProfile}%
+        \vfill%
+      }%
+    }%
+  }%
   % Faculty / department
   \begingroup
     \vskip \z@
