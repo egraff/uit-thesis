@@ -507,7 +507,6 @@
   \endgroup
   \def#1{%
     \xpatchcmd{#2}{#3}{#4}{}{\@latex@error{Failed to patch \string#2}\@ehc}%
-    \ifhmode\unskip\unskip\unskip\fi% \xpatchcmd produces undesirable whitespace
   }%
 }
 \defspecialpatch\patchautorefmakefirstuc
