@@ -33,15 +33,6 @@
 \ult@phdthesisprofilefalse % Default to false
 \DeclareOption{phd}{\ult@phdthesisprofiletrue}
 
-% Class options for thesis language (english default)
-\DeclareOption{eng}{}
-\newif\ifult@norwegianlanguage
-\ult@norwegianlanguagefalse % Default to false
-\DeclareOption{nor}{\ult@norwegianlanguagetrue}
-\newif\ifult@samilanguage
-\ult@samilanguagefalse % Default to false
-\DeclareOption{sami}{\ult@samilanguagetrue}
-
 % Suppress book class options
 \DeclareOption{a5paper}{}
 \DeclareOption{b5paper}{}
@@ -103,12 +94,26 @@
 \newcommand*{\ult@glossariesextraoptions}{,}
 \DeclareOption{xindy}{\gappto\ult@glossariesextraoptions{xindy,}}
 
+% Detect if USenglish is specified in the class options
+\newif\ifult@specified@english
+\ult@specified@englishfalse
+\DeclareOption{USenglish}{\ult@specified@englishtrue}
+
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
 
 % Fix compatibility issues. A4 dimensions hard coded.
 \special{papersize=210mm,297mm}
+
+
+% Inject USenglish in front of class options if it was not specified in the list.
+% If any other language is specified in the list, it will take precedence
+% We only inject if its was not specified, since every option is only processed once.
+\ifult@specified@english\else
+\preto\@classoptionslist{USenglish,}
+\fi
+
 
 %:-------------------------- Require packages -----------------------
 
@@ -123,7 +128,7 @@
 
 % American patterns
 \RequirePackage[english=usenglishmax]{hyphsubst}
-\RequirePackage[USenglish]{babel}
+\RequirePackage{babel}
 
 % To modify the heading styles more thoroughly use the titlesec package
 \RequirePackage[explicit]{titlesec}
@@ -525,7 +530,8 @@
   urlcolor =blue,
   citecolor=red,
   anchorcolor=green,
-  hidelinks% Remove color and border
+  hidelinks, % Remove color and border
+  unicode=true, % Enforce unicode encoding in bookmarks, which is required for samin language to interoperate with hyperref
 }
 
 
@@ -670,6 +676,21 @@
 \renameautorefname[USenglish]{subparagraph}{Subparagraph}
 \renameautorefname[USenglish]{FancyVerbLine}{Line}
 \renameautorefname[USenglish]{page}{Page}
+
+% Set autoref definitions for norsk language - none of these are set.
+\renameautorefname[norsk]{section}{seksjon}
+\renameautorefname[norsk]{footnote}{fotnote}
+\renameautorefname[norsk]{item}{element}
+\renameautorefname[norsk]{chapter}{kapittel}
+\renameautorefname[norsk]{subsection}{underseksjon}
+\renameautorefname[norsk]{paragraph}{avsnitt}
+\renameautorefname[norsk]{subparagraph}{underavsnitt}
+\renameautorefname[norsk]{FancyVerbLine}{Line}
+\renameautorefname[norsk]{page}{side}
+\renameautorefname[norsk]{equation}{formel}
+\renameautorefname[norsk]{table}{tabell}
+\renameautorefname[norsk]{figure}{figur}
+\renameautorefname[norsk]{lstlisting}{listing}
 
 
 %:-------------------------- Title and subtitle  -----------------------
@@ -1936,9 +1957,19 @@
 %\debugdef{ttlf@chapter}
 
 %:------------------------ Environments ----------------------
-% Environment names
+% Default environment names for abstract and acknowledgement.
+% These needs to be defined, incase a language who does not define them is loaded (like samin)
+% Therefore, if they are not defined, the compilation won't halt on an undefined control sequence within the classfile,
+% but rather use the standard defined english term.
 \newcommand{\abstractname}{Abstract}
 \newcommand{\ackname}{Acknowledgements}
+
+% Define ack and abstract for english and norwegian explicitly, even though they may be defined in the language pack.
+\renamedefname[USenglish]{abstract}{Abstract}
+\renamedefname[USenglish]{ack}{Acknowledgements}
+\renamedefname[norsk]{abstract}{Sammendrag}
+\renamedefname[norsk]{ack}{Takksigelser}
+
 
 % Control-ifs
 \newif\ifult@hasacknowledgement\ult@hasacknowledgementfalse
@@ -1956,7 +1987,7 @@
   \thispagestyle{empty}
 }{}
 % Acknowledgements
-\newenvironment{acknowledge}{%
+\newenvironment{acknowledgement}{%
   \global\ult@hasacknowledgementtrue
   \chapter{\ackname}
   \thispagestyle{empty}
@@ -2198,6 +2229,7 @@
 
 % List of Listings
 \renamedefname[USenglish]{lstlistlisting}{List of Listings}
+\renamedefname[norsk]{lstlistlisting}{Listinger}
 \renewcommand\lstlistoflistings{%
   \iftotallstlistings% Only output list if count > 0
     \cleardoublepage
@@ -2211,6 +2243,7 @@
 
 % List of Abbreviations
 \renamedefname[USenglish]{acronym}{List of Abbreviations}
+\renamedefname[norsk]{acronym}{Forkortelser}
 
 % Override \printglossary to prevent blank page from being inserted
 % when acronym/glossary list is empty.
@@ -2717,8 +2750,6 @@
 \def\thesisprogramme#1{\gdef\@thesisprogramme{#1}}
 \def\ThesisFrontpageImage#1{\gdef\@ThesisFrontpageImage{#1}}
 
-\def\thesislanguage#1{\gdef\@thesislanguage{#1}}
-
 % Frontpage graphics
 \def\ThesisFrontpagePattern#1{\gdef\@ThesisFrontpagePattern{#1}}
 \def\ThesisFrontpageLogo#1{\gdef\@ThesisFrontpageLogo{#1}}
@@ -2728,39 +2759,45 @@
 \def\@thesisfaculty{\@latex@error{No \noexpand\thesisfaculty given}\@ehc}
 \def\@thesisprogramme{\@latex@error{No \noexpand\thesisprogramme given}\@ehc}
 
-% Default (master) frontpage graphics
+% Set the default english Master's pattern and language logos.
 \ThesisFrontpagePattern{master_pattern_both.pdf}
 \ThesisFrontpageLogo{Logo_eng_pos.pdf}
 \ThesisFrontpageProfile{master_profile_en.pdf}
 
-% Phd frontpage graphics
+% Override the frontpage patterns and definition to english if PHD is selected.
 \ifult@phdthesisprofile
-\ThesisFrontpagePattern{phd_pattern_both.pdf}
-\ThesisFrontpageLogo{Logo_eng_pos.pdf}
-\ThesisFrontpageProfile{phd_profile_en.pdf}
+  \ThesisFrontpagePattern{phd_pattern_both.pdf}
+  \ThesisFrontpageLogo{Logo_eng_pos.pdf}
+  \ThesisFrontpageProfile{phd_profile_en.pdf}
 \fi
 
-% Norwegian language
-\ifult@norwegianlanguage
-\ThesisFrontpageLogo{Logo_norsk_pos.pdf}
-\ifult@phdthesisprofile
-\ThesisFrontpageProfile{phd_profile_nor.pdf}
-\else
-\ThesisFrontpageProfile{master_profile_nor.pdf}
-\fi
-\fi
+% norsk language - changes the frontpage logos and profile to the norwegian language
+\iflanguage{norsk}{%
+  % Set the topleft frontpage logo to Norwegian
+  \ThesisFrontpageLogo{Logo_norsk_pos.pdf} %
+  % Set the pattern, depending on PHD or master, which contains the UiT logo with the Norwegian language.
+  \ifult@phdthesisprofile %
+    \ThesisFrontpageProfile{phd_profile_nor.pdf} %
+  \else %
+    \ThesisFrontpageProfile{master_profile_nor.pdf} %
+  \fi %
+}{}
 
-% Sami language
-\ifult@samilanguage
-\ThesisFrontpageLogo{Logo_samisk_pos.pdf}
-\ifult@phdthesisprofile
-\ThesisFrontpageProfile{phd_profile_sami.pdf}
-\else
-\ThesisFrontpageProfile{master_profile_sami.pdf}
-\fi
-\fi
+% samin language - changes the frontpage logos and profile to the Sami language
+% samin is not a standard language in babel - therefore, it yields the error "You haven't defined the language samin yet"
+% if used like \iflanguage{samin}{...}{}. We thus switch on the \languagename macro provided by babel.
+\def\languagetemp{samin}
+\ifx\languagename\languagetemp
+  % Set the topleft frontpage logo to Sami
+  \ThesisFrontpageLogo{Logo_samisk_pos.pdf} %
+  % Set the pattern, depending on PHD or master, which contains the UiT logo with the Sami language.
+  \ifult@phdthesisprofile %
+    \ThesisFrontpageProfile{phd_profile_sami.pdf} %
+  \else %
+    \ThesisFrontpageProfile{master_profile_sami.pdf} %
+  \fi %
+\fi %
 
-% \ThesisFrontpagePattern{original_frontpage_ref.pdf} % Use this to check title alignment
 
 \if@titlepage
 \renewcommand\maketitle{

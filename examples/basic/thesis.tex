@@ -2,8 +2,14 @@
 
 %:-------------------------- Preamble -----------------------
 
-% Set english(other options are sami and nor) and masterthesis profile(replace master with phd to use phd profile)
-\documentclass[eng, master]{uit-thesis}
+% Three languages are supported, which will be reflected in the logo on the front page. Pass the appropriate language
+% specified as a class option to uit-thesis. Passing any other languages supported by babel will result in the default
+% language on the frontpage. If no language is passed, the default is selected.
+%  - USenglish (default)
+%  - norsk
+%  - samin
+% The frontpage comes in two variants, Master's thesis and PhD. Master is default, use classoption 'phd' for the PhD version.
+\documentclass[USenglish]{uit-thesis}
 
 % Lorem ipsum
 \usepackage{lipsum}
