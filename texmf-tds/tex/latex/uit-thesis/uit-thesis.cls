@@ -136,6 +136,9 @@
 % Support for subscript and superscript using \textsuperscript{} and \textsubscript{}
 \RequirePackage{fixltx2e}
 
+% Better support fraction calculations
+\RequirePackage{xintexpr}
+
 %:-------------------------- DEBUG -----------------------
 
 % Used to halt LaTeX compilation
@@ -158,9 +161,8 @@
 \usepackage{calc}
 
 % Used to calculate ratio between two dimension commands
-% http://tex.stackexchange.com/questions/6417/how-to-find-the-ratio-of-a-length-command-e-g-textwidth-to-a-reference-valu?rq=1
 \newcommand*{\DivideLengths}[2]{%
-  \strip@pt\dimexpr\number\numexpr\number\dimexpr#1\relax*65536/\number\dimexpr#2\relax\relax sp\relax
+  \xintthe\xintiexpr #1/#2\relax%
 }
 
 % Used to prevent given LaTeX macro from being called more than once
