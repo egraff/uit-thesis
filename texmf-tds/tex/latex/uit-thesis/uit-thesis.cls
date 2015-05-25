@@ -1380,7 +1380,7 @@
 
 % Customize glossary abbreviations to replace upper-case letters with lower-case small-caps
 \renewcommand*{\CustomAcronymFields}{%
-  name={\large\upsc{\the\glsshorttok}},% name is abbreviated form (how it appears in 'List of Abbreviations')
+  name={\the\glsshorttok},% name is abbreviated form (how it appears in 'List of Abbreviations'). Note: this is used for sorting, so it cannot be styled!
   text={\the\glsshorttok},% \glstext, \Glstext, \GLStext
   first={\the\glslongtok\space (\the\glsshorttok)},% \glsfirst, \Glsfirst, \GLSfirst
   plural={\the\glsshorttok\noexpand\acrpluralsuffix},% \glsplural, \Glsplural, \GLSplural
@@ -1459,6 +1459,24 @@
   }%
 }
 \SetCustomStyle % Apply magic smallcaps glossaries style
+
+
+\newglossarystyle{ult-list}{%
+  % base it on the list style
+  \setglossarystyle{list}%
+  %
+  \renewcommand*{\glossentry}[2]{%
+    \renewcommand*{\glsnamefont}[1]{\upsc{####1}}%
+    \item[\glsentryitem{##1}\glstarget{##1}{\glossentryname{##1}}]
+      \glossentrydesc{##1}\glspostdescription\space ##2}%
+}
+
+\AtBeginDocument{%
+  \renewcommand*{\printacronyms}[1][]{%
+    \printglossary[type=\acronymtype,style=ult-list,#1]%
+  }%
+}
+
 
 % Prevent case-change since we're using smallcaps
 \let\@Acrshort\@acrshort
@@ -2242,13 +2260,6 @@
   %
   % Finally, restore \@input@ so we don't fuck up for other stuff
   \let\@input@\ult@save@input@%
-}
-
-% Make sure \printacronyms has effect at most once!
-\AtBeginDocument{%
-  \ifglsacronym
-    \ult@once{\printacronyms}
-  \fi%
 }
 
 % Prevent \printglossaries, since we have acronyms in frontmatter and glossary in back matter
