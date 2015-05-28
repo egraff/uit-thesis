@@ -3,6 +3,8 @@
 
 %:-------------------------- Basic class options -----------------------
 
+% e-Tex tools, macros, hooks, etc.
+\RequirePackage{etoolbox}
 
 % We're based on the standard 'book' class
 \def\baseclass{book}
@@ -24,6 +26,12 @@
 % Option overrides
 \PassOptionsToClass{a4paper}{\baseclass}
 \PassOptionsToClass{twoside}{\baseclass}
+
+% Class options for thesis type (master thesis default)
+\DeclareOption{master}{}
+\newif\ifult@phdthesisprofile
+\ult@phdthesisprofilefalse % Default to false
+\DeclareOption{phd}{\ult@phdthesisprofiletrue}
 
 % Suppress book class options
 \DeclareOption{a5paper}{}
@@ -82,12 +90,30 @@
 \ult@printlistoflistingstrue % Default to true
 \DeclareOption{notlol}{\ult@printlistoflistingsfalse}
 
+% Extra options for glossaries package
+\newcommand*{\ult@glossariesextraoptions}{,}
+\DeclareOption{xindy}{\gappto\ult@glossariesextraoptions{xindy,}}
+
+% Detect if USenglish is specified in the class options
+\newif\ifult@specified@english
+\ult@specified@englishfalse
+\DeclareOption{USenglish}{\ult@specified@englishtrue}
+
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
 
 % Fix compatibility issues. A4 dimensions hard coded.
 \special{papersize=210mm,297mm}
+
+
+% Inject USenglish in front of class options if it was not specified in the list.
+% If any other language is specified in the list, it will take precedence
+% We only inject if its was not specified, since every option is only processed once.
+\ifult@specified@english\else
+\preto\@classoptionslist{USenglish,}
+\fi
+
 
 %:-------------------------- Require packages -----------------------
 
@@ -102,7 +128,7 @@
 
 % American patterns
 \RequirePackage[english=usenglishmax]{hyphsubst}
-\RequirePackage[USenglish]{babel}
+\RequirePackage{babel}
 
 % To modify the heading styles more thoroughly use the titlesec package
 \RequirePackage[explicit]{titlesec}
@@ -114,6 +140,9 @@
 
 % Support for subscript and superscript using \textsuperscript{} and \textsubscript{}
 \RequirePackage{fixltx2e}
+
+% Better support fraction calculations
+\RequirePackage{xintexpr}
 
 %:-------------------------- DEBUG -----------------------
 
@@ -137,9 +166,8 @@
 \usepackage{calc}
 
 % Used to calculate ratio between two dimension commands
-% http://tex.stackexchange.com/questions/6417/how-to-find-the-ratio-of-a-length-command-e-g-textwidth-to-a-reference-valu?rq=1
 \newcommand*{\DivideLengths}[2]{%
-  \strip@pt\dimexpr\number\numexpr\number\dimexpr#1\relax*65536/\number\dimexpr#2\relax\relax sp\relax
+  \xintthe\xintiexpr #1/#2\relax%
 }
 
 % Used to prevent given LaTeX macro from being called more than once
@@ -231,11 +259,26 @@
 \definecolor{pms5435}{cmyk}{0.32,0.09,0.08,0.07}
 
 % Running head color
+\ifult@phdthesisprofile
+
+\definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
+%\definecolor{rheadslashcolor}{cmyk}{0.6,0,0.2,0.1}
+\colorlet{rheadslashcolor}{pms1797}
+
+\colorlet{chapnumcol}{pms1797}
+%\definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
+
+\else
+
 \definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
 \definecolor{rheadslashcolor}{cmyk}{0.6,0,0.2,0.1}
 
 %\colorlet{chapnumcol}{pms2229}
 \definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
+
+\fi
+
+
 
 %:-------------------------- URLs -----------------------
 
@@ -257,13 +300,10 @@
 % Needed by our black magic hacks below
 \usepackage{l3regex}
 \usepackage{xparse}
+\usepackage{atbegshi}
 
 % To read LaTeX macro from file
 \usepackage{catchfile}
-
-% e-Tex tools, macros, hooks, etc.
-\usepackage{etoolbox}
-\usepackage{atbegshi}
 
 % Convenient
 \usepackage{expl3}
@@ -490,7 +530,8 @@
   urlcolor =blue,
   citecolor=red,
   anchorcolor=green,
-  hidelinks% Remove color and border
+  hidelinks, % Remove color and border
+  unicode=true, % Enforce unicode encoding in bookmarks, which is required for samin language to interoperate with hyperref
 }
 
 
@@ -634,6 +675,21 @@
 \renameautorefname[USenglish]{subparagraph}{Subparagraph}
 \renameautorefname[USenglish]{FancyVerbLine}{Line}
 \renameautorefname[USenglish]{page}{Page}
+
+% Set autoref definitions for norsk language - none of these are set.
+\renameautorefname[norsk]{section}{seksjon}
+\renameautorefname[norsk]{footnote}{fotnote}
+\renameautorefname[norsk]{item}{element}
+\renameautorefname[norsk]{chapter}{kapittel}
+\renameautorefname[norsk]{subsection}{underseksjon}
+\renameautorefname[norsk]{paragraph}{avsnitt}
+\renameautorefname[norsk]{subparagraph}{underavsnitt}
+\renameautorefname[norsk]{FancyVerbLine}{Line}
+\renameautorefname[norsk]{page}{side}
+\renameautorefname[norsk]{equation}{formel}
+\renameautorefname[norsk]{table}{tabell}
+\renameautorefname[norsk]{figure}{figur}
+\renameautorefname[norsk]{lstlisting}{listing}
 
 
 %:-------------------------- Title and subtitle  -----------------------
@@ -1371,7 +1427,7 @@
 
 % Used for abreviations and list of abreviations
 % Translate=false because package 'babel' reverts renaming of the default glossary-/acronymnames
-\usepackage[toc,acronym,shortcuts,nonumberlist,nopostdot,translate=false]{glossaries}
+\usepackage[toc,acronym,shortcuts,nonumberlist,nopostdot,translate=false,\ult@glossariesextraoptions]{glossaries}
 
 % Use smallcaps-magic!!! _o/ \o/ \o_
 % Must be used to support ACR-commands that are not aliased to GLS-commands
@@ -1921,9 +1977,19 @@
 %\debugdef{ttlf@chapter}
 
 %:------------------------ Environments ----------------------
-% Environment names
+% Default environment names for abstract and acknowledgement.
+% These needs to be defined, incase a language who does not define them is loaded (like samin)
+% Therefore, if they are not defined, the compilation won't halt on an undefined control sequence within the classfile,
+% but rather use the standard defined english term.
 \newcommand{\abstractname}{Abstract}
 \newcommand{\ackname}{Acknowledgements}
+
+% Define ack and abstract for english and norwegian explicitly, even though they may be defined in the language pack.
+\renamedefname[USenglish]{abstract}{Abstract}
+\renamedefname[USenglish]{ack}{Acknowledgements}
+\renamedefname[norsk]{abstract}{Sammendrag}
+\renamedefname[norsk]{ack}{Takksigelser}
+
 
 % Control-ifs
 \newif\ifult@hasacknowledgement\ult@hasacknowledgementfalse
@@ -1941,7 +2007,7 @@
   \thispagestyle{empty}
 }{}
 % Acknowledgements
-\newenvironment{acknowledge}{%
+\newenvironment{acknowledgement}{%
   \global\ult@hasacknowledgementtrue
   \chapter{\ackname}
   \thispagestyle{empty}
@@ -2186,6 +2252,7 @@
 
 % List of Listings
 \renamedefname[USenglish]{lstlistlisting}{List of Listings}
+\renamedefname[norsk]{lstlistlisting}{Listinger}
 \renewcommand\lstlistoflistings{%
   \iftotallstlistings% Only output list if count > 0
     \cleardoublepage
@@ -2199,6 +2266,7 @@
 
 % List of Abbreviations
 \renamedefname[USenglish]{acronym}{List of Abbreviations}
+\renamedefname[norsk]{acronym}{Forkortelser}
 
 % Override \printglossary to prevent blank page from being inserted
 % when acronym/glossary list is empty.
@@ -2704,15 +2772,55 @@
 \def\thesisfaculty#1{\gdef\@thesisfaculty{#1}}
 \def\thesisprogramme#1{\gdef\@thesisprogramme{#1}}
 \def\ThesisFrontpageImage#1{\gdef\@ThesisFrontpageImage{#1}}
+
+% Frontpage graphics
+\def\ThesisFrontpagePattern#1{\gdef\@ThesisFrontpagePattern{#1}}
 \def\ThesisFrontpageLogo#1{\gdef\@ThesisFrontpageLogo{#1}}
+\def\ThesisFrontpageProfile#1{\gdef\@ThesisFrontpageProfile{#1}}
 
 % Error if \maketitle is used without defining \thesisfaculty{} and \thesisprogramme{}
 \def\@thesisfaculty{\@latex@error{No \noexpand\thesisfaculty given}\@ehc}
 \def\@thesisprogramme{\@latex@error{No \noexpand\thesisprogramme given}\@ehc}
 
-\ThesisFrontpageImage{frontpage_image.pdf}
-\ThesisFrontpageLogo{frontpage_overlay_logo.pdf}
-%\ThesisFrontpageLogo{original_frontpage_ref.pdf} % Use this to check title alignment
+% Set the default english Master's pattern and language logos.
+\ThesisFrontpagePattern{master_pattern_both.pdf}
+\ThesisFrontpageLogo{Logo_eng_pos.pdf}
+\ThesisFrontpageProfile{master_profile_en.pdf}
+
+% Override the frontpage patterns and definition to english if PHD is selected.
+\ifult@phdthesisprofile
+  \ThesisFrontpagePattern{phd_pattern_both.pdf}
+  \ThesisFrontpageLogo{Logo_eng_pos.pdf}
+  \ThesisFrontpageProfile{phd_profile_en.pdf}
+\fi
+
+% norsk language - changes the frontpage logos and profile to the norwegian language
+\iflanguage{norsk}{%
+  % Set the topleft frontpage logo to Norwegian
+  \ThesisFrontpageLogo{Logo_norsk_pos.pdf} %
+  % Set the pattern, depending on PHD or master, which contains the UiT logo with the Norwegian language.
+  \ifult@phdthesisprofile %
+    \ThesisFrontpageProfile{phd_profile_nor.pdf} %
+  \else %
+    \ThesisFrontpageProfile{master_profile_nor.pdf} %
+  \fi %
+}{}
+
+% samin language - changes the frontpage logos and profile to the Sami language
+% samin is not a standard language in babel - therefore, it yields the error "You haven't defined the language samin yet"
+% if used like \iflanguage{samin}{...}{}. We thus switch on the \languagename macro provided by babel.
+\def\languagetemp{samin}
+\ifx\languagename\languagetemp
+  % Set the topleft frontpage logo to Sami
+  \ThesisFrontpageLogo{Logo_samisk_pos.pdf} %
+  % Set the pattern, depending on PHD or master, which contains the UiT logo with the Sami language.
+  \ifult@phdthesisprofile %
+    \ThesisFrontpageProfile{phd_profile_sami.pdf} %
+  \else %
+    \ThesisFrontpageProfile{master_profile_sami.pdf} %
+  \fi %
+\fi %
+
 
 \if@titlepage
 \renewcommand\maketitle{
@@ -2735,27 +2843,37 @@
     }%
   }{%
   %\end{egg}
-    \AddToShipoutPicture*{%
-      \put(0,-110.5){% This is the correct position
-        \parbox[b][\paperheight]{\paperwidth}{%
-          \vfill%
-          \centering%
-          \includegraphics[width=190.5mm,height=199.5mm,keepaspectratio=false]{\@ThesisFrontpageImage}%
-          \vfill%
-        }%
-      }%
-    }%
   }
   \AddToShipoutPicture*{%
     \put(-3,0){% For some reason, (-3, 0) is the magic position
       \parbox[b][\paperheight]{\paperwidth}{%
         \vfill%
         \centering%
-        \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\@ThesisFrontpageLogo}%
+        \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\@ThesisFrontpagePattern}%
         \vfill%
       }%
     }%
   }
+  \AddToShipoutPicture*{%
+    \put(221,-350.5){% This is the correct position
+      \parbox[b][\paperheight]{\paperwidth}{%
+        \vfill%
+        \centering%
+        \includegraphics[width=24mm,height=24mm,keepaspectratio=false]{\@ThesisFrontpageLogo}%
+        \vfill%
+      }%
+    }%
+  }%
+  \AddToShipoutPicture*{%
+    \put(-234.5,339.5){% This is the correct position
+      \parbox[b][\paperheight]{\paperwidth}{%
+        \vfill%
+        \centering%
+        \includegraphics[width=90mm,height=90mm,keepaspectratio=false]{\@ThesisFrontpageProfile}%
+        \vfill%
+      }%
+    }%
+  }%
   % Faculty / department
   \begingroup
     \vskip \z@
