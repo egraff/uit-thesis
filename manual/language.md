@@ -18,7 +18,7 @@ It has language definitions for all aspects of a document, which is automaticall
 For example, the yellow marked name in the following figure is defined by
 the selected language. In this case, the selected language is *USenglish*.
 
-![figure example image](images/language/figure.png?raw=true)
+![figure example image](images/language/language-figure.png?raw=true)
 
 
 
@@ -96,7 +96,7 @@ The following list of **DEFNAME**s contain the most common ones:
 
 results in the following figure name
 
-![renamed figure example image](images/language/figure-renamed.png?raw=true)
+![renamed figure example image](images/language/language-figure-renamed.png?raw=true)
 
 
 Details

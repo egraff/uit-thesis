@@ -38,7 +38,7 @@ Example
 ```
 
 which results in the following to be generated.
-![autoref renamed figure](images/autoref/autoref-Autoref-demonstrated.png?raw=true)
+![autoref renamed figure](images/autoref/autoref-demonstration.png?raw=true)
 
 Note that `\Autoref{}` capitalizes the autorefname. This is not evident in USenglish, since they are all 
 capitalized by default.
@@ -88,5 +88,5 @@ A sentence referencing \autoref{sec:example}.
 ```
 
 which results in 
-![autoref renamed figure](images/autoref/autoref-renamed-section.png?raw=true)
+![autoref renamed figure](images/autoref/autoref-rename-section.png?raw=true)
 
