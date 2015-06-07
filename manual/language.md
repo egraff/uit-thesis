@@ -54,14 +54,18 @@ selected language. In the following example, *samin* will be the selected langua
 
 Each language defines the name used to reference each element. For instance, the **Figure** text in the example above is defined
 to be the text used when referencing a figure element in the document. One may override the default text of each language with
-the following macro
+the following macro:
 
 > \renamedefname[**LANGUAGE**]{**DEFNAME**}{**TEXTNAME**}
 
-The following **DEFNAME** are defined:
+Note that the bracketed **LANGUAGE** parameter is optional, and will default to the language supplied to **babel**.
 
-+ **abstract**
-+ **ack**
+The following list of **DEFNAME**s contain the most common ones:
+
++ **abstract** - The abstract header.
++ **ack** - the acknowledgements header.
++ **bib** - The bibliography header.
++ **contents** - The table of contents header.
 + **chapter**
 + **equation**
 + **FancyVerbLine**
@@ -76,17 +80,40 @@ The following **DEFNAME** are defined:
 + **page**
 + **table**
 
+#### Example
+
+```
+\documentclass{uit-thesis}
+
+\renamedefname{figure}{MyFancyFigure}
+
+\begin{document}
+
+...
+
+\end{document}
+```
+
+results in the following figure name
+
+![renamed figure example image](images/language/figure-renamed.png?raw=true)
+
+
 Details
 -------
 
-The following default **defname** definitions are employed for the default supported languages:
+Each **defname** is stored in a macro with the **defname** itself appended with `name`, e.g., the table of contents **defame** `contents`
+is stored in the macro `\contentsname`.
 
-### USenglish
+The following common **defname** definitions are employed for the default supported languages:
 
-+ **abstract** -> Abstract
-+ **ack** -> Acknowledgements
 
-### norsk
-
-+ **abstract** -> Sammendrag
-+ **ack** -> Takksigelser
+| defname             | USenglish        | norsk          | samin                 |
+| ------------------- | :--------------- | :------------- | :-------------------- |
+| abstract            | Abstract         | Sammendrag     | *undefined/unknown*   |
+| ack                 | Acknowledgements | Takksigelser   | *undefined/unknown*   |
+| bib                 | Bibliography     | Biliografi     | *undefined/unknown*   |
+| figure              | Figure           | Figur          | *undefined/unknown*   |
+| lstlisting          | Listing          | Listing        | *undefined/unknown*   |
+| page                | Page             | Side           | *undefined/unknown*   |
+| table               | Table            | Tabell         | *undefined/unknown*   |
