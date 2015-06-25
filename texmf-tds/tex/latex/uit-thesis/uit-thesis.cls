@@ -976,12 +976,10 @@
 
 %:-------------------------- Symbols -----------------------
 
-% AMS
-\usepackage{amsfonts, amsmath, amssymb, amsthm, amscd, xspace}
+\usepackage{xspace}
+\usepackage{amsthm}
 
-\usepackage[type1]{cabin}% sans serif
 \usepackage[libertine,bigdelims,scaled=1.07]{newtxmath}
-\usepackage[cal=boondoxo,bb=boondox,frak=boondox]{mathalfa}
 
 % Use oldstyle figures in text
 % Note: we have to do this manually instead of using XCharter's \useosf command, since last version of XCharter breaks \useosf
@@ -989,11 +987,6 @@
 \AtEndPreamble{%
 \renewcommand*{\rmdefault}{XCharter-\XCharter@figurestyle}
 \normalfont}
-
-\usepackage{mathtools}
-\usepackage{wasysym} % Math symbols
-\usepackage{ifsym}
-\usepackage{bm}
 
 %:-------------------------- Page layout -----------------------
 
