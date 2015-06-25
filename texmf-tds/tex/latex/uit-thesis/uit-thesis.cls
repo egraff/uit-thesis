@@ -60,16 +60,6 @@
 \ult@parindentfalse % Default to false
 \DeclareOption{parindent}{\ult@parindenttrue}
 
-% Option for turning off printing of list of abbreviations
-\newif\ifult@printlistofabbreviations
-\ult@printlistofabbreviationstrue % Default to true
-\DeclareOption{notloa}{\ult@printlistofabbreviationsfalse}
-
-% Option for turning off printing of glossary in the backmatter.
-\newif\ifult@printglossary
-\ult@printglossarytrue % Default to print glossary
-\DeclareOption{notglo}{\ult@printglossaryfalse}
-
 % Option for resetting expansion of acronyms at start of each chapter
 \newif\ifult@resetallglsperchapter
 \ult@resetallglsperchapterfalse % Default to false
@@ -84,11 +74,6 @@
 \newif\ifult@printlistoftables
 \ult@printlistoftablestrue % Default to true
 \DeclareOption{notlot}{\ult@printlistoftablesfalse}
-
-% Option for ignoring drawing list of listings
-\newif\ifult@printlistoflistings
-\ult@printlistoflistingstrue % Default to true
-\DeclareOption{notlol}{\ult@printlistoflistingsfalse}
 
 % Extra options for glossaries package
 \newcommand*{\ult@glossariesextraoptions}{,}
@@ -2463,14 +2448,6 @@
   \ifult@printlistoftables%
     \listoftables%
   \fi%
-  %
-  \ifult@printlistoflistings%
-    \lstlistoflistings%
-  \fi%
-  %
-  \ifult@printlistofabbreviations%
-    %\printacronyms%
-  \fi%
 }
 
 % Mainmatter
@@ -2501,14 +2478,10 @@
 \let\ult@savebackmatter\backmatter
 \renewcommand\backmatter{%
   \ult@savebackmatter
-
-  % Redefine headers for appendices
+  %
+  % Redefine headers
   \pagestyle{empty}
-
-  \ifult@printglossary
-    \printglossary
-  \fi
-
+  %
   % Blank back cover
   \clearversopage
 }
