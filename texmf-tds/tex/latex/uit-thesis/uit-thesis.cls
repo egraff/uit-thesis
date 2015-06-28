@@ -4,6 +4,7 @@
 %:-------------------------- Basic class options -----------------------
 
 % e-Tex tools, macros, hooks, etc.
+\RequirePackage{etex}
 \RequirePackage{etoolbox}
 
 % We're based on the standard 'book' class
