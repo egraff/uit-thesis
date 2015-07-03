@@ -949,7 +949,7 @@
     \begingroup
       \@customlstenvironmenthook{#1}
       #5%
-      \lstinputlisting[##1]{##2}
+      \lstinputlisting{##2}% Note: we use\lstinputlisting{##2} instead of \lstinputlisting[##1]{##2}, because #5 is assumed to contain \lstset{##1}. See issue #52 on Github.
       #6%
     \endgroup
   }
