@@ -1014,6 +1014,9 @@
 % Used to modify layout
 \usepackage{layout}
 
+% Used to give adjustwidth environment
+\usepackage{changepage}
+
 %A4 settings
 \ifpdf
    \pdfpageheight=297mm
