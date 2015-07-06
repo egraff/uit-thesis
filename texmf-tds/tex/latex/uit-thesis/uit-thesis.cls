@@ -963,6 +963,8 @@
 %:-------------------------- Symbols -----------------------
 
 \usepackage{xspace}
+
+\usepackage{amsmath}
 \usepackage{amsthm}
 
 \usepackage[libertine,bigdelims,scaled=1.07]{newtxmath}
