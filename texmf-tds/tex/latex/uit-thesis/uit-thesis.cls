@@ -1524,6 +1524,10 @@
 \glsnogroupskiptrue
 \renewcommand*{\glsgroupskip}{}
 
+
+% Make sure running heads of glossaries are output consistently with other ToC lists (using smallcaps)
+\renewcommand{\glossarymark}[1]{\prw@mkboth{#1}}
+
 %:-------------------------- Chapter and section style -----------------------
 
 % Alias sectsty internals
