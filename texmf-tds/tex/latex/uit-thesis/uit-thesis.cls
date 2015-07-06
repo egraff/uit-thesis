@@ -1500,10 +1500,31 @@
   % base it on the list style
   \setglossarystyle{list}%
   %
-  \renewcommand*{\glossentry}[2]{%
-    \renewcommand*{\glsnamefont}[1]{\upsc{####1}}%
-    \item[\glsentryitem{##1}\glstarget{##1}{\glossentryname{##1}}]
-      \glossentrydesc{##1}\glspostdescription\space ##2}%
+  \renewenvironment{theglossary}{%
+    \begin{adjustwidth}{\cftfigindent}{}% Left align with same indent as LoF
+    \begin{description}%
+  }{%
+    \end{description}%
+    \end{adjustwidth}%
+  }%
+  \renewcommand*{\glsnamefont}[1]{\upsc{##1}}%
+}
+
+% Better "long" style (consistent spacing, prevent running headers on empty page)
+\newglossarystyle{ult-long}{%
+  % base it on the long style
+  \setglossarystyle{long}%
+  \renewenvironment{theglossary}{%
+    % Remove vspace before and after table (note: these are only modified locally)
+    \setlength{\LTpre}{0pt}\setlength{\LTpost}{0pt}%
+    \setlength\LTleft{\cftfigindent}% Left align with same indent as LoF
+    \leavevmode% Make sure table isn't ouput one line before it should
+    % Note: {longtable*} is unnumbered, so table-counter isn't increased!
+    \begin{longtable*}{@{}l p{\glsdescwidth}}%
+  }{%
+    \end{longtable*}%
+  }%
+  \renewcommand*{\glsnamefont}[1]{\textbf{\upsc{##1}}}%
 }
 
 \AtBeginDocument{%
