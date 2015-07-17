@@ -1,7 +1,14 @@
+#!/usr/bin/env python
 
-import os, sys
-import re
+import testenv
+import asynclib
+
+import threading
 import subprocess
+import re
+import os
+import sys
+
 
 SCRIPTDIR = os.path.relpath(os.path.dirname(os.path.realpath(__file__))).replace("\\", "/")
 PDFSDIR   = os.path.join(SCRIPTDIR, "pdfs").replace("\\", "/")
@@ -11,6 +18,7 @@ DIFFDIR   = os.path.join(SCRIPTDIR, "diffs").replace("\\", "/")
 
 TESTFILEPREFIX  = "test"
 PROTOFILEPREFIX = "proto"
+
 
 class debug:
   INFO  = "\\033[1;34m"
@@ -23,18 +31,18 @@ class debug:
   WHITE = "\\033[1;37m"
 dlvl = [debug.INFO, debug.DEBUG, debug.WARNING, debug.FUCK, debug.WHITE, debug.GREEN, debug.YELLOW, debug.ERROR]
 
-DEBUGLEVEL = debug.WARNING
 
-SHOWDETAILEDINFO = False
+DEBUGLEVEL = debug.INFO
+
 
 NUM_DOTS_PER_LINE = 80
 
-GS = None
-GSOPTS = " -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=pngalpha -dMaxBitmap=500000000 -dAlignToPixels=0 -dGridFitTT=2 -r150 "
-CMP = None
-CMPOPTS = " -metric ae "
-PDFINFO = None
-PDFINFOOPTS = " "
+
+GS = testenv.getGhostScript()
+CMP = testenv.getCompare()
+PDFINFO = testenv.getPDFInfo()
+
+
 
 def echo(*string):
   color = ""
@@ -46,320 +54,301 @@ def echo(*string):
     string = string[1:]
 
   s = "sh -c \"printf \\\"" + color + " ".join([str(x).replace("\n", "\\n") for x in string]) + "\\033[0m\\\"\""
-  subprocess.Popen(s, shell=True).wait()
+  asynclib.AsyncPopen(s, shell=True).wait()
 
-def genFileList():
-  FILES = {}
-  for f in os.listdir(PDFSDIR):
-    if f.startswith(TESTFILEPREFIX) and f.endswith(".pdf"):
-      try:
-        file = "%s/%s" % (PDFSDIR, f)
-        if " " in file:
-          raise Exception("Filename cannot contain space")
 
-        protofile = "%s/%s" % (PROTODIR, f)
+def convertPdfPageToPngAsync(pdfPath, pageNum, outputPngPath):
+  gsCmd = "%s -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT " \
+          "-sDEVICE=pngalpha -dMaxBitmap=500000000 -dAlignToPixels=0 " \
+          "-dGridFitTT=2 -r150 -o %s -dFirstPage=%s -dLastPage=%s %s"
 
-        if not os.path.exists(protofile):
-          raise Exception("Protofile '%s' does not exist" % (protofile,))
+  gsCmd %= (GS, outputPngPath, pageNum, pageNum, pdfPath)
 
-        if _getPDFPages(file) != _getPDFPages(protofile):
-          raise Exception("File '%s' and protofile '%s' do not have the same number of pages" % (file, protofile,))
+  task = asynclib.AsyncPopen(gsCmd, shell=False, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  return task
 
-        FILES[file] = _genRange(file)
-      except Exception as e:
-        echo(debug.FUCK, "FILE: ", file)
-        echo(debug.WHITE, "\n")
-        echo(debug.FUCK, "EXCEPTION: ", e)
-        echo(debug.WHITE, "\n")
 
-  return FILES
+class ComparePngsAsyncTask(asynclib.AsyncTask):
+  def __init__(self, pngPathFirst, pngPathSecond, outputDiffPath):
+    cmpCmd = "%s -metric ae %s %s %s" % (CMP, pngPathFirst, pngPathSecond, outputDiffPath)
+    self.__cmpProc = subprocess.Popen(cmpCmd, shell=False, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-def _genRange(file):
-  basename = os.path.basename(file)
+  def wait(self):
+    self.__cmpProc.wait()
+    lines = self.__cmpProc.stderr.readlines()
+    assert self.__cmpProc.returncode <= 1
+
+    # Needed because lines[0] could be something like "1.33125e+006"
+    self.__result = int(float(lines[0]))
+
+  # Result is diff (0 means equal)
+  @property
+  def result(self):
+    return self.__result
+
+
+class PdfFile(object):
+  def __init__(self, path):
+    self.path = path
+
+    self.__determineNumPagesInPdf()
+
+  def __determineNumPagesInPdf(self):
+    # use pdfinfo to extract number of pages in pdf file
+    output = subprocess.check_output([PDFINFO, self.path])
+    pages = re.findall(r"\d+", re.search(r"Pages:.*", output).group())[0]
+
+    self.__numPages = int(pages)
+
+  def numPhysicalPages(self):
+    return self.__numPages
+
+  # Generate PNG for given page number in PDF
+  def getPngForPageAsync(self, pageNum, outputPngPath):
+    assert pageNum >= 1
+    assert pageNum <= self.numPhysicalPages()
+
+    return convertPdfPageToPngAsync(self.path, pageNum, outputPngPath)
+
+  # Generate PNG for given page number in PDF
+  def getPngForPage(self, pageNum, outputPngPath, callback):
+    task = self.getPngForPageAsync(pageNum, outputPngPath)
+    task.await(callback)
+
+
+class TestPdfPagePair(asynclib.AsyncTask):
+  def __init__(self, testPdfObj, protoPdfObj, pageNum, testPngPath, protoPngPath):
+    self.pageNum = pageNum
+    self.testPngPath = testPngPath
+    self.protoPngPath = protoPngPath
+
+    self.testPngPagePath = "%s_%s.png" % (self.testPngPath, self.pageNum)
+    self.protoPngPagePath = "%s_%s.png" % (self.protoPngPath, self.pageNum)
+    self.diffPath = "%s/diff_%s_%s.png" % (DIFFDIR, os.path.basename(self.testPngPath), self.pageNum)
+
+    # Start processes for generating PNGs
+    self.testPdfTask = testPdfObj.getPngForPageAsync(pageNum, self.testPngPagePath)
+    self.protoPdfTask = protoPdfObj.getPngForPageAsync(pageNum, self.protoPngPagePath)
+
+    # Wait asynchronously for PNG processes to complete
+    # Note: we start a worker thread with await(), because we want to initiate the
+    # compare operation as soon as possible, rather than after self.wait() has been
+    # called.
+    self.joinedPdfTask = asynclib.JoinedAsyncTask(self.testPdfTask, self.protoPdfTask)
+    self.joinedPdfTask.await(self._compare)
+
+    # Wait routine for this task is thread-join for joined task
+    self.wait = self.joinedPdfTask.wait
+
+  def _compare(self, results):
+    task = ComparePngsAsyncTask(self.testPngPagePath, self.protoPngPagePath, self.diffPath)
+
+    # Wait synchronously since we're already executing in separate thread
+    task.wait()
+    aeDiff = task.result
+
+    self.__pngsAreEqual = (aeDiff == 0)
+
+    if self.__pngsAreEqual:
+      os.remove(self.testPngPagePath)
+      os.remove(self.protoPngPagePath)
+      os.remove(self.diffPath)
+
+    self.__result = (self.pageNum, self.__pngsAreEqual)
+
+  # Result is on the form (pagenum, PNGs are equal)
+  @property
+  def result(self):
+    return self.__result
+
+
+# Use file name of PDF to determine which pages we want to test
+def determineListOfPagesToTest(pdfObj):
+  numPages = pdfObj.numPhysicalPages()
+  basename = os.path.basename(pdfObj.path)
   noext = os.path.splitext(basename)[0]
-
-  numpagesinpdf = _getPDFPages(file)
 
   # search for a range in filename ( denoted with [ ] ) and save only the range
   textrange = re.search(r"\[.*\]", noext)
   if textrange is not None:
     # remove brackets and commas
     textrange = re.sub(r"([\[\]])", r"", textrange.group()).replace(r",", " ")
-    newrange = []
+    pageList = []
 
     # make list and translate hyphen into a sequence, e.g 3-6 -> "3 4 5 6"
     for num in textrange.split(" "):
       if "-" in num:
         numrange = num.split("-")
-        if len (numrange) != 2:
-          raise Exception("syntax error in range")
+        assert len(numrange) == 2
 
         numrange = range(int(numrange[0]), int(numrange[1]) + 1)
-        newrange.extend(numrange)
+        pageList.extend(numrange)
       else:
-        newrange.append(int(num))
+        pageList.append(int(num))
 
-    newrange = sorted(set(newrange))
+    pageList = sorted(set(pageList))
 
-    for num in newrange:
-      if num > numpagesinpdf:
-        raise Exception("range goes past number of pages in pdf")
-
+    for pageNum in pageList:
+      assert pageNum <= numPages
   else:
-    newrange = range(1, numpagesinpdf + 1)
+    pageList = range(1, numPages + 1)
 
-  return newrange
+  return pageList
 
-def _getPDFPages(file):
-  # use pdfinfo to extract number of pages in pdf file
-  output = subprocess.check_output([PDFINFO, file])
-  pages = re.findall(r"\d+", re.search(r"Pages:.*", output).group())[0]
 
-  return int(pages)
+class TestPdfPair(asynclib.AsyncTask):
+  def __init__(self, testName):
+    self.testName = testName
 
-def _getPDFInfo():
-  pi = None
+    testPdfPath = "%s/%s.pdf" % (PDFSDIR, testName)
+    protoPdfPath = "%s/%s.pdf" % (PROTODIR, testName)
 
-  try:
-    whichPi = subprocess.Popen(["sh", "-c", "which pdfinfo"], env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    whichPi.wait()
+    testPngPath  = "%s/%s" % (TMPDIR, testName)
+    protoPngPath = "%s/%s_%s" % (TMPDIR, PROTOFILEPREFIX, testName)
 
-    pi = whichPi.stdout.readline().strip()
+    testPdfObj = PdfFile(testPdfPath)
+    protoPdfObj = PdfFile(protoPdfPath)
 
-    if pi == '':
-      raise Exception("")
+    pageList = determineListOfPagesToTest(testPdfObj)
 
-    pi = os.path.basename(pi)
-  except:
-    raise Exception("PDFInfo was not found")
+    testTasks = []
+    for pageNum in pageList:
+      task = TestPdfPagePair(testPdfObj, protoPdfObj, pageNum, testPngPath, protoPngPath)
+      testTasks.append(task)
 
-  return pi
+    self.__joinedTestTask = asynclib.JoinedAsyncTask(*testTasks)
+    self.wait = self.__joinedTestTask.wait
 
-def _getGhostScript():
-  gs = None
+  @property
+  def result(self):
+    pngResults = self.__joinedTestTask.result
 
-  try:
-    whichGs = subprocess.Popen(["sh", "-c", "which gs || which gswin64c || which gswin32c"], env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    whichGs.wait()
-    gs = whichGs.stdout.readline().strip()
+    failedPages = []
+    for pageNum, pngsAreEqual in pngResults:
+      if not pngsAreEqual:
+        failedPages.append(pageNum)
 
-    if gs == '':
-      raise Exception("")
+    return (self.testName, failedPages)
 
-    gs = os.path.basename(gs)
-  except:
-    raise Exception("GhostScript was not found")
 
-  return gs
+def makeTestTask(testName):
+  cmd = "make --no-print-directory _file RETAINBUILDFLD=y FILE=%s.tex"
+  cmd %= (testName,)
 
-def _getCompare():
-  cmp = None
+  task = asynclib.AsyncPopen(cmd, shell=False, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  return task
 
-  try:
-    whichCmp = subprocess.Popen(["sh", "-c", "which compare"], env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    whichCmp.wait()
-    cmp = whichCmp.stdout.readline().strip()
 
-    if cmp == '':
-      raise Exception("")
+class TestTask(asynclib.AsyncTask):
+  def __init__(self, testName):
+    self.testName = testName
 
-    cmp = os.path.basename(cmp)
-  except:
-    raise Exception("Compare (ImageMagick) was not found")
+    task = makeTestTask(self.testName)
+    task.await(self._makeTaskComplete)
+    self.wait = task.wait
 
-  return cmp
-
-def controlAndCreateDirs(*dirs):
-  dirstodelete = []
-
-  for dir in dirs:
-    if os.path.exists(dir):
-      dirstodelete.append(dir)
-
-  if len(dirstodelete) > 0:
-    raise Exception("Directories '%s' must be deleted or renamed" % ("', '".join(dirstodelete),))
-
-  for dir in dirs:
-    echo(debug.INFO, "mkdir", dir + "\n")
-    os.makedirs(dir)
-
-def _cleanup(*dirs):
-  echo(debug.INFO, "Cleanup dir\n")
-
-  for dir in dirs:
-    echo(debug.INFO, "DIR:", dir + "\n")
-
-    for file in os.listdir(dir):
-      echo(debug.INFO, "rm FILE:", os.path.join(dir, file).replace("\\", "/") + "\n")
-      os.remove(os.path.join(dir, file).replace("\\", "/"))
-
-    echo(debug.INFO, "rmdir", dir + "\n")
-    os.rmdir(dir)
-
-def _cleanupIfEmpty(*dirs):
-  echo(debug.INFO, "Cleanup if empty dir\n")
-
-  for dir in dirs:
-    echo(debug.INFO, "Cleanup dir:", dir + "\n")
-
-    if len(os.listdir(dir)) == 0:
-      for file in os.listdir(dir):
-        echo(debug.INFO, "rm FILE:", os.path.join(dir, file).replace("\\", "/") + "\n")
-        os.remove(os.path.join(dir, file).replace("\\", "/"))
-
-      echo(debug.INFO, "rmdir", dir + "\n")
-      os.rmdir(dir)
-    else:
-      echo(debug.INFO, dir, "is not empty, will not cleanup\n")
-
-NUM_TESTS_RUN = 0
-def testFiles(FILES):
-  global NUM_TESTS_RUN
-  num_failed = 0
-  errors = []
-
-  controlAndCreateDirs(TMPDIR, DIFFDIR)
-
-  for file in FILES:
-    didFail, error = _testFile(file, FILES[file])
-    if didFail:
-      num_failed += 1
-      errors.append((file, error))
-
-    NUM_TESTS_RUN += 1
-
-  _cleanup(TMPDIR)
-  _cleanupIfEmpty(DIFFDIR)
-
-  return (num_failed, errors)
-
-def _testFile(file, range):
-  protofile = "%s/%s" % (PROTODIR, os.path.basename(file))
-  echo(debug.INFO, "Comparing '%s' with '%s'\n" % (file, protofile))
-
-  file_tmp  = "%s/%s" % (TMPDIR, os.path.basename(file))
-  proto_tmp = "%s/%s_%s" % (TMPDIR, PROTOFILEPREFIX, os.path.basename(file))
-
-  _genPNG(range, (file, file_tmp), (protofile, proto_tmp))
-
-  return _compare(file, protofile, file_tmp, proto_tmp, range)
-
-def _genPNG(pagerange, *inputOutputFilePairs):
-  echo(debug.INFO, "Creating PNG pages\n")
-
-  __PNGProcs = []
-
-  for tup in inputOutputFilePairs:
-    inputFile, outputFile = tup
-
-    for page in pagerange:
-      echo(debug.INFO, "%s => %s (page %s)\n" % (inputFile, outputFile, page))
-      __PNGProcs.append(__genPNGPageProc(inputFile, page, os.path.splitext(outputFile)[0]))
-
-  for proc in __PNGProcs:
-    proc.wait()
+  def _makeTaskComplete(self, proc):
     if proc.returncode != 0:
-      print "FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUCK"
-      print proc.stdout.readlines(), proc.stderr.readlines()
+      self.__result = (self.testName, False, proc)
+      return
 
-def __genPNGPageProc(srcfile, page, noext):
-  outfile = "%s_%s.png" % (noext, page)
-  outfilecmd = GS + GSOPTS + "-o %s -dFirstPage=%s -dLastPage=%s %s" % (outfile, page, page, srcfile)
+    task = TestPdfPair(self.testName)
+    task.wait()
+    _, failedPages = task.result
 
-  echo(debug.INFO, "CMD: %s\n" % (outfilecmd,))
+    testPassed = (len(failedPages) == 0)
 
-  gsCmd = subprocess.Popen(outfilecmd, shell=True, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    self.__result = (self.testName, True, failedPages)
 
-  return gsCmd
+  # Result is on the form
+  #  (test name, Build succeeded = TRUE, list of failed pages)
+  # or
+  #   (test name, Build succeeded = FALSE, build proc)
+  @property
+  def result(self):
+    return self.__result
 
-def _compare(srcfilename, protofilename, srcfile, protofile, range):
-  global NUM_TESTS_RUN
 
-  echo(debug.INFO, "Comparing pages\n")
+def testGenerator():
+  for fileName in os.listdir("."):
+    # Ignore files that contain spaces
+    if " " in fileName:
+      continue
 
-  __CMPProcs = []
-  srcfilenoext = os.path.splitext(srcfile)[0]
-  protofilenoext = os.path.splitext(protofile)[0]
+    if not fileName.startswith(TESTFILEPREFIX):
+      continue
 
-  for page in range:
-    __CMPProcs.append(__compareProc(srcfilenoext, protofilenoext, page))
+    if not fileName.endswith(".tex"):
+      continue
 
-  errorpages = []
-  numerrors = 0
+    yield os.path.splitext(fileName)[0]
 
-  for page, noext, src, proto, diff, proc in __CMPProcs:
-    proc.wait()
-    diffnum = proc.stderr.readlines()[0]
 
-    if int(diffnum) == 0:
-      echo(debug.INFO, "Page", "{:>4}".format(page), "in document '" + srcfilename + "' is OK!\n")
-      os.remove(diff)
-    else:
-      numerrors += 1
-      errorpages.append(page)
+class TestRunner():
+  testResultLock = threading.Lock()
+  numTestsCompleted = 0
+  failedTests = []
+  tasks = []
 
-      if SHOWDETAILEDINFO:
-        echo(debug.WARNING, "Page", "{:>4}".format(page), "in document '" + srcfilename + "' has diff: ", "{:>10}".format(diffnum) + "\n")
+  @classmethod
+  def __testCallback(cls, result):
+    testName, buildSucceeded, failedPages = result
+    testPassed = buildSucceeded and (len(failedPages) == 0)
 
-  if numerrors != 0:
-    if SHOWDETAILEDINFO:
-      echo(debug.ERROR, "'%s' and '%s' has diffs in '%s' pages:\n" % (srcfilename, protofilename, numerrors))
-      echo(debug.ERROR, errorpages, "\n")
+    with cls.testResultLock:
+      if cls.numTestsCompleted % NUM_DOTS_PER_LINE == 0:
+        echo(debug.WHITE, "\n")
 
-      return (True, None)
-    else:
-      echo(debug.ERROR, "F")
-      error = "diffs in %s pages: %s" % (numerrors, repr(errorpages))
+      cls.numTestsCompleted += 1
 
-      return (True, error)
-  else:
-    if SHOWDETAILEDINFO:
-      echo(debug.GREEN, "'%s' and '%s' has no diffs!\n" % (srcfilename, protofilename))
-    else:
-      echo(debug.GREEN, ".%s" % ("\n" if NUM_TESTS_RUN % NUM_DOTS_PER_LINE == (NUM_DOTS_PER_LINE - 1) else "",))
+      if testPassed:
+        echo(debug.GREEN, ".")
+      else:
+        echo(debug.ERROR, "F" if buildSucceeded else "B")
+        cls.failedTests.append(result)
 
-    return (False, None)
+  @classmethod
+  def run(cls, testNames):
+    for testName in testNames:
+      task = TestTask(testName)
+      task.await(cls.__testCallback)
+      cls.tasks.append(task)
 
-def __compareProc(srcfilenoext, protofilenoext, page):
-  src   = "%s_%s.png" % (srcfilenoext, page)
-  proto = "%s_%s.png" % (protofilenoext, page)
-  diff  = "%s/diff_%s_%s.png" % (DIFFDIR, os.path.basename(srcfilenoext), page)
+  @classmethod
+  def waitForSummary(cls):
+    asynclib.JoinedAsyncTask(*cls.tasks).wait()
 
-  cmpcmd = CMP + CMPOPTS + src + " " + proto + " " + diff
+    with cls.testResultLock:
+      echo(debug.WHITE, "\n\n\nRan %s tests, " % (cls.numTestsCompleted,))
 
-  echo(debug.INFO, "cmpcmd: %s\n" % (cmpcmd,))
+      if len(cls.failedTests) == 0:
+        echo(debug.GREEN, "all succeeded!\n\n")
+        sys.exit(0)
+      else:
+        echo(debug.ERROR, "%s failed" % (len(cls.failedTests),))
+        echo(debug.WHITE, ".\n\nError summary:\n\n")
 
-  return (page, srcfilenoext, src, proto, diff, subprocess.Popen(cmpcmd, shell=True, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE))
+        for testName, buildSucceeded, arg in cls.failedTests:
+          echo(debug.WHITE, "  %s\n    " % (testName,))
+          if not buildSucceeded:
+            proc = arg
+            echo(debug.ERROR, "Build failed, stderr output:\n")
+            for line in proc.stderr.readlines():
+              print "      %s\n" % (line,)
+            latexLogFile = ".build/%s/output.log" % (testName,)
+            if os.path.exists(latexLogFile):
+              echo(debug.WHITE, "    see %s for more info.\n\n" % (latexLogFile,))
+            else:
+              echo(debug.WHITE, "\n")
+          else:
+            failedPages = arg
+            failedPagesString = ", ".join(str(x) for x in failedPages)
+            echo(debug.ERROR, "Pages with diff: %s.\n\n" % (failedPagesString,))
+
+        echo(debug.YELLOW, "PNGs containing diffs are available in '%s'\n\n" % (DIFFDIR,))
+        sys.exit(1)
+
 
 if __name__ == '__main__':
-  try:
-    GS  = _getGhostScript()
-    CMP = _getCompare()
-    PDFINFO = _getPDFInfo()
-    f = genFileList()
-
-    num_failed, errors = testFiles(f)
-
-    echo(debug.WHITE, "\n\n")
-
-    if num_failed > 0:
-      if not SHOWDETAILEDINFO:
-        # Error summary
-        echo(debug.WHITE, "\nFailures:\n\n")
-
-        for i in range(len(errors)):
-          file, err = errors[i]
-
-          echo(debug.WHITE, "  %s) %s\n" % (i + 1, file,))
-          echo(debug.ERROR, "    " + err + "\n\n")
-
-      echo(debug.ERROR, "\nRan %s tests, %s failed\n" % (len(f), num_failed))
-      echo(debug.YELLOW, "PNGs containing diffs are avilable in '%s'\n\n" % (DIFFDIR,))
-      sys.exit(1)
-    else:
-      echo(debug.GREEN, "Ran %s tests, %s failed\n\n" % (len(f), num_failed))
-      sys.exit(0)
-  except Exception as e:
-    echo(debug.WHITE, "\n")
-    echo(debug.FUCK, e)
-    echo(debug.WHITE, "\n")
+  TestRunner.run(testGenerator())
+  TestRunner.waitForSummary()

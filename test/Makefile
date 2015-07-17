@@ -22,7 +22,7 @@ OUTPUTNAME = output
 BUILDFLD = ./.build
 
 # Extra options, these must be available for both pdflatex and latexmk
-DEFOPT = -output-directory=$(BUILDFLD)/$(BASENAME) -interaction=nonstopmode
+DEFOPT = -output-directory=$(BUILDFLD)/$(BASENAME) -interaction=batchmode
 
 # Options for glossary
 
@@ -44,12 +44,14 @@ FILES := $(shell ls -v | grep -o "^test.*\.tex")
 
 .PHONY: test _compare
 
-all: test _compare
+all: _compare
 
 test:
 	@echo "FILES: $(FILES)"
 	@echo ""
-	@for f in $(FILES); do $(MAKE) --no-print-directory _file FILE=$$f RETAINBUILDFLD=y; done
+	@for f in $(FILES); do \
+		$(MAKE) --no-print-directory _file FILE=$$f RETAINBUILDFLD=y || exit 1; \
+	done
 	@echo ""
 	@$(RM) -r $(BUILDFLD)
 
@@ -70,9 +72,7 @@ _file: _ctrl_
 	@mkdir -p $(PDFFLD)
 	@$(LAMEBUILD)
 	@$(BUILDGLOSS)
-	@$(BUILD)
-	@mv $(BUILDFLD)/$(BASENAME)/$(OUTPUTNAME).pdf $(PDFFILE)
-	@$(RM) -r $(BUILDFLD)/$(BASENAME)
+	@$(BUILD) && mv $(BUILDFLD)/$(BASENAME)/$(OUTPUTNAME).pdf $(PDFFILE) && $(RM) -r $(BUILDFLD)/$(BASENAME)
 ifndef RETAINBUILDFLD
 	@$(RM) -r $(BUILDFLD)
 endif
