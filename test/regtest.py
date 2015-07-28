@@ -329,10 +329,14 @@ class TestRunner():
         echo(debug.WHITE, ".\n\nError summary:\n\n")
 
         for testName, buildSucceeded, arg in cls.failedTests:
-          echo(debug.WHITE, "  %s\n    " % (testName,))
+          echo(debug.WHITE, "  %s\n" % (testName,))
           if not buildSucceeded:
             proc = arg
-            echo(debug.ERROR, "Build failed, stderr output:\n")
+            echo(debug.ERROR, "    Build failed!\n")
+            echo(debug.ERROR, "    stdout output:\n")
+            for line in proc.stdout.readlines():
+              print "      %s\n" % (line,)
+            echo(debug.ERROR, "    stderr output:\n")
             for line in proc.stderr.readlines():
               print "      %s\n" % (line,)
             latexLogFile = ".build/%s/output.log" % (testName,)
@@ -343,7 +347,7 @@ class TestRunner():
           else:
             failedPages = arg
             failedPagesString = ", ".join(str(x) for x in failedPages)
-            echo(debug.ERROR, "Pages with diff: %s.\n\n" % (failedPagesString,))
+            echo(debug.ERROR, "    Pages with diff: %s.\n\n" % (failedPagesString,))
 
         echo(debug.YELLOW, "PNGs containing diffs are available in '%s'\n\n" % (DIFFDIR,))
         sys.exit(1)
