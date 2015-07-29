@@ -246,22 +246,11 @@
 
 % Running head color
 \ifult@phdthesisprofile
-
-\definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
-%\definecolor{rheadslashcolor}{cmyk}{0.6,0,0.2,0.1}
-\colorlet{rheadslashcolor}{pms1797}
-
-\colorlet{chapnumcol}{pms1797}
-%\definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
-
+  \definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
+  \colorlet{chapnumcol}{pms1797}
 \else
-
-\definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
-\definecolor{rheadslashcolor}{cmyk}{0.6,0,0.2,0.1}
-
-%\colorlet{chapnumcol}{pms2229}
-\definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
-
+  \definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
+  \definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
 \fi
 
 
