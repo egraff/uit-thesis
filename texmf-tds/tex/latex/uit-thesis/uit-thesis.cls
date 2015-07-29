@@ -707,22 +707,14 @@
 
 \usepackage{opensans}
 
-%\IfFileExists{XCharter.sty}{%
-  % Dependencies of XCharter
-  \usepackage{textcomp}
-  \usepackage{mweights}
-  \usepackage{fontaxes}
-  \usepackage{xkeyval}
+% Dependencies of XCharter
+\usepackage{textcomp}
+\usepackage{mweights}
+\usepackage{fontaxes}
+\usepackage{xkeyval}
 
-  % XCharter
-  \usepackage[scaled=.98,sups]{XCharter}% lining figures in math
-
-  % For some reason, MiKTeX is unable to locate the installed XCharter.map file
-  % (it is probably not updmap'd correctly when installed, as XCharter.map is not properly added to the miktex\config\updmap.cfg file).
-  % This is a hotfix that informs PdfTex about the XCharter.map file, and uses it in addition to the standard pdftex\config\pdftex.map file)
-  % See http://sourceforge.net/p/miktex/discussion/33790/thread/e39cd270
-  \pdfmapfile{+XCharter.map}
-%}{}
+% XCharter
+\usepackage[scaled=.98,sups]{XCharter}% lining figures in math
 
 % Save font family for XCharter with lining figures
 \global\let\ult@fontfamilylfstyle\@empty
