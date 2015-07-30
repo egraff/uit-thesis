@@ -2749,38 +2749,136 @@
 % Custom variables for the frontpage
 \def\thesisfaculty#1{\gdef\@thesisfaculty{#1}}
 \def\thesisprogramme#1{\gdef\@thesisprogramme{#1}}
-\def\ThesisFrontpageImage#1{\gdef\@ThesisFrontpageImage{#1}}
 
-% Frontpage graphics
-\def\ThesisFrontpagePattern#1{\gdef\@ThesisFrontpagePattern{#1}}
-\def\ThesisFrontpageLogo#1{\gdef\@ThesisFrontpageLogo{#1}}
-\def\ThesisFrontpageProfile#1{\gdef\@ThesisFrontpageProfile{#1}}
+\newif\ifult@frontpage@image@issingle
+\ult@frontpage@image@issinglefalse % Default to false
+
+\let\ult@frontpage@image@single\@empty
+\def\ThesisFrontpageImage#1{%
+  \ult@frontpage@image@issingletrue
+  \gdef\ult@frontpage@image@single{#1}%
+}
+
+\let\ult@frontpage@image@left\@empty
+\def\ThesisLeftFrontpageImage#1{%
+  \ult@frontpage@image@issinglefalse
+  \gdef\ult@frontpage@image@left{#1}%
+}
+
+\let\ult@frontpage@image@right\@empty
+\def\ThesisRightFrontpageImage#1{%
+  \ult@frontpage@image@issinglefalse
+  \gdef\ult@frontpage@image@right{#1}%
+}
+
+\def\ult@frontpage@pattern@left{%
+  \AddToShipoutPicture*{%
+    \put(0,0){%
+      \parbox[b][\paperheight]{\paperwidth}{%
+        \vfill%
+        \centering%
+        \ifult@phdthesisprofile
+          \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_yellow_left.pdf}%
+        \else
+          \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_blue_left.pdf}%
+        \fi
+        \vfill%
+      }%
+    }%
+  }%
+}
+
+\def\ult@frontpage@pattern@right{%
+  \AddToShipoutPicture*{%
+    \put(0,0){%
+      \parbox[b][\paperheight]{\paperwidth}{%
+        \vfill%
+        \centering%
+        \ifult@phdthesisprofile
+          \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_yellow_right.pdf}%
+        \else
+          \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_blue_right.pdf}%
+        \fi
+        \vfill%
+      }%
+    }%
+  }%
+}
+
+\def\ult@frontpage@customimage@tikz#1{%
+  \AddToShipoutPicture*{%
+    \put(25.5,28.3){
+      \begin{tikzpicture}[radius=1cm,delta angle=180]
+        #1%
+      \end{tikzpicture}
+    }%
+  }%
+}
+
+% Defines tikz picture for custom frontpage images
+\def\ult@frontpage@customimage@tile#1{%
+  \path[fill overzoom image=#1]
+    % (Lower left) -- (Lower right) -- (Upper right) -- (Upper left)
+    (0,0) -- (19,0) -- ++(0,19.975) -- ++(-19,0) -- cycle;
+}
+
+\def\ult@frontpage@customimage@left{%
+  \ult@frontpage@customimage@tikz{%
+    % Note: "tile" makes sure we effectively blit the image in place without zooming or translating
+    \path[fill tile picture=\ult@frontpage@customimage@tile{\ult@frontpage@image@left}]
+      % (Lower left) -- (Upper left) -- (Upper right)
+      (0,0) -- (0,19.975) -- ++(7.3,0) -- cycle;
+  }%
+}
+
+\def\ult@frontpage@customimage@right{%
+  \ult@frontpage@customimage@tikz{%
+    % Note: "tile" makes sure we effectively blit the image in place without zooming or translating
+    \path[fill tile picture=\ult@frontpage@customimage@tile{\ult@frontpage@image@right}]
+      (0,0)% Make sure (0,0) is origo, instead of (0.355,0)
+      % (Lower left) -- (Lower right) -- (Upper right) -- (Upper left)
+      (0.355,0) -- (19,0) -- ++(0,19.975) -- ++(-11.29,0) -- cycle;
+  }%
+}
+
+\def\ult@frontpage@customimage@single{%
+  \ult@frontpage@customimage@tikz{%
+    % Note: we use tile+overzoom here as well, to make sure image is zoomed and positioned
+    % the same way as triangle (left image) and trapezoid (right image).
+    % In other words, \ThesisFrontpageImage{example.jpg} will look identically to
+    % \ThesisLeftFrontpageImage{example.jpg} + \ThesisRightFrontpageImage{example.jpg},
+    % except for the white diagonal that separates the left and right image.
+    \path[fill tile picture=\ult@frontpage@customimage@tile{\ult@frontpage@image@single}]
+      % (Lower left) -- (Lower right) -- (Upper right) -- (Upper left)
+      (0,0) -- (19,0) -- ++(0,19.975) -- ++(-19,0) -- cycle;
+  }%
+}
+
 
 % Error if \maketitle is used without defining \thesisfaculty{} and \thesisprogramme{}
 \def\@thesisfaculty{\@latex@error{No \noexpand\thesisfaculty given}\@ehc}
 \def\@thesisprogramme{\@latex@error{No \noexpand\thesisprogramme given}\@ehc}
 
-% Set the default english Master's pattern and language logos.
-\ThesisFrontpagePattern{master_pattern_both.pdf}
-\ThesisFrontpageLogo{Logo_eng_pos.pdf}
-\ThesisFrontpageProfile{master_profile_en.pdf}
 
-% Override the frontpage patterns and definition to english if PHD is selected.
+% Use English as default
+% Set the topleft frontpage logo to English
+\gdef\ult@frontpage@logo{Logo_eng_pos.pdf}
+% Set the pattern, depending on PHD or master, which contains the UiT logo with the English language.
 \ifult@phdthesisprofile
-  \ThesisFrontpagePattern{phd_pattern_both.pdf}
-  \ThesisFrontpageLogo{Logo_eng_pos.pdf}
-  \ThesisFrontpageProfile{phd_profile_en.pdf}
+  \gdef\ult@frontpage@profile{phd_profile_en.pdf}
+\else
+  \gdef\ult@frontpage@profile{master_profile_en.pdf}
 \fi
 
 % norsk language - changes the frontpage logos and profile to the norwegian language
 \iflanguage{norsk}{%
   % Set the topleft frontpage logo to Norwegian
-  \ThesisFrontpageLogo{Logo_norsk_pos.pdf} %
+  \gdef\ult@frontpage@logo{Logo_norsk_pos.pdf} %
   % Set the pattern, depending on PHD or master, which contains the UiT logo with the Norwegian language.
   \ifult@phdthesisprofile %
-    \ThesisFrontpageProfile{phd_profile_nor.pdf} %
+    \gdef\ult@frontpage@profile{phd_profile_nor.pdf} %
   \else %
-    \ThesisFrontpageProfile{master_profile_nor.pdf} %
+    \gdef\ult@frontpage@profile{master_profile_nor.pdf} %
   \fi %
 }{}
 
@@ -2822,44 +2920,66 @@
   }{%
   %\end{egg}
   }
-  \AddToShipoutPicture*{%
-    \put(-3,0){% For some reason, (-3, 0) is the magic position
-      \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill%
-        \centering%
-        \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\@ThesisFrontpagePattern}%
-        \vfill%
-      }%
-    }%
-  }
+  %
+  %%% Front page pattern / images
+  \ifult@frontpage@image@issingle
+    \ult@frontpage@customimage@single
+  \else
+    %
+    % Left front page image
+    %
+    \ifx\ult@frontpage@image@left\@empty
+      \ult@frontpage@pattern@left
+    \else
+      \ult@frontpage@customimage@left
+    \fi
+    %
+    % Right front page image
+    %
+    \ifx\ult@frontpage@image@right\@empty
+      \ult@frontpage@pattern@right
+    \else
+      \ult@frontpage@customimage@right
+    \fi
+  \fi
+  %
+  % UiT Logo (Hugin & Munin)
+  %
   \AddToShipoutPicture*{%
     \put(221,-350.5){% This is the correct position
       \parbox[b][\paperheight]{\paperwidth}{%
         \vfill%
         \centering%
-        \includegraphics[width=24mm,height=24mm,keepaspectratio=false]{\@ThesisFrontpageLogo}%
+        \includegraphics[width=24mm,height=24mm,keepaspectratio=false]{\ult@frontpage@logo}%
         \vfill%
       }%
     }%
   }%
+  %
+  % UiT profile ("navnetrekk")
+  %
   \AddToShipoutPicture*{%
-    \put(-234.5,339.5){% This is the correct position
+    \put(-230.5,339.5){% This is the correct position
       \parbox[b][\paperheight]{\paperwidth}{%
         \vfill%
         \centering%
-        \includegraphics[width=90mm,height=90mm,keepaspectratio=false]{\@ThesisFrontpageProfile}%
+        \includegraphics[width=90mm,height=90mm,keepaspectratio=false]{\ult@frontpage@profile}%
         \vfill%
       }%
     }%
   }%
+  %
   % Faculty / department
+  %
   \begingroup
     \vskip \z@
     \fontsize{10.3pt}{15pt}\usefont{T1}{fos}{l}{n}\selectfont
     \noindent\@thesisfaculty
     \vskip -\parskip
   \endgroup
+  %
   % Thesis title
+  %
   \begingroup
     \vskip 2\baselineskip
     \microtypesetup{protrusion=false,spacing=false}
@@ -2870,7 +2990,9 @@
     \vskip -\parskip
     \normalsize\normalfont\selectfont\vspace*{\baselineskip}
   \endgroup
+  %
   % Thesis subtitle
+  %
   \ifdefined\@subtitle
     \ifx\@subtitle\@empty\else
       \begingroup
@@ -2885,7 +3007,9 @@
       \endgroup
     \fi
   \fi
+  %
   % Separation line
+  %
   \begingroup
     \vspace*{2pt}
     \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{l}{it}\selectfont
@@ -2894,7 +3018,9 @@
     \vskip -\parskip
     \normalsize\normalfont\selectfont\vspace*{\baselineskip}
   \endgroup
+  %
   % Name of author
+  %
   \begingroup
     \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{sb}{n}\selectfont
     \vspace*{-\baselineskip}
@@ -2902,7 +3028,9 @@
     \vskip -\parskip
     \normalsize\normalfont\selectfont\vspace*{\baselineskip}
   \endgroup
+  %
   % Thesis description one-line / study program / month and year
+  %
   \begingroup
     \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{l}{it}\selectfont
     \vspace*{-\baselineskip}
