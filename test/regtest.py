@@ -16,6 +16,7 @@ PROTODIR  = os.path.join(SCRIPTDIR, "proto").replace("\\", "/")
 TMPDIR    = os.path.join(SCRIPTDIR, "tmp").replace("\\", "/")
 DIFFDIR   = os.path.join(SCRIPTDIR, "diffs").replace("\\", "/")
 
+
 TESTFILEPREFIX  = "test"
 PROTOFILEPREFIX = "proto"
 
@@ -33,8 +34,6 @@ dlvl = [debug.INFO, debug.DEBUG, debug.WARNING, debug.FUCK, debug.WHITE, debug.G
 
 
 DEBUGLEVEL = debug.INFO
-
-
 NUM_DOTS_PER_LINE = 80
 
 
@@ -42,6 +41,10 @@ GS = testenv.getGhostScript()
 CMP = testenv.getCompare()
 PDFINFO = testenv.getPDFInfo()
 
+
+testenv.mkdirp(PDFSDIR)
+testenv.mkdirp(TMPDIR)
+testenv.mkdirp(DIFFDIR)
 
 
 def echo(*string):
@@ -141,6 +144,12 @@ class TestPdfPagePair(asynclib.AsyncTask):
     self.wait = self.joinedPdfTask.wait
 
   def _compare(self, results):
+    genPngProcs = results
+
+    genTestPngProc, genProtoPngProc = genPngProcs
+    assert genTestPngProc.returncode == 0, "Failed to generate PNG %s" % (self.testPngPagePath,)
+    assert genProtoPngProc.returncode == 0, "Failed to generate PNG %s" % (self.protoPngPagePath,)
+
     task = ComparePngsAsyncTask(self.testPngPagePath, self.protoPngPagePath, self.diffPath)
 
     # Wait synchronously since we're already executing in separate thread
@@ -219,6 +228,7 @@ class TestPdfPair(asynclib.AsyncTask):
     self.__joinedTestTask = asynclib.JoinedAsyncTask(*testTasks)
     self.wait = self.__joinedTestTask.wait
 
+  # Result is on the form (testname, list of failed pages)
   @property
   def result(self):
     pngResults = self.__joinedTestTask.result

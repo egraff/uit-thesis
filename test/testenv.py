@@ -26,6 +26,14 @@ def __locateTestUtility(appName, appCmds):
   return os.path.basename(app)
 
 
+def mkdirp(path):
+  try:
+    os.makedirs(path)
+  except OSError:
+    if not os.path.isdir(path):
+      raise
+
+
 def getPDFInfo():
   return __locateTestUtility("PDFInfo", "pdfinfo")
 
