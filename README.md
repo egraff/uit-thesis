@@ -3,15 +3,6 @@ uit-thesis
 
 LaTeX document class for writing theses
 
-
-TODO:
- - Use cite.sty?
-   - Supposed to automatically sort and compress citations.
-   - Does newest version support hyperlinks if used with hyperref?
- - Use autoref / add macros for referencing Figure, Chapter, Section, Listing, etc. Or use cleveref package?
- - Use \AtBeginDocument{} to make class patches more stable (make sure that packages loaded in preamble do not fuck up our modifications)?
- - Add PhD front page and color scheme
-
 How to install?
 --
 Simply clone and run ``make install``
