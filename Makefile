@@ -70,5 +70,6 @@ install: check-texmf uninstall
 		echo "Failed to copy class files to texmf directory" ; \
 		exit 1 ; \
 	fi
+	@git rev-parse --verify HEAD > "$(LATEXROOT)/REVISION"
 	@echo "Done."
 	@echo "You might have to run 'texhash' to update your texmf database." ; \
