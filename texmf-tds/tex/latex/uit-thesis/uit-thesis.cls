@@ -2888,12 +2888,12 @@
 \def\languagetemp{samin}
 \ifx\languagename\languagetemp
   % Set the topleft frontpage logo to Sami
-  \ThesisFrontpageLogo{Logo_samisk_pos.pdf} %
+  \gdef\ult@frontpage@logo{Logo_samisk_pos.pdf} %
   % Set the pattern, depending on PHD or master, which contains the UiT logo with the Sami language.
   \ifult@phdthesisprofile %
-    \ThesisFrontpageProfile{phd_profile_sami.pdf} %
+    \gdef\ult@frontpage@profile{phd_profile_sami.pdf} %
   \else %
-    \ThesisFrontpageProfile{master_profile_sami.pdf} %
+    \gdef\ult@frontpage@profile{master_profile_sami.pdf} %
   \fi %
 \fi %
 
