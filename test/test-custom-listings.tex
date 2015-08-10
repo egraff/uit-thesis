@@ -1,0 +1,123 @@
+\documentclass{uit-thesis-test}
+
+\makeglossaries
+
+\usepackage{filecontents}
+
+% Note: this is only used for test-purposes (create temporary file samplecode.c
+% with the given contents, so we can test \lstinput<...> macros)
+\begin{filecontents*}{samplecode.c}
+#include <stdio.h>
+
+int main(void)
+{
+  printf("Hello world!\n");
+  return 0;
+}
+\end{filecontents*}
+
+% Global options (apply to all listings)
+\lstset{%
+  captionpos=b,
+  numbers=left,
+  backgroundcolor=\color[rgb]{0.9,0.9,1},
+  basicstyle={\footnotesize}
+}
+
+% Create custom "codesnippet" environment + \lstinputcodesnippet macro
+% with separate counting and styling
+\newcustomlstenvironment{codesnippet}{locodesnippet}{Code Snippet}[1][]
+  {%
+    \lstset{%
+      language=C,
+      frame=tb,
+      captionpos=t,
+      backgroundcolor=\color[rgb]{1,1,0.9}
+    }%
+    \lstset{#1}% Accept arguments from environment / lstinput macro
+    \csname lst@SetFirstNumber\endcsname%
+  }
+  {%
+    \csname lst@SaveFirstNumber\endcsname%
+  }
+
+% Create \listofcodesnippet macro
+\newlistof{codesnippet}{locodesnippet}{List of Code Snippets}
+
+% Create custom "algorithm" environment + \lstinputalgorithm macro
+% with separate counting and styling
+\newcustomlstenvironment{algorithm}{loalgorithm}{Algorithm}[1][]
+  {%
+    \lstset{%
+      language=C,
+      frame=tblr,
+      captionpos=t,
+      backgroundcolor=\color[rgb]{0.9,1,0.9}
+    }%
+    \lstset{#1}% Accept arguments from environment / lstinput macro
+    \csname lst@SetFirstNumber\endcsname%
+  }
+  {%
+    \csname lst@SaveFirstNumber\endcsname%
+  }
+
+% Demonstrate separate caption styling
+\captionsetup[codesnippet]{box=colorbox,boxcolor={yellow}}
+\captionsetup[lstlisting]{box=colorbox,boxcolor={cyan},skip=-1pt}
+
+\begin{document}
+
+\frontmatter
+\tableofcontents
+\listof{lstlisting}{List of Listings}
+\listofcodesnippet
+\listof{algorithm}{List of Algorithms}
+
+\mainmatter
+
+\chapter{Chapter}
+
+\begin{lstlisting}[caption={Test 1},label={listing:test1},name={test}]
+Line 1
+Line 2
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Test 2},label={listing:test2},name={test}]
+Line 3
+Line 4
+\end{lstlisting}
+
+Referencing normal listings: \autoref{listing:test1}, \autoref{listing:test2}.
+
+\begin{codesnippet}[caption={First snippet},label={snippet:first},name={hello}]
+#include <stdio.h>
+\end{codesnippet}
+
+\begin{algorithm}[caption={First algorithm},label={alg:first},name={myalg}]
+A
+B
+\end{algorithm}
+
+\begin{codesnippet}[caption={Second snippet},label={snippet:second},name={hello}]
+int main(void)
+{
+  printf("Hello world!\n");
+  return 0;
+}
+\end{codesnippet}
+
+Referencing snippets: \autoref{snippet:first}, \autoref{snippet:second}.
+
+\begin{algorithm}[caption={Second algorithm},label={alg:second},name={myalg}]
+C
+\end{algorithm}
+
+Referencing algorithms: \autoref{alg:first}, \autoref{alg:second}.
+
+\chapter{Input}
+
+\lstinputcodesnippet[caption={this is my caption},label={snippet:input}]{samplecode.c}
+
+Referencing snippet: \autoref{snippet:input}.
+
+\end{document}
