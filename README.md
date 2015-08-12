@@ -1,4 +1,4 @@
-uit-thesis
+uit-thesis [![Build Status](https://magnum.travis-ci.com/egraff/uit-thesis.svg?token=TSQTyShVBGYYU4qnLNR9&branch=master)](https://magnum.travis-ci.com/egraff/uit-thesis)
 ==========
 
 LaTeX document class for writing theses
