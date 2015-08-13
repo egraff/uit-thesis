@@ -1,0 +1,11 @@
+
+
+
+# jekyll conf
+
+baseurl: "/uit-thesis"
+
+highlighter: pygments
+pygments: true
+
+markdown: redcarpet
