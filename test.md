@@ -7,11 +7,14 @@ title: Test results for build #20
 Test image:
 ![This is an image](http://lorempixel.com/400/200/)
 
+
 Test code:
+
 ```
 This is some code.
 ```
 
+Test LaTeX code
 
 ```latex
 \begin{document}
