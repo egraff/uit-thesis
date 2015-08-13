@@ -9,3 +9,7 @@ highlighter: pygments
 pygments: true
 
 markdown: redcarpet
+
+# GitHub flavored Markdown
+kramdown:
+  input: GFM
