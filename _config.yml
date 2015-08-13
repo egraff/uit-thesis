@@ -14,3 +14,6 @@ kramdown:
 permalink: /post/:title
 exclude: ['Gemfile','Gemfile.lock','Rakefile','.git']
 paginate: 4
+
+sass:
+  sass_dir: _sass
