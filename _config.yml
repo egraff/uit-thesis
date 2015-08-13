@@ -1,5 +1,8 @@
 # jekyll conf
 
+# site conf
+title: uit-thesis
+
 permalink: pretty
 relative_permalinks: true
 
