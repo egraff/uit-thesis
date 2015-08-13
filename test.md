@@ -1,4 +1,5 @@
 ---
+layout: page
 title: Test results for build #20
 ---
 ### Test
