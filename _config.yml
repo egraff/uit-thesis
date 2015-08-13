@@ -1,5 +1,9 @@
 # jekyll conf
 
+permalink: pretty
+relative_permalinks: true
+
+url: http://egraff.github.io
 baseurl: "/uit-thesis"
 
 highlighter: pygments
@@ -11,9 +15,8 @@ markdown: redcarpet
 kramdown:
   input: GFM
 
-permalink: /post/:title
-exclude: ['Gemfile','Gemfile.lock','Rakefile','.git']
-paginate: 4
+exclude: ['.git']
+paginate: 5
 
 sass:
   sass_dir: _sass
