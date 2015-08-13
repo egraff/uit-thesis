@@ -61,11 +61,13 @@ def echo(*string):
 
 
 def convertPdfPageToPngAsync(pdfPath, pageNum, outputPngPath):
-  gsCmd = "%s -q -dQUIET -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT " \
-          "-sDEVICE=pngalpha -dMaxBitmap=500000000 -dAlignToPixels=0 " \
-          "-dGridFitTT=2 -r150 -o %s -dFirstPage=%s -dLastPage=%s %s"
-
-  gsCmd %= (GS, outputPngPath, pageNum, pageNum, pdfPath)
+  gsCmd = [
+            GS, '-q', '-dQUIET', '-dSAFER', '-dBATCH', '-dNOPAUSE',
+            '-dNOPROMPT', '-sDEVICE=pngalpha', '-dMaxBitmap=500000000',
+            '-dAlignToPixels=0', '-dGridFitTT=2', '-r150',
+            '-o', outputPngPath, '-dFirstPage=%s' % pageNum,
+            '-dLastPage=%s' % pageNum, pdfPath
+          ]
 
   task = asynclib.AsyncPopen(gsCmd, shell=False, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   return task
@@ -73,7 +75,7 @@ def convertPdfPageToPngAsync(pdfPath, pageNum, outputPngPath):
 
 class ComparePngsAsyncTask(asynclib.AsyncTask):
   def __init__(self, pngPathFirst, pngPathSecond, outputDiffPath):
-    cmpCmd = "%s -metric ae %s %s %s" % (CMP, pngPathFirst, pngPathSecond, outputDiffPath)
+    cmpCmd = [CMP, '-metric', 'ae', pngPathFirst, pngPathSecond, outputDiffPath]
     self.__cmpProc = subprocess.Popen(cmpCmd, shell=False, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
   def wait(self):
@@ -242,9 +244,7 @@ class TestPdfPair(asynclib.AsyncTask):
 
 
 def makeTestTask(testName):
-  cmd = "make --no-print-directory _file RETAINBUILDFLD=y FILE=%s.tex"
-  cmd %= (testName,)
-
+  cmd = ['make', '--no-print-directory', '_file', 'RETAINBUILDFLD=y', 'FILE=%s.tex' % testName]
   task = asynclib.AsyncPopen(cmd, shell=False, env=os.environ, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   return task
 
