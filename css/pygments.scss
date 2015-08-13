@@ -1,3 +1,7 @@
+---
+# this ensures Jekyll reads the file to be transformed into CSS later
+# only Main files contain this front matter, not partials.
+---
 .highlight { overflow-x: auto;background: #ffffff; color: black; padding: 20px;border: 1px solid #ccc;}
 .highlight pre  { white-space: pre;  font-size: 0.8em;line-height: 1.2em;  color: #d0d0d0; }
 .highlight pre code {font-family: 'Source Code Pro', monospace;}

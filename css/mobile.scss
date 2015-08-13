@@ -1,3 +1,7 @@
+---
+# this ensures Jekyll reads the file to be transformed into CSS later
+# only Main files contain this front matter, not partials.
+---
 // This file contains shared base styles and will be loaded on all browsers and devices
 
 @import 'bourbon/bourbon';
