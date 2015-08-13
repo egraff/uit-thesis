@@ -1,6 +1,3 @@
-
-
-
 # jekyll conf
 
 baseurl: "/uit-thesis"
@@ -13,3 +10,7 @@ markdown: redcarpet
 # GitHub flavored Markdown
 kramdown:
   input: GFM
+
+permalink: /post/:title
+exclude: ['Gemfile','Gemfile.lock','Rakefile','.git']
+paginate: 4
