@@ -38,6 +38,11 @@
                 {% else %}
                     <li><a href="/exemplar/docs" data-subnav="exemplar-docs">Docs</a></li>
                 {% endif %}
+                {% if page.subnav == "download" %}
+                    <li><a href="https://github.com/tybenz/exemplar/archive/master.zip" class="active" data-subnav="download">Download</a></li>
+                {% else %}
+                    <li><a href="https://github.com/tybenz/exemplar/archive/master.zip" data-subnav="download">Download</a></li>
+                {% endif %}
             </ul>
         </nav>
     </div>
