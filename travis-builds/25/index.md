@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: test-result
 travis:
   build-number: 25
   build-id: 14549578
