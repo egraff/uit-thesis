@@ -1,6 +1,12 @@
 ---
 layout: default
 ---
+{% comment %} Convert number to string {% endcomment %}
+{% capture build_number %}{{ page.travis.build-number }}{% endcapture %}
+
+{% comment %} Get test result from JSON {% endcomment %}
+{% assign result_map = site.data.travis-builds[build_number] %}
+
 {% capture title %}Test results for Travis build #{{ page.travis.build-number }}{% endcapture %}
 <div class="page">
   <h1 class="page-title">Test results for
@@ -8,5 +14,5 @@ layout: default
   </h1>
   <p>{{ title }}</p>
   <p>{{ page.title }}</p>
-  {{ content }}
+  <p>Num tests: {{ result_map.num_tests }}, in build {{ build_number }}!
 </div>
