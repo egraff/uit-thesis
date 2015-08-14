@@ -6,6 +6,8 @@ travis:
 ---
 ### Test
 
+{{ site.data.travis-builds.25.num_tests }}
+
 Test image:
 ![This is an image](http://lorempixel.com/400/200/)
 
