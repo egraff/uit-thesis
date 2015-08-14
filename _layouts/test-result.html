@@ -14,5 +14,9 @@ layout: default
   </h1>
   <p>{{ title }}</p>
   <p>{{ page.title }}</p>
+  {% if result_map.empty? %}
+  <p>No test results :(
+  {% else %}
   <p>Num tests: {{ result_map.num_tests }}, in build {{ build_number }}!
+  {% endif %}
 </div>
