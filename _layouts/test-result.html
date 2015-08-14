@@ -13,10 +13,10 @@ layout: default
   </h1>
   <p>{{ title }}</p>
   <p>{{ page.title }}</p>
-  {% if site.data.travis-builds[build_number].empty? %}
+  {% unless site.data.travis-builds[build_number] %}
   <p>No test results :(
   {% else %}
   {% assign result_map = site.data.travis-builds[build_number] %}
   <p>Num tests: {{ result_map.num_tests }}, in build {{ build_number }}!
-  {% endif %}
+  {% endunless %}
 </div>
