@@ -6,7 +6,9 @@ travis:
 ---
 ### Test
 
-{{ site.data.travis-builds[page.travis.build-number].num_tests }}
+{% capture build-number %}{{ page.travis.build-number }}{% endcapture %}
+
+Num tests: {{ site.data.travis-builds[build-number].num_tests }}
 
 Test image:
 ![This is an image](http://lorempixel.com/400/200/)
