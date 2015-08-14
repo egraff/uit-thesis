@@ -8,7 +8,15 @@ travis:
 
 {% capture build-number %}{{ page.travis.build-number }}{% endcapture %}
 
+Build number: {{ page.travis.build-number }} {{ build-number }}
+
 Num tests: {{ site.data.travis-builds[build-number].num_tests }}
+
+Num tests: {{ site.data.travis-builds["25"].num_tests }}
+
+Num tests: {{ site.data.travis-builds[25].num_tests }}
+
+Num tests: {{ site.data.travis-builds.25.num_tests }}
 
 Test image:
 ![This is an image](http://lorempixel.com/400/200/)
