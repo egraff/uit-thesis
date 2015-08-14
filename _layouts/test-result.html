@@ -5,6 +5,7 @@ layout: default
 {% capture build_number %}{{ page.travis.build-number }}{% endcapture %}
 
 {% comment %} Get test result from JSON {% endcomment %}
+{% assign result_map = site.data.travis-builds[build_number] %}
 
 {% capture title %}Test results for Travis build #{{ page.travis.build-number }}{% endcapture %}
 <div class="page">
@@ -13,10 +14,9 @@ layout: default
   </h1>
   <p>{{ title }}</p>
   <p>{{ page.title }}</p>
-  {% unless site.data.travis-builds[build_number] %}
+  {% unless result_map %}
   <p>No test results :(
   {% else %}
-  {% assign result_map = site.data.travis-builds[build_number] %}
   <p>Num tests: {{ result_map.num_tests }}, in build {{ build_number }}!
   {% endunless %}
 </div>
