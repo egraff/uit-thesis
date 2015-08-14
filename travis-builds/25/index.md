@@ -6,9 +6,9 @@ travis:
 ---
 ### Test
 
-{% capture build-number %}{{ page.travis.build-number }}{% endcapture %}
+{% capture build_number %}a{{ page.travis.build-number }}c{% endcapture %}
 
-Build number: {{ page.travis.build-number }} {{ build-number }}
+Build number: {{ page.travis.build-number }} = {{ build_number }}
 
 Num tests: {{ site.data.travis-builds[build-number].num_tests }}
 
