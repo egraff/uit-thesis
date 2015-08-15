@@ -7,16 +7,30 @@ layout: default
 {% comment %} Get test result from JSON {% endcomment %}
 {% assign result_map = site.data.travis-builds[build_number] %}
 
+{% comment %} See if test passed or failed {% endcomment %}
+{% if page.travis.test-result == 0 %}
+{% assign passed = true %}
+{% else %}
+{% assign passed = false %}
+{% endif %}
+
 {% capture title %}Test results for Travis build #{{ page.travis.build-number }}{% endcapture %}
 <div class="page">
   <h1 class="page-title">Test results for
     <a href="https://magnum.travis-ci.com/egraff/uit-thesis/builds/{{ page.travis.build-id }}">Travis build #{{ page.travis.build-number }}</a>
   </h1>
-  <p>{{ title }}</p>
-  <p>{{ page.title }}</p>
-  {% unless result_map %}
-  <p>No test results :(
+  <p>
+  {% if passed %}
+    PASSED!
   {% else %}
-  <p>Num tests: {{ result_map.num_tests }}, in build {{ build_number }}!
+    FAILED!
+  {% endif %}
+  </p>
+
+  {% unless result_map %}
+    No results from regression tests!
+  {% else %}
+    <p>Num tests: {{ result_map.num_tests }}, in build {{ build_number }}!</p>
   {% endunless %}
+
 </div>

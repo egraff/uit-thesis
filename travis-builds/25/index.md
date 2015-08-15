@@ -1,12 +1,14 @@
 ---
 layout: test-result
 travis:
+  branch: master
   build-number: 25
   build-id: 14549578
+  test-result: 0
 ---
 ### Test
 
-{% capture build_number %}{{ page.travis.build-number }}{% endcapture %}
+
 
 Build number: {{ page.travis.build-number }} = {{ build_number }}
 
