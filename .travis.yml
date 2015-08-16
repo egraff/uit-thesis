@@ -2,11 +2,25 @@ language: python
 python:
   - "2.7"
 sudo: true
+before_install:
+  - wget https://github.com/scottkosty/install-tl-ubuntu/raw/master/install-tl-ubuntu && chmod +x ./install-tl-ubuntu
+  - sudo apt-get update
+  - sudo apt-get install --fix-missing
+  - sudo apt-get install --no-install-recommends -qq poppler-utils ghostscript imagemagick --fix-missing
+  - sudo apt-get install --no-install-recommends -qq libfile-fcntllock-perl gcc equivs libwww-perl fontconfig unzip
+  - pdfinfo -v
+  - compare -version
+  - gs -v
+  - sudo ./install-tl-ubuntu
+  - source /etc/environment
+  - source /etc/profile
+  - source ~/.profile
+  - sudo -i tlmgr update --self --all
+  - tlmgr conf
 install:
-  - cd travis-test
-  - printenv
+  - make install CONTINUE=y
+  - cd test
 script:
-  - python test.py
+  - python regtest.py
 after_script:
-  - python after.py
-  - printenv
+  - ./travis-after.sh
