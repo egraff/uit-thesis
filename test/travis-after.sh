@@ -45,6 +45,6 @@ pushd gh-pages
 
 git add --all .
 git commit -m "Travis: test results from build ${TRAVIS_BUILD_NUMBER}"
-git push -fq origin gh-pages
+git push -q origin gh-pages
 
 popd
