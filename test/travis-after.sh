@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# Exit on failure, verbose
 set -ev
 
 mkdir gh-pages
@@ -37,7 +39,7 @@ EOF
 
 cp -Rf .build gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/.build
 cp -Rf diffs gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/diffs
-cp -Rf tmp/* gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/diffs/
+cp -Rf tmp/. gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/diffs
 
 cp test_result.json gh-pages/_data/travis-builds/${TRAVIS_BUILD_NUMBER}.json
 
@@ -45,6 +47,22 @@ pushd gh-pages
 
 git add --all .
 git commit -m "Travis: test results from build ${TRAVIS_BUILD_NUMBER}"
-git push -q origin gh-pages
+
+# Allow command to fail (no exit on failure)
+set +e
+
+maxAttempts=10
+numAttempts=0
+success=0
+while (( numAttempts != maxAttempts )); do
+  numAttempts=$(( numAttempts + 1 ))
+  git push -q origin gh-pages
+  if [ "$?" != "0" ]; then
+    git pull --rebase origin gh-pages
+  else
+    success=1
+    break
+  fi
+done
 
 popd
