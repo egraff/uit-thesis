@@ -35,6 +35,15 @@ layout: default
     {% assign failed_tests = result_map.failed_tests %}
     {% for failed_test_map in failed_tests %}
       <h2>{{ failed_test_map.test_name }}</h2>
+      {% if failed_test_map.build_succeeded %}
+        {% assign failed_pages = failed_test_map.failed_pages %}
+        <p>Pages with diff:</p>
+        {% for pagenum in failed_pages %}
+        {{ pagenum }}
+      {% else %}
+        {% assign proc = failed_test_map.proc %}
+        <p>Build failed!</p>
+      {% endif %}
     {% endfor %}
   {% endunless %}
 
