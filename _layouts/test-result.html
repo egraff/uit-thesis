@@ -44,14 +44,10 @@ layout: default
       {% else %}
         {% assign stdout_lines = failed_test_map.proc.stdout %}
         {% assign stderr_lines = failed_test_map.proc.stderr %}
-        {% assign log_file = failed_test_map.log_file %}
         <p>Build failed!</p>
         stdout output:
-        <pre>{% for line in stdout_lines %}{{ line }}
+        <pre>{% for stdout_line in stdout_lines %}{{ stdout_line }}
 {% endfor %}</pre>
-        {% if log_file %}
-        <pre>{% include_relative {{ log_file }} %}</pre>
-        {% endif %}
       {% endif %}
     {% endfor %}
   {% endunless %}
