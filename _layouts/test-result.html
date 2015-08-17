@@ -44,6 +44,7 @@ layout: default
       {% else %}
         {% assign stdout_lines = failed_test_map.proc.stdout %}
         {% assign stderr_lines = failed_test_map.proc.stderr %}
+        {% capture log_file %}{{ failed_test_map.log_file | replace_first:'.build','build' }}{% endcapture %}
         <p>Build failed!</p>
         stdout output:
         <pre>{% for stdout_line in stdout_lines %}{{ stdout_line }}
@@ -51,6 +52,10 @@ layout: default
         stderr output:
         <pre>{% for stderr_line in stderr_lines %}{{ stderr_line }}
 {% endfor %}</pre>
+        {% if log_file %}
+          LaTeX log file (output.log):
+          <pre>{% include_relative {{ log_file }} %}</pre>
+        {% endif %}
       {% endif %}
     {% endfor %}
   {% endunless %}
