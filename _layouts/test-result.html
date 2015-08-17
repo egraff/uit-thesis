@@ -31,6 +31,11 @@ layout: default
     No results from regression tests!
   {% else %}
     <p>Num tests: {{ result_map.num_tests }}, in build {{ build_number }}!</p>
+    
+    {% assign failed_tests = result_map.failed_tests %}
+    {% for failed_test_map in failed_tests %}
+      <h2>{{ failed_test_map.test_name }}</h2>
+    {% endfor %}
   {% endunless %}
 
 </div>
