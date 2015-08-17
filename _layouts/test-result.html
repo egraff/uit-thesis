@@ -48,6 +48,9 @@ layout: default
         stdout output:
         <pre>{% for stdout_line in stdout_lines %}{{ stdout_line }}
 {% endfor %}</pre>
+        stderr output:
+        <pre>{% for stderr_line in stderr_lines %}{{ stderr_line }}
+{% endfor %}</pre>
       {% endif %}
     {% endfor %}
   {% endunless %}
