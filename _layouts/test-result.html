@@ -53,8 +53,7 @@ layout: default
         <pre>{% for stderr_line in stderr_lines %}{{ stderr_line }}
 {% endfor %}</pre>
         {% if log_file %}
-          LaTeX log file (output.log):
-          <pre>{% include_relative {{ log_file }} %}</pre>
+          LaTeX log file: <a href="{{ log_file }}">{{ log_file }}</a>
         {% endif %}
       {% endif %}
     {% endfor %}
