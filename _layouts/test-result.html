@@ -45,6 +45,11 @@ layout: default
         {% assign proc = failed_test_map.proc %}
         {% assign log_file = failed_test_map.log_file %}
         <p>Build failed!</p>
+        {% if log_file %}
+        <pre>
+        {% include_relative {{ log_file }} %}
+        </pre>
+        {% endif %}
       {% endif %}
     {% endfor %}
   {% endunless %}
