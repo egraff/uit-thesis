@@ -1,0 +1,38 @@
+.failed_pages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.failed_pages > li {
+}
+
+.failed_pages > li  .page_num {
+}
+
+.failed_pages > li  .page_details {
+}
+
+.failed_pages > li  .page_details .image_name {
+}
+
+.failed_pages > li  .page_details .page_image {
+}
+
+.failed_pages > li  .page_details .page_image img {
+}
+
+.failed_pages > li  .page_details .diff {
+}
+
+.failed_pages > li  .page_details .proto_test {
+}
+
+.failed_pages > li  .page_details .proto_test > div {
+}
+
+.failed_pages > li  .page_details .proto_test .proto {
+}
+
+.failed_pages > li  .page_details .proto_test .test {
+}
