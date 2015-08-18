@@ -38,9 +38,35 @@ layout: default
       {% if failed_test_map.build_succeeded %}
         {% assign failed_pages = failed_test_map.failed_pages %}
         <p>Pages with diff:</p>
+        <ul class="failed_pages">
         {% for pagenum in failed_pages %}
-          {{ pagenum }}: <img src="diffs/diff_{{ failed_test_map.test_name }}_{{ pagenum }}.png" />
+          <li>
+            <div class="page_num">Page {{ pagenum }}</div>
+            <div class="page_details">
+              <div class="diff">
+                <div class="image_name">Diff</div>
+                <div class="page_image">
+                  <img src="diffs/diff_{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                </div>
+              </div>
+              <div class="proto_test">
+                <div class="proto">
+                  <div class="image_name">Proto</div>
+                  <div class="page_image">
+                    <img src="diffs/proto_{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                  </div>
+                </div>
+                <div class="test">
+                  <div class="image_name">Test</div>
+                  <div class="page_image">
+                    <img src="diffs/{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
         {% endfor %}
+        </ul>
       {% else %}
         {% assign stdout_lines = failed_test_map.proc.stdout %}
         {% assign stderr_lines = failed_test_map.proc.stderr %}
