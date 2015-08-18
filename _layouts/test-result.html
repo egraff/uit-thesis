@@ -39,7 +39,7 @@ layout: default
         {% assign failed_pages = failed_test_map.failed_pages %}
         <p>Pages with diff:</p>
         {% for pagenum in failed_pages %}
-        {{ pagenum }}
+          {{ pagenum }}: <img src="diffs/diff_{{ failed_test_map.test_name }}_{{ pagenum }}.png" />
         {% endfor %}
       {% else %}
         {% assign stdout_lines = failed_test_map.proc.stdout %}
