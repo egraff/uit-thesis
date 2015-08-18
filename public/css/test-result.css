@@ -18,6 +18,10 @@
   overflow: hidden;
 }
 
+.failed_pages > li  .page_details > div {
+  width: 359px;
+}
+
 .failed_pages > li  .page_details .image_name {
   width: 100%;
   text-align: center;
@@ -25,8 +29,8 @@
 
 .failed_pages > li  .page_details .page_image {
   border: 2px solid #ddd;
-  width: 355px;
-  height: 503px;
+  width: 359px;
+  height: 507px;
 }
 
 .failed_pages > li  .page_details .page_image img {
