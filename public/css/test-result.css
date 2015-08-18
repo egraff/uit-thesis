@@ -8,31 +8,57 @@
 }
 
 .failed_pages > li  .page_num {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
 }
 
 .failed_pages > li  .page_details {
+  width: 100%;
+  overflow: hidden;
 }
 
 .failed_pages > li  .page_details .image_name {
+  width: 100%;
+  text-align: center;
 }
 
 .failed_pages > li  .page_details .page_image {
+  border: 2px solid #ddd;
+  width: 355px;
+  height: 503px;
 }
 
 .failed_pages > li  .page_details .page_image img {
 }
 
 .failed_pages > li  .page_details .diff {
+  float: left;
 }
 
 .failed_pages > li  .page_details .proto_test {
+  float: right;
+  position: relative;
 }
 
 .failed_pages > li  .page_details .proto_test > div {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .failed_pages > li  .page_details .proto_test .proto {
+  visibility: visible;
 }
 
 .failed_pages > li  .page_details .proto_test .test {
+  visibility: hidden;
+}
+
+.failed_pages > li  .page_details .proto_test:hover .proto {
+  visibility: hidden;
+}
+
+.failed_pages > li  .page_details .proto_test:hover .test {
+  visibility: visible;
 }
