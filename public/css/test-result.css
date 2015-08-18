@@ -66,3 +66,11 @@
 .failed_pages > li  .page_details .proto_test:hover .test {
   visibility: visible;
 }
+
+.failed_pages > li  .page_details .proto_test .proto .page_image {
+  border-color: #ccf;
+}
+
+.failed_pages > li  .page_details .proto_test .test .page_image {
+  border-color: #fcc;
+}
