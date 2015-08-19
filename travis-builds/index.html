@@ -26,7 +26,7 @@ title: Last Travis builds
       <td><a href="{{ site.baseurl }}{{ page.url }}">#{{ page.travis.build-number }}</a></td>
       <td>{% if passed %}Passed{% else %}Failed{% endif %}</td>
       <td><a href="https://github.com/egraff/uit-thesis/tree/{{ page.travis.branch }}">{{ page.travis.branch }}</a></td>
-      <td><a href="https://github.com/egraff/uit-thesis/commit/{{ page.travis.commit }}">{{ page.travis.commit }}</a></td>
+      <td><a href="https://github.com/egraff/uit-thesis/commit/{{ page.travis.commit }}">{{ page.travis.commit | slice: 0, 10 }}&hellip;</a></td>
       <td>
         {% unless result_map %}
           N/A
