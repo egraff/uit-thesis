@@ -79,22 +79,33 @@
 
 /************************************************************/
 
+table.test-overview,
+table.test-overview td,
+table.test-overview th {
+  border-color: #fff;
+}
+
+table.test-overview thead td,
+table.test-overview thead th {
+  background-color: #f9f9f9;
+}
+
 table.test-overview tbody tr:nth-child(odd).passed td,
 table.test-overview tbody tr:nth-child(odd).passed th {
-  background-color: #f9f9f9;
+  background-color: #49D415;
 }
 
 table.test-overview tbody tr:nth-child(even).passed td,
 table.test-overview tbody tr:nth-child(even).passed th {
-  background-color: #fff;
+  background-color: #83EC5C;
 }
 
 table.test-overview tbody tr:nth-child(odd).failed td,
 table.test-overview tbody tr:nth-child(odd).failed th {
-  background-color: #f9f9f9;
+  background-color: #FF7171;
 }
 
 table.test-overview tbody tr:nth-child(even).failed td,
 table.test-overview tbody tr:nth-child(even).failed th {
-  background-color: #fff;
+  background-color: #FFA4A4;
 }
