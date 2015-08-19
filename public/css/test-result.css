@@ -74,3 +74,27 @@
 .failed_pages > li  .page_details .proto_test .test .page_image {
   border-color: #fcc;
 }
+
+
+
+/************************************************************/
+
+table.test-overview tbody tr:nth-child(odd).passed td,
+table.test-overview tbody tr:nth-child(odd).passed th {
+  background-color: #f9f9f9;
+}
+
+table.test-overview tbody tr:nth-child(even).passed td,
+table.test-overview tbody tr:nth-child(even).passed th {
+  background-color: #fff;
+}
+
+table.test-overview tbody tr:nth-child(odd).failed td,
+table.test-overview tbody tr:nth-child(odd).failed th {
+  background-color: #f9f9f9;
+}
+
+table.test-overview tbody tr:nth-child(even).failed td,
+table.test-overview tbody tr:nth-child(even).failed th {
+  background-color: #fff;
+}
