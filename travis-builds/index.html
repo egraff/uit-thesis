@@ -21,7 +21,7 @@ title: Last Travis builds
       {% assign passed = false %}
     {% endif %}
     {% capture build_number %}{{ page.travis.build-number }}{% endcapture %}
-    {% assign result_map = site.data.travis-builds[build_number] 
+    {% assign result_map = site.data.travis-builds[build_number] %}
     <tr class="{% if passed %}passed{% else %}failed{% endif %}>">
       <td><a href="{{ site.baseurl }}{{ page.url }}">#{{ page.travis.build-number }}</a></td>
       <td>{% if passed %}Passed{% else %}Failed{% endif %}</td>
