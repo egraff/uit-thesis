@@ -85,6 +85,11 @@ table.test-overview th {
   border-color: #fff;
 }
 
+table.test-overview td,
+table.test-overview th {
+  text-align: center;
+}
+
 table.test-overview thead td,
 table.test-overview thead th {
   background-color: #676767;
