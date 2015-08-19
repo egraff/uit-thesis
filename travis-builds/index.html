@@ -6,11 +6,11 @@ title: Last Travis builds
 <table class="test-overview">
   <thead>
     <tr>
-      <td>Build</td>
-      <td>Status</td>
-      <td>Branch</td>
-      <td>Commit</td>
-      <td># passed tests</td>
+      <th>Build</th>
+      <th>Status</th>
+      <th>Branch</th>
+      <th>Commit</th>
+      <th># passed tests</th>
     </tr>
   </thead>
   <tbody>
@@ -23,7 +23,7 @@ title: Last Travis builds
     {% capture build_number %}{{ page.travis.build-number }}{% endcapture %}
     {% assign result_map = site.data.travis-builds[build_number] %}
     {% capture commit_hash %}{{ page.travis.commit }}{% endcapture %}
-    <tr class="{% if passed %}passed{% else %}failed{% endif %}>">
+    <tr class="{% if passed %}passed{% else %}failed{% endif %}">
       <td><a href="{{ site.baseurl }}{{ page.url }}">#{{ page.travis.build-number }}</a></td>
       <td>{% if passed %}Passed{% else %}Failed{% endif %}</td>
       <td><a href="https://github.com/egraff/uit-thesis/tree/{{ page.travis.branch }}">{{ page.travis.branch }}</a></td>
