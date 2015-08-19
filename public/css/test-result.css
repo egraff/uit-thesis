@@ -87,7 +87,8 @@ table.test-overview th {
 
 table.test-overview thead td,
 table.test-overview thead th {
-  background-color: #f9f9f9;
+  background-color: #676767;
+  color: #f9f9f9;
 }
 
 table.test-overview tbody tr:nth-child(odd).passed td,
@@ -111,7 +112,7 @@ table.test-overview tbody tr:nth-child(even).failed th {
 }
 
 table.test-overview .failed {
-  color: #000;
+  color: #8A0000;
 }
 
 table.test-overview .failed a {
@@ -119,9 +120,9 @@ table.test-overview .failed a {
 }
 
 table.test-overview .passed {
-  color: #000;
+  color: #165200;
 }
 
 table.test-overview .passed a {
-  color: #000;
+  color: #1E6F00;
 }
