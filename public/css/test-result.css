@@ -109,3 +109,19 @@ table.test-overview tbody tr:nth-child(even).failed td,
 table.test-overview tbody tr:nth-child(even).failed th {
   background-color: #FFA4A4;
 }
+
+table.test-overview .failed {
+  color: #000;
+}
+
+table.test-overview .failed a {
+  color: #C50F0F;
+}
+
+table.test-overview .passed {
+  color: #000;
+}
+
+table.test-overview .passed a {
+  color: #000;
+}
