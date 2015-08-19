@@ -1,1 +1,0 @@
-{"failed_tests": [{"build_succeeded": false, "log_file": ".build/test_sample2/output.log", "proc": {"returncode": 2, "stderr": ["make: *** [_file] Error 1"], "stdout": ["Building test_sample2.tex...", "Makefile:55: recipe for target '_file' failed"]}, "test_name": "test_sample2"}, {"build_succeeded": true, "failed_pages": [5], "test_name": "test_sample[4-5]"}], "num_tests": 28}
