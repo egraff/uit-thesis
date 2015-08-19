@@ -1,0 +1,11 @@
+---
+layout: page
+title: Last Travis builds
+---
+<ul>
+{% for page in site.pages %}
+  {% if page.layout == 'test-result' %}
+    <li><h3><a href="{{ page.url }}">Build {{ page.travis.build-number }}</a></h3>
+  {% endif %}
+{% endfor %}
+</ul>
