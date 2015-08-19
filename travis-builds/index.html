@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Last Travis builds
+title: Last 25 Travis builds
 ---
 {% assign pages_list = site.pages | where: 'layout','test-result' | sort:"url" | reverse %}
 <table class="test-overview">
@@ -14,7 +14,7 @@ title: Last Travis builds
     </tr>
   </thead>
   <tbody>
-  {% for page in pages_list %}
+  {% for page in pages_list limit:25 %}
     {% if page.travis.test-result == 0 %}
       {% assign passed = true %}
     {% else %}
