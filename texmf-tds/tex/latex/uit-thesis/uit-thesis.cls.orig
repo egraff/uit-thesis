@@ -4,7 +4,6 @@
 %:-------------------------- Basic class options -----------------------
 
 % e-Tex tools, macros, hooks, etc.
-\RequirePackage{etex}
 \RequirePackage{etoolbox}
 
 % We're based on the standard 'book' class
@@ -61,6 +60,11 @@
 \ult@parindentfalse % Default to false
 \DeclareOption{parindent}{\ult@parindenttrue}
 
+% Option for turning off printing of glossary in the backmatter.
+\newif\ifult@printglossary
+\ult@printglossarytrue % Default to print glossary
+\DeclareOption{notglo}{\ult@printglossaryfalse}
+
 % Option for resetting expansion of acronyms at start of each chapter
 \newif\ifult@resetallglsperchapter
 \ult@resetallglsperchapterfalse % Default to false
@@ -76,6 +80,12 @@
 \ult@printlistoftablestrue % Default to true
 \DeclareOption{notlot}{\ult@printlistoftablesfalse}
 
+<<<<<<< Updated upstream
+% Option for ignoring drawing list of listings
+\newif\ifult@printlistoflistings
+\ult@printlistoflistingstrue % Default to true
+\DeclareOption{notlol}{\ult@printlistoflistingsfalse}
+
 % Extra options for glossaries package
 \newcommand*{\ult@glossariesextraoptions}{,}
 \DeclareOption{xindy}{\gappto\ult@glossariesextraoptions{xindy,}}
@@ -85,6 +95,8 @@
 \ult@specified@englishfalse
 \DeclareOption{USenglish}{\ult@specified@englishtrue}
 
+=======
+>>>>>>> Stashed changes
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
@@ -246,11 +258,22 @@
 
 % Running head color
 \ifult@phdthesisprofile
-  \definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
-  \colorlet{chapnumcol}{pms1797}
+
+\definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
+%\definecolor{rheadslashcolor}{cmyk}{0.6,0,0.2,0.1}
+\colorlet{rheadslashcolor}{pms1797}
+
+\colorlet{chapnumcol}{pms1797}
+%\definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
+
 \else
-  \definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
-  \definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
+
+\definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
+\definecolor{rheadslashcolor}{cmyk}{0.6,0,0.2,0.1}
+
+%\colorlet{chapnumcol}{pms2229}
+\definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
+
 \fi
 
 
@@ -707,14 +730,22 @@
 
 \usepackage{opensans}
 
-% Dependencies of XCharter
-\usepackage{textcomp}
-\usepackage{mweights}
-\usepackage{fontaxes}
-\usepackage{xkeyval}
+%\IfFileExists{XCharter.sty}{%
+  % Dependencies of XCharter
+  \usepackage{textcomp}
+  \usepackage{mweights}
+  \usepackage{fontaxes}
+  \usepackage{xkeyval}
 
-% XCharter
-\usepackage[scaled=.98,sups]{XCharter}% lining figures in math
+  % XCharter
+  \usepackage[scaled=.98,sups]{XCharter}% lining figures in math
+
+  % For some reason, MiKTeX is unable to locate the installed XCharter.map file
+  % (it is probably not updmap'd correctly when installed, as XCharter.map is not properly added to the miktex\config\updmap.cfg file).
+  % This is a hotfix that informs PdfTex about the XCharter.map file, and uses it in addition to the standard pdftex\config\pdftex.map file)
+  % See http://sourceforge.net/p/miktex/discussion/33790/thread/e39cd270
+  \pdfmapfile{+XCharter.map}
+%}{}
 
 % Save font family for XCharter with lining figures
 \global\let\ult@fontfamilylfstyle\@empty
@@ -930,7 +961,7 @@
     \begingroup
       \@customlstenvironmenthook{#1}
       #5%
-      \lstinputlisting{##2}% Note: we use\lstinputlisting{##2} instead of \lstinputlisting[##1]{##2}, because #5 is assumed to contain \lstset{##1}. See issue #52 on Github.
+      \lstinputlisting[##1]{##2}
       #6%
     \endgroup
   }
@@ -943,12 +974,12 @@
 
 %:-------------------------- Symbols -----------------------
 
-\usepackage{xspace}
+% AMS
+\usepackage{amsfonts, amsmath, amssymb, amsthm, amscd, xspace}
 
-\usepackage{amsmath}
-\usepackage{amsthm}
-
+\usepackage[type1]{cabin}% sans serif
 \usepackage[libertine,bigdelims,scaled=1.07]{newtxmath}
+\usepackage[cal=boondoxo,bb=boondox,frak=boondox]{mathalfa}
 
 % Use oldstyle figures in text
 % Note: we have to do this manually instead of using XCharter's \useosf command, since last version of XCharter breaks \useosf
@@ -956,6 +987,11 @@
 \AtEndPreamble{%
 \renewcommand*{\rmdefault}{XCharter-\XCharter@figurestyle}
 \normalfont}
+
+\usepackage{mathtools}
+\usepackage{wasysym} % Math symbols
+\usepackage{ifsym}
+\usepackage{bm}
 
 %:-------------------------- Page layout -----------------------
 
@@ -994,9 +1030,6 @@
 
 % Used to modify layout
 \usepackage{layout}
-
-% Used to give adjustwidth environment
-\usepackage{changepage}
 
 %A4 settings
 \ifpdf
@@ -1073,7 +1106,7 @@
 \ifult@drawbaselinegrid
 \AtBeginShipout{%
   \AtBeginShipoutUpperLeft{%
-    \color{blue}%
+    \color{red}%
     \ifodd\c@page
       \put(\dimexpr 1in+\oddsidemargin,
            -\dimexpr 1in+\topmargin+\headheight+\headsep+\topskip)%
@@ -1486,31 +1519,10 @@
   % base it on the list style
   \setglossarystyle{list}%
   %
-  \renewenvironment{theglossary}{%
-    \begin{adjustwidth}{\cftfigindent}{}% Left align with same indent as LoF
-    \begin{description}%
-  }{%
-    \end{description}%
-    \end{adjustwidth}%
-  }%
-  \renewcommand*{\glsnamefont}[1]{\upsc{##1}}%
-}
-
-% Better "long" style (consistent spacing, prevent running headers on empty page)
-\newglossarystyle{ult-long}{%
-  % base it on the long style
-  \setglossarystyle{long}%
-  \renewenvironment{theglossary}{%
-    % Remove vspace before and after table (note: these are only modified locally)
-    \setlength{\LTpre}{0pt}\setlength{\LTpost}{0pt}%
-    \setlength\LTleft{\cftfigindent}% Left align with same indent as LoF
-    \leavevmode% Make sure table isn't ouput one line before it should
-    % Note: {longtable*} is unnumbered, so table-counter isn't increased!
-    \begin{longtable*}{@{}l p{\glsdescwidth}}%
-  }{%
-    \end{longtable*}%
-  }%
-  \renewcommand*{\glsnamefont}[1]{\textbf{\upsc{##1}}}%
+  \renewcommand*{\glossentry}[2]{%
+    \renewcommand*{\glsnamefont}[1]{\upsc{####1}}%
+    \item[\glsentryitem{##1}\glstarget{##1}{\glossentryname{##1}}]
+      \glossentrydesc{##1}\glspostdescription\space ##2}%
 }
 
 \AtBeginDocument{%
@@ -1530,10 +1542,6 @@
 % See http://tex.stackexchange.com/questions/4183/package-glossaries-single-spaced-printglossaries
 \glsnogroupskiptrue
 \renewcommand*{\glsgroupskip}{}
-
-
-% Make sure running heads of glossaries are output consistently with other ToC lists (using smallcaps)
-\renewcommand{\glossarymark}[1]{\prw@mkboth{#1}}
 
 %:-------------------------- Chapter and section style -----------------------
 
@@ -2095,6 +2103,10 @@
 \newlength\ult@cftsecnumwidth
   \setlength{\ult@cftsecnumwidth}{2.3em} % Default is 2.3em
 
+
+% XXX: Specify indent and numwidth for subsec and subsubsec
+
+
 \newcommand{\ult@cftchapfont}     % chapter titles
            {\usefont{T1}{bch}{b}{n}\selectfont}
 \newcommand{\ult@cftsecfont}      % section titles
@@ -2399,6 +2411,11 @@
       }%
     \fi%
   }%
+}
+
+\AtBeginDocument{%
+  % Make sure that we retain future state modifications
+  \ult@preserveglsstates
 }
 
 % Frontmatter
@@ -2749,136 +2766,38 @@
 % Custom variables for the frontpage
 \def\thesisfaculty#1{\gdef\@thesisfaculty{#1}}
 \def\thesisprogramme#1{\gdef\@thesisprogramme{#1}}
+\def\ThesisFrontpageImage#1{\gdef\@ThesisFrontpageImage{#1}}
 
-\newif\ifult@frontpage@image@issingle
-\ult@frontpage@image@issinglefalse % Default to false
-
-\let\ult@frontpage@image@single\@empty
-\def\ThesisFrontpageImage#1{%
-  \ult@frontpage@image@issingletrue
-  \gdef\ult@frontpage@image@single{#1}%
-}
-
-\let\ult@frontpage@image@left\@empty
-\def\ThesisLeftFrontpageImage#1{%
-  \ult@frontpage@image@issinglefalse
-  \gdef\ult@frontpage@image@left{#1}%
-}
-
-\let\ult@frontpage@image@right\@empty
-\def\ThesisRightFrontpageImage#1{%
-  \ult@frontpage@image@issinglefalse
-  \gdef\ult@frontpage@image@right{#1}%
-}
-
-\def\ult@frontpage@pattern@left{%
-  \AddToShipoutPicture*{%
-    \put(0,0){%
-      \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill%
-        \centering%
-        \ifult@phdthesisprofile
-          \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_yellow_left.pdf}%
-        \else
-          \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_blue_left.pdf}%
-        \fi
-        \vfill%
-      }%
-    }%
-  }%
-}
-
-\def\ult@frontpage@pattern@right{%
-  \AddToShipoutPicture*{%
-    \put(0,0){%
-      \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill%
-        \centering%
-        \ifult@phdthesisprofile
-          \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_yellow_right.pdf}%
-        \else
-          \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_blue_right.pdf}%
-        \fi
-        \vfill%
-      }%
-    }%
-  }%
-}
-
-\def\ult@frontpage@customimage@tikz#1{%
-  \AddToShipoutPicture*{%
-    \put(25.5,28.3){
-      \begin{tikzpicture}[radius=1cm,delta angle=180]
-        #1%
-      \end{tikzpicture}
-    }%
-  }%
-}
-
-% Defines tikz picture for custom frontpage images
-\def\ult@frontpage@customimage@tile#1{%
-  \path[fill overzoom image=#1]
-    % (Lower left) -- (Lower right) -- (Upper right) -- (Upper left)
-    (0,0) -- (19,0) -- ++(0,19.975) -- ++(-19,0) -- cycle;
-}
-
-\def\ult@frontpage@customimage@left{%
-  \ult@frontpage@customimage@tikz{%
-    % Note: "tile" makes sure we effectively blit the image in place without zooming or translating
-    \path[fill tile picture=\ult@frontpage@customimage@tile{\ult@frontpage@image@left}]
-      % (Lower left) -- (Upper left) -- (Upper right)
-      (0,0) -- (0,19.975) -- ++(7.3,0) -- cycle;
-  }%
-}
-
-\def\ult@frontpage@customimage@right{%
-  \ult@frontpage@customimage@tikz{%
-    % Note: "tile" makes sure we effectively blit the image in place without zooming or translating
-    \path[fill tile picture=\ult@frontpage@customimage@tile{\ult@frontpage@image@right}]
-      (0,0)% Make sure (0,0) is origo, instead of (0.355,0)
-      % (Lower left) -- (Lower right) -- (Upper right) -- (Upper left)
-      (0.355,0) -- (19,0) -- ++(0,19.975) -- ++(-11.29,0) -- cycle;
-  }%
-}
-
-\def\ult@frontpage@customimage@single{%
-  \ult@frontpage@customimage@tikz{%
-    % Note: we use tile+overzoom here as well, to make sure image is zoomed and positioned
-    % the same way as triangle (left image) and trapezoid (right image).
-    % In other words, \ThesisFrontpageImage{example.jpg} will look identically to
-    % \ThesisLeftFrontpageImage{example.jpg} + \ThesisRightFrontpageImage{example.jpg},
-    % except for the white diagonal that separates the left and right image.
-    \path[fill tile picture=\ult@frontpage@customimage@tile{\ult@frontpage@image@single}]
-      % (Lower left) -- (Lower right) -- (Upper right) -- (Upper left)
-      (0,0) -- (19,0) -- ++(0,19.975) -- ++(-19,0) -- cycle;
-  }%
-}
-
+% Frontpage graphics
+\def\ThesisFrontpagePattern#1{\gdef\@ThesisFrontpagePattern{#1}}
+\def\ThesisFrontpageLogo#1{\gdef\@ThesisFrontpageLogo{#1}}
+\def\ThesisFrontpageProfile#1{\gdef\@ThesisFrontpageProfile{#1}}
 
 % Error if \maketitle is used without defining \thesisfaculty{} and \thesisprogramme{}
 \def\@thesisfaculty{\@latex@error{No \noexpand\thesisfaculty given}\@ehc}
 \def\@thesisprogramme{\@latex@error{No \noexpand\thesisprogramme given}\@ehc}
 
+% Set the default english Master's pattern and language logos.
+\ThesisFrontpagePattern{master_pattern_both.pdf}
+\ThesisFrontpageLogo{Logo_eng_pos.pdf}
+\ThesisFrontpageProfile{master_profile_en.pdf}
 
-% Use English as default
-% Set the topleft frontpage logo to English
-\gdef\ult@frontpage@logo{Logo_eng_pos.pdf}
-% Set the pattern, depending on PHD or master, which contains the UiT logo with the English language.
+% Override the frontpage patterns and definition to english if PHD is selected.
 \ifult@phdthesisprofile
-  \gdef\ult@frontpage@profile{phd_profile_en.pdf}
-\else
-  \gdef\ult@frontpage@profile{master_profile_en.pdf}
+  \ThesisFrontpagePattern{phd_pattern_both.pdf}
+  \ThesisFrontpageLogo{Logo_eng_pos.pdf}
+  \ThesisFrontpageProfile{phd_profile_en.pdf}
 \fi
 
 % norsk language - changes the frontpage logos and profile to the norwegian language
 \iflanguage{norsk}{%
   % Set the topleft frontpage logo to Norwegian
-  \gdef\ult@frontpage@logo{Logo_norsk_pos.pdf} %
+  \ThesisFrontpageLogo{Logo_norsk_pos.pdf} %
   % Set the pattern, depending on PHD or master, which contains the UiT logo with the Norwegian language.
   \ifult@phdthesisprofile %
-    \gdef\ult@frontpage@profile{phd_profile_nor.pdf} %
+    \ThesisFrontpageProfile{phd_profile_nor.pdf} %
   \else %
-    \gdef\ult@frontpage@profile{master_profile_nor.pdf} %
+    \ThesisFrontpageProfile{master_profile_nor.pdf} %
   \fi %
 }{}
 
@@ -2888,12 +2807,12 @@
 \def\languagetemp{samin}
 \ifx\languagename\languagetemp
   % Set the topleft frontpage logo to Sami
-  \gdef\ult@frontpage@logo{Logo_samisk_pos.pdf} %
+  \ThesisFrontpageLogo{Logo_samisk_pos.pdf} %
   % Set the pattern, depending on PHD or master, which contains the UiT logo with the Sami language.
   \ifult@phdthesisprofile %
-    \gdef\ult@frontpage@profile{phd_profile_sami.pdf} %
+    \ThesisFrontpageProfile{phd_profile_sami.pdf} %
   \else %
-    \gdef\ult@frontpage@profile{master_profile_sami.pdf} %
+    \ThesisFrontpageProfile{master_profile_sami.pdf} %
   \fi %
 \fi %
 
@@ -2920,66 +2839,44 @@
   }{%
   %\end{egg}
   }
-  %
-  %%% Front page pattern / images
-  \ifult@frontpage@image@issingle
-    \ult@frontpage@customimage@single
-  \else
-    %
-    % Left front page image
-    %
-    \ifx\ult@frontpage@image@left\@empty
-      \ult@frontpage@pattern@left
-    \else
-      \ult@frontpage@customimage@left
-    \fi
-    %
-    % Right front page image
-    %
-    \ifx\ult@frontpage@image@right\@empty
-      \ult@frontpage@pattern@right
-    \else
-      \ult@frontpage@customimage@right
-    \fi
-  \fi
-  %
-  % UiT Logo (Hugin & Munin)
-  %
+  \AddToShipoutPicture*{%
+    \put(-3,0){% For some reason, (-3, 0) is the magic position
+      \parbox[b][\paperheight]{\paperwidth}{%
+        \vfill%
+        \centering%
+        \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{\@ThesisFrontpagePattern}%
+        \vfill%
+      }%
+    }%
+  }
   \AddToShipoutPicture*{%
     \put(221,-350.5){% This is the correct position
       \parbox[b][\paperheight]{\paperwidth}{%
         \vfill%
         \centering%
-        \includegraphics[width=24mm,height=24mm,keepaspectratio=false]{\ult@frontpage@logo}%
+        \includegraphics[width=24mm,height=24mm,keepaspectratio=false]{\@ThesisFrontpageLogo}%
         \vfill%
       }%
     }%
   }%
-  %
-  % UiT profile ("navnetrekk")
-  %
   \AddToShipoutPicture*{%
-    \put(-230.5,339.5){% This is the correct position
+    \put(-234.5,339.5){% This is the correct position
       \parbox[b][\paperheight]{\paperwidth}{%
         \vfill%
         \centering%
-        \includegraphics[width=90mm,height=90mm,keepaspectratio=false]{\ult@frontpage@profile}%
+        \includegraphics[width=90mm,height=90mm,keepaspectratio=false]{\@ThesisFrontpageProfile}%
         \vfill%
       }%
     }%
   }%
-  %
   % Faculty / department
-  %
   \begingroup
     \vskip \z@
     \fontsize{10.3pt}{15pt}\usefont{T1}{fos}{l}{n}\selectfont
     \noindent\@thesisfaculty
     \vskip -\parskip
   \endgroup
-  %
   % Thesis title
-  %
   \begingroup
     \vskip 2\baselineskip
     \microtypesetup{protrusion=false,spacing=false}
@@ -2990,9 +2887,7 @@
     \vskip -\parskip
     \normalsize\normalfont\selectfont\vspace*{\baselineskip}
   \endgroup
-  %
   % Thesis subtitle
-  %
   \ifdefined\@subtitle
     \ifx\@subtitle\@empty\else
       \begingroup
@@ -3007,9 +2902,7 @@
       \endgroup
     \fi
   \fi
-  %
   % Separation line
-  %
   \begingroup
     \vspace*{2pt}
     \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{l}{it}\selectfont
@@ -3018,9 +2911,7 @@
     \vskip -\parskip
     \normalsize\normalfont\selectfont\vspace*{\baselineskip}
   \endgroup
-  %
   % Name of author
-  %
   \begingroup
     \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{sb}{n}\selectfont
     \vspace*{-\baselineskip}
@@ -3028,9 +2919,7 @@
     \vskip -\parskip
     \normalsize\normalfont\selectfont\vspace*{\baselineskip}
   \endgroup
-  %
   % Thesis description one-line / study program / month and year
-  %
   \begingroup
     \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{l}{it}\selectfont
     \vspace*{-\baselineskip}
