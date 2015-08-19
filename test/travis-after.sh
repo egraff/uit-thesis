@@ -37,7 +37,7 @@ travis:
 ---
 EOF
 
-cp -Rf .build gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/.build
+cp -Rf .build gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/build
 cp -Rf diffs gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/diffs
 cp -Rf tmp/. gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/diffs
 
