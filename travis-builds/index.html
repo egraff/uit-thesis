@@ -3,10 +3,8 @@ layout: page
 title: Last Travis builds
 ---
 <ul>
-{% assign pages_list = site.pages | sort:"url" %}
+{% assign pages_list = site.pages | where: "layout" , "test-result" | sort:"url" %}
 {% for page in pages_list %}
-  {% if page.layout == 'test-result' %}
-    <li><h3><a href="{{ page.url }}">Build {{ page.travis.build-number }}</a></h3></li>
-  {% endif %}
+  <li><h3><a href="{{ page.url }}">Build {{ page.travis.build-number }}</a></h3></li>
 {% endfor %}
 </ul>
