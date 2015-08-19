@@ -31,7 +31,7 @@ title: Last Travis builds
         {% unless result_map %}
           N/A
         {% else %}
-          {{ result_map.failed_tests | size }}/{{ result_map.num_tests }}
+          {{ result_map.num_tests | minus result_map.failed_tests.size }}/{{ result_map.num_tests }}
         {% endunless %}
       </td>
     </tr>
