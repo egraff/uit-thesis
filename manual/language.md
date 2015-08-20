@@ -66,16 +66,8 @@ The following list of **DEFNAME**s contain the most common ones:
 + **bib** - The bibliography header.
 + **contents** - The table of contents header.
 + **chapter**
-+ **equation**
-+ **FancyVerbLine**
 + **figure**
-+ **footnote**
-+ **item**
 + **lstlisting**
-+ **paragraph**
-+ **section**
-+ **subsection**
-+ **subparagraph**
 + **page**
 + **table**
 
