@@ -650,6 +650,8 @@
 \renameautorefname[USenglish]{subparagraph}{Subparagraph}
 \renameautorefname[USenglish]{FancyVerbLine}{Line}
 \renameautorefname[USenglish]{page}{Page}
+\renameautorefname[USenglish]{part}{Part}
+\renameautorefname[USenglish]{appendix}{Appendix}
 
 % Set autoref definitions for norsk language - none of these are set.
 \renameautorefname[norsk]{section}{seksjon}
@@ -665,6 +667,8 @@
 \renameautorefname[norsk]{table}{tabell}
 \renameautorefname[norsk]{figure}{figur}
 \renameautorefname[norsk]{lstlisting}{listing}
+\renameautorefname[norsk]{part}{del}
+\renameautorefname[norsk]{appendix}{tillegg}
 
 
 %:-------------------------- Title and subtitle  -----------------------
