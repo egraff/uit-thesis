@@ -1982,6 +1982,7 @@
 
 % Missing from samin babel package
 \renamedefname[samin]{ack}{Giitosat}
+\renamedefname[samin]{acronym}{Oanádusat}
 
 % Defined incorrectly with capital first letter in babel's 'norsk'
 \renamedefname[norsk]{see}{se}
