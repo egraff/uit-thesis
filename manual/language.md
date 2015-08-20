@@ -1,8 +1,7 @@
-
-Manual: language
-================
-
-
+---
+layout: manual
+title: language
+---
 What is it?
 -----------
 

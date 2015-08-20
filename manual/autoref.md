@@ -1,7 +1,7 @@
-
-Manual: autoref
-===============
-
+---
+layout: manual
+title: autoref
+---
 What is it?
 -----------
 
