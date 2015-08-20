@@ -18,10 +18,11 @@ How to use it
 -------------
 
 The API is as follows
-> \autorefname{**LABEL**}
-> \Autorefname{**LABEL**}
+> \autoref{**LABEL**}
+>
+> \Autoref{**LABEL**}
 
-Example
+### Example
 
 ```latex
 \documentclass[norsk]{uit-thesis}
@@ -38,7 +39,8 @@ Example
 \end{document}
 ```
 
-which results in the following to be generated.
+which results in the following to be generated:
+
 ![autoref renamed figure](images/autoref/autoref-demonstration.png?raw=true)
 
 Note that `\Autoref{}` capitalizes the autorefname. This is not evident in USenglish, since they are all 
@@ -92,6 +94,7 @@ A sentence referencing \autoref{sec:example}.
 \end{document}
 ```
 
-which results in 
+which results in
+
 ![autoref renamed figure](images/autoref/autoref-rename-section.png?raw=true)
 
