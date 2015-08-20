@@ -1983,6 +1983,8 @@
 % Missing from samin babel package
 \renamedefname[samin]{ack}{Giitosat}
 
+% Defined incorrectly with capital first letter in babel's 'norsk'
+\renamedefname[norsk]{see}{se}
 
 % Control-ifs
 \newif\ifult@hasacknowledgement\ult@hasacknowledgementfalse
