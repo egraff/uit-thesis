@@ -102,7 +102,7 @@ The following common **defname** definitions are employed for the default suppor
 | defname             | USenglish              | norsk          | samin                 |
 | ------------------- | :----------------------| :------------- | :-------------------- |
 | abstract            | Abstract               | Sammendrag     | Čoahkkáigeassu        |
-| acronym             | List of Abbreviations  | Forkortelser   | *undefined/unknown*   |
+| acronym             | List of Abbreviations  | Forkortelser   | Oanádusat             |
 | appendix            | Appendix               | Tillegg        | Čuovus                |
 | ack                 | Acknowledgements       | Takksigelser   | Giitosat              |
 | bib                 | Bibliography           | Biliografi     | Girjjálašvuohta       |
