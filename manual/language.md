@@ -34,7 +34,7 @@ The specific languages supported by *uit-thesis* are:
 Each class option is only recognized once. The last, first-occurrence, option in this comma separated list of options will be the 
 selected language. In the following example, *samin* will be the selected language.
 
-```
+```latex
 \documentclass[
     norsk,
 	USenglish,
@@ -81,7 +81,7 @@ The following list of **DEFNAME**s contain the most common ones:
 
 #### Example
 
-```
+```latex
 \documentclass{uit-thesis}
 
 \renamedefname{figure}{MyFancyFigure}

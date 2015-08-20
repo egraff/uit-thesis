@@ -22,7 +22,8 @@ The API is as follows
 > \Autorefname{**LABEL**}
 
 Example
-```
+
+```latex
 \documentclass[norsk]{uit-thesis}
 
 \begin{document}
@@ -71,7 +72,8 @@ Each of these can be renamed through the following API
 The language in brackets are optional, and will default to the currently selected language.
 
 Best illustrated by an example:
-```
+
+```latex
 \documentclass{uit-thesis}
 
 %rename the section object for USenglish
