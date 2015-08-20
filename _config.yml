@@ -3,7 +3,7 @@
 # site conf
 title: uit-thesis
 
-permalink: pretty
+permalink: date
 relative_permalinks: true
 
 url: http://egraff.github.io
