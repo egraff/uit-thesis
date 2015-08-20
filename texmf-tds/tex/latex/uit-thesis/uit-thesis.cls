@@ -1980,6 +1980,9 @@
 \renamedefname[norsk]{abstract}{Sammendrag}
 \renamedefname[norsk]{ack}{Takksigelser}
 
+% Missing from samin babel package
+\renamedefname[samin]{ack}{Giitosat}
+
 
 % Control-ifs
 \newif\ifult@hasacknowledgement\ult@hasacknowledgementfalse
