@@ -53,6 +53,7 @@ in the three primarily supported languages as follows:
 
 | autorefname         | USenglish        | norsk          | samin                 |
 | ------------------- | :--------------- | :------------- | :-------------------- |
+| appendix            | Appendix         | tillegg        | *undefined/unknown*   |
 | chapter             | Chapter          | kapittel       | *undefined/unknown*   |
 | equation            | Equation         | formel         | *undefined/unknown*   |
 | FancyVerbLine       | Line             | Line           | *undefined/unknown*   |
@@ -62,7 +63,9 @@ in the three primarily supported languages as follows:
 | lstlisting          | Listing          | listing        | *undefined/unknown*   |
 | page                | Page             | side           | *undefined/unknown*   |
 | paragraph           | Paragraph        | avsnitt        | *undefined/unknown*   |
+| part                | Part             | del            | *undefined/unknown*   |
 | section             | Section          | seksjon        | *undefined/unknown*   |
+| subparagraph        | Subparagraph     | underavsnitt   | *undefined/unknown*   |
 | subsection          | Subsection       | underseksjon   | *undefined/unknown*   |
 | table               | Table            | tabell         | *undefined/unknown*   |
 
