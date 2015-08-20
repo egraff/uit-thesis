@@ -7,12 +7,12 @@ permalink: pretty
 relative_permalinks: true
 
 url: http://egraff.github.io
-baseurl: "/uit-thesis"
+baseurl: /uit-thesis
 
 highlighter: pygments
 pygments: true
 
-markdown: redcarpet
+markdown: kramdown
 
 # GitHub flavored Markdown
 kramdown:
