@@ -107,12 +107,26 @@ is stored in the macro `\contentsname`.
 The following common **defname** definitions are employed for the default supported languages:
 
 
-| defname             | USenglish        | norsk          | samin                 |
-| ------------------- | :--------------- | :------------- | :-------------------- |
-| abstract            | Abstract         | Sammendrag     | *undefined/unknown*   |
-| ack                 | Acknowledgements | Takksigelser   | *undefined/unknown*   |
-| bib                 | Bibliography     | Biliografi     | *undefined/unknown*   |
-| figure              | Figure           | Figur          | *undefined/unknown*   |
-| lstlisting          | Listing          | Listing        | *undefined/unknown*   |
-| page                | Page             | Side           | *undefined/unknown*   |
-| table               | Table            | Tabell         | *undefined/unknown*   |
+| defname             | USenglish              | norsk          | samin                 |
+| ------------------- | :----------------------| :------------- | :-------------------- |
+| abstract            | Abstract               | Sammendrag     | Čoahkkáigeassu        |
+| acronym             | List of Abbreviations  | Forkortelser   | *undefined/unknown*   |
+| appendix            | Appendix               | Tillegg        | Čuovus                |
+| ack                 | Acknowledgements       | Takksigelser   | Giitosat              |
+| bib                 | Bibliography           | Biliografi     | Girjjálašvuohta       |
+| chapter             | Chapter                | Kapittel       | Kapihttal             |
+| contents            | Contents               | Innhold        | Sisdoallu             |
+| figure              | Figure                 | Figur          | Govus                 |
+| glossary            | Glossary               | Ordliste       | Sátnelistu            |
+| index               | Index                  | Register       | Registtar             |
+| listfigure          | List of Figures        | Figurer        | Govvosat              |
+| listtable           | List of Tables         | Tabeller       | Tabeallat             |
+| lstlisting          | Listing                | Listing        | *undefined/unknown*   |
+| lstlistlisting      | List of Listings       | Listinger      | *undefined/unknown*   |
+| page                | Page                   | Side           | Siidu                 |
+| part                | Part                   | Del            | Oassi                 |
+| preface             | Preface                | Forord         | Ovdasátni             |
+| proof               | Proof                  | Bevis          | Duođaštus             |
+| ref                 | References             | Referanser     | Čujuhusat             |
+| see                 | see                    | se             | geahča                |
+| table               | Table                  | Tabell         | Tabealla              |
