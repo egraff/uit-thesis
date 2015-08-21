@@ -1073,7 +1073,7 @@
 \ifult@drawbaselinegrid
 \AtBeginShipout{%
   \AtBeginShipoutUpperLeft{%
-    \color{blue}%
+    \color{red}%
     \ifodd\c@page
       \put(\dimexpr 1in+\oddsidemargin,
            -\dimexpr 1in+\topmargin+\headheight+\headsep+\topskip)%
