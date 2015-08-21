@@ -8,6 +8,7 @@ import subprocess
 import re
 import os
 import sys
+import json
 
 
 SCRIPTDIR = os.path.relpath(os.path.dirname(os.path.realpath(__file__))).replace("\\", "/")
@@ -22,6 +23,7 @@ PROTOFILEPREFIX = "proto"
 
 
 class debug:
+  NORMAL = "\\033[0m"
   INFO  = "\\033[1;34m"
   DEBUG = "\\033[0;32m"
   WARNING = "\\033[1;33m"
@@ -30,7 +32,7 @@ class debug:
   FUCK = "\\033[1;41m"
   GREEN = "\\033[1;32m"
   WHITE = "\\033[1;37m"
-dlvl = [debug.INFO, debug.DEBUG, debug.WARNING, debug.FUCK, debug.WHITE, debug.GREEN, debug.YELLOW, debug.ERROR]
+dlvl = [debug.INFO, debug.DEBUG, debug.WARNING, debug.FUCK, debug.NORMAL, debug.WHITE, debug.GREEN, debug.YELLOW, debug.ERROR]
 
 
 DEBUGLEVEL = debug.INFO
@@ -327,40 +329,61 @@ class TestRunner():
   @classmethod
   def waitForSummary(cls):
     asynclib.JoinedAsyncTask(*cls.tasks).wait()
+    
+    resultMap = {}
 
     with cls.testResultLock:
-      echo(debug.WHITE, "\n\n\nRan %s tests, " % (cls.numTestsCompleted,))
+      with open('test_result.json', 'wb') as fp:
+        resultMap['num_tests'] = cls.numTestsCompleted
+        resultMap['failed_tests'] = []
+        echo(debug.WHITE, "\n\n\nRan %s tests, " % (cls.numTestsCompleted,))
 
-      if len(cls.failedTests) == 0:
-        echo(debug.GREEN, "all succeeded!\n\n")
-        sys.exit(0)
-      else:
-        echo(debug.ERROR, "%s failed" % (len(cls.failedTests),))
-        echo(debug.WHITE, ".\n\nError summary:\n\n")
+        if len(cls.failedTests) == 0:
+          echo(debug.GREEN, "all succeeded!\n\n")
+          json.dump(resultMap, fp)
+          sys.exit(0)
+        else:
+          echo(debug.ERROR, "%s failed" % (len(cls.failedTests),))
+          echo(debug.WHITE, ".\n\nError summary:\n\n")
 
-        for testName, buildSucceeded, arg in cls.failedTests:
-          echo(debug.WHITE, "  %s\n" % (testName,))
-          if not buildSucceeded:
-            proc = arg
-            echo(debug.ERROR, "    Build failed!\n")
-            echo(debug.ERROR, "    stdout output:\n")
-            for line in proc.stdout.readlines():
-              print "      %s\n" % (line,)
-            echo(debug.ERROR, "    stderr output:\n")
-            for line in proc.stderr.readlines():
-              print "      %s\n" % (line,)
-            latexLogFile = ".build/%s/output.log" % (testName,)
-            if os.path.exists(latexLogFile):
-              echo(debug.WHITE, "    see %s for more info.\n\n" % (latexLogFile,))
+          for testName, buildSucceeded, arg in cls.failedTests:
+            failedTestMap = {}
+            failedTestMap['test_name'] = testName
+            failedTestMap['build_succeeded'] = buildSucceeded
+            echo(debug.WHITE, "  %s\n" % (testName,))
+            if not buildSucceeded:
+              proc = arg
+              failedTestMap['proc'] = {}
+              failedTestMap['proc']['returncode'] = proc.returncode
+              failedTestMap['proc']['stdout'] = []
+              failedTestMap['proc']['stderr'] = []
+              echo(debug.ERROR, "    Build failed!\n")
+              echo(debug.ERROR, "    stdout output:\n")
+              for line in proc.stdout:
+                line = line.rstrip('\n')
+                failedTestMap['proc']['stdout'].append(line)
+                echo(debug.NORMAL, "      %s\n" % (line,))
+              echo(debug.ERROR, "\n    stderr output:\n")
+              for line in proc.stderr:
+                line = line.rstrip('\n')
+                failedTestMap['proc']['stderr'].append(line)
+                echo(debug.NORMAL, "      %s\n" % (line,))
+              latexLogFile = ".build/%s/output.log" % (testName,)
+              if os.path.exists(latexLogFile):
+                failedTestMap['log_file'] = latexLogFile
+                echo(debug.WHITE, "\n    see %s for more info.\n\n" % (latexLogFile,))
+              else:
+                echo(debug.WHITE, "\n\n")
             else:
-              echo(debug.WHITE, "\n")
-          else:
-            failedPages = arg
-            failedPagesString = ", ".join(str(x) for x in failedPages)
-            echo(debug.ERROR, "    Pages with diff: %s.\n\n" % (failedPagesString,))
+              failedPages = arg
+              failedTestMap['failed_pages'] = failedPages
+              failedPagesString = ", ".join(str(x) for x in failedPages)
+              echo(debug.ERROR, "    Pages with diff: %s.\n\n" % (failedPagesString,))
+            resultMap['failed_tests'].append(failedTestMap)
 
-        echo(debug.YELLOW, "PNGs containing diffs are available in '%s'\n\n" % (DIFFDIR,))
-        sys.exit(1)
+          echo(debug.YELLOW, "PNGs containing diffs are available in '%s'\n\n" % (DIFFDIR,))
+          json.dump(resultMap, fp)
+          sys.exit(1)
 
 
 if __name__ == '__main__':

@@ -22,3 +22,5 @@ install:
   - cd test
 script:
   - python regtest.py
+after_script:
+  - ./travis-after.sh
