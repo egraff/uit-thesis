@@ -1,4 +1,4 @@
-\documentclass[showframe]{uit-thesis}
+\documentclass[showframe,norsk,USenglish]{uit-thesis-test}
 \usepackage{lipsum}
 
 \makeglossaries
@@ -13,7 +13,17 @@
 \label{fig:test}
 \end{figure}
 
-\textbf{Test spacing issue of \texttt{\textbackslash{}Autoref} macro:}
+\textbf{Test \texttt{\string\Autoref} functionality:}
+
+\extrasnorsk
+
+\texttt{\string\autoref}: \autoref{fig:test} viser \ldots
+
+\texttt{\string\Autoref}: \Autoref{fig:test} viser \ldots
+
+\extrasUSenglish
+
+\textbf{Test spacing issue of \texttt{\string\Autoref} macro:}
 
 Some text in front. a\Autoref{fig:test}b shows \ldots
 
