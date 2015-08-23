@@ -12,8 +12,8 @@
   border-radius: 0.3rem;
   transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 }
-.front  .btn + .front  .btn {
-    margin-left: 1rem;
+.front .btn + .btn {
+  margin-left: 1rem;
 }
 
 .front  .btn:hover {
@@ -43,7 +43,7 @@
     padding: 0.75rem;
     font-size: 0.9rem;
   }
-  .front  .btn + .front  .btn {
+  .front  .btn + .btn {
     margin-top: 1rem;
     margin-left: 0;
   }
