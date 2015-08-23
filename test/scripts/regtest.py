@@ -335,7 +335,7 @@ class TestRunner():
     resultMap = {}
 
     with cls.testResultLock:
-      with open('test_result.json', 'wb') as fp:
+      with open(os.path.join(TESTDIR, "test_result.json").replace("\\", "/"), 'wb') as fp:
         resultMap['num_tests'] = cls.numTestsCompleted
         resultMap['failed_tests'] = []
         echo(debug.WHITE, "\n\n\nRan %s tests, " % (cls.numTestsCompleted,))
