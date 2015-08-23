@@ -77,6 +77,7 @@
 .front .banner h1 {
   color: #fff;
   margin-top: 0;
+  margin-bottom: 2rem;
 }
 
 @media screen and (min-width: 56em) {
