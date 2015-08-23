@@ -6,6 +6,8 @@
   text-align: center;
   color: #fff;
   
+  margin-bottom: 1rem;
+  
   background: #15AFC0;
   background:    -moz-linear-gradient(160deg, rgba(47, 207, 218, 0.52), rgba(11, 52, 60, 0.3)),    -moz-linear-gradient(-140deg, #0EF6FF, #005B82);
   background: -webkit-linear-gradient(160deg, rgba(47, 207, 218, 0.52), rgba(11, 52, 60, 0.3)), -webkit-linear-gradient(-140deg, #0EF6FF, #005B82);
@@ -63,3 +65,5 @@
     font-size: 1.75rem;
   }
 }
+
+.front .content > .container
