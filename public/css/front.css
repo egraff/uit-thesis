@@ -1,3 +1,32 @@
 .front .masthead {
   margin-bottom: 0;
 }
+
+.front .banner {
+  height: 300px;
+  
+  text-align: center;
+  color: #fff;
+  
+  background: #15AFC0;
+  background:    -moz-linear-gradient(160deg, rgba(47, 207, 218, 0.52), rgba(11, 52, 60, 0.3)),    -moz-linear-gradient(-140deg, #0EF6FF, #005B82);
+  background: -webkit-linear-gradient(160deg, rgba(47, 207, 218, 0.52), rgba(11, 52, 60, 0.3)), -webkit-linear-gradient(-140deg, #0EF6FF, #005B82);
+  background:      -o-linear-gradient(160deg, rgba(47, 207, 218, 0.52), rgba(11, 52, 60, 0.3)),      -o-linear-gradient(-140deg, #0EF6FF, #005B82);
+  background:     -ms-linear-gradient(160deg, rgba(47, 207, 218, 0.52), rgba(11, 52, 60, 0.3)),     -ms-linear-gradient(-140deg, #0EF6FF, #005B82);
+  background:         linear-gradient(160deg, rgba(47, 207, 218, 0.52), rgba(11, 52, 60, 0.3)),         linear-gradient(-140deg, #0EF6FF, #005B82);
+  
+  -webkit-box-shadow: inset 0px 8px 16px -14px #000000, inset 0px -8px 16px -14px #000000;
+  -moz-box-shadow:    inset 0px 8px 16px -14px #000000, inset 0px -8px 16px -14px #000000;
+  -o-box-shadow:      inset 0px 8px 16px -14px #000000, inset 0px -8px 16px -14px #000000;
+  box-shadow:         inset 0px 8px 16px -14px #000000, inset 0px -8px 16px -14px #000000;
+}
+
+.front .banner .container {
+  padding: 5rem 3rem;
+}
+
+.front .banner h1 {
+  font-size: 2.8rem;
+  color: #fff;
+  margin-top: 0;
+}
