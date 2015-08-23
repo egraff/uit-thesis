@@ -2,9 +2,7 @@
   margin-bottom: 0;
 }
 
-.front .banner {
-  height: 300px;
-  
+.front .banner {  
   text-align: center;
   color: #fff;
   
@@ -31,18 +29,40 @@
 }
 
 @media screen and (min-width: 56em) {
+  .front .banner .container {
+    padding: 5rem 3rem;
+  }
+
   .front .banner h1 {
     font-size: 2.8rem;
   }
 }
 
 @media screen and (min-width: 48em) and (max-width: 56em) {
+  .front .banner .container {
+    padding: 4rem 3rem;
+  }
+  
   .front .banner h1 {
     font-size: 2.25rem;
   }
 }
 
-@media screen and (max-width: 48em) {
+@media screen and (min-width: 38em) (max-width: 48em) {
+  .front .banner .container {
+    padding: 3rem 1rem;
+  }
+
+  .front .banner h1 {
+    font-size: 1.75rem;
+  }
+}
+
+@media screen and (max-width: 38em) {
+  .front .banner .container {
+    padding: 2rem 1rem;
+  }
+
   .front .banner h1 {
     font-size: 1.75rem;
   }
