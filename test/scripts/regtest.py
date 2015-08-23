@@ -11,11 +11,13 @@ import sys
 import json
 
 
-SCRIPTDIR = os.path.relpath(os.path.dirname(os.path.realpath(__file__))).replace("\\", "/")
-PDFSDIR   = os.path.join(SCRIPTDIR, "pdfs").replace("\\", "/")
-PROTODIR  = os.path.join(SCRIPTDIR, "proto").replace("\\", "/")
-TMPDIR    = os.path.join(SCRIPTDIR, "tmp").replace("\\", "/")
-DIFFDIR   = os.path.join(SCRIPTDIR, "diffs").replace("\\", "/")
+SCRIPTDIR   = os.path.relpath(os.path.dirname(os.path.realpath(__file__))).replace("\\", "/")
+TESTDIR     = os.path.relpath(os.path.join(SCRIPTDIR, "..")).replace("\\", "/")
+TEXTESTDIR  = os.path.join(TESTDIR, "tests").replace("\\", "/")
+PDFSDIR     = os.path.join(TESTDIR, "pdfs").replace("\\", "/")
+PROTODIR    = os.path.join(TESTDIR, "proto").replace("\\", "/")
+TMPDIR      = os.path.join(TESTDIR, "tmp").replace("\\", "/")
+DIFFDIR     = os.path.join(TESTDIR, "diffs").replace("\\", "/")
 
 
 TESTFILEPREFIX  = "test"
@@ -282,7 +284,7 @@ class TestTask(asynclib.AsyncTask):
 
 
 def testGenerator():
-  for fileName in os.listdir("."):
+  for fileName in os.listdir(TEXTESTDIR):
     # Ignore files that contain spaces
     if " " in fileName:
       continue

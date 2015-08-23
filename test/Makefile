@@ -6,22 +6,22 @@ MAKEGLOSSARIES := "$(shell which makeglossaries 2>/dev/null)"
 # The file to test (without extension)
 BASENAME = $(shell basename $(FILE) .tex)
 
-PROTOPDF = ./proto/proto.pdf
-TMPFLD = ./tmp
-DIFFLD = ./diffs
-PDFFLD = ./pdfs
+TESTSDIR = tests
+MAINDIR_REL2_TESTSDIR = ..
 
-BUILDFILE = ./$(BASENAME).tex
+PDFFLD = pdfs
+
+# Placement of all produced files
+BUILDFLD = .build
+
+BUILDFILE = $(BASENAME).tex
 PDFFILE = $(PDFFLD)/$(BASENAME).pdf
 
 # All files produced while making the document will have this basename
 OUTPUTNAME = output
 
-# Placement of all produced files
-BUILDFLD = ./.build
-
 # Extra options, these must be available for both pdflatex and latexmk
-DEFOPT = -output-directory=$(BUILDFLD)/$(BASENAME) -interaction=batchmode
+DEFOPT = -output-directory=$(MAINDIR_REL2_TESTSDIR)/$(BUILDFLD)/$(BASENAME) -interaction=batchmode
 
 # Options for glossary
 GLOSSOPT = -q
@@ -43,22 +43,23 @@ BUILDGLOSS = cd $(BUILDFLD)/$(BASENAME) &&\
 all: test
 
 clean:
-	@$(RM) -r $(PDFFLD) $(DIFFLD) $(BUILDFLD)
+	@$(RM) -r $(PDFFLD) $(BUILDFLD)
 	@echo "Done!"
 
 test: 
 	@echo "Running comparison tests..."
 	@echo ""
-	@python regtest.py
+	@python scripts/regtest.py
 
 _file: _ctrl_
 	@echo "Building $(FILE)..."
 	@$(RM) $(PDFFILE)
 	@mkdir -p $(BUILDFLD)/$(BASENAME)
 	@mkdir -p $(PDFFLD)
-	@$(LAMEBUILD)
-	@$(BUILDGLOSS)
-	$(BUILD) && mv $(BUILDFLD)/$(BASENAME)/$(OUTPUTNAME).pdf $(PDFFILE) && $(RM) -r $(BUILDFLD)/$(BASENAME)
+	cd tests && $(LAMEBUILD)
+	$(BUILDGLOSS)
+	(cd tests && $(BUILD)) && mv $(BUILDFLD)/$(BASENAME)/$(OUTPUTNAME).pdf $(PDFFILE) && \
+	  $(RM) -r $(BUILDFLD)/$(BASENAME)
 ifndef RETAINBUILDFLD
 	@$(RM) -r $(BUILDFLD)
 endif
