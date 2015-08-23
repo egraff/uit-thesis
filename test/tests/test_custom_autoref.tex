@@ -1,0 +1,34 @@
+\documentclass[showframe,norsk,USenglish]{uit-thesis-test}
+\usepackage{lipsum}
+
+\makeglossaries
+
+\begin{document}
+\mainmatter
+
+\lipsum[1]
+
+\begin{figure}[t]
+\caption{Test figure.}
+\label{fig:test}
+\end{figure}
+
+\textbf{Test \texttt{\string\Autoref} functionality:}
+
+\extrasnorsk
+
+\texttt{\string\autoref}: \autoref{fig:test} viser \ldots
+
+\texttt{\string\Autoref}: \Autoref{fig:test} viser \ldots
+
+\extrasUSenglish
+
+\textbf{Test spacing issue of \texttt{\string\Autoref} macro:}
+
+Some text in front. a\Autoref{fig:test}b shows \ldots
+
+Some text in front. a \Autoref{fig:test} b shows \ldots
+
+\Autoref{fig:test} shows \ldots
+
+\end{document}

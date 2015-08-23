@@ -21,6 +21,6 @@ install:
   - make install CONTINUE=y
   - cd test
 script:
-  - python regtest.py
+  - make
 after_script:
-  - ./travis-after.sh
+  - scripts/travis-after.sh
