@@ -62,11 +62,11 @@
   margin-bottom: 1rem;
   
   background: #15AFC0;
-  background:    -moz-linear-gradient(160deg, rgba(38, 118, 183, 0.65), rgba(200, 218, 255, 0.27)),    -moz-linear-gradient(-140deg, rgba(60, 162, 151, 0.59), rgba(32, 118, 148, 0.35)),    -moz-linear-gradient(180deg, #FFFFFF, #118CFF);
-  background: -webkit-linear-gradient(160deg, rgba(38, 118, 183, 0.65), rgba(200, 218, 255, 0.27)), -webkit-linear-gradient(-140deg, rgba(60, 162, 151, 0.59), rgba(32, 118, 148, 0.35)), -webkit-linear-gradient(180deg, #FFFFFF, #118CFF);
-  background:      -o-linear-gradient(160deg, rgba(38, 118, 183, 0.65), rgba(200, 218, 255, 0.27)),      -o-linear-gradient(-140deg, rgba(60, 162, 151, 0.59), rgba(32, 118, 148, 0.35)),      -o-linear-gradient(180deg, #FFFFFF, #118CFF);
-  background:     -ms-linear-gradient(160deg, rgba(38, 118, 183, 0.65), rgba(200, 218, 255, 0.27)),     -ms-linear-gradient(-140deg, rgba(60, 162, 151, 0.59), rgba(32, 118, 148, 0.35)),     -ms-linear-gradient(180deg, #FFFFFF, #118CFF);
-  background:         linear-gradient(160deg, rgba(38, 118, 183, 0.65), rgba(200, 218, 255, 0.27)),         linear-gradient(-140deg, rgba(60, 162, 151, 0.59), rgba(32, 118, 148, 0.35)),         linear-gradient(180deg, #FFFFFF, #118CFF);
+  background:    -moz-linear-gradient(160deg, rgba(38, 118, 183, 0.65), rgba(200, 218, 255, 0.27)),    -moz-linear-gradient(-140deg, rgba(60, 162, 151, 0.59), rgba(32, 118, 148, 0.35)),    -moz-linear-gradient(180deg, #7ADCFF, #118CFF);
+  background: -webkit-linear-gradient(160deg, rgba(38, 118, 183, 0.65), rgba(200, 218, 255, 0.27)), -webkit-linear-gradient(-140deg, rgba(60, 162, 151, 0.59), rgba(32, 118, 148, 0.35)), -webkit-linear-gradient(180deg, #7ADCFF, #118CFF);
+  background:      -o-linear-gradient(160deg, rgba(38, 118, 183, 0.65), rgba(200, 218, 255, 0.27)),      -o-linear-gradient(-140deg, rgba(60, 162, 151, 0.59), rgba(32, 118, 148, 0.35)),      -o-linear-gradient(180deg, #7ADCFF, #118CFF);
+  background:     -ms-linear-gradient(160deg, rgba(38, 118, 183, 0.65), rgba(200, 218, 255, 0.27)),     -ms-linear-gradient(-140deg, rgba(60, 162, 151, 0.59), rgba(32, 118, 148, 0.35)),     -ms-linear-gradient(180deg, #7ADCFF, #118CFF);
+  background:         linear-gradient(160deg, rgba(38, 118, 183, 0.65), rgba(200, 218, 255, 0.27)),         linear-gradient(-140deg, rgba(60, 162, 151, 0.59), rgba(32, 118, 148, 0.35)),         linear-gradient(180deg, #7ADCFF, #118CFF);
   
   -webkit-box-shadow: inset 0px 8px 16px -14px #000000, inset 0px -8px 16px -14px #000000;
   -moz-box-shadow:    inset 0px 8px 16px -14px #000000, inset 0px -8px 16px -14px #000000;
