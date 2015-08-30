@@ -2,7 +2,7 @@
 layout: page
 title: Manual
 ---
-{% assign pages_list = site.pages | where: 'layout','manual' | sort:"url" %}
+{% assign pages_list = site.pages | where: 'layout','manual' %}
 
 <ul>
 {% for page in pages_list %}
