@@ -1,3 +1,5 @@
+[View published GitHub pages](http://egraff.github.io/uit-thesis/).
+
 # Missing manuals
 
  - [ ] Captions and subcaptions
