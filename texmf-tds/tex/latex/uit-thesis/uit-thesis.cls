@@ -56,6 +56,10 @@
 \ult@drawbaselinegridfalse % Default to false
 \DeclareOption{baselinegrid}{\ult@drawbaselinegridtrue}
 
+\newif\ifult@copyright@disabled
+\ult@copyright@disabledfalse % Default to false
+\DeclareOption{nocopyright}{\ult@copyright@disabledtrue}
+
 % Option for using indented paragraphs instead of vertical skip between paragraphs
 \newif\ifult@parindent
 \ult@parindentfalse % Default to false
@@ -780,6 +784,9 @@
 
 % Allows us to scale font sizes relatively
 \usepackage{scalefnt}
+
+% Better logos for \LaTeX{}, \TeX{}, etc.
+\usepackage{dtklogos}
 
 
 %:-------------------------- Listings, tables, etc.  -----------------------
@@ -2907,11 +2914,128 @@
   \fi %
 \fi %
 
+\newif\ifult@has@titlepage
+\ult@has@titlepagefalse % Default to false
+
+\newif\ifult@titlepage@was@not@first@page
+\ult@titlepage@was@not@first@pagefalse % Default to false
+
+%%%%%%%%%%% COPYRIGHT PAGE %%%%%%%%%%%
+
+\newbox\ult@copyright@page@box
+\newbox\ult@tmp@shipoutbox
+
+\fancypagestyle{copyrightpage}{%
+  \fancyhf{}
+  \fancyfoot[C]{%
+    \color[cmyk]{0.3,0.3,0.3,0.9}
+    This thesis document was typeset using the \emph{UiT Thesis \LaTeX{} Template}.\\
+    \textcopyright{} \the\year{} -- \url{http://github.com/egraff/uit-thesis}
+  }
+}
+
+\def\ult@copyright@page@contents{%
+  \thispagestyle{copyrightpage}
+  \null\vfill
+}
+
+\ifult@copyright@disabled
+  \ClassWarningNoLine{uit-thesis}{%
+    You have disabled the copyright notice.\MessageBreak
+    THIS MAY BE IN VIOLATION OF THE\MessageBreak
+    LICENCE AGREEMENT!\MessageBreak
+    See http://github.com/egraff/uit-thesis for more info
+  }
+
+  \AfterBeginDocument{%
+    \AtBeginShipoutNext{%
+      \ifult@has@titlepage\else%
+        \global\ult@titlepage@was@not@first@pagetrue%
+      \fi%
+    }%
+  }
+\else
+  % Copyright page
+  \AfterBeginDocument{%
+    \pagenumbering{Alph}%
+    \setcounter{page}{2}%
+    %
+    % Record the following copyright page in \ult@copyrightpagebox
+    \AtBeginShipoutNext{%
+      \global\setbox\ult@copyright@page@box=\copy\AtBeginShipoutBox%
+      \AtBeginShipoutDiscard%
+    }%
+    %
+    % Start copyright page
+    %
+    \ult@copyright@page@contents%
+    \cleardoublepage%
+    %
+    % End copyright page - setup first "normal" page
+    %
+    \pagenumbering{arabic}%
+    \setcounter{page}{1}%
+    %
+    % Setup hook for first page
+    \AtBeginShipoutNext{%
+      \ifult@has@titlepage%
+        %
+        % Make sure title page is displayed as recto page
+        % (but only if using two-page layout)
+        %
+        \def\ult@tmp@pdfpagelayout{TwoPageLeft}%
+        \ifx\@pdfpagelayout\ult@tmp@pdfpagelayout%
+          % We cannot use hyperref to change page layout, because we're after preamble.
+          % So we use "direct" PDF command instead.
+          \pdfcatalog{/PageLayout/TwoPageRight}%
+        \fi%
+      \else%
+        % First page wasn't title page, so we insert copyright page before first page.
+        \global\ult@titlepage@was@not@first@pagetrue%
+        %
+        % First, save the current first page.
+        \setbox\ult@tmp@shipoutbox=\copy\AtBeginShipoutBox%
+        %
+        % Then, we shipout the copyright page.
+        % Note: we have to restore \protect first, which was overridden in \AtBegShi@Output.
+        % Then, after shipout, we use LaTeX' \set@typeset@protect to change \protect the way
+        % that was already done in \AtBegShi@Output.
+        %
+        \let\protect\noexpand%
+        \AtBeginShipoutOriginalShipout\box\ult@copyright@page@box%
+        \set@typeset@protect%
+        %
+        % Restore original first page, so it will be shipped out too!
+        %
+        \setbox\AtBeginShipoutBox=\box\ult@tmp@shipoutbox%
+        %
+        % Make sure copyright page is displayed as verso page
+        % (but only if using two-page layout)
+        %
+        \def\ult@tmp@pdfpagelayout{TwoPageRight}%
+        \ifx\@pdfpagelayout\ult@tmp@pdfpagelayout%
+          % We cannot use hyperref to change page layout, because we're after preamble.
+          % So we use "direct" PDF command instead.
+          \pdfcatalog{/PageLayout/TwoPageLeft}%
+        \fi%
+      \fi%
+    }%
+  }
+\fi
+
+%%%%%%%%%%% END COPYRIGHT PAGE %%%%%%%%%%%
 
 \if@titlepage
-\renewcommand\maketitle{
+\renewcommand\maketitle{%
+  % If we have already shipped out first page, produce error!
+  \ifult@titlepage@was@not@first@page
+    \ClassError{uit-thesis}{Title page produced by \string\maketitle\space must be first page}\@ehd
+  \fi
+  %
+  \ult@has@titlepagetrue%
   % Fix PDF page numbering (title page must _not_ get page number 1, else we have two pages with that number)
-  \renewcommand\thepage{Title}
+  \pagenumbering{Alph}
+  \setcounter{page}{1}
   %
   % Set custom geometry for the frontpage text
   \newgeometry{top=16.5mm,bottom=10mm,right=12mm,left=59mm}
@@ -3066,6 +3190,13 @@
   \global\let\author\relax
   \global\let\date\relax
   \global\let\and\relax
+  %
+  % Output copyright page after title page
+  %
+  \ult@copyright@page@contents
+  %
+  \cleardoublepage
+  \pagenumbering{arabic}
 }
 \fi
 
