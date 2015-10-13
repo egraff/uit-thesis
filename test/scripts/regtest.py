@@ -224,10 +224,19 @@ class TestPdfPair(asynclib.AsyncTask):
     testPdfObj = PdfFile(testPdfPath)
     protoPdfObj = PdfFile(protoPdfPath)
 
-    pageList = determineListOfPagesToTest(testPdfObj)
+    testPageList = determineListOfPagesToTest(testPdfObj)
+    protoPageList = determineListOfPagesToTest(protoPdfObj)
+
+    pageList = set(testPageList + protoPageList)
+
+    self.failedPages = []
 
     testTasks = []
     for pageNum in pageList:
+      if pageNum not in testPageList or pageNum not in protoPageList:
+        self.failedPages.append(pageNum)
+        continue
+
       task = TestPdfPagePair(testPdfObj, protoPdfObj, pageNum, testPngPath, protoPngPath)
       testTasks.append(task)
 
@@ -239,12 +248,11 @@ class TestPdfPair(asynclib.AsyncTask):
   def result(self):
     pngResults = self.__joinedTestTask.result
 
-    failedPages = []
     for pageNum, pngsAreEqual in pngResults:
       if not pngsAreEqual:
-        failedPages.append(pageNum)
+        self.failedPages.append(pageNum)
 
-    return (self.testName, failedPages)
+    return (self.testName, self.failedPages)
 
 
 def makeTestTask(testName):
