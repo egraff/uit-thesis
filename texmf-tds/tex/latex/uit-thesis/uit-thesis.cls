@@ -2979,6 +2979,19 @@
     % Setup hook for first page
     \AtBeginShipoutNext{%
       \ifult@has@titlepage%
+        % First, shipout the title page
+        % Note: we have to restore \protect first, which was overridden in \AtBegShi@Output.
+        % Then, after shipout, we use LaTeX' \set@typeset@protect to change \protect the way
+        % that was already done in \AtBegShi@Output.
+        \let\protect\noexpand%
+        \AtBeginShipoutOriginalShipout\box\AtBeginShipoutBox%
+        \set@typeset@protect%
+        %
+        % Then, setup shipout of copyright page
+        %
+        \pagenumbering{Alph}%
+        \setcounter{page}{2}%
+        \setbox\AtBeginShipoutBox=\box\ult@copyright@page@box%
         %
         % Make sure title page is displayed as recto page
         % (but only if using two-page layout)
@@ -3190,10 +3203,6 @@
   \global\let\author\relax
   \global\let\date\relax
   \global\let\and\relax
-  %
-  % Output copyright page after title page
-  %
-  \ult@copyright@page@contents
   %
   \cleardoublepage
   \pagenumbering{arabic}
