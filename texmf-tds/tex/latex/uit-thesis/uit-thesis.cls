@@ -3213,12 +3213,11 @@
   \global\let\date\relax
   \global\let\and\relax
   %
-  \ifult@copyright@disabled
-    \cleardoublepage
-  \else
+  \ifult@copyright@disabled\else
     \clearpage
+    \pagenumbering{Alph}
+    \setcounter{page}{3}
   \fi
-  \pagenumbering{arabic}
 }
 \fi
 
