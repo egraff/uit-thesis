@@ -2960,6 +2960,10 @@
     \pagenumbering{Alph}%
     \setcounter{page}{2}%
     %
+    % Now, this may seem counter-intuitive (and it is!!), but this page label
+    % will be associated with the first actual page to be shipped out!
+    \renewcommand\thepage{A}%
+    %
     % Record the following copyright page in \ult@copyrightpagebox
     \AtBeginShipoutNext{%
       \global\setbox\ult@copyright@page@box=\copy\AtBeginShipoutBox%
@@ -2983,14 +2987,13 @@
         % Note: we have to restore \protect first, which was overridden in \AtBegShi@Output.
         % Then, after shipout, we use LaTeX' \set@typeset@protect to change \protect the way
         % that was already done in \AtBegShi@Output.
+        %
         \let\protect\noexpand%
         \AtBeginShipoutOriginalShipout\box\AtBeginShipoutBox%
         \set@typeset@protect%
         %
         % Then, setup shipout of copyright page
         %
-        \pagenumbering{Alph}%
-        \setcounter{page}{2}%
         \setbox\AtBeginShipoutBox=\box\ult@copyright@page@box%
         %
         % Make sure title page is displayed as recto page
@@ -3049,6 +3052,12 @@
   % Fix PDF page numbering (title page must _not_ get page number 1, else we have two pages with that number)
   \pagenumbering{Alph}
   \setcounter{page}{1}
+  %
+  \ifult@copyright@disabled\else
+    % Now, this may seem counter-intuitive (and it is!!), but this page label
+    % will actually be associated with the copyright page!
+    \renewcommand\thepage{B}
+  \fi
   %
   % Set custom geometry for the frontpage text
   \newgeometry{top=16.5mm,bottom=10mm,right=12mm,left=59mm}
@@ -3204,7 +3213,11 @@
   \global\let\date\relax
   \global\let\and\relax
   %
-  \cleardoublepage
+  \ifult@copyright@disabled
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
   \pagenumbering{arabic}
 }
 \fi
