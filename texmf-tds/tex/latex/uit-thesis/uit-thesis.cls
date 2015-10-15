@@ -785,10 +785,6 @@
 % Allows us to scale font sizes relatively
 \usepackage{scalefnt}
 
-% Better logos for \LaTeX{}, \TeX{}, etc.
-\usepackage{dtklogos}
-
-
 %:-------------------------- Listings, tables, etc.  -----------------------
 
 % Listings (e.g. used for code examples)
@@ -2929,7 +2925,7 @@
   \fancyhf{}
   \fancyfoot[C]{%
     \color[cmyk]{0.3,0.3,0.3,0.9}
-    This thesis document was typeset using the \emph{UiT Thesis \LaTeX{} Template}.\\
+    This thesis document was typeset using the \emph{UiT Thesis L\kern-.28em\raise.35ex\hbox{\textsc{a}}\kern-.12emT\kern-.12em\lower.38ex\hbox{E}\kern-.03emX Template}.\\
     \textcopyright{} \the\year{} -- \url{http://github.com/egraff/uit-thesis}
   }
 }
