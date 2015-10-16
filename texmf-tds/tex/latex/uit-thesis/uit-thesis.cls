@@ -2935,104 +2935,106 @@
   \null\vfill
 }
 
-\ifult@copyright@disabled
-  \ClassWarningNoLine{uit-thesis}{%
-    You have disabled the copyright notice.\MessageBreak
-    THIS MAY BE IN VIOLATION OF THE\MessageBreak
-    LICENCE AGREEMENT!\MessageBreak
-    See http://github.com/egraff/uit-thesis for more info
-  }
+\ifcsname tikzexternalrealjob\endcsname\else
+  \ifult@copyright@disabled
+    \ClassWarningNoLine{uit-thesis}{%
+      You have disabled the copyright notice.\MessageBreak
+      THIS MAY BE IN VIOLATION OF THE\MessageBreak
+      LICENCE AGREEMENT!\MessageBreak
+      See http://github.com/egraff/uit-thesis for more info
+    }
 
-  \AfterBeginDocument{%
-    \AtBeginShipoutNext{%
-      \ifult@has@titlepage\else%
-        \global\ult@titlepage@was@not@first@pagetrue%
-      \fi%
-    }%
-  }
-\else
-  % Copyright page
-  \AfterBeginDocument{%
-    \pagenumbering{Alph}%
-    \setcounter{page}{2}%
-    %
-    % Now, this may seem counter-intuitive (and it is!!), but this page label
-    % will be associated with the first actual page to be shipped out!
-    \renewcommand\thepage{A}%
-    %
-    % Record the following copyright page in \ult@copyrightpagebox
-    \AtBeginShipoutNext{%
-      \global\setbox\ult@copyright@page@box=\copy\AtBeginShipoutBox%
-      \AtBeginShipoutDiscard%
-    }%
-    %
-    % Start copyright page
-    %
-    \ult@copyright@page@contents%
-    \cleardoublepage%
-    %
-    % End copyright page - setup first "normal" page
-    %
-    \pagenumbering{arabic}%
-    \setcounter{page}{1}%
-    %
-    % Setup hook for first page
-    \AtBeginShipoutNext{%
-      \ifult@has@titlepage%
-        % First, shipout the title page
-        % Note: we have to restore \protect first, which was overridden in \AtBegShi@Output.
-        % Then, after shipout, we use LaTeX' \set@typeset@protect to change \protect the way
-        % that was already done in \AtBegShi@Output.
-        %
-        \let\protect\noexpand%
-        \AtBeginShipoutOriginalShipout\box\AtBeginShipoutBox%
-        \set@typeset@protect%
-        %
-        % Then, setup shipout of copyright page
-        %
-        \setbox\AtBeginShipoutBox=\box\ult@copyright@page@box%
-        %
-        % Make sure title page is displayed as recto page
-        % (but only if using two-page layout)
-        %
-        \def\ult@tmp@pdfpagelayout{TwoPageLeft}%
-        \ifx\@pdfpagelayout\ult@tmp@pdfpagelayout%
-          % We cannot use hyperref to change page layout, because we're after preamble.
-          % So we use "direct" PDF command instead.
-          \pdfcatalog{/PageLayout/TwoPageRight}%
+    \AfterBeginDocument{%
+      \AtBeginShipoutNext{%
+        \ifult@has@titlepage\else%
+          \global\ult@titlepage@was@not@first@pagetrue%
         \fi%
-      \else%
-        % First page wasn't title page, so we insert copyright page before first page.
-        \global\ult@titlepage@was@not@first@pagetrue%
-        %
-        % First, save the current first page.
-        \setbox\ult@tmp@shipoutbox=\copy\AtBeginShipoutBox%
-        %
-        % Then, we shipout the copyright page.
-        % Note: we have to restore \protect first, which was overridden in \AtBegShi@Output.
-        % Then, after shipout, we use LaTeX' \set@typeset@protect to change \protect the way
-        % that was already done in \AtBegShi@Output.
-        %
-        \let\protect\noexpand%
-        \AtBeginShipoutOriginalShipout\box\ult@copyright@page@box%
-        \set@typeset@protect%
-        %
-        % Restore original first page, so it will be shipped out too!
-        %
-        \setbox\AtBeginShipoutBox=\box\ult@tmp@shipoutbox%
-        %
-        % Make sure copyright page is displayed as verso page
-        % (but only if using two-page layout)
-        %
-        \def\ult@tmp@pdfpagelayout{TwoPageRight}%
-        \ifx\@pdfpagelayout\ult@tmp@pdfpagelayout%
-          % We cannot use hyperref to change page layout, because we're after preamble.
-          % So we use "direct" PDF command instead.
-          \pdfcatalog{/PageLayout/TwoPageLeft}%
+      }%
+    }
+  \else
+    % Copyright page
+    \AfterBeginDocument{%
+      \pagenumbering{alph}%
+      \setcounter{page}{2}%
+      %
+      % Now, this may seem counter-intuitive (and it is!!), but this page label
+      % will be associated with the first actual page to be shipped out!
+      \renewcommand\thepage{A}%
+      %
+      % Record the following copyright page in \ult@copyrightpagebox
+      \AtBeginShipoutNext{%
+        \global\setbox\ult@copyright@page@box=\copy\AtBeginShipoutBox%
+        \AtBeginShipoutDiscard%
+      }%
+      %
+      % Start copyright page
+      %
+      \ult@copyright@page@contents%
+      \cleardoublepage%
+      %
+      % End copyright page - setup first "normal" page
+      %
+      \pagenumbering{arabic}%
+      \setcounter{page}{1}%
+      %
+      % Setup hook for first page
+      \AtBeginShipoutNext{%
+        \ifult@has@titlepage%
+          % First, shipout the title page
+          % Note: we have to restore \protect first, which was overridden in \AtBegShi@Output.
+          % Then, after shipout, we use LaTeX' \set@typeset@protect to change \protect the way
+          % that was already done in \AtBegShi@Output.
+          %
+          \let\protect\noexpand%
+          \AtBeginShipoutOriginalShipout\box\AtBeginShipoutBox%
+          \set@typeset@protect%
+          %
+          % Then, setup shipout of copyright page
+          %
+          \setbox\AtBeginShipoutBox=\box\ult@copyright@page@box%
+          %
+          % Make sure title page is displayed as recto page
+          % (but only if using two-page layout)
+          %
+          \def\ult@tmp@pdfpagelayout{TwoPageLeft}%
+          \ifx\@pdfpagelayout\ult@tmp@pdfpagelayout%
+            % We cannot use hyperref to change page layout, because we're after preamble.
+            % So we use "direct" PDF command instead.
+            \pdfcatalog{/PageLayout/TwoPageRight}%
+          \fi%
+        \else%
+          % First page wasn't title page, so we insert copyright page before first page.
+          \global\ult@titlepage@was@not@first@pagetrue%
+          %
+          % First, save the current first page.
+          \setbox\ult@tmp@shipoutbox=\copy\AtBeginShipoutBox%
+          %
+          % Then, we shipout the copyright page.
+          % Note: we have to restore \protect first, which was overridden in \AtBegShi@Output.
+          % Then, after shipout, we use LaTeX' \set@typeset@protect to change \protect the way
+          % that was already done in \AtBegShi@Output.
+          %
+          \let\protect\noexpand%
+          \AtBeginShipoutOriginalShipout\box\ult@copyright@page@box%
+          \set@typeset@protect%
+          %
+          % Restore original first page, so it will be shipped out too!
+          %
+          \setbox\AtBeginShipoutBox=\box\ult@tmp@shipoutbox%
+          %
+          % Make sure copyright page is displayed as verso page
+          % (but only if using two-page layout)
+          %
+          \def\ult@tmp@pdfpagelayout{TwoPageRight}%
+          \ifx\@pdfpagelayout\ult@tmp@pdfpagelayout%
+            % We cannot use hyperref to change page layout, because we're after preamble.
+            % So we use "direct" PDF command instead.
+            \pdfcatalog{/PageLayout/TwoPageLeft}%
+          \fi%
         \fi%
-      \fi%
-    }%
-  }
+      }%
+    }
+  \fi
 \fi
 
 %%%%%%%%%%% END COPYRIGHT PAGE %%%%%%%%%%%

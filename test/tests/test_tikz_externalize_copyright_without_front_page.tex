@@ -1,0 +1,28 @@
+\documentclass{uit-thesis-test}
+
+\makeglossaries
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\pgfplotsset{compat=newest}
+
+\usetikzlibrary{external}
+\tikzset{external/only named=true}
+\tikzexternalize
+
+\begin{document}
+
+First page
+
+\begin{figure}[h]
+  \tikzsetnextfilename{sample_tikz}
+  \begin{tikzpicture}[scale=1.50]
+    \begin{axis}
+    \addplot {x^3};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Sample tikz picture}
+\end{figure}
+
+\end{document}
