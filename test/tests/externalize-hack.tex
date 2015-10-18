@@ -1,0 +1,61 @@
+\usepackage{currfile-abspath}
+\getmainfile
+
+\usepackage{xpatch}
+
+\makeatletter
+
+\AtEndDocument{%
+  \newwrite\maindeffile%
+  \immediate\openout\maindeffile=\jobname.maindef%
+  \immediate\write\maindeffile{%
+    \noexpand\ifcsname mymainfile\noexpand\endcsname\noexpand\else%
+      \noexpand\gdef\noexpand\mymainfile{\mymainfile}%
+    \noexpand\fi%
+  }%
+  \immediate\closeout\maindeffile%
+}
+
+\@input{\jobname.maindef}
+
+\ifcsname mymainfile\endcsname%
+  \ifx\mymainfile\@empty%
+    % Make a second attempt at extracting the real file name
+    \filename@parse{\themainfile}%
+    \let\mymainfile\filename@base%
+    \ifx\mymainfile\@empty%
+      % If still empty, fallback to default behavior
+      \def\mymainfile{\tikzexternal@realjob}%
+    \fi%
+  \fi%
+\else%
+  % First attempt at extracting real file name
+  \filename@parse{\themainfile}%
+  \let\mymainfile\filename@base%
+\fi%
+
+\xpatchcmd{\tikzexternal@assemble@systemcall}%
+  {%
+    \edef\texsource{%
+      \string\def\string\tikzexternalrealjob{\tikzexternal@realjob}%
+      \string\input{\tikzexternal@realjob}%
+    }%
+  }%
+  {%
+    \edef\texsource{%
+      \string\def\string\tikzexternalrealjob{\tikzexternal@realjob}%
+      \string\def\string\mymainfile{\mymainfile}%
+      \string\input{\mymainfile}%
+    }%
+  }%
+  {}
+  {}
+
+\let\old@tikzexternalize@opt@withname\tikzexternalize@opt@withname%
+\def\tikzexternalize@opt@withname[#1]#2{%
+  \ifx\mymainfile\@empty\else%
+    \old@tikzexternalize@opt@withname[#1]{#2}%
+  \fi%
+}
+
+\makeatother

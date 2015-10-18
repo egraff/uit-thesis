@@ -1,3 +1,4 @@
+%& -recorder
 \documentclass{uit-thesis-test}
 
 \makeglossaries
@@ -9,6 +10,9 @@
 
 \usetikzlibrary{external}
 \tikzset{external/only named=true}
+
+\input{externalize-hack.tex}
+
 \tikzexternalize
 
 \begin{document}
