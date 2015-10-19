@@ -8,12 +8,20 @@
 
 \pgfplotsset{compat=1.12}
 
+\usepackage[eulergreek]{sansmath}
+\pgfplotsset{
+  tick label style = {font=\sansmath\sffamily\footnotesize},
+  every axis label = {font=\sansmath\sffamily\footnotesize},
+  legend style = {font=\sansmath\sffamily\footnotesize},
+  label style = {font=\sansmath\sffamily\footnotesize}
+}
+
 \usetikzlibrary{external}
 \tikzset{external/only named=true}
 
 \input{externalize-hack.tex}
 
-\tikzexternalize
+%\tikzexternalize
 
 \begin{document}
 
