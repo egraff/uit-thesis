@@ -140,6 +140,24 @@
 \def\debugdef#1{%
   \typeout{[DEBUG] Definition of \@backslashchar #1: \expandafter\meaning\csname#1\endcsname ^^J ^^J}}
 
+%:----------------- INFO, WARNING, ERROR -----------------
+
+\newcommand\ult@info[1]{%
+  \ClassInfo{uit-thesis}{#1}%
+}
+
+\newcommand\ult@warning[1]{%
+  \ClassWarning{uit-thesis}{#1}%
+}
+
+\newcommand\ult@warning@nl[1]{%
+  \ClassWarningNoLine{uit-thesis}{#1}%
+}
+
+\newcommand\ult@critical@error[1]{%
+  \ClassError{uit-thesis}{#1}{\@ehd}%
+}
+
 %:-------------------------- LaTeX control flow macros -----------------------
 
 % Used to provide if-then-else macros
@@ -177,11 +195,11 @@
     % Re-define macro
     \expandafter\renewcommand\csname\expandafter\@gobble\string#1\endcsname{%
       % Warn on second usage
-      \@latex@warning{Call to \@backslashchar\expandafter\@gobble\string#1\space was ignored, because it was called previously}%
+      \ult@warning{Call to \@backslashchar\expandafter\@gobble\string#1\space was ignored, because it was called previously}%
       % Re-define macro
       \expandafter\renewcommand\csname\expandafter\@gobble\string#1\endcsname{%
         % Error on third usage
-        \@latex@error{Duplicate call to \@backslashchar\expandafter\@gobble\string#1}\@ehd%
+        \ult@critical@error{Duplicate call to \@backslashchar\expandafter\@gobble\string#1}%
       }%
     }%
   }%
@@ -191,10 +209,10 @@
 % Macro is used as \ult@disallowpackage{packagename} or \ult@disallowpackage[Reason for disallowing package]{packagename}.
 \newcommand\ult@disallowpackage[2][\@empty]{%
   \expandafter\edef\csname ult@disallowpackage@#2\endcsname{#1}
-  \AtBeginDocument{
-    \@ifpackageloaded{#2}{
-      \@latex@error{Package #2 has been loaded even if it was disallowed}\@ehd%
-    }{}
+  \AtBeginDocument{%
+    \@ifpackageloaded{#2}{%
+      \ult@critical@error{Package #2 has been loaded even if it was disallowed}%
+    }{}%
   }
 }
 
@@ -342,7 +360,7 @@
   \endgroup
 }
 {}
-{\@latex@error{Failed to patch \@backslashchar floatname}\@ehd}
+{\ult@critical@error{Failed to patch \@backslashchar floatname}}
 
 %:-------------------------- Book class overrides -----------------------
 
@@ -527,7 +545,7 @@
 {%
   \endgroup
   \def#1{%
-    \xpatchcmd{#2}{#3}{#4}{}{\@latex@error{Failed to patch \string#2}\@ehc}%
+    \xpatchcmd{#2}{#3}{#4}{}{\ult@critical@error{Failed to patch \string#2}}%
   }%
 }
 \defspecialpatch\patchautorefmakefirstuc
@@ -689,7 +707,7 @@
 \global\let\ult@author\@empty
 
 % Make sure we get an error if using \maketitle without specifying \author{}, not just warning...
-\def\@author{\@latex@error{No \noexpand\author given}\@ehc}
+\def\@author{\ult@critical@error{No \noexpand\author given}}
 
 % Override \author to update pdfauthor
 \let\ult@saveauthor\author
@@ -829,13 +847,13 @@
 
   % Define convenient macro for patching the actual (potentially wrapped) \lst@MakeCaption
   \gdef\@patch@lst@MakeCaption#1#2{
-    \expandafter\xpatchcmd\csname\cmdname@lst@MakeCaption\endcsname{#1}{#2}{}{\@latex@error{Failed to patch \@backslashchar lst@MakeCaption}\@ehd}
+    \expandafter\xpatchcmd\csname\cmdname@lst@MakeCaption\endcsname{#1}{#2}{}{\ult@critical@error{Failed to patch \@backslashchar lst@MakeCaption}}
   }
 
   % Define convenient macro for patching the caption package's re-implementation of \lst@MakeCaption
   \gdef\@patch@caption@lst@MakeCaption#1#2{
     \@ifundefined{cmdname@caption@lst@MakeCaption}{}{
-      \expandafter\xpatchcmd\csname\cmdname@caption@lst@MakeCaption\endcsname{#1}{#2}{}{\@latex@error{Failed to patch caption's \@backslashchar lst@MakeCaption}\@ehd}
+      \expandafter\xpatchcmd\csname\cmdname@caption@lst@MakeCaption\endcsname{#1}{#2}{}{\ult@critical@error{Failed to patch caption's \@backslashchar lst@MakeCaption}}
     }
   }
 
@@ -1258,7 +1276,7 @@
       \ifodd\value{ult@c@lastblankpage}% If last blank page was recto page
         %\typeout{CLEARVERSO: ADDING EXTRA BLANK ^^J}
         \ifodd\c@page% Current page should not be recto page in this case...
-          \@latex@error{BUG in \@backslashchar clearversopage in uit-thesis package!!!!!!!!!!}\@ehd
+          \ult@critical@error{BUG in \@backslashchar clearversopage in uit-thesis package!!!!!!!!!!}
         \fi%
         % Add one blank verso page to get blank back-sheet
         \updatelastblankpage% Verso page is blank
@@ -1314,7 +1332,7 @@
       \ifodd\value{ult@c@lastblankpage}\else% If last blank page was verso page
         %\typeout{CLEARVERSO: ADDING EXTRA BLANK ^^J}
         \ifodd\c@page\else% Current page should not be verso page in this case...
-          \@latex@error{BUG in \@backslashchar clearrectopage in uit-thesis package!!!!!!!!!!}\@ehd
+          \ult@critical@error{BUG in \@backslashchar clearrectopage in uit-thesis package!!!!!!!!!!}
         \fi
         % Add one blank recto page
         \updatelastblankpage% Recto page is blank
@@ -2005,7 +2023,7 @@
 % Abstract
 \newenvironment{abstract}{%
   \ifult@hasacknowledgement%
-    \@latex@warning{'\abstractname' should precede '\ackname'.}%
+    \ult@warning{'\abstractname' should precede '\ackname'.}%
   \fi
   \global\ult@hasabstracttrue
   \chapter{\abstractname}
@@ -2020,13 +2038,13 @@
 % Dedication
 \newenvironment{dedication}{%
   \ifult@hasabstract%
-    \@latex@warning{'Dedication' should precede '\abstractname'.}%
+    \ult@warning{'Dedication' should precede '\abstractname'.}%
   \fi
   \ifult@hasacknowledgement%
-    \@latex@warning{'Dedication' should precede '\ackname'.}%
+    \ult@warning{'Dedication' should precede '\ackname'.}%
   \fi
   \ifult@hasepigraph%
-    \@latex@warning{'Dedication' should precede 'Epigraph'}%
+    \ult@warning{'Dedication' should precede 'Epigraph'}%
   \fi
   \global\ult@hasdedicationtrue
   \cleardoublepage
@@ -2048,21 +2066,18 @@
   \ifdefined\@ult@epigraphenv%
     \item{``#1\relax''\\{--}#2\relax}%
   \else%
-    \@latex@error{epigraph environment required for epigraphitem!}\@ehd%
+    \ult@critical@error{epigraph environment required for epigraphitem!}%
   \fi
 }
 \newenvironment{epigraph}{%
   \ifult@hasacknowledgement%
-    \@latex@warning{'Epigraph' should precede '\ackname'.}%
+    \ult@warning{'Epigraph' should precede '\ackname'.}%
   \fi
   \ifult@hasabstract%
-    \@latex@warning{'Epigraph' should precede '\abstractname'.}%
-  \fi
-  \ifult@hasdedication\else%
-    \@latex@warning{'Epigraph' should succeed 'Dedication'.}%
+    \ult@warning{'Epigraph' should precede '\abstractname'.}%
   \fi
   \ifdefined\@ult@epigraphenv%
-    \@latex@error{Nested epigraphs are not allowed!}\@ehd%
+    \ult@critical@error{Nested epigraphs are not allowed!}%
   \fi
   \global\ult@hasepigraphtrue
   \def\@ult@epigraphenv{}
@@ -2166,7 +2181,7 @@
     {{\PackageError{tocloft}{#2 has been previously defined}{\@eha}}}
     {{}}
     {}
-    {\@latex@error{Failed to patch \@backslashchar newlistentry}\@ehd}
+    {\ult@critical@error{Failed to patch \@backslashchar newlistentry}}
 %
 % Now, override the macro, so we may override default styling on new list entries.
 \LetLtxMacro{\ult@savenewlistentry}{\newlistentry}
@@ -2337,7 +2352,7 @@
 
 % Prevent \printglossaries, since we have acronyms in frontmatter and glossary in back matter
 \renewcommand*{\printglossaries}{%
-  \@latex@warning{Call to \@backslashchar printglossaries was ignored.}%
+  \ult@warning{Call to \@backslashchar printglossaries was ignored.}%
 }
 
 
@@ -2409,7 +2424,7 @@
           \glsunset{\@glsentry}
         }%
         {% If not
-          \@latex@error{BUG in \@backslashchar ult@restoreglsstates}\@ehd
+          \ult@critical@error{BUG in \@backslashchar ult@restoreglsstates}
         }%
       }%
     \fi%
@@ -2458,7 +2473,7 @@
   \toc@finish%
   %
   \renewcommand\tableofcontents{%
-    \@latex@error{Duplicate \@backslashchar tableofcontents}\@ehd%
+    \ult@critical@error{Duplicate \@backslashchar tableofcontents}%
   }%
   %
   % LISTS
@@ -2871,8 +2886,8 @@
 
 
 % Error if \maketitle is used without defining \thesisfaculty{} and \thesisprogramme{}
-\def\@thesisfaculty{\@latex@error{No \noexpand\thesisfaculty given}\@ehc}
-\def\@thesisprogramme{\@latex@error{No \noexpand\thesisprogramme given}\@ehc}
+\def\@thesisfaculty{\ult@critical@error{No \noexpand\thesisfaculty given}}
+\def\@thesisprogramme{\ult@critical@error{No \noexpand\thesisprogramme given}}
 
 
 % Use English as default
@@ -3090,24 +3105,24 @@
   % It can therefore be used to test if command is used before or after \begin{document}...\end{document},
   % that is, if we're in the preamble or not. Since \@onefilewithoptions is defined with \@onlypreamble in
   % the LaTeX kernel, we don't want to take any action if we're not in the preable, since it's an error anyways.
-  \ifx\AtBeginDocument\@firstofone\else
+  \ifx\AtBeginDocument\@firstofone\else%
     % We're in the preamble
     %
     % Test if the package is allowed
-    \ifcsname ult@disallowpackage@#1\endcsname
-      \begingroup
-        \expandafter\let\expandafter\ult@tmp@disallowpackagereason\csname ult@disallowpackage@#1\endcsname
-        \ifx\ult@tmp@disallowpackagereason\@empty
-          \@latex@error{The use of package #1 has been disallowed by the uit-thesis document class}\@ehd%
-        \else
-          \@latex@error{The use of package #1 has been disallowed by the uit-thesis document class.^^J^^J\ult@tmp@disallowpackagereason^^J}\@ehd%
-        \fi
-      \endgroup
-    \else
+    \ifcsname ult@disallowpackage@#1\endcsname%
+      \begingroup%
+        \expandafter\let\expandafter\ult@tmp@disallowpackagereason\csname ult@disallowpackage@#1\endcsname%
+        \ifx\ult@tmp@disallowpackagereason\@empty%
+          \ult@critical@error{The use of package #1 has been disallowed by the uit-thesis document class}%
+        \else%
+          \ult@critical@error{The use of package #1 has been disallowed by the uit-thesis document class.^^J^^J\ult@tmp@disallowpackagereason^^J}%
+        \fi%
+      \endgroup%
+    \else%
       % Warn if package hasn't been previously loaded
-      \@ifpackageloaded{#1}{}{\@latex@warning{Are you sure you are allowed to use the #1 package?}}%
-    \fi
-  \fi
+      \@ifpackageloaded{#1}{}{\ult@warning@nl{Are you sure you are allowed to use the #1 package?}}%
+    \fi%
+  \fi%
   \ult@save@onefilewithoptions#1[{#2}][{#3}]#4%
 }
 
