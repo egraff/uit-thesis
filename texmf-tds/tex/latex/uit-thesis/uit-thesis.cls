@@ -156,6 +156,11 @@
   \xintthe\xintiexpr #1/#2\relax%
 }
 
+% Used to suppress certain package warnings
+\usepackage[safe]{silence}
+
+\WarningFilter*{microtype}{You are using the `ragged2e' package}
+
 % Used to prevent given LaTeX macro from being called more than once
 \newcommand\ult@once[1]{%
   % Save original macro
