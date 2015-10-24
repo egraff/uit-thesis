@@ -103,6 +103,12 @@
 
 %:-------------------------- Require packages -----------------------
 
+% Used to suppress certain package warnings
+\RequirePackage[safe]{silence}
+
+\WarningFilter*{microtype}{You are using the `ragged2e' package}
+\WarningFilter*{fixltx2e}{fixltx2e is not required with releases after 2015}
+
 % Allow UTF-8 characters in .tex source files (e.g. so we don't have to escape Norwegian characters)
 \RequirePackage[utf8]{inputenc}
 
@@ -173,11 +179,6 @@
 \newcommand*{\DivideLengths}[2]{%
   \xintthe\xintiexpr #1/#2\relax%
 }
-
-% Used to suppress certain package warnings
-\usepackage[safe]{silence}
-
-\WarningFilter*{microtype}{You are using the `ragged2e' package}
 
 % Used to prevent given LaTeX macro from being called more than once
 \newcommand\ult@once[1]{%
