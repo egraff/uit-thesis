@@ -554,17 +554,27 @@
   {%
     \HyRef@currentHtag
     \expandafter\@firstoffive#1\@empty\@empty\@empty
-    \null%
+    \null
   }%
   {%
     \expandafter\expandafter\expandafter\makefirstuc\expandafter\expandafter\expandafter{\HyRef@currentHtag\expandafter\@firstoffive#1\@empty\@empty\@empty}%
-    \null%
+    \null
   }
-\newcommand{\Autoref}[1]{%
-  \begingroup%
-    \patchautorefmakefirstuc%
+
+\def\ult@autoref@starred#1{%
+    \autoref*{#1}%
+  \endgroup
+}
+
+\def\ult@autoref#1{%
     \autoref{#1}%
-  \endgroup%
+  \endgroup
+}
+
+\def\Autoref{%
+  \begingroup
+    \patchautorefmakefirstuc
+    \@ifstar\ult@autoref@starred\ult@autoref
 }
 
 
