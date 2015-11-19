@@ -49,7 +49,7 @@ clean:
 test: 
 	@echo "Running comparison tests..."
 	@echo ""
-	@python scripts/regtest.py
+	@python ../ult-base/test-scripts/regtest.py .
 
 _file: _ctrl_
 	@echo "Building $(FILE)..."
