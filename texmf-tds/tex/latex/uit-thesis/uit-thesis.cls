@@ -534,48 +534,7 @@
 }
 
 
-% Define \Autoref macro that does the same as hyperref's \autoref, except it capitalizes the first letter
-% in the reference name.
-\def\defspecialpatch
-{%
-  \begingroup
-    \catcode`\#=12
-    \@defspecialpatch
-}
-\def\@defspecialpatch#1#2#3#4
-{%
-  \endgroup
-  \def#1{%
-    \xpatchcmd{#2}{#3}{#4}{}{\ult@critical@error{Failed to patch \string#2}}%
-  }%
-}
-\defspecialpatch\patchautorefmakefirstuc
-  {\HyRef@autosetref}
-  {%
-    \HyRef@currentHtag
-    \expandafter\@firstoffive#1\@empty\@empty\@empty
-    \null
-  }%
-  {%
-    \expandafter\expandafter\expandafter\makefirstuc\expandafter\expandafter\expandafter{\HyRef@currentHtag\expandafter\@firstoffive#1\@empty\@empty\@empty}%
-    \null
-  }
-
-\def\ult@autoref@starred#1{%
-    \autoref*{#1}%
-  \endgroup
-}
-
-\def\ult@autoref#1{%
-    \autoref{#1}%
-  \endgroup
-}
-
-\def\Autoref{%
-  \begingroup
-    \patchautorefmakefirstuc
-    \@ifstar\ult@autoref@starred\ult@autoref
-}
+\usepackage{ult-autoref}
 
 
 % Small, hanging indentation with bold label.
@@ -595,83 +554,7 @@
 
 %:-------------------------- References -----------------------
 
-% Allows us to rename name definitions for e.g. Figure, Table, Section, Subsection, etc.
-% Used as \renamedefname[language-name]{ident}{new name}.
-%   If 'language-name' is empty, then current language is used.
-%   'ident' is identifier, e.g. float name. For example, figure, section, lstlisting.
-%   'new name' is new reference name, e.g. Figure, Section, Code Listing.
-%
-% Example: if the current \languagename is USenglish, then you may either write
-%   \renamedefname[USenglish]{lstlisting}{Code Listing}
-% or
-%   \renamedefname{lstlisting}{Code Listing}
-\newcommand\renamedefname[3][\@empty]{
-  \begingroup
-    \def\ult@tmp@langname{\@empty}
-    \ifx#1\@empty
-      % If no language was specified, use current language.
-      \global\@namedef{#2name}{#3}
-      \ifcsname languagename\endcsname
-        \let\ult@tmp@langname\languagename\relax
-      \fi
-    \else
-      \def\ult@tmp@langname{#1}
-      \ifcsname languagename\endcsname
-        \ifx#1\languagename
-          % Only we have a current language, only change these if requested language = current language
-          \global\@namedef{#2name}{#3}
-        \fi
-      \fi
-    \fi
-    % If we have a language
-    \ifx\ult@tmp@langname\@empty\else
-      \ifcsname captions\ult@tmp@langname\endcsname
-        % Add name definition to \captions<Language name> macro.
-        \expandafter\g@addto@macro\csname captions\ult@tmp@langname\endcsname
-          {\@namedef{#2name}{#3}}%
-      \fi
-    \fi
-  \endgroup
-}
-
-% Allows us to rename autoref reference names for e.g. Figure, Table, Section, Subsection, etc.
-% Used as \renameautorefname[language-name]{ident}{new name}.
-%   If 'language-name' is empty, then current language is used.
-%   'ident' is identifier, e.g. float name. For example, figure, section, lstlisting.
-%   'new name' is new reference name, e.g. Figure, Section, Code Listing.
-%
-% Example: if the current \languagename is USenglish, then you may either write
-%   \renameautorefname[USenglish]{lstlisting}{Code Listing}
-% or
-%   \renameautorefname{lstlisting}{Code Listing}
-\newcommand\renameautorefname[3][\@empty]{
-  \begingroup
-    \def\ult@tmp@langname{\@empty}
-    \ifx#1\@empty
-      % If no language was specified, use current language.
-      \global\@namedef{#2autorefname}{#3}
-      \ifcsname languagename\endcsname
-        \let\ult@tmp@langname\languagename\relax
-      \fi
-    \else
-      \def\ult@tmp@langname{#1}
-      \ifcsname languagename\endcsname
-        \ifx#1\languagename
-          % Only we have a current language, only change these if requested language = current language
-          \global\@namedef{#2autorefname}{#3}
-        \fi
-      \fi
-    \fi
-    % If we have a language
-    \ifx\ult@tmp@langname\@empty\else
-      \ifcsname extras\ult@tmp@langname\endcsname
-        % Add autorefname definition to \extras<Language name> macro.
-        \expandafter\g@addto@macro\csname extras\ult@tmp@langname\endcsname
-          {\@namedef{#2autorefname}{#3}}%
-      \fi
-    \fi
-  \endgroup
-}
+\usepackage{ult-rename}
 
 % For some reason, hyperref has let some reference names have first capital letter, whereas others do not.
 % Make sure all default reference names use first capital letter.
@@ -824,155 +707,7 @@
 % Don't use old style numbers for line numbers or in listing content
 \lst@AddToHookAtTop{Init}{\ult@setlfstyledefault}
 
-% Insane hack that allows us to create listing environments that are counted and referenced separately
-% (\lstnewenvironment is really, really stupid...)
-% We provide the command \newcustomlstenvironment instead, which behaves almost identical to \lstnewenvironment.
-% Example:
-%   \newcustomlstenvironment{alglisting}{loalg}{Algorithm}[1][]{
-%     \lstset{...,#1}
-%   }{}
-%
-% Then, you can either use \begin{alglisting}...\end{alglisting}, or use the \lstinputalglisting command.
-% Tip: create a convenient \listofalglisting macro by using:
-%   \newlistof{alglisting}{loalg}{List of Algorithms}
-% after defining the new listing environment. It is also possible to use \listof{alglisting}{List of Algorithms} instead.
-\AtBeginDocument{
-  \global\@namedef{cmdname@lst@MakeCaption}{lst@MakeCaption}
-
-  \@ifpackageloaded{caption}{
-    % If hyperref is loaded before caption, then hyperref will have wrapped \lst@MakeCaption first in \NROrg@lst@MakeCaption
-    \xpatchcmd\caption@ORI@lst@MakeCaption{\NROrg@lst@MakeCaption}{\NROrg@lst@MakeCaption}
-      {%
-        \global\@namedef{cmdname@lst@MakeCaption}{NROrg@lst@MakeCaption}
-        \global\@namedef{cmdname@caption@lst@MakeCaption}{lst@MakeCaption}
-      }{%
-        \global\@namedef{cmdname@lst@MakeCaption}{caption@ORI@lst@MakeCaption}
-        \global\@namedef{cmdname@caption@lst@MakeCaption}{NROrg@lst@MakeCaption}
-      }
-  }{}
-  \@ifpackageloaded{hyperref}{
-    % If caption is loaded before hyperref, then caption will have wrapped \lst@MakeCaption first in \caption@ORI@lst@MakeCaption
-    \xpatchcmd\NROrg@lst@MakeCaption{\caption@ORI@lst@MakeCaption}{\caption@ORI@lst@MakeCaption}
-      {\global\@namedef{cmdname@lst@MakeCaption}{caption@ORI@lst@MakeCaption}}{\global\@namedef{cmdname@lst@MakeCaption}{NROrg@lst@MakeCaption}}
-  }{}
-
-  % Define convenient macro for patching the actual (potentially wrapped) \lst@MakeCaption
-  \gdef\@patch@lst@MakeCaption#1#2{
-    \expandafter\xpatchcmd\csname\cmdname@lst@MakeCaption\endcsname{#1}{#2}{}{\ult@critical@error{Failed to patch \@backslashchar lst@MakeCaption}}
-  }
-
-  % Define convenient macro for patching the caption package's re-implementation of \lst@MakeCaption
-  \gdef\@patch@caption@lst@MakeCaption#1#2{
-    \@ifundefined{cmdname@caption@lst@MakeCaption}{}{
-      \expandafter\xpatchcmd\csname\cmdname@caption@lst@MakeCaption\endcsname{#1}{#2}{}{\ult@critical@error{Failed to patch caption's \@backslashchar lst@MakeCaption}}
-    }
-  }
-
-  % Patch ToC-stuff in \lst@MakeCaption
-  \global\@namedef{ext@lstlisting}{lol}
-  \global\@patch@lst@MakeCaption
-    {\addcontentsline{lol}{lstlisting}}
-    {\addcontentsline{\@nameuse{ext@lstlisting}}{lstlisting}}
-  \global\@patch@lst@MakeCaption
-    {\addcontentsline{lol}{lstlisting}}
-    {\addcontentsline{\@nameuse{ext@lstlisting}}{lstlisting}}
-}
-
-\gdef\@customlstenvironmenthook#1{
-  % Override listing name as shown in caption
-  \def\lstlistingname{\@nameuse{#1name}}
-  % Override counter as shown in caption
-  \expandafter\let\csname c@lstlisting\expandafter\endcsname\csname c@#1\endcsname
-  \expandafter\let\csname thelstlisting\expandafter\endcsname\csname the#1\endcsname
-  \expandafter\let\csname theHlstlisting\expandafter\endcsname\csname theH#1\endcsname
-  %
-  % Prepend #1- to \theHlstnumber to make this hyperref counter unique too
-  % (otherwise, hyperref will complain with "destination with the same identifier
-  % (name{lstnumber.X.Y.Z}) has been already used, duplicate ignored").
-  % Thanks to Heiko "the man" Oberdiek!!
-  % (see https://groups.google.com/forum/#!msg/comp.text.tex/vO5PaIkhfkE/ouW-6192yd4J)
-  \begingroup
-    \global\let\gtmp@theHlstnumber\theHlstnumber
-    \toks@\expandafter{\theHlstnumber}%
-    \xdef\gtmp@theHlstnumber{#1-\the\toks@}%
-  \endgroup
-  \let\theHlstnumber\gtmp@theHlstnumber
-  %
-  % Patch \lst@MakeCaption to use the counter of our customized lstlisting environment.
-  \@patch@lst@MakeCaption
-    {\ifx\lst@@caption\@empty\expandafter\lst@HRefStepCounter\else
-      \expandafter\refstepcounter\fi {lstlisting}}
-    {\ifx\lst@@caption\@empty\expandafter\lst@HRefStepCounter\else
-      \expandafter\refstepcounter\fi {#1}}
-  %
-  % Patch ToC output from \lst@MakeCaption so we get a separate "List of ..." for each environment.
-  \@patch@lst@MakeCaption
-    {\addcontentsline{\@nameuse{ext@lstlisting}}{lstlisting}\lst@name}
-    {\addcontentsline{\@nameuse{ext@#1}}{#1}\lst@name}
-  \@patch@lst@MakeCaption
-    {\addcontentsline{\@nameuse{ext@lstlisting}}{lstlisting}{\protect\numberline{\thelstlisting}\lst@@caption}}
-    {\addcontentsline{\@nameuse{ext@#1}}{#1}{\protect\numberline\expandafter{\csname the#1\endcsname}\lst@@caption}}
-  %
-  % Now, patch caption's implementation of \lst@MakeCaption, so we may style each environment differently using \captionsetup
-  \@patch@caption@lst@MakeCaption
-    {\caption@setoptions{lstlisting}}
-    {\caption@setoptions{#1}}
-  \@patch@caption@lst@MakeCaption
-    {\caption@begin{lstlisting}}
-    {\caption@begin{#1}}
-}
-
-% Usage: \newcustomlstenvironment
-%          {<Environment name>}{<Aux extension>}{<Caption/autref name>}
-%          [<number>][<opt. default arg.>]{<starting code>}{ending code>} <-- These are passed directly to \lstnewenvironment
-\lst@UserCommand\newcustomlstenvironment#1#2#3#4#{%
-  \newcustomlstenvironment@{#1}{#2}{#3}{#4}
-}
-\gdef\newcustomlstenvironment@#1#2#3#4#5#6{
-  % Define separate counter for our customized lstlisting environment.
-  % Note: only supports numbering with or without chapter number first (same as lstlisting).
-  \lst@ifnumberbychapter
-    \newcounter{#1}[chapter]
-    \global\@namedef{the#1}%
-      {\ifnum \c@chapter>\z@ \thechapter.\fi \arabic{#1}}
-  \else
-    \newcounter{#1}
-    \global\@namedef{the#1}{\arabic{#1}}
-  \fi
-  %
-  % Hyperref has separate counter that needs a unique name.
-  % Again, thanks to Mr. Oberdiek!
-  \global\@namedef{theH#1}%
-    {lst.#1-\csname the\@ifundefined{theHchapter}{}{H}chapter\endcsname .\arabic{#1}}
-  %
-  % Override autoref names for our environment.
-  \global\@namedef{#1name}{#3}
-  \global\@namedef{#1autorefname}{#3}
-  %
-  % Define aux extension
-  \global\@namedef{ext@#1}{#2}
-  %
-  % Create new listing environment as usual, by calling \lstnewenvironment
-  % Note: #4 contains something like "[N][]", corresponding to [<number>][<opt. default arg.>]
-  %       arguments of \lstnewenvironment (see listings doc, §4.16).
-  \lstnewenvironment{#1}#4{
-    \@customlstenvironmenthook{#1}
-    %
-    % Contents passed to {<starting code} of \lstnewenvrionment (e.g. \lstset{#1,..})
-    #5%
-  }{%
-    % Contents passed to {<ending code>} of \lstnewenvrionment
-    #6%
-  }
-  \expandafter\newcommand\csname lstinput#1\endcsname[2][]{
-    \begingroup
-      \@customlstenvironmenthook{#1}
-      #5%
-      \lstinputlisting{##2}% Note: we use\lstinputlisting{##2} instead of \lstinputlisting[##1]{##2}, because #5 is assumed to contain \lstset{##1}. See issue #52 on Github.
-      #6%
-    \endgroup
-  }
-}
+\usepackage{ult-custom-listings}
 
 % Pretty tables
 \usepackage{booktabs}
@@ -1196,168 +931,7 @@
 % Used to modify header/footer of pages
 \usepackage{fancyhdr}
 
-\newcounter{ult@c@firstblankpage}\setcounter{ult@c@firstblankpage}{\z@}%
-\newcounter{ult@c@lastblankpage}\setcounter{ult@c@lastblankpage}{\z@}%
-\newcounter{ult@c@tmpblankpage}
-
-\newcommand\updatefirstblankpage{%
-  \ifnum\c@page>\value{ult@c@firstblankpage}%
-    \setcounter{ult@c@firstblankpage}{\c@page}%
-    %\typeout{FIRST BLANK PAGE SET TO: \the\c@page}%
-  \fi%
-}
-
-\newcommand\updatelastblankpage{%
-  \setcounter{ult@c@lastblankpage}{\c@page}%
-  %\typeout{LAST BLANK PAGE SET TO: \the\c@page}%
-}
-
-\let\ult@saveclearpage\clearpage
-\renewcommand\clearpage{%
-  \setcounter{ult@c@tmpblankpage}{\c@page}%
-  \ult@saveclearpage%
-  \ifnum\c@page=\value{ult@c@tmpblankpage}% Previous page was blank
-    \ifnum\c@page>\value{ult@c@lastblankpage}
-      \setcounter{ult@c@firstblankpage}{\c@page}%
-      \addtocounter{ult@c@firstblankpage}{\m@ne}%
-      %\typeout{LAST BLANK PAGE UPDATED TO: \the\value{ult@c@firstblankpage}}%
-    \fi
-  \else
-    \updatefirstblankpage%
-  \fi
-}
-
-% Macro to create empty page so that chapters always start on recto page
-% Note that we use pagestyle "empty" to let the blank pages be blank folios (no page numbers)
-% It can be changed to "plain" if page number is desired on blank pages
-\def\cleardoublepage{%
-  \clearpage%
-  \if@twoside%
-    \ifodd\c@page\else% If even page
-      \updatelastblankpage% Verso page is blank
-      \hbox{}%
-      \thispagestyle{empty}%
-      \newpage%
-      \if@twocolumn%
-        \hbox{}%
-        \newpage%
-      \fi%
-    \fi%
-  \fi%
-}
-
-% Make sure we have a blank verso page. Following content will continue on succeeding recto page.
-% Note: this is different from \cleardoublepage, which allows content on verso page.
-\def\clearversopage{%
-  \clearpage%
-  \if@twoside%
-    \ifnum\value{ult@c@firstblankpage}>\value{ult@c@lastblankpage}% If we have no known, preceding blank pages
-      \ifodd\c@page% If odd page (text ended on verso page)
-        %\typeout{CLEARVERSO: ODDPAGE == Y ^^J}
-        % Add one blank recto page and one blank verso page
-        \hbox{}%
-        \thispagestyle{empty}%
-        \newpage%
-        \if@twocolumn%
-          \hbox{}%
-          \newpage%
-        \fi%
-        \updatelastblankpage% Verso page is blank
-        \hbox{}%
-        \thispagestyle{empty}%
-        \newpage%
-        \if@twocolumn%
-          \hbox{}%
-          \newpage%
-        \fi%
-      \else % Text ended on recto page
-        %\typeout{CLEARVERSO: EEEEEEEEEEVENPAGE ^^J}
-        % Add one blank verso page
-        \updatelastblankpage% Verso page is blank
-        \hbox{}%
-        \thispagestyle{empty}%
-        \newpage%
-        \if@twocolumn%
-          \hbox{}%
-          \newpage%
-        \fi%
-      \fi%
-    \else% If we have known, preceding blank pages
-      %\typeout{CLEARVERSO: ALREADY BLANK ^^J}
-      \ifodd\value{ult@c@lastblankpage}% If last blank page was recto page
-        %\typeout{CLEARVERSO: ADDING EXTRA BLANK ^^J}
-        \ifodd\c@page% Current page should not be recto page in this case...
-          \ult@critical@error{BUG in \@backslashchar clearversopage in uit-thesis package!!!!!!!!!!}
-        \fi%
-        % Add one blank verso page to get blank back-sheet
-        \updatelastblankpage% Verso page is blank
-        \hbox{}%
-        \thispagestyle{empty}%
-        \newpage%
-        \if@twocolumn%
-          \hbox{}%
-          \newpage%
-        \fi%
-       \fi%
-    \fi%
-  \fi%
-}
-
-% Make sure we have a blank recto page. Following content will continue on succeeding verso page.
-\def\clearrectopage{%
-  \clearpage%
-  \if@twoside%
-    \ifnum\value{ult@c@firstblankpage}>\value{ult@c@lastblankpage}% If we have no known, preceding blank pages
-      \ifodd\c@page% If odd page (text ended on verso page)
-        %\typeout{CLEARRECTO: ODDPAGE == Y ^^J}
-        % Add one blank recto page
-        \updatelastblankpage% Recto page is blank
-        \hbox{}%
-        \thispagestyle{empty}%
-        \newpage%
-        \if@twocolumn%
-          \hbox{}%
-          \newpage%
-        \fi%
-      \else % Text ended on recto page
-        %\typeout{CLEARRECTO: EEEEEEEEEEVENPAGE ^^J}
-        % Add one blank verso page and one blank recto page
-        \hbox{}%
-        \thispagestyle{empty}%
-        \newpage%
-        \if@twocolumn%
-          \hbox{}%
-          \newpage%
-        \fi%
-        \updatelastblankpage% Recto page is blank
-        \hbox{}%
-        \thispagestyle{empty}%
-        \newpage%
-        \if@twocolumn%
-          \hbox{}%
-          \newpage%
-        \fi%
-      \fi%
-    \else% If we have known, preceding blank pages
-      %\typeout{CLEARRECTO: ALREADY BLANK ^^J}
-      \ifodd\value{ult@c@lastblankpage}\else% If last blank page was verso page
-        %\typeout{CLEARVERSO: ADDING EXTRA BLANK ^^J}
-        \ifodd\c@page\else% Current page should not be verso page in this case...
-          \ult@critical@error{BUG in \@backslashchar clearrectopage in uit-thesis package!!!!!!!!!!}
-        \fi
-        % Add one blank recto page
-        \updatelastblankpage% Recto page is blank
-        \hbox{}%
-        \thispagestyle{empty}%
-        \newpage%
-        \if@twocolumn%
-          \hbox{}%
-          \newpage%
-        \fi%
-       \fi%
-    \fi%
-  \fi%
-}
+\usepackage{ult-clearpage}
 
 % Define pagestyle
 \pagestyle{fancy}
@@ -1406,25 +980,16 @@
 
 %:-------------------------- Black magic hacks -----------------------
 
-\DeclareRobustCommand{\scaledsc}[1]{%
-  \begingroup%
-  \scalefont{1.12}%
-  \microtypesetup{tracking=false}% Disable tracking to reduce letterspacing for acronyms and similar
-  \textsc{#1}%
-  \endgroup%
-}
+\usepackage{ult-upsc}
 
-% Magic to define \upsc{} command that replaces upper-case letters with lower-case small-caps
-\ExplSyntaxOn
-\cs_generate_variant:Nn \tl_rescan:nn { nV }
-\NewDocumentCommand \upsc { m }
-  {
-    \tl_set:Nx \l_tmpa_tl {#1}
-    \regex_replace_all:nnN { ([A-Z]+) }
-      { \c{scaledsc} \cB\{ \c{lowercase} \cB\{ \1 \cE\} \cE\} } \l_tmpa_tl
-    \tl_use:N \l_tmpa_tl
-  }
-\ExplSyntaxOff
+\LetLtxMacro{\ult@upsc}{\upsc}
+\DeclareRobustCommand{\upsc}[1]{%
+  \begingroup
+    \scalefont{1.12}%
+    \microtypesetup{tracking=false}% Disable tracking to reduce letterspacing for acronyms and similar
+    \ult@upsc{#1}%
+  \endgroup
+}
 
 %:-------------------------- Glossaries -----------------------
 
@@ -2299,67 +1864,7 @@
 \renamedefname[USenglish]{acronym}{List of Abbreviations}
 \renamedefname[norsk]{acronym}{Forkortelser}
 
-% Override \printglossary to prevent blank page from being inserted
-% when acronym/glossary list is empty.
-%
-% The problem is that an "empty" auxillary file for a glossary list
-% will contain "\null" as its file contents. The \null command is the
-% same as \hbox{}, and will flush a new page if called after a
-% \clearpage or \cleardoublepage, which is *extremely* undesirable.
-%
-% The following hack exploits the fact that \printglossary uses the
-% \@input@ command to output the contents of the auxillary file for
-% the glossary list. So we re-define \@input@ temporarily to use
-% LaTeX magic to read the entire file contents into a command
-% \ult@read@buf, and test if the file contents are strictly equal to
-% \null. If so, we simply ignore the \@input@, else we call the
-% normal \@input@ command (that we have saved first). Then, when
-% \printglossary calls \@input@, it will actually call our overridden
-% command, and make sure we don't output anything if the file only
-% contains \null. Finally, we restore the original \@input@ command
-% so it can be used later.
-%
-% Note: Must use \LetLtxMacro because \printglossary is complex with
-% default value for parameter.
-% See: http://www.tex.ac.uk/cgi-bin/texfaq2html?label=patch
-%
-% Also note: I tried to use a normal LaTeX \read-loop with scantokens,
-% but did not succeed, so I ended up using the 'catchfile' package,
-% which seems to get the job done!
-\LetLtxMacro{\ult@saveprintglossary}{\printglossary}
-\renewcommand{\printglossary}[1][type=\glsdefaulttype]{%
-  % Override \@input@ that is used by \printglossary
-  \let\ult@save@input@\@input@%
-  \renewcommand\@input@[1]{%
-    \IfFileExists{##1}{%
-      % See http://tex.stackexchange.com/questions/14145/how-do-i-create-a-macro-which-reads-the-content-of-a-file-when-the-macro-is-defi
-      \CatchFileDef{\ult@read@buf}% Macro we dump file contents into
-                   {##1}% File name
-                   {\makeatletter\endlinechar=-1\relax}% Scancode magic
-      %
-      % If file contents is equal to \null, then ignore...
-      % This will prevent an additional blank page being inserted,
-      % since we suppress the \null from being output.
-      \expandafter\ifx\ult@read@buf\null\else%
-        % Call on saved \@input@ command
-        \ult@save@input@{##1}%
-      \fi%
-    }{% If file does not exist
-      % Create it, because \@print@glossary tests if file does not exist, and outputs \null if it didn't
-      % (which results in an annoying, blank page...)
-      \newwrite\ult@tmp@glossary@file%
-      \immediate\openout\ult@tmp@glossary@file=##1%
-      \immediate\write\ult@tmp@glossary@file{}%
-      \immediate\closeout\ult@tmp@glossary@file%
-    }%
-  }%
-  %
-  % Now, that we have overridden \@input@, call saved \printglossary
-  \ult@saveprintglossary[#1]%
-  %
-  % Finally, restore \@input@ so we don't fuck up for other stuff
-  \let\@input@\ult@save@input@%
-}
+\usepackage{ult-printglossary}
 
 % Prevent \printglossaries, since we have acronyms in frontmatter and glossary in back matter
 \renewcommand*{\printglossaries}{%

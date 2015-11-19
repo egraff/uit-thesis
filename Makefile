@@ -54,6 +54,7 @@ check-texmf: detect-texmf
 	@test -d "$(ULTTEXMF)" || mkdir -p "$(ULTTEXMF)"
 
 uninstall: check-texmf
+	$(MAKE) -C ult-base uninstall TEXMF=$(TEXMF) CONTINUE=y
 	@echo "$(ULTTEXMF)/tex/latex/$(NAME)"
 	@if [ -d "$(LATEXROOT)" ]; then \
 		echo "Uninstalling..." ; \
@@ -63,6 +64,7 @@ uninstall: check-texmf
 	fi
 
 install: check-texmf uninstall
+	$(MAKE) -C ult-base install TEXMF=$(TEXMF) CONTINUE=y
 	@echo "Installing into \"$(LATEXROOT)\"..."
 	@test -d "$(LATEXROOT)" || mkdir -p "$(LATEXROOT)"
 	@cp -r -v "$(LOCALLATEXROOT)"/* "$(LATEXROOT)/"
