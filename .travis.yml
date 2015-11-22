@@ -19,8 +19,7 @@ before_install:
   - tlmgr conf
 install:
   - make install CONTINUE=y
-  - cd test
 script:
-  - make
+  - make -C test
 after_script:
-  - scripts/travis-after.sh
+  - test/scripts/travis-after.sh

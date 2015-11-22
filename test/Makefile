@@ -8,12 +8,13 @@ BASENAME = $(shell basename $(FILE) .tex)
 DIRNAME = $(shell dirname $(FILE))
 
 TESTSDIR = tests
+MAINDIR_REL2_TESTSDIR = ..
 PDFFLD = pdfs
 
 # Placement of all produced files
 BUILDFLD = .build
 
-BUILDFILE = $(TESTSDIR)/$(DIRNAME)/$(BASENAME).tex
+BUILDFILE = $(DIRNAME)/$(BASENAME).tex
 OUTDIR = $(BUILDFLD)/$(DIRNAME)/$(BASENAME)
 PDFOUTDIR = $(PDFFLD)/$(DIRNAME)
 
@@ -21,7 +22,7 @@ PDFOUTDIR = $(PDFFLD)/$(DIRNAME)
 OUTPUTNAME = output
 
 # Extra options, these must be available for both pdflatex and latexmk
-DEFOPT = -output-directory=$(OUTDIR) -interaction=batchmode
+DEFOPT = -output-directory=$(MAINDIR_REL2_TESTSDIR)/$(OUTDIR) -interaction=batchmode
 
 # Options for glossary
 GLOSSOPT = -q
@@ -56,9 +57,9 @@ _file: _ctrl_
 	@$(RM) $(PDFOUTDIR)/$(BASENAME).pdf
 	@mkdir -p $(OUTDIR)
 	@mkdir -p $(PDFOUTDIR)
-	$(LAMEBUILD)
+	(cd $(TESTSDIR) && $(LAMEBUILD))
 	@if grep -q "\\makeglossaries" $(BUILDFILE); then $(BUILDGLOSS); fi
-	$(BUILD) && mv $(OUTDIR)/$(OUTPUTNAME).pdf $(PDFOUTDIR)/$(BASENAME).pdf && \
+	(cd $(TESTSDIR) && $(BUILD)) && mv $(OUTDIR)/$(OUTPUTNAME).pdf $(PDFOUTDIR)/$(BASENAME).pdf && \
 	  $(RM) -r $(OUTDIR)
 ifndef RETAINBUILDFLD
 	@$(RM) -r $(BUILDFLD)
