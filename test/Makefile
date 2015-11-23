@@ -58,7 +58,7 @@ _file: _ctrl_
 	@mkdir -p $(OUTDIR)
 	@mkdir -p $(PDFOUTDIR)
 	(cd $(TESTSDIR) && $(LAMEBUILD))
-	@if grep -q "\\makeglossaries" $(BUILDFILE); then $(BUILDGLOSS); fi
+	@if grep -q "\\makeglossaries" $(TESTSDIR)/$(BUILDFILE); then $(BUILDGLOSS); fi
 	(cd $(TESTSDIR) && $(BUILD)) && mv $(OUTDIR)/$(OUTPUTNAME).pdf $(PDFOUTDIR)/$(BASENAME).pdf && \
 	  $(RM) -r $(OUTDIR)
 ifndef RETAINBUILDFLD
