@@ -38,9 +38,9 @@ layout: default
       {% if failed_test_map.build_succeeded %}
         {% if failed_test_map.exception %}
           {% assign exc_info = failed_test_map.exc_info %}
-          <p>Got exception <pre>{{ exc_info.type }}({{ exc_info.value }})</pre></p>
+          <p>Got exception <code>{{ exc_info.type | escape }}({{ exc_info.value | escape }})</code></p>
           Traceback:
-          <pre>{% for tb_line in exc_info.traceback %}{{ tb_line }}
+          <pre>{% for tb_line in exc_info.traceback %}{{ tb_line | escape }}
 {% endfor %}</pre>
         {% else %}
           {% assign failed_pages = failed_test_map.failed_pages %}
@@ -81,10 +81,10 @@ layout: default
         {% capture log_file %}{{ failed_test_map.log_file | replace_first:'.build','build' }}{% endcapture %}
         <p>Build failed!</p>
         stdout output:
-        <pre>{% for stdout_line in stdout_lines %}{{ stdout_line }}
+        <pre>{% for stdout_line in stdout_lines %}{{ stdout_line | escape }}
 {% endfor %}</pre>
         stderr output:
-        <pre>{% for stderr_line in stderr_lines %}{{ stderr_line }}
+        <pre>{% for stderr_line in stderr_lines %}{{ stderr_line | escape }}
 {% endfor %}</pre>
         {% if log_file %}
           LaTeX log file: <a href="{{ log_file }}">{{ log_file }}</a>
