@@ -36,37 +36,45 @@ layout: default
     {% for failed_test_map in failed_tests %}
       <h2>{{ failed_test_map.test_name }}</h2>
       {% if failed_test_map.build_succeeded %}
-        {% assign failed_pages = failed_test_map.failed_pages %}
-        <p>Pages with diff:</p>
-        <ul class="failed_pages">
-        {% for pagenum in failed_pages %}
-          <li>
-            <div class="page_num">Page {{ pagenum }}</div>
-            <div class="page_details">
-              <div class="diff">
-                <div class="image_name">Diff</div>
-                <div class="page_image">
-                  <img src="diffs/diff_{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
-                </div>
-              </div>
-              <div class="proto_test">
-                <div class="proto">
-                  <div class="image_name">Proto (hover for test)</div>
+        {% if failed_test_map.exception %}
+          {% assign exc_info = failed_test_map.exc_info %}
+          <p>Got exception <pre>{{ exc_info.type }}({{ exc_info.value }})</pre></p>
+          Traceback:
+          <pre>{% for tb_line in exc_info.traceback %}{{ tb_line }}
+{% endfor %}</pre>
+        {% else %}
+          {% assign failed_pages = failed_test_map.failed_pages %}
+          <p>Pages with diff:</p>
+          <ul class="failed_pages">
+          {% for pagenum in failed_pages %}
+            <li>
+              <div class="page_num">Page {{ pagenum }}</div>
+              <div class="page_details">
+                <div class="diff">
+                  <div class="image_name">Diff</div>
                   <div class="page_image">
-                    <img src="diffs/proto_{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                    <img src="diffs/diff_{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
                   </div>
                 </div>
-                <div class="test">
-                  <div class="image_name">Test (un-hover for proto)</div>
-                  <div class="page_image">
-                    <img src="diffs/{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                <div class="proto_test">
+                  <div class="proto">
+                    <div class="image_name">Proto (hover for test)</div>
+                    <div class="page_image">
+                      <img src="diffs/proto_{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                    </div>
+                  </div>
+                  <div class="test">
+                    <div class="image_name">Test (un-hover for proto)</div>
+                    <div class="page_image">
+                      <img src="diffs/{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </li>
-        {% endfor %}
-        </ul>
+            </li>
+          {% endfor %}
+          </ul>
+        {% endif %}
       {% else %}
         {% assign stdout_lines = failed_test_map.proc.stdout %}
         {% assign stderr_lines = failed_test_map.proc.stderr %}
