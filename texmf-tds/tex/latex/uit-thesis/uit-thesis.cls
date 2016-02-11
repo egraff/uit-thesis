@@ -181,13 +181,13 @@
 
 % Used to calculate ratio between two dimension commands
 \newcommand*{\DivideLengths}[2]{%
-  \xintthe\xintiexpr #1/#2\relax%
+  \xintthe\xintiexpr #1/#2\relax
 }
 
 % Used to prevent given LaTeX macro from being called more than once
 \newcommand\ult@once[1]{%
   % Save original macro
-  \expandafter\let\csname ult@once@save\expandafter\@gobble\string#1\endcsname#1\relax%
+  \expandafter\let\csname ult@once@save\expandafter\@gobble\string#1\endcsname#1\relax
   %
   % DEBUG
   %\typeout{DEBUG \expandafter\meaning\csname ult@once@savelistoffigures\endcsname}
@@ -196,7 +196,7 @@
   % Re-define macro
   \expandafter\renewcommand\csname\expandafter\@gobble\string#1\endcsname{%
     % Invoke original macro
-    \csname ult@once@save\expandafter\@gobble\string#1\endcsname%
+    \csname ult@once@save\expandafter\@gobble\string#1\endcsname
     % Re-define macro
     \expandafter\renewcommand\csname\expandafter\@gobble\string#1\endcsname{%
       % Warn on second usage
@@ -213,12 +213,12 @@
 % Used to prevent package from being loaded.
 % Macro is used as \ult@disallowpackage{packagename} or \ult@disallowpackage[Reason for disallowing package]{packagename}.
 \newcommand\ult@disallowpackage[2][\@empty]{%
-  \expandafter\edef\csname ult@disallowpackage@#2\endcsname{#1}
+  \expandafter\edef\csname ult@disallowpackage@#2\endcsname{#1}%
   \AtBeginDocument{%
     \@ifpackageloaded{#2}{%
       \ult@critical@error{Package #2 has been loaded even if it was disallowed}%
     }{}%
-  }
+  }%
 }
 
 % Disallowed packages
@@ -331,8 +331,8 @@
 
 \xapptocmd{\floatname}{%
   % Define the macro \<Name of float>name, so hyperref's \autoref{} will work.
-  \@namedef{#1name}{#1}
-  \@namedef{#1autorefname}{#1}
+  \@namedef{#1name}{#1}%
+  \@namedef{#1autorefname}{#1}%
   %
   % If babel is used, we must make sure that our new name is retained.
   \begingroup
@@ -343,10 +343,10 @@
         % we make sure that our definition is only added once (by using xpatch to
         % remove possible previous occurences first).
         \expandafter\xpatchcmd\csname captions\languagename\endcsname
-          {\@namedef{#1name}{\@nameuse{fname@#1}}}
-          {}
-          {}
-          {}
+          {\@namedef{#1name}{\@nameuse{fname@#1}}}%
+          {}%
+          {}%
+          {}%
         % Now, add our definition.
         \expandafter\g@addto@macro\csname captions\languagename\endcsname
           {\@namedef{#1name}{\@nameuse{fname@#1}}}%
@@ -354,10 +354,10 @@
       % Now, do the same with <Name of float>autorefname
       \ifcsname extras\languagename\endcsname
         \expandafter\xpatchcmd\csname extras\languagename\endcsname
-          {\@namedef{#1autorefname}{\@nameuse{fname@#1}}}
-          {}
-          {}
-          {}
+          {\@namedef{#1autorefname}{\@nameuse{fname@#1}}}%
+          {}%
+          {}%
+          {}%
         \expandafter\g@addto@macro\csname extras\languagename\endcsname
           {\@namedef{#1autorefname}{\@nameuse{fname@#1}}}%
       \fi
@@ -391,7 +391,7 @@
                     \ult@foralltoclists{\ult@this@toclist@ext}{%
                       \addtocontents{\ult@this@toclist@ext}%
                                     {\protect\addvspace{\ult@cftbeforechapskip}}%
-                    }
+                    }%
                     \if@twocolumn
                       \@topnewpage[\@makechapterhead{#2}]%
                     \else
@@ -688,15 +688,15 @@
 
 \newif\ifult@microtypeloaded
 \AtBeginDocument{%
-  \@ifpackageloaded{microtype}
+  \@ifpackageloaded{microtype}%
   {%
     \global\ult@microtypeloadedtrue
-  }
+  }%
   {%
     \global\ult@microtypeloadedfalse
     \global\newif\ifMT@protrusion
     \global\MT@protrusionfalse
-  }
+  }%
 }
 
 % Allows us to scale font sizes relatively
@@ -730,8 +730,9 @@
 % Note: we have to do this manually instead of using XCharter's \useosf command, since last version of XCharter breaks \useosf
 \edef\XCharter@figurestyle{TOsF}\edef\XCharter@altone{1}
 \AtEndPreamble{%
-\renewcommand*{\rmdefault}{XCharter-\XCharter@figurestyle}
-\normalfont}
+  \renewcommand*{\rmdefault}{XCharter-\XCharter@figurestyle}%
+  \normalfont
+}
 
 %:-------------------------- Page layout -----------------------
 
@@ -776,11 +777,11 @@
 
 %A4 settings
 \ifpdf
-   \pdfpageheight=297mm
-   \pdfpagewidth=210mm
+  \pdfpageheight=297mm
+  \pdfpagewidth=210mm
 \else
-   \setlength{\paperheight}{297mm}
-   \setlength{\paperwidth}{210mm}
+  \setlength{\paperheight}{297mm}
+  \setlength{\paperwidth}{210mm}
 \fi
 
 % WTF?
@@ -854,7 +855,7 @@
       \put(\dimexpr 1in+\oddsidemargin,
            -\dimexpr 1in+\topmargin+\headheight+\headsep+\topskip)%
         {%
-          \vtop to\dimexpr\vsize+\ult@normalbaselineskip{
+          \vtop to\dimexpr\vsize+\ult@normalbaselineskip{%
             \hrule
             \leaders\vbox to\ult@normalbaselineskip{\hrule width\hsize\vfill}\vfill
           }%
@@ -863,7 +864,7 @@
       \put(\dimexpr 1in+\evensidemargin,
            -\dimexpr 1in+\topmargin+\headheight+\headsep+\topskip)%
         {%
-          \vtop to\dimexpr\vsize+\ult@normalbaselineskip{
+          \vtop to\dimexpr\vsize+\ult@normalbaselineskip{%
             \hrule
             \leaders\vbox to\ult@normalbaselineskip{\hrule width\hsize\vfill}\vfill
           }%
@@ -972,10 +973,10 @@
 
 % Redefine "plain" pagestyle (used on first page of each chapter)
 \fancypagestyle{plain}{%
-  \fancyhf{} % clear all header and footer fields
-  \fancyfoot[C]{\rheadfont \textcolor{rheadcolor}{\thepage}} % except the center
-  \renewcommand{\headrulewidth}{0pt}
-  \renewcommand{\footrulewidth}{0pt}
+  \fancyhf{}% clear all header and footer fields
+  \fancyfoot[C]{\rheadfont \textcolor{rheadcolor}{\thepage}}% except the center
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
 }
 
 % Fix head height
@@ -1159,7 +1160,7 @@
 \chapternumberfont{%
   \usefont{T1}{fos}{b}{n}%      % Use Open Sans (fos) as chapter number font
   \fontsize{56}{56}%            % font size 56pt, baselineskip 56pt
-  \selectfont%                  % activate font
+  \selectfont                   % activate font
 }
 
 % Draw the UiT slash (must be used inside a tikzpicture environment)
@@ -1168,9 +1169,9 @@
 }
 
 % Strutbox for numbers, to make sure that numbers are given correct vertical positions
-\newbox\ult@chapnummetabox%
-\newbox\ult@chapnumbox%
-\AtBeginDocument{
+\newbox\ult@chapnummetabox
+\newbox\ult@chapnumbox
+\AtBeginDocument{%
   \setbox\ult@chapnummetabox\hbox{\Huge\bfseries\chapnumfont 0123456789}%
   \setbox\ult@chapnumbox\hbox{%
     \vrule\@height\ht\ult@chapnummetabox
@@ -1180,13 +1181,13 @@
 }
 
 % Define how chapter number is drawn
-\newcommand{\printchapternum}[1][]{
-  \begin{tikzpicture}
+\newcommand{\printchapternum}[1][]{%
+  \begin{tikzpicture}%
     %\tikzstyle{every rectangle node}=[draw]                                                             % Just for debugging, not used!
     %\draw[fill,color=red] (0,0) rectangle (3.15cm,3.15cm);                                              % Just for debugging, not used!
     \ult@chapslashtikz                                                                                   % Draw UiT "slash"
     \draw[color=black] (1.1,1.18) node[rectangle,anchor=west] { \Huge\bfseries\chapnumfont\unhcopy\ult@chapnumbox\thechapter }; % Draw chapter number
-  \end{tikzpicture}
+  \end{tikzpicture}%
 }
 
 % Used to measure height of UiT slash
@@ -1200,7 +1201,7 @@
   % This is a hotfix for a problem with using tikzpicture in running head (triggered when verbatim environment crosses a page boundary)
   % See issue #23 on GitHub. Hopefully, we'll find a better solution later.
   % Note: we only restore dollar catcode inside the local group.
-  \catcode`\$=3%
+  \catcode`\$=3
   %
   \raisebox{-0.6pt}{
     \begin{tikzpicture}[scale=0.074]
@@ -1310,7 +1311,7 @@
     %
     % Note: we have confirmed that this is needed (try changing value of \parskip right before \@@par).
     % It's probably \@@par that inserts a \parskip. Also note that \parskip does not change when changing font size...
-    \vspace*{-\parskip}
+    \vspace*{-\parskip}%
     %
     % Make sure total height + spacing corresponds to an even number of baselineskips for normal font.
     \ifodd\value{ult@chapter@tmpnumlines}\else
@@ -1324,8 +1325,8 @@
     \kern \z@ \strut
     %
     % Compensate for extra line added by strut
-    \vspace*{-\parskip}
-    \vspace*{-\baselineskip}
+    \vspace*{-\parskip}%
+    \vspace*{-\baselineskip}%
     %
     %
     %
@@ -1364,13 +1365,13 @@
     \null%
     % And this is to compensate for \null after page break
     \if@nobreak\else
-      \vspace*{-\parskip}
+      \vspace*{-\parskip}%
     \fi
     %
     \sectfontsize \bfseries \sectfont
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
-    \microtypesetup{protrusion=false,spacing=false}
+    \microtypesetup{protrusion=false,spacing=false}%
     \RaggedRight
     %
     \selectfont
@@ -1382,9 +1383,9 @@
   {% Before-code:
     % Measure number of text lines in section name
     \setbox0=\vbox{\leavevmode #1\relax \kern \z@ \strut}%
-    \ult@section@tmptotalheight=\ht0 \advance\ult@section@tmptotalheight by \dp0%
+    \ult@section@tmptotalheight=\ht0 \advance\ult@section@tmptotalheight by \dp0
     \setbox0=\vbox{Bq \kern \z@ \strut}%
-    \ult@section@tmpstrutheight=\ht0 \advance\ult@section@tmpstrutheight by \dp0%
+    \ult@section@tmpstrutheight=\ht0 \advance\ult@section@tmpstrutheight by \dp0
     \setcounter{ult@section@tmpnumlines}{\DivideLengths{\ult@section@tmptotalheight}{\ult@section@tmpstrutheight}}%
     %
     % Print section name (needed because we have enabled titlesec's explicit option)
@@ -1402,7 +1403,7 @@
     %
     % Note: we have confirmed that this is needed (try changing value of \parskip right before \@@par).
     % It's probably \@@par that inserts a \parskip. Also note that \parskip does not change when changing font size...
-    \vspace*{-\parskip}
+    \vspace*{-\parskip}%
     %
     % Make sure total height + spacing corresponds to an even number of baselineskips for normal font.
     \ifodd\value{ult@section@tmpnumlines}\else
@@ -1410,7 +1411,7 @@
     \fi
     %
     % Now, switch to normal font
-    \normalsize\normalfont\selectfont%
+    \normalsize\normalfont\selectfont
     %
     % Add a strut, to make sure that following text is placed perfectly on baseline.
     % Note: we cannot use \kern\z@ before strut, because that will ruin the \nobreak that we want between a section header
@@ -1418,9 +1419,9 @@
     \strut
     %
     % Compensate for extra line added by strut
-    \vspace*{-\parskip}
-    \vspace*{-\baselineskip}
-  ]%
+    \vspace*{-\parskip}%
+    \vspace*{-\baselineskip}%
+  ]
 
 % Starred version makes sure we suppress indentation of text following section title
 \titlespacing*{\section}
@@ -1432,16 +1433,16 @@
 \titleformat{\subsection}[hang]
   {% Format
     % This \null is needed to ensure space between consecutive chapter/section/subsection/... headers
-    \null%
+    \null
     % And this is to compensate for \null after page break
     \if@nobreak\else
-      \vspace*{-\parskip}
+      \vspace*{-\parskip}%
     \fi
     %
     \subsectfontsize \bfseries \subsectfont
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
-    \microtypesetup{protrusion=false,spacing=false}
+    \microtypesetup{protrusion=false,spacing=false}%
     \RaggedRight
     %
     \selectfont
@@ -1463,16 +1464,16 @@
 \titleformat{\subsubsection}[hang]
   {% Format
     % This \null is needed to ensure space between consecutive chapter/section/subsection/... headers
-    \null%
+    \null
     % And this is to compensate for \null after page break
     \if@nobreak\else
-      \vspace*{-\parskip}
+      \vspace*{-\parskip}%
     \fi
     %
     \normalsize \bfseries \subsubsectfont
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
-    \microtypesetup{protrusion=false,spacing=false}
+    \microtypesetup{protrusion=false,spacing=false}%
     \RaggedRight
     %
     \selectfont
@@ -1493,9 +1494,9 @@
 % Now, define how \paragraph is formatted.
 \titleformat{\paragraph}[runin]
   {% Format
-    \null%
+    \null
     \vspace*{-\parskip}%
-    \normalsize \bfseries \parafont \selectfont%
+    \normalsize \bfseries \parafont \selectfont
     \vspace*{-\baselineskip}%
   }%
   {\@seccntformat{paragraph}}% Label
@@ -1605,14 +1606,14 @@
     \ult@warning{'\abstractname' should precede '\ackname'.}%
   \fi
   \global\ult@hasabstracttrue
-  \chapter{\abstractname}
-  \thispagestyle{empty}
+  \chapter{\abstractname}%
+  \thispagestyle{empty}%
 }{}
 % Acknowledgements
 \newenvironment{acknowledgement}{%
   \global\ult@hasacknowledgementtrue
-  \chapter{\ackname}
-  \thispagestyle{empty}
+  \chapter{\ackname}%
+  \thispagestyle{empty}%
 }{}
 % Dedication
 \newenvironment{dedication}{%
@@ -1628,8 +1629,8 @@
   \global\ult@hasdedicationtrue
   \cleardoublepage
   \phantomsection
-  \chaptermark{}
-  \thispagestyle{empty}
+  \chaptermark{}%
+  \thispagestyle{empty}%
   \null
   \vfil
   \begingroup
@@ -1642,30 +1643,30 @@
 }
 % Epigraph
 \newcommand{\epigraphitem}[2]{%
-  \ifdefined\@ult@epigraphenv%
+  \ifdefined\@ult@epigraphenv
     \item{``#1\relax''\\{--}#2\relax}%
-  \else%
+  \else
     \ult@critical@error{epigraph environment required for epigraphitem!}%
   \fi
 }
 \newenvironment{epigraph}{%
-  \ifult@hasacknowledgement%
+  \ifult@hasacknowledgement
     \ult@warning{'Epigraph' should precede '\ackname'.}%
   \fi
-  \ifult@hasabstract%
+  \ifult@hasabstract
     \ult@warning{'Epigraph' should precede '\abstractname'.}%
   \fi
-  \ifdefined\@ult@epigraphenv%
+  \ifdefined\@ult@epigraphenv
     \ult@critical@error{Nested epigraphs are not allowed!}%
   \fi
   \global\ult@hasepigraphtrue
-  \def\@ult@epigraphenv{}
-  \clearpage\thispagestyle{empty}
+  \def\@ult@epigraphenv{}%
+  \clearpage\thispagestyle{empty}%
   \null\vfill
   \begin{flushright}%
 }{%
   \end{flushright}%
-  \vspace*{2\baselineskip}
+  \vspace*{2\baselineskip}%
 }
 
 %:-------------------------- ToC lists -----------------------
@@ -1766,11 +1767,11 @@
 \LetLtxMacro{\ult@savenewlistentry}{\newlistentry}
 \renewcommand{\newlistentry}[4][\@empty]{%
   \ult@savenewlistentry[#1]{#2}{#3}{#4}%
-  \setlength{\@nameuse{cftbefore#2skip}}{\ult@cftbeforesecskip}
-  \setlength{\@nameuse{cft#2indent}}{\ult@cftsecindent}
-  \setlength{\@nameuse{cft#2numwidth}}{\ult@cftsecnumwidth}
-  \@namedef{cft#2font}{\ult@cftsecfont}
-  \@namedef{cft#2pagefont}{\ult@cftsecpagefont}
+  \setlength{\@nameuse{cftbefore#2skip}}{\ult@cftbeforesecskip}%
+  \setlength{\@nameuse{cft#2indent}}{\ult@cftsecindent}%
+  \setlength{\@nameuse{cft#2numwidth}}{\ult@cftsecnumwidth}%
+  \@namedef{cft#2font}{\ult@cftsecfont}%
+  \@namedef{cft#2pagefont}{\ult@cftsecpagefont}%
 }
 
 
@@ -1780,15 +1781,15 @@
   \ult@savenewlistof[#1]{#2}{#3}{#4}%
   %
   % Append list extension to \ult@toclists
-  \eappto\ult@toclists{#3,}
+  \eappto\ult@toclists{#3,}%
   %
   % Override \listof... macro to use tocbibind to generate list
   % (will also add list to ToC).
   \@namedef{listof#2}{%
     \begingroup
-      \tocfile{#4}{#3}
-    \endgroup%
-  }
+      \tocfile{#4}{#3}%
+    \endgroup
+  }%
 }
 
 % Override float package's \listof (for lists that do not use tocloft)
@@ -1799,12 +1800,12 @@
     %
     % Append list extension to \ult@toclists
     % Note: this is safe even if it has already been added to \ult@toclists...
-    \eappto\ult@toclists{\@nameuse{ext@#1},}
+    \eappto\ult@toclists{\@nameuse{ext@#1},}%
     %
     % Use tocbibind to render list
     \begingroup
-      \tocfile{#2}{\@nameuse{ext@#1}}
-    \endgroup%
+      \tocfile{#2}{\@nameuse{ext@#1}}%
+    \endgroup
   }%
 }
 
@@ -1936,14 +1937,14 @@
       \StrLeft{\@glsentry}{1}[\firstchar]% Get leftmost character
       \StrGobbleLeft{\@glsentry}{1}[\@glsentry]% Remove leftmost character
       \IfStrEq{\firstchar}{+}{% If entry starts with a plus (indicates reset)
-        \glsreset{\@glsentry}
+        \glsreset{\@glsentry}%
       }%
       {% If not
         \IfStrEq{\firstchar}{-}{% If entry start with a minus (indicates unset)
-          \glsunset{\@glsentry}
+          \glsunset{\@glsentry}%
         }%
         {% If not
-          \ult@critical@error{BUG in \@backslashchar ult@restoreglsstates}
+          \ult@critical@error{BUG in \@backslashchar ult@restoreglsstates}%
         }%
       }%
     \fi%
@@ -1954,28 +1955,28 @@
 \let\ult@savefrontmatter\frontmatter
 \renewcommand\frontmatter{%
   \ult@savefrontmatter
-
+  %
   % Clear running heads
-  \markboth{}{}
-
+  \markboth{}{}%
+  %
   % Redefine what is in \chaptermark so that \leftmark contains chapter name. Thus "Abstract" and "Acknowledgements" will be written in header
   \renewcommand{\chaptermark}[1]{%
     % Note: we use two number signs (#) because we have renewcommand within renewcommand
     \markboth{\rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages and to the left on odd/recto pages) is set to chapter title after start of new chapters
              {}%    % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
-    }
-
+    }%
+  %
   % Set \leftmark to the left on odd pages
   % This will make sure that chapter title is written in front matter where section title is normally written in main matter,
   % that is, to the left on odd/recto pages (in addition to the right on even/verso pages, where it is already written)
-  \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\leftmark}}
-
+  \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\leftmark}}%
+  %
   % Remember current gls states (if any gls entries have been unset)
   \ult@rememberglsstates
-
+  %
   % Make sure that abbreviations are not expanded
   \glsunsetall
-
+  %
   % Make sure that we retain future state modifications
   \ult@preserveglsstates
 }
@@ -1986,10 +1987,10 @@
   % so we do not invoke original \tableofcontents.
   % Note: we do *not* use tocbibind's \tocfile (and use tocbibind with nottoc option), since we
   % do not want to include ToC as entry in ToC
-  \toc@start%
+  \toc@start
   \chapter*{\contentsname}\prw@mkboth{\contentsname}%
   \@starttoc{toc}%
-  \toc@finish%
+  \toc@finish
   %
   \renewcommand\tableofcontents{%
     \ult@critical@error{Duplicate \@backslashchar tableofcontents}%
@@ -2002,35 +2003,35 @@
   % 4: Symbols
   % 5: Preface
   %
-  \ifult@printlistoffigures%
-    \listoffigures%
-  \fi%
+  \ifult@printlistoffigures
+    \listoffigures
+  \fi
   %
-  \ifult@printlistoftables%
-    \listoftables%
-  \fi%
+  \ifult@printlistoftables
+    \listoftables
+  \fi
 }
 
 % Mainmatter
 \let\ult@savemainmatter\mainmatter
 \renewcommand\mainmatter{%
   \ult@savemainmatter
-
+  %
   % Clear running heads
-  \markboth{}{}
-
+  \markboth{}{}%
+  %
   % Redefine \chaptermark, so it contains chapter number in front of chapter name (e.g. "2 My Chapter's Name")
   % Note that we do not use \@chapapp (contains "chapter type"), because we do not want to write "Chapter" before the chapter number.
   \renewcommand{\chaptermark}[1]{%
     % Note: we use two number signs (#) because we have renewcommand within renewcommand
     \markboth{\rheadfmt{\@chapapp\ \thechapter}\printrheadslash \rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
              {}%                 % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
-  }
-
+  }%
+  %
   % Set odd pages to have have \rightmark instead of \leftmark
   % This will make sure that section title is written to the left in running headers on odd (recto) pages
-  \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\rightmark}}
-
+  \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\rightmark}}%
+  %
   % Reset glossaries so every abbreviation will expand on first use (except those that have been unset)
   \ult@restoreglsstates
 }
@@ -2041,7 +2042,7 @@
   \ult@savebackmatter
   %
   % Redefine headers
-  \pagestyle{empty}
+  \pagestyle{empty}%
   %
   % Blank back cover
   \clearversopage
@@ -2324,14 +2325,14 @@
   \AddToShipoutPicture*{%
     \put(0,0){%
       \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill%
-        \centering%
+        \vfill
+        \centering
         \ifult@phdthesisprofile
           \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_yellow_left.pdf}%
         \else
           \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_blue_left.pdf}%
         \fi
-        \vfill%
+        \vfill
       }%
     }%
   }%
@@ -2341,14 +2342,14 @@
   \AddToShipoutPicture*{%
     \put(0,0){%
       \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill%
-        \centering%
+        \vfill
+        \centering
         \ifult@phdthesisprofile
           \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_yellow_right.pdf}%
         \else
           \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_blue_right.pdf}%
         \fi
-        \vfill%
+        \vfill
       }%
     }%
   }%
@@ -2582,19 +2583,19 @@
     \ClassError{uit-thesis}{Title page produced by \string\maketitle\space must be first page}\@ehd
   \fi
   %
-  \ult@has@titlepagetrue%
+  \ult@has@titlepagetrue
   % Fix PDF page numbering (title page must _not_ get page number 1, else we have two pages with that number)
-  \pagenumbering{Alph}
-  \setcounter{page}{1}
+  \pagenumbering{Alph}%
+  \setcounter{page}{1}%
   %
   \ifult@copyright@disabled\else
     % Now, this may seem counter-intuitive (and it is!!), but this page label
     % will actually be associated with the copyright page!
-    \renewcommand\thepage{B}
+    \renewcommand\thepage{B}%
   \fi
   %
   % Set custom geometry for the frontpage text
-  \newgeometry{top=16.5mm,bottom=10mm,right=12mm,left=59mm}
+  \newgeometry{top=16.5mm,bottom=10mm,right=12mm,left=59mm}%
   %
   \begin{titlepage}%
   %
@@ -2604,12 +2605,12 @@
       \put(140,50){
         \begingroup
           \printthed
-        \endgroup%
+        \endgroup
       }%
     }%
   }{%
   %\end{egg}
-  }
+  }%
   %
   %%% Front page pattern / images
   \ifult@frontpage@image@issingle
@@ -2672,13 +2673,13 @@
   %
   \begingroup
     \vskip 2\baselineskip
-    \microtypesetup{protrusion=false,spacing=false}
+    \microtypesetup{protrusion=false,spacing=false}%
     \RaggedRight
     \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{b}{n}\selectfont
-    \vspace*{-\baselineskip}
+    \vspace*{-\baselineskip}%
     \noindent\@title
     \vskip -\parskip
-    \normalsize\normalfont\selectfont\vspace*{\baselineskip}
+    \normalsize\normalfont\selectfont\vspace*{\baselineskip}%
   \endgroup
   %
   % Thesis subtitle
@@ -2687,13 +2688,13 @@
     \ifx\@subtitle\@empty\else
       \begingroup
         \vskip \ht\strutbox
-        \microtypesetup{protrusion=false,spacing=false}
+        \microtypesetup{protrusion=false,spacing=false}%
         \RaggedRight
         \fontsize{11.4pt}{14pt}\usefont{T1}{fos}{l}{it}\selectfont
-        \vspace*{-\baselineskip}
+        \vspace*{-\baselineskip}%
         \noindent\@subtitle
         \vskip -\parskip
-        \normalsize\normalfont\selectfont\vspace*{\baselineskip}
+        \normalsize\normalfont\selectfont\vspace*{\baselineskip}%
       \endgroup
     \fi
   \fi
@@ -2701,29 +2702,29 @@
   % Separation line
   %
   \begingroup
-    \vspace*{2pt}
+    \vspace*{2pt}%
     \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{l}{it}\selectfont
-    \vspace*{-\baselineskip}
+    \vspace*{-\baselineskip}%
     \noindent ---
     \vskip -\parskip
-    \normalsize\normalfont\selectfont\vspace*{\baselineskip}
+    \normalsize\normalfont\selectfont\vspace*{\baselineskip}%
   \endgroup
   %
   % Name of author
   %
   \begingroup
     \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{sb}{n}\selectfont
-    \vspace*{-\baselineskip}
+    \vspace*{-\baselineskip}%
     \noindent\@author
     \vskip -\parskip
-    \normalsize\normalfont\selectfont\vspace*{\baselineskip}
+    \normalsize\normalfont\selectfont\vspace*{\baselineskip}%
   \endgroup
   %
   % Thesis description one-line / study program / month and year
   %
   \begingroup
     \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{l}{it}\selectfont
-    \vspace*{-\baselineskip}
+    \vspace*{-\baselineskip}%
     \noindent\@thesisprogramme
     \vskip -\parskip
   \endgroup
