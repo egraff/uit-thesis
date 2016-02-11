@@ -8,14 +8,6 @@ permalink: date
 url: http://egraff.github.io
 baseurl: /uit-thesis
 
-highlighter: pygments
-pygments: true
-
-markdown: redcarpet
-
-redcarpet:
-  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
-
 # GitHub flavored Markdown
 kramdown:
   input: GFM
