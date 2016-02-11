@@ -5,23 +5,24 @@ MAKEGLOSSARIES := "$(shell which makeglossaries 2>/dev/null)"
 
 # The file to test (without extension)
 BASENAME = $(shell basename $(FILE) .tex)
+DIRNAME = $(shell dirname $(FILE))
 
 TESTSDIR = tests
 MAINDIR_REL2_TESTSDIR = ..
-
 PDFFLD = pdfs
 
 # Placement of all produced files
 BUILDFLD = .build
 
-BUILDFILE = $(BASENAME).tex
-PDFFILE = $(PDFFLD)/$(BASENAME).pdf
+BUILDFILE = $(DIRNAME)/$(BASENAME).tex
+OUTDIR = $(BUILDFLD)/$(DIRNAME)/$(BASENAME)
+PDFOUTDIR = $(PDFFLD)/$(DIRNAME)
 
 # All files produced while making the document will have this basename
 OUTPUTNAME = output
 
 # Extra options, these must be available for both pdflatex and latexmk
-DEFOPT = -output-directory=$(MAINDIR_REL2_TESTSDIR)/$(BUILDFLD)/$(BASENAME) -interaction=batchmode
+DEFOPT = -output-directory=$(MAINDIR_REL2_TESTSDIR)/$(OUTDIR) -interaction=batchmode
 
 # Options for glossary
 GLOSSOPT = -q
@@ -34,7 +35,7 @@ LAMEBUILD = ($(PDFLATEX) -shell-escape -jobname=$(OUTPUTNAME) $(DEFOPT) $(BUILDF
 
 # Command to build glossary and glossarylists
 # (Not using -d option due to incompatibility with some systems)
-BUILDGLOSS = cd $(BUILDFLD)/$(BASENAME) &&\
+BUILDGLOSS = cd $(OUTDIR) &&\
  $(MAKEGLOSSARIES) $(GLOSSOPT) $(OUTPUTNAME) &&\
  cd - >/dev/null
 
@@ -49,17 +50,17 @@ clean:
 test: 
 	@echo "Running comparison tests..."
 	@echo ""
-	@python scripts/regtest.py
+	@python ../ult-base/test-scripts/regtest.py .
 
 _file: _ctrl_
 	@echo "Building $(FILE)..."
-	@$(RM) $(PDFFILE)
-	@mkdir -p $(BUILDFLD)/$(BASENAME)
-	@mkdir -p $(PDFFLD)
-	cd tests && $(LAMEBUILD)
-	$(BUILDGLOSS)
-	(cd tests && $(BUILD)) && mv $(BUILDFLD)/$(BASENAME)/$(OUTPUTNAME).pdf $(PDFFILE) && \
-	  $(RM) -r $(BUILDFLD)/$(BASENAME)
+	@$(RM) $(PDFOUTDIR)/$(BASENAME).pdf
+	@mkdir -p $(OUTDIR)
+	@mkdir -p $(PDFOUTDIR)
+	(cd $(TESTSDIR) && $(LAMEBUILD))
+	@if grep -q "\\makeglossaries" $(TESTSDIR)/$(BUILDFILE); then $(BUILDGLOSS); fi
+	(cd $(TESTSDIR) && $(BUILD)) && mv $(OUTDIR)/$(OUTPUTNAME).pdf $(PDFOUTDIR)/$(BASENAME).pdf && \
+	  $(RM) -r $(OUTDIR)
 ifndef RETAINBUILDFLD
 	@$(RM) -r $(BUILDFLD)
 endif
