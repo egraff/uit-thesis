@@ -7,6 +7,7 @@
 
 \usepackage{tikz}
 \usepackage{pgfplots}
+\usepackage{ult-tikz-externalize-jobname-fix}
 
 \pgfplotsset{compat=1.12}
 
@@ -21,9 +22,7 @@
 \usetikzlibrary{external}
 \tikzset{external/only named=true}
 
-\input{externalize-hack.tex}
-
-%\tikzexternalize
+\tikzexternalize
 
 \begin{document}
 
@@ -31,7 +30,7 @@ First page
 
 \begin{figure}[h]
   \tikzsetnextfilename{sample_tikz}
-  \begin{tikzpicture}[scale=1.50]
+  \begin{tikzpicture}[scale=1.4]
     \begin{axis}
     \addplot {x^3};
     \end{axis}
