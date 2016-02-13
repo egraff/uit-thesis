@@ -11,14 +11,19 @@ before_install:
   - pdfinfo -v
   - compare -version
   - gs -v
-  - sudo ./install-tl-ubuntu --repository http://mirrors.rit.edu/CTAN/
+  - sudo ./install-tl-ubuntu --repository http://mirrors.rit.edu/CTAN/ --profile ./texlive.profile
   - source /etc/environment
   - source /etc/profile
   - source ~/.profile
+  - source ~/virtualenv/python2.7/bin/activate
+  - sudo -i texhash --admin
+  - texhash
   - sudo -i tlmgr update --self --all
   - tlmgr conf
 install:
   - make install CONTINUE=y
+  - sudo -i texhash --admin
+  - texhash
 script:
   - make -C test
 after_script:
