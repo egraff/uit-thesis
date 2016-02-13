@@ -3,7 +3,7 @@ layout: page
 title: Last 25 Travis builds
 ---
 {% assign pages_list = site.pages | where: 'layout','test-result' | sort: "travis.build-number" | reverse %}
-{{ '123' | prepend:'00000' | slice: -5, -5 }}
+{{ '123' | prepend:'00000' | slice: -5, 5 }}
 <table class="test-overview">
   <thead>
     <tr>
