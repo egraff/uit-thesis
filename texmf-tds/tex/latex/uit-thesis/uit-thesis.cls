@@ -2576,24 +2576,40 @@
 
 %%%%%%%%%%% END COPYRIGHT PAGE %%%%%%%%%%%
 
-\if@titlepage
+\renewenvironment{titlepage}
+  {%
+    % If we have already shipped out first page, produce error!
+    \ifult@titlepage@was@not@first@page
+      \ClassError{uit-thesis}{Title page must be first page}\@ehd
+    \fi
+    %
+    \ult@has@titlepagetrue
+    % Fix PDF page numbering (title page must _not_ get page number 1, else we have two pages with that number)
+    \pagenumbering{Alph}%
+    \setcounter{page}{1}%
+    %
+    \ifult@copyright@disabled\else
+      % Now, this may seem counter-intuitive (and it is!!), but this page label
+      % will actually be associated with the copyright page!
+      \renewcommand\thepage{B}%
+    \fi
+    %
+    \cleardoublepage
+    \newpage
+    \thispagestyle{empty}%
+    \setcounter{page}\@ne
+  }%
+  {%
+    \newpage
+    %
+    \ifult@copyright@disabled\else
+      \clearpage
+      \pagenumbering{Alph}
+      \setcounter{page}{3}
+    \fi
+  }
+
 \renewcommand\maketitle{%
-  % If we have already shipped out first page, produce error!
-  \ifult@titlepage@was@not@first@page
-    \ClassError{uit-thesis}{Title page produced by \string\maketitle\space must be first page}\@ehd
-  \fi
-  %
-  \ult@has@titlepagetrue
-  % Fix PDF page numbering (title page must _not_ get page number 1, else we have two pages with that number)
-  \pagenumbering{Alph}%
-  \setcounter{page}{1}%
-  %
-  \ifult@copyright@disabled\else
-    % Now, this may seem counter-intuitive (and it is!!), but this page label
-    % will actually be associated with the copyright page!
-    \renewcommand\thepage{B}%
-  \fi
-  %
   % Set custom geometry for the frontpage text
   \newgeometry{top=16.5mm,bottom=10mm,right=12mm,left=59mm}%
   %
@@ -2747,14 +2763,7 @@
   \global\let\author\relax
   \global\let\date\relax
   \global\let\and\relax
-  %
-  \ifult@copyright@disabled\else
-    \clearpage
-    \pagenumbering{Alph}
-    \setcounter{page}{3}
-  \fi
 }
-\fi
 
 
 %:-------------------------- Convenient macros and definitions -----------------------
