@@ -2,6 +2,8 @@
 layout: page
 title: Last 25 Travis builds
 ---
+{% assign build_numbers = site.pages | where: 'layout','test-result' | map: 'travis.build-number' %}
+{{ build_numbers }}
 {% assign pages_list = site.pages | where: 'layout','test-result' | sort: "travis.build-number" | reverse %}
 <table class="test-overview">
   <thead>
