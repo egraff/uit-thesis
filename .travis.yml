@@ -11,7 +11,7 @@ before_install:
   - pdfinfo -v
   - compare -version
   - gs -v
-  - sudo ./install-tl-ubuntu --repository http://mirrors.rit.edu/CTAN/ --profile ./texlive.profile
+  - sudo ./install-tl-ubuntu --repository http://mirrors.rit.edu/CTAN/ --profile "`readlink -f ./texlive.profile`"
   - source /etc/environment
   - source /etc/profile
   - source ~/.profile
