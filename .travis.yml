@@ -16,14 +16,12 @@ before_install:
   - source /etc/profile
   - source ~/.profile
   - source ~/virtualenv/python2.7/bin/activate
-  - sudo -i texhash --admin
-  - texhash
+  - sudo -i texhash
   - sudo -i tlmgr update --self --all
   - tlmgr conf
 install:
   - make install CONTINUE=y
-  - sudo -i texhash --admin
-  - texhash
+  - sudo -i texhash
 script:
   - make -C test
 after_script:
