@@ -2,7 +2,7 @@
 layout: page
 title: Last 25 Travis builds
 ---
-{% assign pages_list = site.pages | where: 'layout','test-result' | sort:"url" | reverse %}
+{% assign pages_list = site.pages | where: 'layout','test-result' | sort: "travis.build-number" | reverse %}
 <table class="test-overview">
   <thead>
     <tr>
