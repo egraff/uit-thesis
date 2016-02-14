@@ -16,8 +16,7 @@ title: Last 25 Travis builds
 {% assign build_numbers = build_numbers | split: ',' | sort | reverse %}
 {{ build_numbers }}
 
-{% assign test_page = pages_list | where: 'travis.build-number', '107' | first %}
-{{ test_page.url }}
+{{ page.url }} -- {{ page.id }}
 
 <table class="test-overview">
   <thead>
