@@ -14,7 +14,6 @@ title: Last 25 Travis builds
   {% endif %}
 {% endfor %}
 {% assign build_num_strings = build_num_strings | split: ',' | sort | reverse %}
-{{ build_num_strings }}
 
 <table class="test-overview">
   <thead>
