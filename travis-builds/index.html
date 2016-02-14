@@ -4,19 +4,17 @@ title: Last 25 Travis builds
 ---
 {% assign pages_list = site.pages | where: 'layout','test-result' %}
 
-{% assign build_numbers = '' %}
+{% assign build_num_strings = '' %}
 {% for page in pages_list %}
   {% assign build_number = page.travis.build-number | prepend: '00000' | slice: -5, 5 %}
-  {% if build_numbers == '' %}
-    {% assign build_numbers = build_number %}
+  {% if build_num_strings == '' %}
+    {% assign build_num_strings = build_number %}
   {% else %}
-    {% assign build_numbers = build_numbers | append: ',' | append: build_number %}
+    {% assign build_num_strings = build_num_strings | append: ',' | append: build_number %}
   {% endif %}
 {% endfor %}
-{% assign build_numbers = build_numbers | split: ',' | sort | reverse %}
-{{ build_numbers }}
-
-{{ page.url }} -- {{ page.id }}
+{% assign build_num_strings = build_num_strings | split: ',' | sort | reverse %}
+{{ build_num_strings }}
 
 <table class="test-overview">
   <thead>
@@ -29,28 +27,33 @@ title: Last 25 Travis builds
     </tr>
   </thead>
   <tbody>
-  {% for page in pages_list limit:25 %}
-    {% if page.travis.test-result == 0 %}
-      {% assign passed = true %}
-    {% else %}
-      {% assign passed = false %}
-    {% endif %}
-    {% capture build_number %}{{ page.travis.build-number }}{% endcapture %}
-    {% assign result_map = site.data.travis-builds[build_number] %}
-    {% capture commit_hash %}{{ page.travis.commit }}{% endcapture %}
-    <tr class="{% if passed %}passed{% else %}failed{% endif %}">
-      <td><a href="{{ site.baseurl }}{{ page.url }}">#{{ page.travis.build-number }}</a></td>
-      <td>{% if passed %}Passed{% else %}Failed{% endif %}</td>
-      <td><a href="https://github.com/egraff/uit-thesis/tree/{{ page.travis.branch }}">{{ page.travis.branch }}</a></td>
-      <td><a href="https://github.com/egraff/uit-thesis/commit/{{ commit_hash }}">{{ commit_hash | truncate: 15 }}</a></td>
-      <td>
-        {% unless result_map %}
-          N/A
+  {% for build_num_string in build_num_strings limit:25 %}
+    {% assign build_number = build_num_string | plus: 0 %}
+    {% for page in pages_list %}
+      {% if page.travis.build-number == build_number %}
+        {% if page.travis.test-result == 0 %}
+          {% assign passed = true %}
         {% else %}
-          {{ result_map.num_tests | minus: result_map.failed_tests.size }}/{{ result_map.num_tests }}
-        {% endunless %}
-      </td>
-    </tr>
+          {% assign passed = false %}
+        {% endif %}
+        {% capture build_number %}{{ page.travis.build-number }}{% endcapture %}
+        {% assign result_map = site.data.travis-builds[build_number] %}
+        {% capture commit_hash %}{{ page.travis.commit }}{% endcapture %}
+        <tr class="{% if passed %}passed{% else %}failed{% endif %}">
+          <td><a href="{{ site.baseurl }}{{ page.url }}">#{{ page.travis.build-number }}</a></td>
+          <td>{% if passed %}Passed{% else %}Failed{% endif %}</td>
+          <td><a href="https://github.com/egraff/uit-thesis/tree/{{ page.travis.branch }}">{{ page.travis.branch }}</a></td>
+          <td><a href="https://github.com/egraff/uit-thesis/commit/{{ commit_hash }}">{{ commit_hash | truncate: 15 }}</a></td>
+          <td>
+            {% unless result_map %}
+              N/A
+            {% else %}
+              {{ result_map.num_tests | minus: result_map.failed_tests.size }}/{{ result_map.num_tests }}
+            {% endunless %}
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
   {% endfor %}
   </tbody>
 </table>
