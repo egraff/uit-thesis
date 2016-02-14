@@ -13,7 +13,7 @@ title: Last 25 Travis builds
     {% assign build_numbers = build_numbers | append: ',' | append: build_number %}
   {% endif %}
 {% endfor %}
-{% assign build_numbers = build_numbers | split: ',' | sort | reversed %}
+{% assign build_numbers = build_numbers | split: ',' | sort | reverse %}
 {{ build_numbers }}
 
 <table class="test-overview">
