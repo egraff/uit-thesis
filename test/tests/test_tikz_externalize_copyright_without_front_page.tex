@@ -1,0 +1,39 @@
+%& -recorder
+
+\year=2015
+\documentclass{uit-thesis-test}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{ult-tikz-externalize-fix}
+
+\pgfplotsset{compat=1.12}
+
+\usepackage[eulergreek]{sansmath}
+\pgfplotsset{
+  tick label style = {font=\sansmath\sffamily\footnotesize},
+  every axis label = {font=\sansmath\sffamily\footnotesize},
+  legend style = {font=\sansmath\sffamily\footnotesize},
+  label style = {font=\sansmath\sffamily\footnotesize}
+}
+
+\usetikzlibrary{external}
+\tikzset{external/only named=true}
+
+\tikzexternalize
+
+\begin{document}
+
+First page
+
+\begin{figure}[h]
+  \tikzsetnextfilename{sample_tikz}
+  \begin{tikzpicture}[scale=1.4]
+    \begin{axis}
+    \addplot {x^3};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Sample tikz picture}
+\end{figure}
+
+\end{document}

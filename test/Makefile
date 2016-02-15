@@ -28,10 +28,10 @@ DEFOPT = -output-directory=$(MAINDIR_REL2_TESTSDIR)/$(OUTDIR) -interaction=batch
 GLOSSOPT = -q
 
 # Command to build document
-BUILD = ($(LATEXMK) -pdf -bibtex -jobname=$(OUTPUTNAME) $(DEFOPT) $(BUILDFILE) 2>&1) >/dev/null
+BUILD = ($(LATEXMK) -pdf -bibtex -latexoption=-shell-escape -jobname=$(OUTPUTNAME) $(DEFOPT) $(BUILDFILE) 2>&1) >/dev/null
 
 # Creates first auxiliary files required to build glossary
-LAMEBUILD = ($(PDFLATEX) -jobname=$(OUTPUTNAME) $(DEFOPT) $(BUILDFILE) 2>&1) >/dev/null
+LAMEBUILD = ($(PDFLATEX) -shell-escape -jobname=$(OUTPUTNAME) $(DEFOPT) $(BUILDFILE) 2>&1) >/dev/null
 
 # Command to build glossary and glossarylists
 # (Not using -d option due to incompatibility with some systems)

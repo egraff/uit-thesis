@@ -1,0 +1,30 @@
+\year=2015
+\documentclass{uit-thesis-test}
+
+\begin{document}
+
+\frontmatter
+
+\chapter{Some frontmatter chapter}\label{chap:some_chap}
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{First chapter}
+
+First page
+
+\begin{figure}[h]
+\centering
+Example figure
+\caption{Figure text}\label{fig:example}
+\end{figure}
+
+\newpage
+
+Reference to example figure: \ref{fig:example}.
+
+Reference to frontmatter chapter: \autoref{chap:some_chap}.
+
+\end{document}
