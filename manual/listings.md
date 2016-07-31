@@ -17,6 +17,7 @@ The two most common ways to add code listings to your thesis document is to eith
 #### Example
 
 The following is a complete MWE (minimal working example) demonstrating the use of the `lstlisting` environment and the `\listinputlisting` macro:
+{% raw %}
 ```latex
 \documentclass{uit-thesis}
 
@@ -59,6 +60,7 @@ Some dummy text referencing \autoref{code:fib} and \autoref{code:hello}.
 
 \end{document}
 ```
+{% endraw %}
 
 Note that the use of the `filecontents` package above is only for the purpose of the example itself.
 
@@ -75,6 +77,7 @@ Note that it is typically a good idea to use a short summary of the listing as b
 #### Example
 
 The following is an MWE that demonstrates the use of the optional short caption:
+{% raw %}
 ```latex
 \documentclass{uit-thesis}
 \begin{document}
@@ -116,6 +119,7 @@ Some dummy text referencing \autoref{code:fib} and \autoref{code:hello}.
 
 \end{document}
 ```
+{% endraw %}
 
 This will make the listing look like:
 
@@ -138,6 +142,7 @@ Among other things, language definitions may include both new keywords for synta
 #### Example
 
 The following is an MWE that demonstrates the use of styling using `\lstset` and `\lstdefinestyle`, and language-specific styling and syntax rules using `\lstdefinelanguage`:
+{% raw %}
 ```latex
 \documentclass{uit-thesis}
 
@@ -237,6 +242,7 @@ Some dummy text referencing \autoref{code:fib} and \autoref{code:hello}.
 
 \end{document}
 ```
+{% endraw %}
 
 This will produce output that looks like this:
 
@@ -253,6 +259,7 @@ To rename definition and reference names of listing environments, the above comm
 Finally, to rename the title of the List of Listings, the `\renamedefname` command is used with `lstlistlisting` as key.
 
 The following is an MWE demonstrating how to customize the caption style and names associated with lstlisting environments:
+{% raw %}
 ```latex
 \documentclass{uit-thesis}
 
@@ -338,6 +345,7 @@ Some dummy text referencing \autoref{code:fib} and \autoref{code:hello}.
 
 \end{document}
 ```
+{% endraw %}
 
 This will make the listing look like:
 
@@ -358,6 +366,7 @@ Another possibility is therefore to define a custom new float type, and wrap it 
 
 
 The following is an MWE demonstrating how to float listing environments, by using both the built-in float support of the listings package, and a custom float:
+{% raw %}
 ```latex
 \documentclass{uit-thesis}
 
@@ -415,6 +424,7 @@ Some dummy text referencing \autoref{code:fib} and \autoref{code:hello}.
 
 \end{document}
 ```
+{% endraw %}
 
 This will produce output that looks like this:
 
