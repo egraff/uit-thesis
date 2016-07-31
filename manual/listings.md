@@ -118,8 +118,11 @@ Some dummy text referencing \autoref{code:fib} and \autoref{code:hello}.
 ```
 
 This will make the listing look like:
+
 ![Example of listing using short caption](images/listings/caption-listing.png?raw=true)
+
 and the List of Listings will look like:
+
 ![Example of List of Listings for a listing using short caption](images/listings/caption-lol.png?raw=true)
 
 Note that we use the macro `\listoflistings` to output the List of Listings. This is a macro provided by the UiT thesis LaTeX template, and which can be used interchangeably with the `\lstlistoflistings` macro from the `listings` package.
@@ -337,8 +340,11 @@ Some dummy text referencing \autoref{code:fib} and \autoref{code:hello}.
 ```
 
 This will make the listing look like:
+
 ![Example of listing using custom names](images/listings/custom-name-listing.png?raw=true)
+
 and the List of Listings will look like:
+
 ![Example of List of Listings with custom name](images/listings/custom-name-lol.png?raw=true)
 
 
