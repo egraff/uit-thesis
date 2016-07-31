@@ -50,7 +50,8 @@ def fib(n):
     return b
 \end{lstlisting}
 
-Some dummy text referencing \autoref{code:fib} and \autoref{code:hello}.
+Some dummy text referencing \autoref{code:fib} and
+\autoref{code:hello}.
 
 \lstinputlisting[
   caption={C implementation of ``Hello world'' sample program.},
@@ -94,9 +95,9 @@ The following is an MWE that demonstrates the use of the optional short caption:
   caption={%
     [Implementation of a Fibonacci number generator.]%
     Implementation of a Fibonacci number generator.
-    This implementation uses the iterative approach with complexity $O(n)$, and
-    is thus faster than the even simpler recursive variant with complexity
-    $O\left(\phi^n\right)$.%
+    This implementation uses the iterative approach with complexity
+    $O(n)$, and is thus faster than the even simpler recursive
+    variant with complexity $O\left(\phi^n\right)$.%
   },
   label=code:fib,
   language=python
@@ -109,7 +110,8 @@ def fib(n):
     return b
 \end{lstlisting}
 
-Some dummy text referencing \autoref{code:fib} and \autoref{code:hello}.
+Some dummy text referencing \autoref{code:fib} and
+\autoref{code:hello}.
 
 \lstinputlisting[
   caption={C implementation of ``Hello world'' sample program.},
@@ -213,9 +215,9 @@ int main(void)
   caption={%
     [Implementation of a Fibonacci number generator.]%
     Implementation of a Fibonacci number generator.
-    This implementation uses the iterative approach with complexity $O(n)$, and
-    is thus faster than the even simpler recursive variant with complexity
-    $O\left(\phi^n\right)$.%
+    This implementation uses the iterative approach with complexity
+    $O(n)$, and is thus faster than the even simpler recursive
+    variant with complexity $O\left(\phi^n\right)$.%
   },
   label=code:fib,
   language=python,
@@ -231,7 +233,8 @@ def fib(n):
     return b
 \end{lstlisting}
 
-Some dummy text referencing \autoref{code:fib} and \autoref{code:hello}.
+Some dummy text referencing \autoref{code:fib} and
+\autoref{code:hello}.
 
 \lstinputlisting[
   caption={C implementation of ``Hello world'' sample program.},
@@ -303,7 +306,12 @@ int main(void)
 \renamedefname{lstlistlisting}{List of Code Listings}
 \renamedefname{lstlisting}{Code Listing}
 \renameautorefname{lstlisting}{code listing}
-\captionsetup[lstlisting]{box=colorbox,boxcolor={mycolor},skip=2pt,margin=4pt}
+\captionsetup[lstlisting]{
+  box=colorbox,
+  boxcolor={mycolor},
+  skip=2pt,
+  margin=4pt
+}
 
 \begin{document}
 
@@ -319,9 +327,9 @@ int main(void)
   caption={%
     [Implementation of a Fibonacci number generator.]%
     Implementation of a Fibonacci number generator.
-    This implementation uses the iterative approach with complexity $O(n)$, and
-    is thus faster than the even simpler recursive variant with complexity
-    $O\left(\phi^n\right)$.%
+    This implementation uses the iterative approach with complexity
+    $O(n)$, and is thus faster than the even simpler recursive
+    variant with complexity $O\left(\phi^n\right)$.%
   },
   label=code:fib,
   language=python
@@ -335,7 +343,8 @@ def fib(n):
     return b
 \end{lstlisting}
 
-Some dummy text referencing \autoref{code:fib} and \autoref{code:hello}.
+Some dummy text referencing \autoref{code:fib} and
+\autoref{code:hello}.
 
 \lstinputlisting[
   caption={C implementation of ``Hello world'' sample program.},
@@ -396,9 +405,9 @@ The following is an MWE demonstrating how to float listing environments, by usin
   caption={%
     [Implementation of a Fibonacci number generator.]%
     Implementation of a Fibonacci number generator.
-    This implementation uses the iterative approach with complexity $O(n)$, and
-    is thus faster than the even simpler recursive variant with complexity
-    $O\left(\phi^n\right)$.%
+    This implementation uses the iterative approach with complexity
+    $O(n)$, and is thus faster than the even simpler recursive
+    variant with complexity $O\left(\phi^n\right)$.%
   },
   label=code:fib,
   language=python
@@ -420,7 +429,8 @@ def fib(n):
   float=!h
 ]{samplecode.c}
 
-Some dummy text referencing \autoref{code:fib} and \autoref{code:hello}.
+Some dummy text referencing \autoref{code:fib} and
+\autoref{code:hello}.
 
 \end{document}
 ```
