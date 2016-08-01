@@ -558,9 +558,11 @@ and the List of Listings will look like:
 ![Example of List of Listings with multiple environments](images/listings/multiple-problem-lol.png?raw=true)
 
 To overcome these shortcomings, the UiT thesis LaTeX template provides a command `\newcustomlstenvironment` as an alternative to the `\lstnewenvironment` command. A formal definition of this command is as follows:
-
-> \newcustomlstenvironment{⟨Environment name⟩}{⟨Aux extension⟩}{⟨Caption/autoref name⟩}
->                         [⟨number⟩][⟨opt. default arg.⟩]{⟨starting code⟩}{⟨ending code⟩}
+```latex
+\newcustomlstenvironment
+  {⟨Environment name⟩}{⟨Aux extension⟩}{⟨Caption/autoref name⟩}
+  [⟨number⟩][⟨opt. default arg.⟩]{⟨starting code⟩}{⟨ending code⟩}
+```
 
 This defines both a new environment named `⟨Environment name⟩`, as well as a command named `\lstinput⟨Environment name⟩` (the latter corresponding to `\lstinputlisting`).
 The `⟨Aux extension⟩` argument specifies the file extension of the auxiliary file used to generate the List of Listings for the new listing environment, and the `⟨Caption/autoref name⟩` argument specifies its definition name and autoref reference name (these can be customized further using `\renamedefname{⟨Environment name⟩}{...}` and `\renameautorefname{⟨Environment name⟩}{...}`).
