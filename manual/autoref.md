@@ -8,7 +8,7 @@ What is it?
 **autoref** allows to cross-reference objects named with `\label{}`, prepended with the name given to this object.
 
 An object can be any environment within your document; chapter, section, subsection, figure, equation, table, etc.
-Each object is named based upon the selected [language](language.md) supplied to **babel**, which is uniquely named for
+Each object is named based upon the selected [language](language) supplied to **babel**, which is uniquely named for
 **autoref** and does not collide with other names.
 
 **autoref** enables cross-referencing within your LaTeX similar to the built-in `\ref`
@@ -18,6 +18,7 @@ How to use it
 -------------
 
 The API is as follows
+
 > \autoref{**LABEL**}
 >
 > \Autoref{**LABEL**}
