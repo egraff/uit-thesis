@@ -123,7 +123,7 @@ Some dummy text referencing \autoref{code:fib} and
 ```
 {% endraw %}
 
-This will make the listing look like:
+This will make the listings look like:
 
 ![Example of listing using short caption](images/listings/caption-listing.png?raw=true)
 
@@ -358,7 +358,7 @@ Some dummy text referencing \autoref{code:fib} and
 ```
 {% endraw %}
 
-This will make the listing look like:
+This will make the listings look like:
 
 ![Example of listing using custom names](images/listings/custom-name-listing.png?raw=true)
 
@@ -380,6 +380,19 @@ The following is an MWE demonstrating how to float listing environments, by usin
 {% raw %}
 ```latex
 \documentclass{uit-thesis}
+
+\usepackage{filecontents}
+
+\begin{filecontents*}{samplecode.c}
+#include <stdio.h>
+
+int main(void)
+{
+  // This is a comment
+  printf("Hello world!\n");
+  return 0;
+}
+\end{filecontents*}
 
 \lstset{
   basicstyle={\fontsize{10pt}{12pt}\ttfamily},
@@ -440,4 +453,231 @@ This will produce output that looks like this:
 
 ![Example of floating code listings](images/listings/float.png?raw=true)
 
+### Multiple listing environments
+
+The `listings` package provides the `\lstnewenvironment` command as a way to define multiple listing environments.
+However, all environments defined using this command share the same definition name, autoref reference name, and counters (which also means they will be listed in the same List of Listings).
+Moreover, there is no equivalent mechanism for defining a custom version of the `\lstinputlisting` command.
+
+The problems are demonstrated in the following example:
+{% raw %}
+```latex
+\documentclass{uit-thesis}
+
+\lstset{
+  basicstyle={\fontsize{10pt}{12pt}\ttfamily},
+  columns=flexible,
+  keepspaces=true,
+  showstringspaces=false,
+  identifierstyle=\color[rgb]{0.1,0.1,0.1},
+  keywordstyle=\color{blue},
+  commentstyle=\color[rgb]{0,0.3,0},
+  frame=tb,
+}
+
+\renamedefname{lstlistlisting}{List of Code Listings}
+\renamedefname{lstlisting}{Code Listing}
+\renameautorefname{lstlisting}{Code Listing}
+
+\lstnewenvironment{codeenv_A}[1][]
+  {%
+    \lstset{#1}%
+    \csname lst@SetFirstNumber\endcsname
+  }
+  {%
+    \csname lst@SaveFirstNumber\endcsname
+  }
+
+\lstnewenvironment{codeenv_B}[1][]
+  {%
+    \lstset{#1}%
+    \csname lst@SetFirstNumber\endcsname
+  }
+  {%
+    \csname lst@SaveFirstNumber\endcsname
+  }
+
+\begin{document}
+
+\frontmatter
+\tableofcontents
+\listoflistings
+
+\mainmatter
+
+\chapter{A chapter}
+
+\begin{codeenv_A}[
+  caption={%
+    [Implementation of a Fibonacci number generator.]%
+    Implementation of a Fibonacci number generator.
+    This implementation uses the iterative approach with complexity
+    $O(n)$, and is thus faster than the even simpler recursive
+    variant with complexity $O\left(\phi^n\right)$.%
+  },
+  label=code:fib,
+  language=python
+]
+def fib(n):
+    a = b = 1
+    for _ in range(n):
+        a, b = a + b, a
+
+    # This is a comment
+    return b
+\end{codeenv_A}
+
+Some dummy text referencing \autoref{code:fib} and
+\autoref{code:hello}.
+
+\begin{codeenv_B}[
+  caption={C implementation of ``Hello world'' sample program.},
+  label=code:hello,
+  language={[Ansi]C},
+]
+#include <stdio.h>
+
+int main(void)
+{
+  // This is a comment
+  printf("Hello world!\n");
+  return 0;
+}
+\end{codeenv_B}
+
+\end{document}
+```
+{% endraw %}
+
+This will make the listing look like:
+
+![Example of listing using multiple environments](images/listings/multiple-problem-listing.png?raw=true)
+
+and the List of Listings will look like:
+
+![Example of List of Listings with multiple environments](images/listings/multiple-problem-lol.png?raw=true)
+
+To overcome these shortcomings, the UiT thesis LaTeX template provides a command `\newcustomlstenvironment` as an alternative to the `\lstnewenvironment` command. A formal definition of this command is as follows:
+The API is as follows
+> \newcustomlstenvironment{⟨Environment name⟩}{⟨Aux extension⟩}{⟨Caption/autoref name⟩}
+>                         [⟨number⟩][⟨opt. default arg.⟩]{⟨starting code⟩}{⟨ending code⟩}
+
+This defines both a new environment named `⟨Environment name⟩`, as well as a command named `\lstinput⟨Environment name⟩` (the latter corresponding to `\lstinputlisting`).
+The `⟨Aux extension⟩` argument specifies the file extension of the auxiliary file used to generate the List of Listings for the new listing environment, and the `⟨Caption/autoref name⟩` argument specifies its definition name and autoref reference name (these can be customized further using `\renamedefname{⟨Environment name⟩}{...}` and `\renameautorefname{⟨Environment name⟩}{...}`).
+Finally, the last four arguments are the same as the corresponding arguments to (and are in fact passed directly to) the `\lstnewenvironment` command.
+
+#### Example
+
+The following example demonstrates the use of `\newcustomlstenvironment`:
+{% raw %}
+```latex
+\documentclass{uit-thesis}
+
+\usepackage{filecontents}
+
+\begin{filecontents*}{samplecode.c}
+#include <stdio.h>
+
+int main(void)
+{
+  // This is a comment
+  printf("Hello world!\n");
+  return 0;
+}
+\end{filecontents*}
+
+\lstset{
+  basicstyle={\fontsize{10pt}{12pt}\ttfamily},
+  columns=flexible,
+  keepspaces=true,
+  showstringspaces=false,
+  identifierstyle=\color[rgb]{0.1,0.1,0.1},
+  keywordstyle=\color{blue},
+  commentstyle=\color[rgb]{0,0.3,0},
+  frame=tb,
+}
+
+\definecolor{mycolor}{rgb}{0.8,0.8,0.8}
+
+\newcustomlstenvironment{codeenvA}{locodea}{Code Snippet}[1][]
+  {%
+    \lstset{language=python}%
+    \lstset{#1}%
+    \csname lst@SetFirstNumber\endcsname
+  }
+  {%
+    \csname lst@SaveFirstNumber\endcsname
+  }
+
+\newcustomlstenvironment{codeenvB}{locodeb}{Algorithm}[1][]
+  {%
+    \lstset{%
+      language={[Ansi]C},
+      frame=b,
+      rulecolor=\color{mycolor},
+    }%
+    \lstset{#1}%
+    \csname lst@SetFirstNumber\endcsname
+  }
+  {%
+    \csname lst@SaveFirstNumber\endcsname
+  }
+
+\newlistof{codeenvA}{locodea}{List of Code Snippets}
+
+\captionsetup[codeenvB]{box=colorbox,boxcolor={mycolor}}
+
+\begin{document}
+
+\frontmatter
+\tableofcontents
+\listofcodeenvA
+\listof{codeenvB}{List of Algorithms}
+
+\mainmatter
+
+\chapter{A chapter}
+
+\begin{codeenvA}[
+  caption={%
+    [Implementation of a Fibonacci number generator.]%
+    Implementation of a Fibonacci number generator.
+    This implementation uses the iterative approach with complexity
+    $O(n)$, and is thus faster than the even simpler recursive
+    variant with complexity $O\left(\phi^n\right)$.%
+  },
+  label=code:fib
+]
+def fib(n):
+    a = b = 1
+    for _ in range(n):
+        a, b = a + b, a
+
+    # This is a comment
+    return b
+\end{codeenvA}
+
+Some dummy text referencing \autoref{code:fib} and
+\autoref{code:hello}.
+
+\lstinputcodeenvB[
+  caption={C implementation of ``Hello world'' sample program.},
+  label=code:hello
+]{samplecode.c}
+
+\end{document}
+```
+{% endraw %}
+
+This will make the listings look like:
+
+![Example of listing using multiple custom environments](images/listings/multiple-fixed-listing.png?raw=true)
+
+and the list of listings for the custom environments will look like:
+
+![Example of List of Listings with multiple custom environments](images/listings/multiple-fixed-lol-a.png?raw=true)
+
+and
+
+![Example of List of Listings with multiple custom environments](images/listings/multiple-fixed-lol-b.png?raw=true)
 
