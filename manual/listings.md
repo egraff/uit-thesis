@@ -153,6 +153,8 @@ The following is an MWE that demonstrates the use of styling using `\lstset` and
 \begin{filecontents*}{samplecode.c}
 #include <stdio.h>
 
+/** A small docstring.
+ */
 int main(void)
 {
   // This is a comment
@@ -197,18 +199,18 @@ int main(void)
   [Custom]{C}
   [Ansi]{C}
 {
-  morecomment=[l]{//},% Double-slash is line-comment
-  keywordstyle=\color{red},
+  morekeywords={},
+  morekeywords=[2]{printf},
+  morecomment=[s][keywordstyle3]{/**}{*/},
+  keywordstyle=\color{RoyalBlue},
+  directivestyle=\color{Maroon},
+  stringstyle=\color{OliveGreen},
+  keywordstyle=[2]{\color[rgb]{0.4,0.4,0.1}},
+  keywordstyle=[3]{\bfseries\color[rgb]{0,0.3,0.2}},
 }
 
 \begin{document}
-
-\frontmatter
-\tableofcontents
-\listoflistings
-
 \mainmatter
-
 \chapter{A chapter}
 
 \begin{lstlisting}[
@@ -395,9 +397,7 @@ The following is an MWE demonstrating how to float listing environments, by usin
 \newfloat{mycode}{!tbph}{myc}
 
 \begin{document}
-
 \mainmatter
-
 \chapter{A chapter}
 
 \begin{mycode}[b]
