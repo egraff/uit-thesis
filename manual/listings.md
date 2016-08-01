@@ -549,7 +549,7 @@ int main(void)
 ```
 {% endraw %}
 
-This will make the listing look like:
+This will make the listings look like:
 
 ![Example of listing using multiple environments](images/listings/multiple-problem-listing.png?raw=true)
 
@@ -558,7 +558,7 @@ and the List of Listings will look like:
 ![Example of List of Listings with multiple environments](images/listings/multiple-problem-lol.png?raw=true)
 
 To overcome these shortcomings, the UiT thesis LaTeX template provides a command `\newcustomlstenvironment` as an alternative to the `\lstnewenvironment` command. A formal definition of this command is as follows:
-The API is as follows
+
 > \newcustomlstenvironment{⟨Environment name⟩}{⟨Aux extension⟩}{⟨Caption/autoref name⟩}
 >                         [⟨number⟩][⟨opt. default arg.⟩]{⟨starting code⟩}{⟨ending code⟩}
 
