@@ -1255,6 +1255,7 @@
 \newdimen\ult@chapter@tmptotalheight
 \newdimen\ult@chapter@tmpstrutheight
 \newbox\ult@sectionname@vbox
+\newdimen\ult@section@parwidth
 \newdimen\ult@section@tmptotalheight
 \newdimen\ult@section@tmpstrutheight
 
@@ -1279,21 +1280,21 @@
   {% Before-code plus chapter name (titlesec's explicit option is enabled, so #1 is chapter name)
     % Make sure Chapter title aligns to baseline
     %
-    \chaptitlefont\chaptitlefontsize%
+    \chaptitlefont\chaptitlefontsize
     %
     % Prevent overfull hbox (make it OK to break line before entire line's hbox is filled).
     \microtypesetup{protrusion=false,spacing=false}%
-    \RaggedRight%
+    \RaggedRight
     %
-    \selectfont%
+    \selectfont
     %
     \vspace*{-\baselineskip}%
     %
     % Measure number of text lines in chapter name
     \setbox0=\vbox{\leavevmode #1\relax \kern \z@ \strut}%
-    \ult@chapter@tmptotalheight=\ht0 \advance\ult@chapter@tmptotalheight by \dp0%
+    \ult@chapter@tmptotalheight=\ht0 \advance\ult@chapter@tmptotalheight by \dp0
     \setbox0=\vbox{Bq \kern \z@ \strut}%
-    \ult@chapter@tmpstrutheight=\ht0 \advance\ult@chapter@tmpstrutheight by \dp0%
+    \ult@chapter@tmpstrutheight=\ht0 \advance\ult@chapter@tmpstrutheight by \dp0
     \setcounter{ult@chapter@tmpnumlines}{\DivideLengths{\ult@chapter@tmptotalheight}{\ult@chapter@tmpstrutheight}}%
     %
     % Print chapter name
@@ -1362,7 +1363,7 @@
     \lineskiplimit=-\maxdimen
     %
     % This \null is needed to ensure space between consecutive chapter/section/subsection/... headers
-    \null%
+    \null
     % And this is to compensate for \null after page break
     \if@nobreak\else
       \vspace*{-\parskip}%
@@ -1382,7 +1383,8 @@
   {\z@}% Sep
   {% Before-code:
     % Measure number of text lines in section name
-    \setbox0=\vbox{\leavevmode #1\relax \kern \z@ \strut}%
+    \ult@section@parwidth=\textwidth \advance\ult@section@parwidth by -\hangindent
+    \setbox0=\vbox{\parbox{\ult@section@parwidth}{\leavevmode #1\relax \kern \z@ \strut}}%
     \ult@section@tmptotalheight=\ht0 \advance\ult@section@tmptotalheight by \dp0
     \setbox0=\vbox{Bq \kern \z@ \strut}%
     \ult@section@tmpstrutheight=\ht0 \advance\ult@section@tmpstrutheight by \dp0
