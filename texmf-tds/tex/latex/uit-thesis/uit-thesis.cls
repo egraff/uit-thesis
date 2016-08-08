@@ -456,7 +456,7 @@
 \def\hangfootparskip{\z@}
 
 % Footnote paragraph indentation
-\def\hangfootparindent{2.5em}%
+\def\hangfootparindent{2.5em}
 
 % Width of footnote label box
 \def\ult@footnotemarkwidth{2.4em}
@@ -530,7 +530,7 @@
   linktocpage,
   colorlinks=false,% Should never be set to true, as it reduces quality of print...
   linkcolor=blue,
-  urlcolor =blue,
+  urlcolor=blue,
   citecolor=red,
   anchorcolor=green,
   hidelinks, % Remove color and border
@@ -657,12 +657,12 @@
 
 \newcommand{\ult@setlfstyledefault}{%
   \renewcommand*{\rmdefault}{\ult@fontfamilylfstyle}%
-  \normalfont%
+  \normalfont
 }
 
 \newcommand{\ult@setosfstyledefault}{%
   \renewcommand*{\rmdefault}{\ult@fontfamilyosfstyle}%
-  \normalfont%
+  \normalfont
 }
 
 % In his Elements of Typographic Style, Robert Bringhurst recommends that you use the
@@ -884,11 +884,11 @@
 % parskip does to \@starttoc
 \renewcommand*{\@starttoc}[1]{%
   % If protrusion is enabled, disable it
-  \newif\ifult@MT@protrusion\ult@MT@protrusionfalse%
-  \ifMT@protrusion%
-    \global\ult@MT@protrusiontrue%
+  \newif\ifult@MT@protrusion\ult@MT@protrusionfalse
+  \ifMT@protrusion
+    \global\ult@MT@protrusiontrue
     \microtypesetup{protrusion=false}% disables protrusion locally in the document
-  \fi%
+  \fi
   %
   % First element in ToC will be a chapter. Compensate for vertical space
   % added by tocloft, so the first element isn't pushed down.
@@ -900,14 +900,14 @@
   % Make sure spacing is the same with class option 'parindent' and without
   \vspace*{\parskip}%
   %
-  \begingroup%
+  \begingroup
     % Add modification from notoccite.
     % Note: this only has effect within the current local group
     % (which is why it works!)
-    \@fileswfalse%
+    \@fileswfalse
     %
     % Make sure @ have right catcode before reading input file
-    \makeatletter%
+    \makeatletter
     %
     % Retain modification from parskip.
     % Note: this is only consistent because we compensate with \vspace*{\parskip} above
@@ -917,17 +917,17 @@
     %
     % Read auxillary file
     \@input{\jobname.#1}%
-  \endgroup%
-  \if@filesw%
-    \expandafter\newwrite\csname tf@#1\endcsname%
-    \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax%
-  \fi%
-  \@nobreakfalse%
+  \endgroup
+  \if@filesw
+    \expandafter\newwrite\csname tf@#1\endcsname
+    \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
+  \fi
+  \@nobreakfalse
   %
   % If protrusion was enabled, re-enable it
-  \ifult@MT@protrusion%
+  \ifult@MT@protrusion
     \microtypesetup{protrusion=true}% enables protrusion
-  \fi%
+  \fi
 }
 
 %:-------------------------- Header/footer -----------------------
@@ -1194,7 +1194,7 @@
   \setbox\ult@chapnumbox\hbox{%
     \vrule\@height\ht\ult@chapnummetabox
           \@depth\dp\ult@chapnummetabox
-          \@width\z@%
+          \@width\z@
   }%
 }
 
@@ -1358,9 +1358,9 @@
 
 % Adjust spacing around chapter title
 \titlespacing*{\chapter}
-  {\z@}          % Left margin = 0
+  {\z@} % Left margin = 0
   {\z@ - \chapterheadtopvspace + \baselinesbeforefrontchaphead\ult@normalbaselineskip} % Vertical space before chapter head (50\p@ is standard from book.cls)
-  {\z@ + \baselinesafterchaptitle\ult@normalbaselineskip}        % Vertical space after title, before text (\ttl@chapafter is default)
+  {\z@ + \baselinesafterchaptitle\ult@normalbaselineskip} % Vertical space after title, before text (\ttl@chapafter is default)
 
 
 % The titlesec package overrides definition of \section, but sectsty overrides that definition in turn.
@@ -1445,9 +1445,9 @@
 
 % Starred version makes sure we suppress indentation of text following section title
 \titlespacing*{\section}
-  {\z@}% % Left margin = 0
-  {\z@ + \baselinesbeforesection\ult@normalbaselineskip}% % Vertical space before
-  {\z@ + \baselinesaftersection\ult@normalbaselineskip}%  % Vertical space after
+  {\z@} % Left margin = 0
+  {\z@ + \baselinesbeforesection\ult@normalbaselineskip} % Vertical space before
+  {\z@ + \baselinesaftersection\ult@normalbaselineskip} % Vertical space after
 
 % Now, define how \subsection is formatted.
 \titleformat{\subsection}[hang]
@@ -1476,9 +1476,9 @@
 
 % Starred version makes sure we suppress indentation of text following section title
 \titlespacing*{\subsection}
-  {\z@}% % Left margin = 0
-  {\z@ + \baselinesbeforesubsection\ult@normalbaselineskip}% % Vertical space before
-  {\z@ - \parskip + \baselinesaftersubsection\ult@normalbaselineskip}%  % Vertical space after
+  {\z@} % Left margin = 0
+  {\z@ + \baselinesbeforesubsection\ult@normalbaselineskip} % Vertical space before
+  {\z@ - \parskip + \baselinesaftersubsection\ult@normalbaselineskip} % Vertical space after
 
 % Now, define how \subsection is formatted.
 \titleformat{\subsubsection}[hang]
@@ -1507,9 +1507,9 @@
 
 % Starred version makes sure we suppress indentation of text following section title
 \titlespacing*{\subsubsection}
-  {\z@}% % Left margin = 0
-  {\z@ + \baselinesbeforesubsubsection\ult@normalbaselineskip}% % Vertical space before
-  {\z@ - \parskip + \baselinesaftersubsubsection\ult@normalbaselineskip}%  % Vertical space after
+  {\z@} % Left margin = 0
+  {\z@ + \baselinesbeforesubsubsection\ult@normalbaselineskip} % Vertical space before
+  {\z@ - \parskip + \baselinesaftersubsubsection\ult@normalbaselineskip} % Vertical space after
 
 % Now, define how \paragraph is formatted.
 \titleformat{\paragraph}[runin]
@@ -1622,7 +1622,7 @@
 
 % Abstract
 \newenvironment{abstract}{%
-  \ifult@hasacknowledgement%
+  \ifult@hasacknowledgement
     \ult@warning{'\abstractname' should precede '\ackname'.}%
   \fi
   \global\ult@hasabstracttrue
@@ -1637,13 +1637,13 @@
 }{}
 % Dedication
 \newenvironment{dedication}{%
-  \ifult@hasabstract%
+  \ifult@hasabstract
     \ult@warning{'Dedication' should precede '\abstractname'.}%
   \fi
-  \ifult@hasacknowledgement%
+  \ifult@hasacknowledgement
     \ult@warning{'Dedication' should precede '\ackname'.}%
   \fi
-  \ifult@hasepigraph%
+  \ifult@hasepigraph
     \ult@warning{'Dedication' should precede 'Epigraph'}%
   \fi
   \global\ult@hasdedicationtrue
@@ -1953,7 +1953,7 @@
   \@for{\@glsentry}:=\ult@glsstates\do% Iterate over entries in \ult@glsstates
   {%
     \ifx\@glsentry\@empty% Ignore empty entries
-    \else%
+    \else
       \StrLeft{\@glsentry}{1}[\firstchar]% Get leftmost character
       \StrGobbleLeft{\@glsentry}{1}[\@glsentry]% Remove leftmost character
       \IfStrEq{\firstchar}{+}{% If entry starts with a plus (indicates reset)
@@ -1967,7 +1967,7 @@
           \ult@critical@error{BUG in \@backslashchar ult@restoreglsstates}%
         }%
       }%
-    \fi%
+    \fi
   }%
 }
 
@@ -2445,11 +2445,11 @@
   % Set the topleft frontpage logo to Norwegian
   \gdef\ult@frontpage@logo{Logo_norsk_pos.pdf} %
   % Set the pattern, depending on PHD or master, which contains the UiT logo with the Norwegian language.
-  \ifult@phdthesisprofile %
-    \gdef\ult@frontpage@profile{phd_profile_nor.pdf} %
-  \else %
-    \gdef\ult@frontpage@profile{master_profile_nor.pdf} %
-  \fi %
+  \ifult@phdthesisprofile
+    \gdef\ult@frontpage@profile{phd_profile_nor.pdf}
+  \else
+    \gdef\ult@frontpage@profile{master_profile_nor.pdf}
+  \fi
 }{}
 
 % samin language - changes the frontpage logos and profile to the Sami language
@@ -2458,14 +2458,14 @@
 \def\languagetemp{samin}
 \ifx\languagename\languagetemp
   % Set the topleft frontpage logo to Sami
-  \gdef\ult@frontpage@logo{Logo_samisk_pos.pdf} %
+  \gdef\ult@frontpage@logo{Logo_samisk_pos.pdf}
   % Set the pattern, depending on PHD or master, which contains the UiT logo with the Sami language.
-  \ifult@phdthesisprofile %
-    \gdef\ult@frontpage@profile{phd_profile_sami.pdf} %
-  \else %
-    \gdef\ult@frontpage@profile{master_profile_sami.pdf} %
-  \fi %
-\fi %
+  \ifult@phdthesisprofile
+    \gdef\ult@frontpage@profile{phd_profile_sami.pdf}
+  \else
+    \gdef\ult@frontpage@profile{master_profile_sami.pdf}
+  \fi
+\fi
 
 \newif\ifult@has@titlepage
 \ult@has@titlepagefalse % Default to false
@@ -2478,34 +2478,34 @@
 \newbox\ult@copyright@page@box
 \newbox\ult@tmp@shipoutbox
 
-\fancypagestyle{copyrightpage}{%
-  \fancyhf{}
+\fancypagestyle{ult-copyrightpage}{%
+  \fancyhf{}%
   \fancyfoot[C]{%
-    \color[cmyk]{0.3,0.3,0.3,0.9}
+    \color[cmyk]{0.3,0.3,0.3,0.9}%
     This thesis document was typeset using the \emph{UiT Thesis L\kern-.28em\raise.35ex\hbox{\textsc{a}}\kern-.12emT\kern-.12em\lower.38ex\hbox{E}\kern-.03emX Template}.\\
-    \textcopyright{} \the\year{} -- \url{http://github.com/egraff/uit-thesis}
-  }
+    \textcopyright{} \the\year{} -- \url{http://github.com/egraff/uit-thesis}%
+  }%
 }
 
 \def\ult@copyright@page@contents{%
-  \thispagestyle{copyrightpage}
+  \thispagestyle{ult-copyrightpage}%
   \null\vfill
 }
 
 \ifcsname tikzexternalrealjob\endcsname\else
   \ifult@copyright@disabled
-    \ClassWarningNoLine{uit-thesis}{%
+    \ult@warning@nl{%
       You have disabled the copyright notice.\MessageBreak
       THIS MAY BE IN VIOLATION OF THE\MessageBreak
       LICENCE AGREEMENT!\MessageBreak
-      See http://github.com/egraff/uit-thesis for more info
+      See http://github.com/egraff/uit-thesis for more info%
     }
 
     \AfterBeginDocument{%
       \AtBeginShipoutNext{%
-        \ifult@has@titlepage\else%
-          \global\ult@titlepage@was@not@first@pagetrue%
-        \fi%
+        \ifult@has@titlepage\else
+          \global\ult@titlepage@was@not@first@pagetrue
+        \fi
       }%
     }
   \else
@@ -2520,14 +2520,14 @@
       %
       % Record the following copyright page in \ult@copyrightpagebox
       \AtBeginShipoutNext{%
-        \global\setbox\ult@copyright@page@box=\copy\AtBeginShipoutBox%
-        \AtBeginShipoutDiscard%
+        \global\setbox\ult@copyright@page@box=\copy\AtBeginShipoutBox
+        \AtBeginShipoutDiscard
       }%
       %
       % Start copyright page
       %
-      \ult@copyright@page@contents%
-      \cleardoublepage%
+      \ult@copyright@page@contents
+      \cleardoublepage
       %
       % End copyright page - setup first "normal" page
       %
@@ -2536,59 +2536,59 @@
       %
       % Setup hook for first page
       \AtBeginShipoutNext{%
-        \ifult@has@titlepage%
+        \ifult@has@titlepage
           % First, shipout the title page
           % Note: we have to restore \protect first, which was overridden in \AtBegShi@Output.
           % Then, after shipout, we use LaTeX' \set@typeset@protect to change \protect the way
           % that was already done in \AtBegShi@Output.
           %
-          \let\protect\noexpand%
-          \AtBeginShipoutOriginalShipout\box\AtBeginShipoutBox%
-          \set@typeset@protect%
+          \let\protect\noexpand
+          \AtBeginShipoutOriginalShipout\box\AtBeginShipoutBox
+          \set@typeset@protect
           %
           % Then, setup shipout of copyright page
           %
-          \setbox\AtBeginShipoutBox=\box\ult@copyright@page@box%
+          \setbox\AtBeginShipoutBox=\box\ult@copyright@page@box
           %
           % Make sure title page is displayed as recto page
           % (but only if using two-page layout)
           %
           \def\ult@tmp@pdfpagelayout{TwoPageLeft}%
-          \ifx\@pdfpagelayout\ult@tmp@pdfpagelayout%
+          \ifx\@pdfpagelayout\ult@tmp@pdfpagelayout
             % We cannot use hyperref to change page layout, because we're after preamble.
             % So we use "direct" PDF command instead.
             \pdfcatalog{/PageLayout/TwoPageRight}%
-          \fi%
-        \else%
+          \fi
+        \else
           % First page wasn't title page, so we insert copyright page before first page.
-          \global\ult@titlepage@was@not@first@pagetrue%
+          \global\ult@titlepage@was@not@first@pagetrue
           %
           % First, save the current first page.
-          \setbox\ult@tmp@shipoutbox=\copy\AtBeginShipoutBox%
+          \setbox\ult@tmp@shipoutbox=\copy\AtBeginShipoutBox
           %
           % Then, we shipout the copyright page.
           % Note: we have to restore \protect first, which was overridden in \AtBegShi@Output.
           % Then, after shipout, we use LaTeX' \set@typeset@protect to change \protect the way
           % that was already done in \AtBegShi@Output.
           %
-          \let\protect\noexpand%
-          \AtBeginShipoutOriginalShipout\box\ult@copyright@page@box%
-          \set@typeset@protect%
+          \let\protect\noexpand
+          \AtBeginShipoutOriginalShipout\box\ult@copyright@page@box
+          \set@typeset@protect
           %
           % Restore original first page, so it will be shipped out too!
           %
-          \setbox\AtBeginShipoutBox=\box\ult@tmp@shipoutbox%
+          \setbox\AtBeginShipoutBox=\box\ult@tmp@shipoutbox
           %
           % Make sure copyright page is displayed as verso page
           % (but only if using two-page layout)
           %
           \def\ult@tmp@pdfpagelayout{TwoPageRight}%
-          \ifx\@pdfpagelayout\ult@tmp@pdfpagelayout%
+          \ifx\@pdfpagelayout\ult@tmp@pdfpagelayout
             % We cannot use hyperref to change page layout, because we're after preamble.
             % So we use "direct" PDF command instead.
             \pdfcatalog{/PageLayout/TwoPageLeft}%
-          \fi%
-        \fi%
+          \fi
+        \fi
       }%
     }
   \fi
@@ -2624,8 +2624,8 @@
     %
     \ifult@copyright@disabled\else
       \clearpage
-      \pagenumbering{Alph}
-      \setcounter{page}{3}
+      \pagenumbering{Alph}%
+      \setcounter{page}{3}%
     \fi
   }
 
@@ -2638,7 +2638,7 @@
   %\begin{egg}%
   \IfEndWith{\ult@author}{arlberq}{%
     \AddToShipoutPicture*{%
-      \put(140,50){
+      \put(140,50){%
         \begingroup
           \printthed
         \endgroup
@@ -2675,10 +2675,10 @@
   \AddToShipoutPicture*{%
     \put(221,-350.5){% This is the correct position
       \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill%
-        \centering%
+        \vfill
+        \centering
         \includegraphics[width=24mm,height=24mm,keepaspectratio=false]{\ult@frontpage@logo}%
-        \vfill%
+        \vfill
       }%
     }%
   }%
@@ -2688,10 +2688,10 @@
   \AddToShipoutPicture*{%
     \put(-230.5,339.5){% This is the correct position
       \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill%
-        \centering%
+        \vfill
+        \centering
         \includegraphics[width=90mm,height=90mm,keepaspectratio=false]{\ult@frontpage@profile}%
-        \vfill%
+        \vfill
       }%
     }%
   }%
@@ -2741,7 +2741,7 @@
     \vspace*{2pt}%
     \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{l}{it}\selectfont
     \vspace*{-\baselineskip}%
-    \noindent ---
+    \noindent ---%
     \vskip -\parskip
     \normalsize\normalfont\selectfont\vspace*{\baselineskip}%
   \endgroup
@@ -2801,24 +2801,24 @@
   % It can therefore be used to test if command is used before or after \begin{document}...\end{document},
   % that is, if we're in the preamble or not. Since \@onefilewithoptions is defined with \@onlypreamble in
   % the LaTeX kernel, we don't want to take any action if we're not in the preable, since it's an error anyways.
-  \ifx\AtBeginDocument\@firstofone\else%
+  \ifx\AtBeginDocument\@firstofone\else
     % We're in the preamble
     %
     % Test if the package is allowed
-    \ifcsname ult@disallowpackage@#1\endcsname%
-      \begingroup%
-        \expandafter\let\expandafter\ult@tmp@disallowpackagereason\csname ult@disallowpackage@#1\endcsname%
-        \ifx\ult@tmp@disallowpackagereason\@empty%
+    \ifcsname ult@disallowpackage@#1\endcsname
+      \begingroup
+        \expandafter\let\expandafter\ult@tmp@disallowpackagereason\csname ult@disallowpackage@#1\endcsname
+        \ifx\ult@tmp@disallowpackagereason\@empty
           \ult@critical@error{The use of package #1 has been disallowed by the uit-thesis document class}%
-        \else%
+        \else
           \ult@critical@error{The use of package #1 has been disallowed by the uit-thesis document class.^^J^^J\ult@tmp@disallowpackagereason^^J}%
-        \fi%
-      \endgroup%
-    \else%
+        \fi
+      \endgroup
+    \else
       % Warn if package hasn't been previously loaded
       \@ifpackageloaded{#1}{}{\ult@warning@nl{Are you sure you are allowed to use the #1 package?}}%
-    \fi%
-  \fi%
+    \fi
+  \fi
   \ult@save@onefilewithoptions#1[{#2}][{#3}]#4%
 }
 
