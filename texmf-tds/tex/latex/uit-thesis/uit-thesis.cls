@@ -326,7 +326,7 @@
 % Now, it should patch the default \@chapter command of the book class.
 % If newfloat was included after we have patched \@chapter, then it would
 % patch \addtocontents instead.
-% See http://ctan.mackichan.com/macros/latex/contrib/caption/newfloat.pdf
+% See http://mirrors.ctan.org/macros/latex/contrib/caption/newfloat.pdf
 \usepackage{newfloat}
 
 \xapptocmd{\floatname}{%
@@ -1558,7 +1558,7 @@
 
 % \ttlh@<shape> defines the \titleformat shape
 % We use the 'display' shape above to place title label in separate paragraph
-% (see http://ctan.mackichan.com/macros/latex/contrib/titlesec/titlesec.pdf section 3.1)
+% (see http://mirrors.ctan.org/macros/latex/contrib/titlesec/titlesec.pdf section 3.1)
 %%% From titlesec.sty:
 %%% -------------------------------------------
 %%% % 1:global 2:label 3:sep 4:style 5:after 6:left 7:right 8:title
