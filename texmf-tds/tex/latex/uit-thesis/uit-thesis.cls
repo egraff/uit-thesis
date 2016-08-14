@@ -986,12 +986,17 @@
 
 \usepackage{ult-upsc}
 
+\DeclareRobustCommand{\ult@upsc@fntsetup}{%
+  \scalefont{1.12}%
+  \microtypesetup{tracking=false}% Disable tracking to reduce letterspacing for acronyms and similar
+}
+
 \LetLtxMacro{\ult@upsc}{\upsc}
-\DeclareRobustCommand{\upsc}[1]{%
+\renewcommand{\upsc}[1]{%
   \begingroup
-    \scalefont{1.12}%
-    \microtypesetup{tracking=false}% Disable tracking to reduce letterspacing for acronyms and similar
-    \ult@upsc{#1}%
+    \ult@upsc@fntsetup
+    % The use of \expandafter{ and \protect is to make \xmakefirstuc{\upsc{...}} and \MakeUppercase{\upsc{...}} work
+    \expandafter{\protect\ult@upsc{#1}}%
   \endgroup
 }
 
