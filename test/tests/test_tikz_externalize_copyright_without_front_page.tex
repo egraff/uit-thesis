@@ -29,7 +29,10 @@ First page
 \begin{figure}[h]
   \tikzsetnextfilename{sample_tikz}
   \begin{tikzpicture}[scale=1.4]
-    \begin{axis}
+    \begin{axis}[
+      ymin=-150,ymax=150,
+      ytick={-100,0,100},
+    ]
     \addplot {x^3};
     \end{axis}
   \end{tikzpicture}
