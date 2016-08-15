@@ -1378,6 +1378,8 @@
 \titleclass{\paragraph}{straight}
 
 % Now, define how \section is formatted.
+% This will define \ttlf@section as macro:#1-> \ttlh@hang{Format}{Label}{Sep}{Before-code}{After-code}
+% (the last three arguments to \ttlh@hang come from \ttl@select{section}...).
 \titleformat{\section}[hang]
   {% Format
     % Make sure that line spacing defined by \baselineskip will be preserved under all circumstances!
@@ -1406,8 +1408,11 @@
   {\z@}% Sep
   {% Before-code:
     % Measure number of text lines in section name
-    \ult@section@parwidth=\textwidth \advance\ult@section@parwidth by -\hangindent
-    \setbox0=\vbox{\parbox{\ult@section@parwidth}{\leavevmode #1\relax \kern \z@ \strut}}%
+    \ult@section@parwidth=\textwidth
+    % Note: \ttlh@hang uses \leftskip in titlesec versions < v.2.10.2, and \hangindent from v.2.10.2
+    \advance\ult@section@parwidth by -\leftskip
+    \advance\ult@section@parwidth by -\hangindent
+    \setbox0=\vbox{\parbox{\ult@section@parwidth}{{#1}\kern \z@ \strut \@@par}}%
     \ult@section@tmptotalheight=\ht0 \advance\ult@section@tmptotalheight by \dp0
     \setbox0=\vbox{Bq \kern \z@ \strut}%
     \ult@section@tmpstrutheight=\ht0 \advance\ult@section@tmpstrutheight by \dp0
@@ -1421,7 +1426,7 @@
     %
     % The titlesec package inserts something like
     %  \kern \z@ \strut \@@par \nobreak
-    % before this.
+    % before this (see definition of \ttlh@hang).
     %
     % Note: this only works as long as \lineskiplimit=-\maxdimen. Without that, the solution is infinitely more complex.
     % For the old solution, see e.g. commit be2341c37a93c0af6f665bd3d4a0b445c310e1d2
