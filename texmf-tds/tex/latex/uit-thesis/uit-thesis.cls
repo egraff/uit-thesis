@@ -1149,12 +1149,6 @@
   }%
 }
 
-
-% Prevent case-change since we're using smallcaps
-\let\@Acrshort\@acrshort
-\let\@ACRshort\@acrshort
-\let\@Acrshortpl\@acrshortpl
-
 % Prevent grouping together abbreviations starting on same letter in list of
 % abbreviations.
 % See http://tex.stackexchange.com/questions/4183/package-glossaries-single-spaced-printglossaries
