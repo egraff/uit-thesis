@@ -370,34 +370,32 @@
 %:-------------------------- Book class overrides -----------------------
 
 % Override \@chapter to get a consistent look of all ToC lists
-\def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
-                       \if@mainmatter
-                         \refstepcounter{chapter}%
-                         \typeout{\@chapapp\space\thechapter.}%
-                         \addcontentsline{toc}{chapter}%
-                                   {\protect\numberline{\thechapter}#1}%
-                       \else
-                         \addcontentsline{toc}{chapter}{#1}%
-                       \fi
-                    \else
-                      \addcontentsline{toc}{chapter}{#1}%
-                    \fi
-                    \chaptermark{#1}%
-                    %\addtocontents{lof}{\protect\addvspace{10\p@}}%
-                    %\addtocontents{lot}{\protect\addvspace{10\p@}}%
-                    %
-                    % Add space between entries belonging to different
-                    % chapters in ToC lists
-                    \ult@foralltoclists{\ult@this@toclist@ext}{%
-                      \addtocontents{\ult@this@toclist@ext}%
-                                    {\protect\addvspace{\ult@cftbeforechapskip}}%
-                    }%
-                    \if@twocolumn
-                      \@topnewpage[\@makechapterhead{#2}]%
-                    \else
-                      \@makechapterhead{#2}%
-                      \@afterheading
-                    \fi}
+\def\@chapter[#1]#2{%
+  \ifnum \c@secnumdepth >\m@ne
+    \if@mainmatter
+      \refstepcounter{chapter}%
+      \typeout{\@chapapp\space\thechapter.}%
+      \addcontentsline{toc}{chapter}%
+                {\protect\numberline{\thechapter}#1}%
+    \else
+      \addcontentsline{toc}{chapter}{#1}%
+    \fi
+  \else
+    \addcontentsline{toc}{chapter}{#1}%
+  \fi
+  \chaptermark{#1}%
+  %\addtocontents{lof}{\protect\addvspace{10\p@}}%
+  %\addtocontents{lot}{\protect\addvspace{10\p@}}%
+  %
+  % Add space between entries belonging to different
+  % chapters in ToC lists
+  \ult@foralltoclists{\ult@this@toclist@ext}{%
+    \addtocontents{\ult@this@toclist@ext}%
+                  {\protect\addvspace{\ult@cftbeforechapskip}}%
+  }%
+  \@makechapterhead{#2}%
+  \@afterheading
+}
 
 %:-------------------------- Footnotes ----------------------------
 
@@ -449,7 +447,7 @@
 % Definition of footnote mark in actual footnote
 % Currently set to adapt to Chicago style footnotes with non-superior footnote labels and single dot after label.
 \def\@@makefnmark{%
-    \hbox{{\ftnm@font{\@thefnmark .\space}}}%
+  \hbox{{\ftnm@font{\@thefnmark .\space}}}%
 }
 
 % Footnote paragraph skip
@@ -730,6 +728,8 @@
 % Note: we have to do this manually instead of using XCharter's \useosf command, since last version of XCharter breaks \useosf
 \edef\XCharter@figurestyle{TOsF}\edef\XCharter@altone{1}
 \AtEndPreamble{%
+  % Note: we use \XCharter@figurestyle here instead of TOsF to allow user to
+  % override default figure style in preamble!
   \renewcommand*{\rmdefault}{XCharter-\XCharter@figurestyle}%
   \normalfont
 }
@@ -883,13 +883,6 @@
 % Note: we do not use notoccite package, since it overwrites changes that
 % parskip does to \@starttoc
 \renewcommand*{\@starttoc}[1]{%
-  % If protrusion is enabled, disable it
-  \newif\ifult@MT@protrusion\ult@MT@protrusionfalse
-  \ifMT@protrusion
-    \global\ult@MT@protrusiontrue
-    \microtypesetup{protrusion=false}% disables protrusion locally in the document
-  \fi
-  %
   % First element in ToC will be a chapter. Compensate for vertical space
   % added by tocloft, so the first element isn't pushed down.
   % Also, elements in ToC lists that belong to different chapters are separated
@@ -901,6 +894,9 @@
   \vspace*{\parskip}%
   %
   \begingroup
+    % Disable protrusion locally
+    \microtypesetup{protrusion=false}%
+    %
     % Add modification from notoccite.
     % Note: this only has effect within the current local group
     % (which is why it works!)
@@ -911,9 +907,7 @@
     %
     % Retain modification from parskip.
     % Note: this is only consistent because we compensate with \vspace*{\parskip} above
-    \parskip\z@% Retain modification from parskip
-    %
-    %
+    \parskip\z@
     %
     % Read auxillary file
     \@input{\jobname.#1}%
@@ -923,11 +917,6 @@
     \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
   \fi
   \@nobreakfalse
-  %
-  % If protrusion was enabled, re-enable it
-  \ifult@MT@protrusion
-    \microtypesetup{protrusion=true}% enables protrusion
-  \fi
 }
 
 %:-------------------------- Header/footer -----------------------
@@ -1215,16 +1204,16 @@
 
 \newcommand{\printrheadslash}[1][]{
   \begingroup
-  % This is a hotfix for a problem with using tikzpicture in running head (triggered when verbatim environment crosses a page boundary)
-  % See issue #23 on GitHub. Hopefully, we'll find a better solution later.
-  % Note: we only restore dollar catcode inside the local group.
-  \catcode`\$=3
-  %
-  \raisebox{-0.6pt}{
-    \begin{tikzpicture}[scale=0.074]
-      \ult@chapslashtikz % Draw UiT "slash"
-    \end{tikzpicture}
-  }
+    % This is a hotfix for a problem with using tikzpicture in running head (triggered when verbatim environment crosses a page boundary)
+    % See issue #23 on GitHub. Hopefully, we'll find a better solution later.
+    % Note: we only restore dollar catcode inside the local group.
+    \catcode`\$=3
+    %
+    \raisebox{-0.6pt}{
+      \begin{tikzpicture}[scale=0.074]
+        \ult@chapslashtikz % Draw UiT "slash"
+      \end{tikzpicture}
+    }
   \endgroup
 }
 
@@ -1322,7 +1311,7 @@
     %
     % The titlesec package inserts something like
     %  \kern \z@ \strut \@@par \nobreak
-    % before this.
+    % before this (see definition of \ttlh@display).
     %
     % Note: this only works as long as \lineskiplimit=-\maxdimen. Without that, the solution is infinitely more complex.
     % For the old solution, see e.g. commit be2341c37a93c0af6f665bd3d4a0b445c310e1d2
@@ -1867,8 +1856,11 @@
 
 
 % Register listings with tocloft
-\begingroup\let\newcounter\@gobble\let\setcounter\@gobbletwo
-  \globaldefs\@ne \let\c@loldepth\@ne
+\begingroup
+  \let\newcounter\@gobble
+  \let\setcounter\@gobbletwo
+  \globaldefs\@ne
+  \let\c@loldepth\@ne
   \newlistof{listings}{lol}{\lstlistlistingname}
 \endgroup
 \let\l@lstlisting\l@listings
@@ -2077,7 +2069,7 @@
 
 % \begin{egg}
 \usetikzlibrary{arrows}
-\newcommand{\printthed}{
+\newcommand{\printthed}{%
 \begin{tikzpicture}[y=0.80pt,x=0.80pt,yscale=-1, inner sep=0pt, outer sep=0pt]
 \begin{scope}[cm={{0.15032,0.0,0.0,0.15032,(687.69171,514.56151)}},miter limit=4.00,line width=1.597pt]
   \path[draw=black,line join=miter,line cap=butt,miter limit=4.00,line
@@ -2315,8 +2307,7 @@
     controls (-2014.8335,3431.8308) and (-2214.5256,3427.6877) ..
     (-2298.2673,3386.2569);
 \end{scope}
-
-\end{tikzpicture}
+\end{tikzpicture}%
 }
 % \end{egg}
 
@@ -2804,7 +2795,7 @@
   % Note: the \AtBeginDocument is set to \@firstofone in the \document macro.
   % It can therefore be used to test if command is used before or after \begin{document}...\end{document},
   % that is, if we're in the preamble or not. Since \@onefilewithoptions is defined with \@onlypreamble in
-  % the LaTeX kernel, we don't want to take any action if we're not in the preable, since it's an error anyways.
+  % the LaTeX kernel, we don't want to take any action if we're not in the preamble, since it's an error anyways.
   \ifx\AtBeginDocument\@firstofone\else
     % We're in the preamble
     %
