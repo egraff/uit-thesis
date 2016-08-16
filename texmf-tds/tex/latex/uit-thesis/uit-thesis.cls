@@ -950,7 +950,7 @@
 
 % Redefine what is in \sectionmark so that \rightmark contains section number and section name (e.g. "2.1 My Sections Name")
 \renewcommand{\sectionmark}[1]{%
-  \markright{\rheadfmt{\thesection}\printrheadslash \rheadfmt{#1}}% \leftmark (right even) is set to section number + title after start of new section
+  \markright{\rheadfmt{\thesection}\hspace{5pt}\printrheadslash\hspace{5pt}\rheadfmt{#1}}% \leftmark (right even) is set to section number + title after start of new section
 }
 
 % Redefine "chapter mark" for Toc lists (\tocetcmark command is originally defined in tocbibind...)
@@ -1202,18 +1202,18 @@
 \newlength\ult@chapslash@height
 \setlength{\ult@chapslash@height}{\ht\ult@chapslashbox}
 
-\newcommand{\printrheadslash}[1][]{
+\newcommand{\printrheadslash}[1][]{%
   \begingroup
     % This is a hotfix for a problem with using tikzpicture in running head (triggered when verbatim environment crosses a page boundary)
     % See issue #23 on GitHub. Hopefully, we'll find a better solution later.
     % Note: we only restore dollar catcode inside the local group.
     \catcode`\$=3
     %
-    \raisebox{-0.6pt}{
+    \raisebox{-0.6pt}{%
       \begin{tikzpicture}[scale=0.074]
         \ult@chapslashtikz % Draw UiT "slash"
-      \end{tikzpicture}
-    }
+      \end{tikzpicture}%
+    }%
   \endgroup
 }
 
@@ -2040,7 +2040,7 @@
   % Note that we do not use \@chapapp (contains "chapter type"), because we do not want to write "Chapter" before the chapter number.
   \renewcommand{\chaptermark}[1]{%
     % Note: we use two number signs (#) because we have renewcommand within renewcommand
-    \markboth{\rheadfmt{\@chapapp\ \thechapter}\printrheadslash \rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
+    \markboth{\rheadfmt{\@chapapp\ \thechapter}\hspace{5pt}\printrheadslash\hspace{5pt}\rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages) is set to chapter title after start of new chapters
              {}%                 % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
   }%
   %
