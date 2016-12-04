@@ -40,7 +40,7 @@ collection-latex 1
 collection-latexextra 1
 collection-latexrecommended 1
 collection-luatex 0
-collection-mathextra 1
+collection-mathscience 1
 collection-metapost 1
 collection-music 0
 collection-omega 0
@@ -48,7 +48,6 @@ collection-pictures 1
 collection-plainextra 1
 collection-pstricks 1
 collection-publishers 0
-collection-science 1
 collection-texworks 1
 collection-xetex 0
 in_place 0
