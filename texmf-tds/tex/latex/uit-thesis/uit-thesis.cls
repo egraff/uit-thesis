@@ -984,8 +984,7 @@
 \renewcommand{\upsc}[1]{%
   \begingroup
     \ult@upsc@fntsetup
-    % The use of \expandafter{ and \protect is to make \xmakefirstuc{\upsc{...}} and \MakeUppercase{\upsc{...}} work
-    \expandafter{\protect\ult@upsc{#1}}%
+    \ult@upsc{#1}%
   \endgroup
 }
 
@@ -994,111 +993,9 @@
 % Used for abreviations and list of abreviations
 % Translate=false because package 'babel' reverts renaming of the default glossary-/acronymnames
 \usepackage[toc,acronym,shortcuts,nonumberlist,nopostdot,translate=false,\ult@glossariesextraoptions]{glossaries}
+\usepackage{ult-glossaries}
 
-\newcommand*{\ult@glsgenacfmt}{%
-  \ifdefempty\glscustomtext
-  {% no custom text supplied (\glsdisp not used)
-    \ifglsused{\glslabel}%
-    {% Subsequent use
-      \glsifplural
-      {% plural subsequent use
-        \glscapscase
-        {% no case change
-          \glsentryshortpl{\glslabel}\glsinsert
-        }%
-        {% first letter upper case
-          % Note: we do *not* use \Glsentryshortpl since we use smallcaps
-          \glsentryshortpl{\glslabel}\glsinsert
-        }%
-        {% all caps
-          % Note: we use \glsentryplural instead of \glsentryshortpl, because we assume 'plural' value contains non-upsc version
-          \mfirstucMakeUppercase{\glsentryplural{\glslabel}\glsinsert}%
-        }%
-      }%
-      {% singular subsequent use
-        \glscapscase
-        {% no case change
-          \glsentryshort{\glslabel}\glsinsert
-        }%
-        {% first letter upper case
-          % Note: we do *not* use \Glsentryshort since we use smallcaps
-          \glsentryshort{\glslabel}\glsinsert
-        }%
-        {% all caps
-          % Note: we use \glsentrytext instead of \glsentryshort, because we assume 'text' value contains non-upsc version
-          \mfirstucMakeUppercase{\glsentrytext{\glslabel}\glsinsert}%
-        }%
-      }%
-    }%
-    {% First use
-      \glsifplural
-      {% plural first use
-        \glscapscase
-        {% no case change
-          \genplacrfullformat{\glslabel}{\glsinsert}%
-        }%
-        {% first letter upper case
-          \Genplacrfullformat{\glslabel}{\glsinsert}%
-        }%
-        {% All caps
-          \mfirstucMakeUppercase{\glsentrylongpl{\glslabel}\glsinsert}\space (\glsentryshortpl{\glslabel})%
-        }%
-      }%
-      {% singular first use
-        \glscapscase
-        {% no case change
-          \genacrfullformat{\glslabel}{\glsinsert}%
-        }%
-        {% first letter upper case
-          \Genacrfullformat{\glslabel}{\glsinsert}%
-        }%
-        {% All caps
-          \mfirstucMakeUppercase{\glsentrylong{\glslabel}\glsinsert}\space (\glsentryshort{\glslabel})%
-        }%
-      }%
-    }%
-  }%
-  {% custom text provided by \glsdisp
-    \glscustomtext% When using ACR-style, e.g. \acl, \acs
-  }%
-}
-
-\newacronymstyle{ult-long-upsc-short}%
-{% Acronym entry display style
-  \ult@glsgenacfmt
-}%
-{% Acronym style definitions
-  \GlsUseAcrStyleDefs{long-short}%
-  %
-  % Customize glossary abbreviations to replace upper-case letters with lower-case small-caps
-  \renewcommand*{\GenericAcronymFields}{%
-    name={\the\glsshorttok},% name is abbreviated form (how it appears in 'List of Abbreviations'). Note: this is used for sorting, so it cannot be styled!
-    text={\the\glsshorttok},% \glstext, \Glstext, \GLStext
-    first={\the\glslongtok\space (\the\glsshorttok)},% \glsfirst, \Glsfirst, \GLSfirst
-    plural={\the\glsshorttok\noexpand\acrpluralsuffix},% \glsplural, \Glsplural, \GLSplural
-    firstplural={\the\glslongtok\noexpand\acrpluralsuffix\space (\the\glsshorttok)},%
-    short={\upsc{\the\glsshorttok}},% \acs, \Acs, ..., and all use of singular abbrev in parentheses
-    shortplural={\upsc{\the\glsshorttok}\noexpand\acrpluralsuffix},% \acp, \Acp, ..., and all use of singular abbrev in parentheses
-    long={\the\glslongtok},% \acl and \Acl, \acf and \Acf, long-form in first \ac and \Ac
-    longplural={\the\glslongtok\noexpand\acrpluralsuffix},% \aclp, \Aclp, and all long plural forms in \acf, \Acf, \ac, \Ac, ... Note: this may be overridden in \newacronym
-    description={\the\glslongtok},% description is long form (how it appears in 'List of Abbreviations')
-    descriptionplural={\noexpand\expandonce\noexpand\@glo@longpl}%
-  }%
-  \renewcommand*{\genacrfullformat}[2]{%
-   \glsentrylong{##1}##2\space (\glsentryshort{##1})%
-  }%
-  \renewcommand*{\Genacrfullformat}[2]{%
-   \Glsentrylong{##1}##2\space (\glsentryshort{##1})%
-  }%
-  \renewcommand*{\genplacrfullformat}[2]{%
-   \glsentrylongpl{##1}##2\space (\glsentryshortpl{##1})%
-  }%
-  \renewcommand*{\Genplacrfullformat}[2]{%
-   \Glsentrylongpl{##1}##2\space (\glsentryshortpl{##1})%
-  }%
-}
-
-% Apply magic smallcaps glossaries style
+% Apply custom smallcaps glossaries style
 \setacronymstyle{ult-long-upsc-short}
 
 \newglossarystyle{ult-list}{%
@@ -1137,6 +1034,7 @@
     \printglossary[type=\acronymtype,style=ult-list,#1]%
   }%
 }
+
 
 % Prevent grouping together abbreviations starting on same letter in list of
 % abbreviations.
