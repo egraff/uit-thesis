@@ -318,6 +318,8 @@
 
 %:-------------------------- Floats -----------------------
 
+\usepackage{ult-rename}
+
 % Floats (should be loaded before hyperref)
 \usepackage{float}
 
@@ -330,39 +332,8 @@
 \usepackage{newfloat}
 
 \xapptocmd{\floatname}{%
-  % Define the macro \<Name of float>name, so hyperref's \autoref{} will work.
-  \@namedef{#1name}{#1}%
-  \@namedef{#1autorefname}{#1}%
-  %
-  % If babel is used, we must make sure that our new name is retained.
-  \begingroup
-    \ifcsname languagename\endcsname
-      \ifcsname captions\languagename\endcsname
-        % Add name definition to \captions<Language name> macro.
-        % Because \floatname might be called multiple times for the same float,
-        % we make sure that our definition is only added once (by using xpatch to
-        % remove possible previous occurences first).
-        \expandafter\xpatchcmd\csname captions\languagename\endcsname
-          {\@namedef{#1name}{\@nameuse{fname@#1}}}%
-          {}%
-          {}%
-          {}%
-        % Now, add our definition.
-        \expandafter\g@addto@macro\csname captions\languagename\endcsname
-          {\@namedef{#1name}{\@nameuse{fname@#1}}}%
-      \fi
-      % Now, do the same with <Name of float>autorefname
-      \ifcsname extras\languagename\endcsname
-        \expandafter\xpatchcmd\csname extras\languagename\endcsname
-          {\@namedef{#1autorefname}{\@nameuse{fname@#1}}}%
-          {}%
-          {}%
-          {}%
-        \expandafter\g@addto@macro\csname extras\languagename\endcsname
-          {\@namedef{#1autorefname}{\@nameuse{fname@#1}}}%
-      \fi
-    \fi
-  \endgroup
+  \renamedefname{#1}{\@nameuse{fname@#1}}
+  \renameautorefname{#1}{\@nameuse{fname@#1}}
 }
 {}
 {\ult@critical@error{Failed to patch \@backslashchar floatname}}
@@ -555,8 +526,6 @@
 \usepackage{eso-pic}
 
 %:-------------------------- References -----------------------
-
-\usepackage{ult-rename}
 
 % For some reason, hyperref has let some reference names have first capital letter, whereas others do not.
 % Make sure all default reference names use first capital letter.

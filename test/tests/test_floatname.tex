@@ -1,0 +1,178 @@
+\documentclass[nocopyright,norsk,USenglish]{uit-thesis-test}
+
+\floatname{figure}{New Figure Name}
+
+\newcommand{\definitionname}{DEF}
+\newcommand{\listdefinitionname}{My list of definitions}
+\newlistof{definition}{def}{\listdefinitionname}
+\newcommand{\definition}[1]{%
+  \refstepcounter{definition}%
+  \par\noindent\textbf{\definitionname~\thedefinition. #1}%
+  \addcontentsline{def}{definition}
+    {\protect\numberline{\thechapter.\thedefinition}#1}\par%
+}
+\floatname{definition}{First Definition Name}
+
+\newfloat{code}{!tbph}{locode}[chapter]
+\newlistof{code}{locode}{List of Code Samples}
+
+\begin{document}
+
+\frontmatter
+\tableofcontents
+\listofdefinition
+\listofcode
+
+\mainmatter
+
+\chapter{A chapter}
+
+\makeatletter
+Figure name: `\figurename'\\
+Figure float name: `\@nameuse{fname@figure}'\\
+Table name: `\tablename'\\
+Table float name: `\@nameuse{fname@table}'\\
+Definition name: `\definitionname'\\
+Definition float name: `\@nameuse{fname@definition}'\\
+Code name: `\codename'\\
+Code float name: `\@nameuse{fname@code}'
+\makeatother
+
+Look at the example in \autoref{fig:a}.
+
+\begin{figure}[!htbp]
+\centering
+\fbox{FIRST EXAMPLE FIGURE}
+\caption{Some figure text}\label{fig:a}
+\end{figure}
+
+\floatname{figure}{Redefined Figure Name}
+
+\makeatletter
+Figure name: `\figurename'\\
+Figure float name: `\@nameuse{fname@figure}'\\
+Table name: `\tablename'\\
+Table float name: `\@nameuse{fname@table}'\\
+Definition name: `\definitionname'\\
+Definition float name: `\@nameuse{fname@definition}'\\
+Code name: `\codename'\\
+Code float name: `\@nameuse{fname@code}'
+\makeatother
+
+Now, look at \autoref{fig:b}.
+
+\begin{figure}[!htbp]
+\centering
+\fbox{SECOND EXAMPLE FIGURE}
+\caption{Some figure text}\label{fig:b}
+\end{figure}
+
+Here we have a definition:
+
+\definition{A definition}\label{def:a}
+
+And another:
+
+\definition{Some other definition}\label{def:b}
+
+Remember, from \autoref{def:a}, that something\ldots
+
+\floatname{definition}{Redefined Definition Name}
+
+Remember, from \autoref{def:b}, that something else\ldots
+
+\definition{Yet another definition}
+
+
+Here is \autoref{code:a}:
+
+\begin{code}
+\centering
+\fbox{This is an algorithm}
+\caption{An algorithm}\label{code:a}
+\end{code}
+
+\floatname{code}{Redefined Code Name}
+
+And here is \autoref{code:b}:
+
+\begin{code}
+\centering
+\fbox{This is another algorithm}
+\caption{Another algorithm}\label{code:b}
+\end{code}
+
+
+\captionsnorsk
+\extrasnorsk
+
+Now we have changed language to Norwegian.
+
+And we have \autoref{fig:a} and \autoref{def:a} and \autoref{code:a}.
+
+\begin{figure}[!htbp]
+\centering
+\fbox{THIRD EXAMPLE FIGURE}
+\caption{Some figure text}\label{fig:c}
+\end{figure}
+
+And
+
+\definition{More definitions}
+
+And
+
+\begin{code}
+\centering
+\fbox{Code, code, code}
+\caption{Even more algorithms}\label{code:c}
+\end{code}
+
+\makeatletter
+Figure name: `\figurename'\\
+Figure float name: `\@nameuse{fname@figure}'\\
+Table name: `\tablename'\\
+Table float name: `\@nameuse{fname@table}'\\
+Definition name: `\definitionname'\\
+Definition float name: `\@nameuse{fname@definition}'\\
+Code name: `\codename'\\
+Code float name: `\@nameuse{fname@code}'
+\makeatother
+
+\captionsUSenglish
+\extrasUSenglish
+
+Now, we have switched back to US English.
+
+And we have \autoref{fig:a} and \autoref{def:a} and \autoref{code:a}.
+
+\begin{figure}[!htbp]
+\centering
+\fbox{FOURTH EXAMPLE FIGURE}
+\caption{Some figure text}\label{fig:d}
+\end{figure}
+
+And
+
+\definition{More definitions}
+
+And
+
+\begin{code}
+\centering
+\fbox{Code, code, code}
+\caption{Even more algorithms}\label{code:d}
+\end{code}
+
+\makeatletter
+Figure name: `\figurename'\\
+Figure float name: `\@nameuse{fname@figure}'\\
+Table name: `\tablename'\\
+Table float name: `\@nameuse{fname@table}'\\
+Definition name: `\definitionname'\\
+Definition float name: `\@nameuse{fname@definition}'\\
+Code name: `\codename'\\
+Code float name: `\@nameuse{fname@code}'
+\makeatother
+
+\end{document}
