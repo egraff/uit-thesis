@@ -936,7 +936,7 @@
 \let\headrule\@empty
 
 % fosj is opensans with old style figures
-\newcommand{\rheadfont}{\fontsize{10pt}{12pt}\usefont{T1}{fosj}{l}{n}\selectfont}
+\newcommand{\rheadfont}{\fontsize{10pt}{12pt}\usefont{T1}{fosj}{l}{n}}
 \newcommand{\rheadfmt}[1]{\textsc{\MakeLowercase{#1}}}
 
 % Set pagenumber in the header.
@@ -1058,13 +1058,12 @@
 
 % Use Open Sans (fos) as chapter and section title font
 % fosj is Open Sans with old style figures.
-\allsectionsfont{\rmfamily\upshape\bfseries\usefont{T1}{fosj}{bx}{n}\selectfont}
+\allsectionsfont{\usefont{T1}{fosj}{bx}{n}}
 
 % Change font for chapter number
 \chapternumberfont{%
-  \usefont{T1}{fos}{b}{n}%      % Use Open Sans (fos) as chapter number font
   \fontsize{56}{56}%            % font size 56pt, baselineskip 56pt
-  \selectfont                   % activate font
+  \usefont{T1}{fos}{b}{n}%      % Use Open Sans (fos) as chapter number font
 }
 
 % Draw the UiT slash (must be used inside a tikzpicture environment)
@@ -1546,7 +1545,7 @@
   \vfil
   \begingroup
   \center
-  \fontsize{12pt}{14.4pt}\usefont{T1}{\rmdefault}{m}{it}\selectfont
+  \fontsize{12pt}{14.4pt}\rmfamily\mdseries\itshape\selectfont
 }{%
   \endcenter
   \endgroup
@@ -1617,9 +1616,9 @@
   \setlength{\ult@cftsecnumwidth}{2.3em} % Default is 2.3em
 
 \newcommand{\ult@cftchapfont}     % chapter titles
-           {\usefont{T1}{bch}{b}{n}\selectfont}
+           {\usefont{T1}{bch}{b}{n}}
 \newcommand{\ult@cftsecfont}      % section titles
-           {\usefont{T1}{bch}{m}{n}\selectfont}
+           {\usefont{T1}{bch}{m}{n}}
 \newcommand{\ult@cftchappagefont} % chapter page numbers
            {\ult@cftchapfont}
 \newcommand{\ult@cftsecpagefont}  % section page numbers
@@ -1942,7 +1941,7 @@
              {}%                 % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
   }%
   %
-  % Set odd pages to have have \rightmark instead of \leftmark
+  % Set odd pages to have \rightmark instead of \leftmark
   % This will make sure that section title is written to the left in running headers on odd (recto) pages
   \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\rightmark}}%
   %
@@ -2593,7 +2592,7 @@
   %
   \begingroup
     \vskip \z@
-    \fontsize{10.3pt}{15pt}\usefont{T1}{fos}{l}{n}\selectfont
+    \fontsize{10.3pt}{15pt}\usefont{T1}{fos}{l}{n}
     \noindent\@thesisfaculty
     \vskip -\parskip
   \endgroup
@@ -2604,7 +2603,7 @@
     \vskip 2\baselineskip
     \microtypesetup{protrusion=false,spacing=false}%
     \RaggedRight
-    \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{b}{n}\selectfont
+    \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{b}{n}
     \vspace*{-\baselineskip}%
     \noindent\@title
     \vskip -\parskip
@@ -2619,7 +2618,7 @@
         \vskip \ht\strutbox
         \microtypesetup{protrusion=false,spacing=false}%
         \RaggedRight
-        \fontsize{11.4pt}{14pt}\usefont{T1}{fos}{l}{it}\selectfont
+        \fontsize{11.4pt}{14pt}\usefont{T1}{fos}{l}{it}
         \vspace*{-\baselineskip}%
         \noindent\@subtitle
         \vskip -\parskip
@@ -2632,7 +2631,7 @@
   %
   \begingroup
     \vspace*{2pt}%
-    \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{l}{it}\selectfont
+    \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{l}{it}
     \vspace*{-\baselineskip}%
     \noindent ---%
     \vskip -\parskip
@@ -2642,7 +2641,7 @@
   % Name of author
   %
   \begingroup
-    \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{sb}{n}\selectfont
+    \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{sb}{n}
     \vspace*{-\baselineskip}%
     \noindent\@author
     \vskip -\parskip
@@ -2652,7 +2651,7 @@
   % Thesis description one-line / study program / month and year
   %
   \begingroup
-    \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{l}{it}\selectfont
+    \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{l}{it}
     \vspace*{-\baselineskip}%
     \noindent\@thesisprogramme
     \vskip -\parskip
