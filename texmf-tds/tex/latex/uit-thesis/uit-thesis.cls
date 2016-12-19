@@ -1,6 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{uit-thesis}[2014/16/02 v0.1a UiT thesis class]
 
+
 %:----------------- INFO, WARNING, ERROR -----------------
 
 \newcommand\ult@info[1]{%
@@ -19,6 +20,18 @@
   \ClassError{uit-thesis}{#1}{\@ehd}%
 }
 
+
+%:-------------------------- DEBUG -----------------------
+
+% Used to halt LaTeX compilation
+\def\debughalt#1{%
+  \PackageError{uit-thesis}{DEBUG}{#1}}
+
+% Used to output definition of a LaTeX macro in console
+\def\debugdef#1{%
+  \typeout{[DEBUG] Definition of \@backslashchar #1: \expandafter\meaning\csname#1\endcsname ^^J ^^J}}
+
+
 %:-------------------------- Early includes and checks -----------------------
 
 % e-Tex tools, macros, hooks, etc.
@@ -31,6 +44,7 @@
 \ifpdf\else
   \ult@critical@error{The uit-thesis template only supports compiling with pdflatex}
 \fi
+
 
 %:-------------------------- Basic class options -----------------------
 
@@ -116,7 +130,6 @@
 % Fix compatibility issues. A4 dimensions hard coded.
 \special{papersize=210mm,297mm}
 
-
 % Inject USenglish in front of class options if it was not specified in the list.
 % If any other language is specified in the list, it will take precedence
 % We only inject if its was not specified, since every option is only processed once.
@@ -160,15 +173,6 @@
 % Better support fraction calculations
 \RequirePackage{xintexpr}
 
-%:-------------------------- DEBUG -----------------------
-
-% Used to halt LaTeX compilation
-\def\debughalt#1{%
-  \PackageError{uit-thesis}{DEBUG}{#1}}
-
-% Used to output definition of a LaTeX macro in console
-\def\debugdef#1{%
-  \typeout{[DEBUG] Definition of \@backslashchar #1: \expandafter\meaning\csname#1\endcsname ^^J ^^J}}
 
 %:-------------------------- LaTeX control flow macros -----------------------
 
@@ -249,6 +253,7 @@
 \ult@disallowpackage[The uit-thesis document class is not compatible with KOMA-Script.]{scrlogo}
 \ult@disallowpackage[The uit-thesis document class uses the float package, which isn't compatible with floatrow.]{floatrow}
 
+
 %:-------------------------- Colors -----------------------
 
 % Text coloring, table colors, etc.
@@ -279,7 +284,6 @@
   \definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
   \definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
 \fi
-
 
 
 %:-------------------------- URLs -----------------------
@@ -337,6 +341,7 @@
 {}
 {\ult@critical@error{Failed to patch \@backslashchar floatname}}
 
+
 %:-------------------------- Book class overrides -----------------------
 
 % Override \@chapter to get a consistent look of all ToC lists
@@ -367,43 +372,13 @@
   \@afterheading
 }
 
+
 %:-------------------------- Footnotes ----------------------------
-
-%\debugdef{@makefnmark}
-%\debugdef{@makefntext}
-%\debugdef{@footnotemark} % Uses \@makefnmark
-%\debugdef{@thefnmark}
-%\debugdef{footnote}
-%\debugdef{@footnotetext}
-%\debugdef{@mpfootnotetext}
-%\debugdef{@xfootnotemark}
-
-%\typeout{^^J ^^J ============================================= ^^J ^^J}
 
 \usepackage[norule,%    % Drop the small rule before footnotes
             splitrule,% % If a footnote is split, draw a full width rule above the continued part of the footnote as a visual cue to readers
             bottom%     % Make sure footnotes are pushed to the bottom of the page (instead of being placed after the actual page break)
            ]{footmisc}
-
-%\debugdef{footnote}
-%\debugdef{@footnotetext}
-%\debugdef{@mpfootnotetext}
-%\debugdef{@xfootnotemark}
-
-%\debugdef{@makefnmark}
-%\debugdef{@makefntext}
-%\debugdef{@footnotemark} % Uses \@makefnmark
-%\debugdef{@thefnmark}
-
-%\debugdef{par}
-%\debugdef{@par}
-%\debugdef{@@par}
-%\debugdef{@setpar}
-%\debugdef{parshape}
-
-%\debugdef{hangfootparskip}
-%\debugdef{hangfootparindent}
-
 
 % The actual marker symbol (per footnote)
 \providecommand*{\thefootnotemark}{\@thefnmark}
@@ -457,6 +432,7 @@
   \par\egroup
 }
 
+
 %:-------------------------- Figures, graphics, includes, etc.  -----------------------
 
 \usepackage[pdftex,%                       %
@@ -495,9 +471,7 @@
   unicode=true, % Enforce unicode encoding in bookmarks, which is required for samin language to interoperate with hyperref
 }
 
-
 \usepackage{ult-autoref}
-
 
 % Small, hanging indentation with bold label.
 % hypcap option is used to make sure that hyperlink to
@@ -513,6 +487,7 @@
 \usepackage[skins]{tcolorbox}
 \usepackage{picture}
 \usepackage{eso-pic}
+
 
 %:-------------------------- References -----------------------
 
@@ -574,6 +549,7 @@
 % Add macro for subtitle
 \def\subtitle#1{\gdef\@subtitle{#1}}
 
+
 %:-------------------------- Table of Contents (TOC) -----------------------C
 
 % ToC support for list of figures, list of tables, bibliography, index, etc.
@@ -583,6 +559,7 @@
 % Styling of actual Table of Contents
 \usepackage[titles%     % Retain chapter headers
            ]{tocloft}
+
 
 %:-------------------------- Fonts -----------------------
 
@@ -641,7 +618,6 @@
 % the default tracking is kind of huge, this sets tracking to 5.5% of an em
 \SetTracking{encoding = *, shape = {sc,si,scit}}{55}
 
-
 \newif\ifult@microtypeloaded
 \AtBeginDocument{%
   \@ifpackageloaded{microtype}%
@@ -657,6 +633,7 @@
 
 % Allows us to scale font sizes relatively
 \usepackage{scalefnt}
+
 
 %:-------------------------- Listings, tables, etc.  -----------------------
 
@@ -691,6 +668,7 @@
   \renewcommand*{\rmdefault}{XCharter-\XCharter@figurestyle}%
   \normalfont
 }
+
 
 %:-------------------------- Page layout -----------------------
 
@@ -830,6 +808,7 @@
 % For \RaggedRight macro, which is better than \raggedright
 \usepackage{ragged2e}
 
+
 %:-------------------------- Bibliography etc. -----------------------
 
 % Citation numbering not starting on table of contents
@@ -871,6 +850,7 @@
   \fi
   \@nobreakfalse
 }
+
 
 %:-------------------------- Header/footer -----------------------
 
@@ -924,6 +904,7 @@
 % Fix head height
 \setlength{\headheight}{15pt}
 
+
 %:-------------------------- Black magic hacks -----------------------
 
 \usepackage{ult-upsc}
@@ -940,6 +921,7 @@
     \ult@upsc{#1}%
   \endgroup
 }
+
 
 %:-------------------------- Glossaries -----------------------
 
@@ -988,16 +970,15 @@
   }%
 }
 
-
 % Prevent grouping together abbreviations starting on same letter in list of
 % abbreviations.
 % See http://tex.stackexchange.com/questions/4183/package-glossaries-single-spaced-printglossaries
 \glsnogroupskiptrue
 \renewcommand*{\glsgroupskip}{}
 
-
 % Make sure running heads of glossaries are output consistently with other ToC lists (using smallcaps)
 \renewcommand{\glossarymark}[1]{\prw@mkboth{#1}}
+
 
 %:-------------------------- Chapter and section style -----------------------
 
@@ -1436,7 +1417,9 @@
 % Macro for invoking \ttlh@display with arguments from \titleformat{\chapter}
 %\debugdef{ttlf@chapter}
 
+
 %:------------------------ Environments ----------------------
+
 % Default environment names for abstract and acknowledgement.
 % These needs to be defined, incase a language who does not define them is loaded (like samin)
 % Therefore, if they are not defined, the compilation won't halt on an undefined control sequence within the classfile,
@@ -1472,12 +1455,14 @@
   \chapter{\abstractname}%
   \thispagestyle{empty}%
 }{}
+
 % Acknowledgements
 \newenvironment{acknowledgement}{%
   \global\ult@hasacknowledgementtrue
   \chapter{\ackname}%
   \thispagestyle{empty}%
 }{}
+
 % Dedication
 \newenvironment{dedication}{%
   \ifult@hasabstract
@@ -1504,6 +1489,7 @@
   \endgroup
   \vfil
 }
+
 % Epigraph
 \newcommand{\epigraphitem}[2]{%
   \ifdefined\@ult@epigraphenv
@@ -1531,6 +1517,7 @@
   \end{flushright}%
   \vspace*{2\baselineskip}%
 }
+
 
 %:-------------------------- ToC lists -----------------------
 
@@ -1612,7 +1599,6 @@
 \renewcommand{\cftfigpagefont}{\ult@cftsecpagefont}
 \renewcommand{\cfttabpagefont}{\ult@cftsecpagefont}
 
-
 % Override tocloft's \newlistentry
 % First, allow \newlistentry (and hence, also \newlistof) command, even if entry has already been defined.
 % This allows us to use \newlistof to generate list definition after e.g. defining a float using \newfloat.
@@ -1636,7 +1622,6 @@
   \@namedef{cft#2font}{\ult@cftsecfont}%
   \@namedef{cft#2pagefont}{\ult@cftsecpagefont}%
 }
-
 
 % Override tocloft's \newlistof
 \LetLtxMacro{\ult@savenewlistof}{\newlistof}
@@ -1704,7 +1689,6 @@
 % Make sure \listoftables has effect at most once!
 \ult@once{\listoftables}
 
-
 % Register listings with tocloft
 \begingroup
   \let\newcounter\@gobble
@@ -1714,7 +1698,6 @@
   \newlistof{listings}{lol}{\lstlistlistingname}
 \endgroup
 \let\l@lstlisting\l@listings
-
 
 % List of Listings
 \renamedefname[USenglish]{lstlistlisting}{List of Listings}
@@ -1728,7 +1711,6 @@
 }
 % Make sure \listoflistings has effect at most once!
 \ult@once{\lstlistoflistings}
-
 
 % List of Abbreviations
 \renamedefname[USenglish]{acronym}{List of Abbreviations}
@@ -2269,11 +2251,9 @@
   }%
 }
 
-
 % Error if \maketitle is used without defining \thesisfaculty{} and \thesisprogramme{}
 \def\@thesisfaculty{\ult@critical@error{No \noexpand\thesisfaculty given}}
 \def\@thesisprogramme{\ult@critical@error{No \noexpand\thesisprogramme given}}
-
 
 % Use English as default
 % Set the topleft frontpage logo to English
