@@ -1,11 +1,38 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{uit-thesis}[2014/16/02 v0.1a UiT thesis class]
 
-%:-------------------------- Basic class options -----------------------
+%:----------------- INFO, WARNING, ERROR -----------------
+
+\newcommand\ult@info[1]{%
+  \ClassInfo{uit-thesis}{#1}%
+}
+
+\newcommand\ult@warning[1]{%
+  \ClassWarning{uit-thesis}{#1}%
+}
+
+\newcommand\ult@warning@nl[1]{%
+  \ClassWarningNoLine{uit-thesis}{#1}%
+}
+
+\newcommand\ult@critical@error[1]{%
+  \ClassError{uit-thesis}{#1}{\@ehd}%
+}
+
+%:-------------------------- Early includes and checks -----------------------
 
 % e-Tex tools, macros, hooks, etc.
 \RequirePackage{etex}
 \RequirePackage{etoolbox}
+
+% Used to provide \ifpdf macro
+\RequirePackage{ifpdf}
+
+\ifpdf\else
+  \ult@critical@error{The uit-thesis template only supports compiling with pdflatex}
+\fi
+
+%:-------------------------- Basic class options -----------------------
 
 % We're based on the standard 'book' class
 \def\baseclass{book}
@@ -43,13 +70,6 @@
 \DeclareOption{landscape}{}
 \DeclareOption{openany}{}
 \DeclareOption{twocolumn}{}
-
-% DVI of PDF?
-\ifx\pdfoutput\undefined
-  \PassOptionsToClass{dvips}{\baseclass}
-\else
-  \PassOptionsToClass{pdftex}{\baseclass}
-\fi
 
 % Option for drawing baseline grid
 \newif\ifult@drawbaselinegrid
@@ -150,31 +170,10 @@
 \def\debugdef#1{%
   \typeout{[DEBUG] Definition of \@backslashchar #1: \expandafter\meaning\csname#1\endcsname ^^J ^^J}}
 
-%:----------------- INFO, WARNING, ERROR -----------------
-
-\newcommand\ult@info[1]{%
-  \ClassInfo{uit-thesis}{#1}%
-}
-
-\newcommand\ult@warning[1]{%
-  \ClassWarning{uit-thesis}{#1}%
-}
-
-\newcommand\ult@warning@nl[1]{%
-  \ClassWarningNoLine{uit-thesis}{#1}%
-}
-
-\newcommand\ult@critical@error[1]{%
-  \ClassError{uit-thesis}{#1}{\@ehd}%
-}
-
 %:-------------------------- LaTeX control flow macros -----------------------
 
 % Used to provide if-then-else macros
 \usepackage{ifthen}
-
-% Used to provide \ifpdf macro
-\usepackage{ifpdf}
 
 % Allow calculations in \vspace*
 \usepackage{calc}
@@ -460,37 +459,27 @@
 
 %:-------------------------- Figures, graphics, includes, etc.  -----------------------
 
-\ifpdf
+\usepackage[pdftex,%                       %
+            plainpages=false,%             % "Physical" page numbers and logical page numbers are not the same
+            pdfpagelabels=false,%          % Don't index pages using logical page numbers in PDF reader (such as ii, iii, iv, ...)
+            pdfpagemode={UseOutlines},%    % Show bookmarks
+            pdfstartview={FitV},%          % Fit height of page to PDF viewer window
+            pdfpagelayout={TwoPageRight},% % Display two pages, odd-numbered pages to the right
+            pdfdisplaydoctitle,%           % Display document title instead of filename in title bar
+            bookmarks,%                    % Show bookmarks bar when displaying document
+            pagebackref=false,%            % No back references inside bibilography.
+            hyperindex,%                   %
+            hyperfigures%                  %
+           ]{hyperref}
 
-  \usepackage[pdftex,%                       %
-              plainpages=false,%             % "Physical" page numbers and logical page numbers are not the same
-              pdfpagelabels=false,%          % Don't index pages using logical page numbers in PDF reader (such as ii, iii, iv, ...)
-              pdfpagemode={UseOutlines},%    % Show bookmarks
-              pdfstartview={FitV},%          % Fit height of page to PDF viewer window
-              pdfpagelayout={TwoPageRight},% % Display two pages, odd-numbered pages to the right
-              pdfdisplaydoctitle,%           % Display document title instead of filename in title bar
-              bookmarks,%                    % Show bookmarks bar when displaying document
-              pagebackref=false,%            % No back references inside bibilography.
-              hyperindex,%                   %
-              hyperfigures%                  %
-             ]{hyperref}
+% Used for adding figures in thesis
+\usepackage[pdftex]{graphicx}
 
-  % Used for adding figures in thesis
-  \usepackage[pdftex]{graphicx}
+% Make it easy to include PDFs using \includepdf macro. Note that PDF links will be lost when including!
+\usepackage{pdfpages}
 
-  % Make it easy to include PDFs using \includepdf macro. Note that PDF links will be lost when including!
-  \usepackage{pdfpages}
-
-\else
-
-  \usepackage[dvips,bookmarks,pagebackref,hyperindex,hyperfigures]{hyperref}
-
-  % Used for adding figures in thesis
-  \usepackage{graphicx}
-
-\fi
-
-\usepackage[all]{hypcap} % Correct a problem with hyperref
+% Correct a problem with hyperref
+\usepackage[all]{hypcap}
 
 \hypersetup{%
   bookmarksopen=true,
@@ -745,13 +734,8 @@
 \usepackage{changepage}
 
 %A4 settings
-\ifpdf
-  \pdfpageheight=297mm
-  \pdfpagewidth=210mm
-\else
-  \setlength{\paperheight}{297mm}
-  \setlength{\paperwidth}{210mm}
-\fi
+\pdfpageheight=297mm
+\pdfpagewidth=210mm
 
 % WTF?
 \setlength{\hoffset}{0.00cm}
