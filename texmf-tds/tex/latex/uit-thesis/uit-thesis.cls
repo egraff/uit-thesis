@@ -550,6 +550,115 @@
 \def\subtitle#1{\gdef\@subtitle{#1}}
 
 
+%:-------------------------- Fonts -----------------------
+
+\usepackage{opensans}
+
+% Dependencies of XCharter
+\usepackage{textcomp}
+\usepackage{mweights}
+\usepackage{fontaxes}
+\usepackage{xkeyval}
+
+% XCharter
+\usepackage[scaled=.98,sups]{XCharter}% lining figures in math
+
+% Save font family for XCharter with lining figures
+\global\let\ult@fontfamilylfstyle\@empty
+\begingroup
+\lfstyle
+\global\let\ult@fontfamilylfstyle\f@family\relax
+\endgroup
+
+% Save font family for XCharter with old style figures
+\global\let\ult@fontfamilyosfstyle\@empty
+\begingroup
+\osfstyle
+\global\let\ult@fontfamilyosfstyle\f@family\relax
+\endgroup
+
+\newcommand{\ult@setlfstyledefault}{%
+  \renewcommand*{\rmdefault}{\ult@fontfamilylfstyle}%
+  \normalfont
+}
+
+\newcommand{\ult@setosfstyledefault}{%
+  \renewcommand*{\rmdefault}{\ult@fontfamilyosfstyle}%
+  \normalfont
+}
+
+% In his Elements of Typographic Style, Robert Bringhurst recommends that you use the
+% same amount of space after an end-of-sentence fullstop as there is between words.
+% See http://tex.stackexchange.com/questions/26996/implementing-a-sort-of-tightened-frenchspacing
+\frenchspacing
+
+% The csquotes package provides convenient macros for typesetting various kinds of quotations.
+\usepackage{csquotes}
+
+\usepackage[activate={true,nocompatibility},final,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+
+% this is necessary so that smallcapped italics & bolds also get spaced
+\DeclareMicrotypeSet{ultsmallcaps}
+   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2},
+     shape    = {sc,si,scit}
+   }
+\microtypesetup{tracking=ultsmallcaps}
+
+% the default tracking is kind of huge, this sets tracking to 5.5% of an em
+\SetTracking{encoding = *, shape = {sc,si,scit}}{55}
+
+\newif\ifult@microtypeloaded
+\AtBeginDocument{%
+  \@ifpackageloaded{microtype}%
+  {%
+    \global\ult@microtypeloadedtrue
+  }%
+  {%
+    \global\ult@microtypeloadedfalse
+    \global\newif\ifMT@protrusion
+    \global\MT@protrusionfalse
+  }%
+}
+
+% Allows us to scale font sizes relatively
+\usepackage{scalefnt}
+
+
+%:-------------------------- Listings, tables, etc.  -----------------------
+
+% Listings (e.g. used for code examples)
+\usepackage{listings}
+
+% Don't use old style numbers for line numbers or in listing content
+\lst@AddToHookAtTop{Init}{\ult@setlfstyledefault}
+
+\usepackage{ult-custom-listings}
+
+% Pretty tables
+\usepackage{booktabs}
+\usepackage{tabularx}
+
+
+%:-------------------------- Symbols -----------------------
+
+\usepackage{xspace}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\usepackage[libertine,bigdelims,scaled=1.07]{newtxmath}
+
+% Use oldstyle figures in text
+% Note: we have to do this manually instead of using XCharter's \useosf command, since last version of XCharter breaks \useosf
+\edef\XCharter@figurestyle{TOsF}\edef\XCharter@altone{1}
+\AtEndPreamble{%
+  % Note: we use \XCharter@figurestyle here instead of TOsF to allow user to
+  % override default figure style in preamble!
+  \renewcommand*{\rmdefault}{XCharter-\XCharter@figurestyle}%
+  \normalfont
+}
+
+
 %:-------------------------- Page layout -----------------------
 
 \newlength\ult@gm@topmargin
@@ -733,115 +842,6 @@
     \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
   \fi
   \@nobreakfalse
-}
-
-
-%:-------------------------- Fonts -----------------------
-
-\usepackage{opensans}
-
-% Dependencies of XCharter
-\usepackage{textcomp}
-\usepackage{mweights}
-\usepackage{fontaxes}
-\usepackage{xkeyval}
-
-% XCharter
-\usepackage[scaled=.98,sups]{XCharter}% lining figures in math
-
-% Save font family for XCharter with lining figures
-\global\let\ult@fontfamilylfstyle\@empty
-\begingroup
-\lfstyle
-\global\let\ult@fontfamilylfstyle\f@family\relax
-\endgroup
-
-% Save font family for XCharter with old style figures
-\global\let\ult@fontfamilyosfstyle\@empty
-\begingroup
-\osfstyle
-\global\let\ult@fontfamilyosfstyle\f@family\relax
-\endgroup
-
-\newcommand{\ult@setlfstyledefault}{%
-  \renewcommand*{\rmdefault}{\ult@fontfamilylfstyle}%
-  \normalfont
-}
-
-\newcommand{\ult@setosfstyledefault}{%
-  \renewcommand*{\rmdefault}{\ult@fontfamilyosfstyle}%
-  \normalfont
-}
-
-% In his Elements of Typographic Style, Robert Bringhurst recommends that you use the
-% same amount of space after an end-of-sentence fullstop as there is between words.
-% See http://tex.stackexchange.com/questions/26996/implementing-a-sort-of-tightened-frenchspacing
-\frenchspacing
-
-% The csquotes package provides convenient macros for typesetting various kinds of quotations.
-\usepackage{csquotes}
-
-\usepackage[activate={true,nocompatibility},final,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
-
-% this is necessary so that smallcapped italics & bolds also get spaced
-\DeclareMicrotypeSet{ultsmallcaps}
-   { encoding = {OT1,T1,T2A,LY1,OT4,QX,T5,TS1,EU1,EU2},
-     shape    = {sc,si,scit}
-   }
-\microtypesetup{tracking=ultsmallcaps}
-
-% the default tracking is kind of huge, this sets tracking to 5.5% of an em
-\SetTracking{encoding = *, shape = {sc,si,scit}}{55}
-
-\newif\ifult@microtypeloaded
-\AtBeginDocument{%
-  \@ifpackageloaded{microtype}%
-  {%
-    \global\ult@microtypeloadedtrue
-  }%
-  {%
-    \global\ult@microtypeloadedfalse
-    \global\newif\ifMT@protrusion
-    \global\MT@protrusionfalse
-  }%
-}
-
-% Allows us to scale font sizes relatively
-\usepackage{scalefnt}
-
-
-%:-------------------------- Listings, tables, etc.  -----------------------
-
-% Listings (e.g. used for code examples)
-\usepackage{listings}
-
-% Don't use old style numbers for line numbers or in listing content
-\lst@AddToHookAtTop{Init}{\ult@setlfstyledefault}
-
-\usepackage{ult-custom-listings}
-
-% Pretty tables
-\usepackage{booktabs}
-\usepackage{tabularx}
-
-
-%:-------------------------- Symbols -----------------------
-
-\usepackage{xspace}
-
-\usepackage{amsmath}
-\usepackage{amsthm}
-
-\usepackage[libertine,bigdelims,scaled=1.07]{newtxmath}
-
-% Use oldstyle figures in text
-% Note: we have to do this manually instead of using XCharter's \useosf command, since last version of XCharter breaks \useosf
-\edef\XCharter@figurestyle{TOsF}\edef\XCharter@altone{1}
-\AtEndPreamble{%
-  % Note: we use \XCharter@figurestyle here instead of TOsF to allow user to
-  % override default figure style in preamble!
-  \renewcommand*{\rmdefault}{XCharter-\XCharter@figurestyle}%
-  \normalfont
 }
 
 
