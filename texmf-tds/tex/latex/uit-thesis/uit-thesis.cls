@@ -595,10 +595,6 @@
 \pdfpageheight=297mm
 \pdfpagewidth=210mm
 
-% WTF?
-\setlength{\hoffset}{0.00cm}
-\setlength{\voffset}{0.00cm}
-
 % Get value of baselineskip of normal-sized font in \ult@normalbaselineskip
 \newdimen\ult@normalbaselineskip
 \begingroup
