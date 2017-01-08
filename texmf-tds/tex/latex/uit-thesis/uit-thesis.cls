@@ -804,6 +804,15 @@
 \usepackage[titles%     % Retain chapter headers
            ]{tocloft}
 
+\newif\ifult@first@contentsline
+\global\ult@first@contentslinefalse
+
+\let\ult@save@contentsline\contentsline
+\renewcommand*{\contentsline}[4]{%
+  \ult@save@contentsline{#1}{#2}{#3}{#4}%
+  \global\ult@first@contentslinefalse
+}
+
 % Citation numbering not starting on table of contents
 % Note: we do not use notoccite package, since it overwrites changes that
 % parskip does to \@starttoc
@@ -833,6 +842,8 @@
     % Retain modification from parskip.
     % Note: this is only consistent because we compensate with \vspace*{\parskip} above
     \parskip\z@
+    %
+    \global\ult@first@contentslinetrue
     %
     % Read auxillary file
     \@input{\jobname.#1}%
@@ -1534,61 +1545,122 @@
 \eappto\ult@toclists{lof,} % Append List of Figures to \ult@toclists
 \eappto\ult@toclists{lot,} % Append List of Tables to \ult@toclists
 
+\let\ult@save@l@part\l@part
+\renewcommand*\l@part[2]{%
+  \ifult@first@contentsline
+    \vspace*{\ult@cftbeforechapskip}
+    \vspace*{-\cftbeforepartskip}
+  \fi
+  \ult@save@l@part{#1}{#2}%
+}
+
+\newlength\ult@cftbeforepartskip
+  \setlength{\ult@cftbeforepartskip}{2\ult@normalbaselineskip} % Default is 2.25em \@plus\p@
 \newlength\ult@cftbeforechapskip
   \setlength{\ult@cftbeforechapskip}{\ult@normalbaselineskip} % Default is 1.0em \@plus\p@
+\newlength\ult@cftbeforesecskip
+  \setlength{\ult@cftbeforesecskip}{0pt} % Default is \z@ \@plus .2\p@
+
+\newlength\ult@cftpartindent
+  \setlength{\ult@cftpartindent}{0em} % Default is 0em
+\newlength\ult@cftpartnumwidth
+  \setlength{\ult@cftpartnumwidth}{0em} % Default is 0em
+
 \newlength\ult@cftchapindent
   \setlength{\ult@cftchapindent}{0em} % Default is 0em
 \newlength\ult@cftchapnumwidth
   \setlength{\ult@cftchapnumwidth}{1.5em} % Default is 1.5em
 
-\newlength\ult@cftbeforesecskip
-  \setlength{\ult@cftbeforesecskip}{0pt} % Default is \z@ \@plus .2\p@
 \newlength\ult@cftsecindent
   \setlength{\ult@cftsecindent}{1.5em} % Default is 1.5em
 \newlength\ult@cftsecnumwidth
   \setlength{\ult@cftsecnumwidth}{2.3em} % Default is 2.3em
 
+\newlength\ult@cftsubsecindent
+  \setlength{\ult@cftsubsecindent}{3.8em} % Default is 3.8em
+\newlength\ult@cftsubsecnumwidth
+  \setlength{\ult@cftsubsecnumwidth}{3.2em} % Default is 3.2em
+
+\newlength\ult@cftsubsubsecindent
+  \setlength{\ult@cftsubsubsecindent}{7.0em} % Default is 7.0em
+\newlength\ult@cftsubsubsecnumwidth
+  \setlength{\ult@cftsubsubsecnumwidth}{4.1em} % Default is 4.1em
+
+\newlength\ult@cftparaindent
+  \setlength{\ult@cftparaindent}{10em} % Default is 10em
+\newlength\ult@cftparanumwidth
+  \setlength{\ult@cftparanumwidth}{5em} % Default is 5em
+
+\newlength\ult@cftsubparaindent
+  \setlength{\ult@cftsubparaindent}{12em} % Default is 12em
+\newlength\ult@cftsubparanumwidth
+  \setlength{\ult@cftsubparanumwidth}{6em} % Default is 6em
+
+\newcommand{\ult@cftpartfont}     % part titles
+           {\usefont{T1}{bch}{b}{n}\large}
 \newcommand{\ult@cftchapfont}     % chapter titles
            {\usefont{T1}{bch}{b}{n}}
 \newcommand{\ult@cftsecfont}      % section titles
            {\usefont{T1}{bch}{m}{n}}
+\newcommand{\ult@cftpartpagefont} % part page numbers
+           {\ult@cftpartfont}
 \newcommand{\ult@cftchappagefont} % chapter page numbers
            {\ult@cftchapfont}
 \newcommand{\ult@cftsecpagefont}  % section page numbers
            {\ult@cftsecfont}
 
 % Skip
+\setlength{\cftbeforepartskip}{\ult@cftbeforepartskip}
 \setlength{\cftbeforechapskip}{\ult@cftbeforechapskip}
 \setlength{\cftbeforesecskip}{\ult@cftbeforesecskip}
 \setlength{\cftbeforesubsecskip}{\ult@cftbeforesecskip}
 \setlength{\cftbeforesubsubsecskip}{\ult@cftbeforesecskip}
+\setlength{\cftbeforeparaskip}{\ult@cftbeforesecskip}
+\setlength{\cftbeforesubparaskip}{\ult@cftbeforesecskip}
 \setlength{\cftbeforefigskip}{\ult@cftbeforesecskip}
 \setlength{\cftbeforetabskip}{\ult@cftbeforesecskip}
 
 % Indent
+\setlength{\cftpartindent}{\ult@cftpartindent}
 \setlength{\cftchapindent}{\ult@cftchapindent}
 \setlength{\cftsecindent}{\ult@cftsecindent}
+\setlength{\cftsubsecindent}{\ult@cftsubsecindent}
+\setlength{\cftsubsubsecindent}{\ult@cftsubsubsecindent}
+\setlength{\cftparaindent}{\ult@cftparaindent}
+\setlength{\cftsubparaindent}{\ult@cftsubparaindent}
 \setlength{\cftfigindent}{\ult@cftsecindent}
 \setlength{\cfttabindent}{\ult@cftsecindent}
 
 % Num width
+\setlength{\cftpartnumwidth}{\ult@cftpartnumwidth}
 \setlength{\cftchapnumwidth}{\ult@cftchapnumwidth}
 \setlength{\cftsecnumwidth}{\ult@cftsecnumwidth}
+\setlength{\cftsubsecnumwidth}{\ult@cftsubsecnumwidth}
+\setlength{\cftsubsubsecnumwidth}{\ult@cftsubsubsecnumwidth}
+\setlength{\cftparanumwidth}{\ult@cftparanumwidth}
+\setlength{\cftsubparanumwidth}{\ult@cftsubparanumwidth}
 \setlength{\cftfignumwidth}{\ult@cftsecnumwidth}
 \setlength{\cfttabnumwidth}{\ult@cftsecnumwidth}
 
 % Fonts
+\renewcommand{\cftpartfont}{\ult@cftpartfont}
 \renewcommand{\cftchapfont}{\ult@cftchapfont}
 \renewcommand{\cftsecfont}{\ult@cftsecfont}
 \renewcommand{\cftsubsecfont}{\ult@cftsecfont}
 \renewcommand{\cftsubsubsecfont}{\ult@cftsecfont}
-\renewcommand{\cftchappagefont}{\ult@cftchappagefont}
-\renewcommand{\cftsecpagefont}{\ult@cftsecpagefont}
-\renewcommand{\cftsubsecpagefont}{\ult@cftsecpagefont}
-
+\renewcommand{\cftparafont}{\ult@cftsecfont}
+\renewcommand{\cftsubparafont}{\ult@cftsecfont}
 \renewcommand{\cftfigfont}{\ult@cftsecfont}
 \renewcommand{\cfttabfont}{\ult@cftsecfont}
 
+% Page number fonts
+\renewcommand{\cftpartpagefont}{\ult@cftpartpagefont}
+\renewcommand{\cftchappagefont}{\ult@cftchappagefont}
+\renewcommand{\cftsecpagefont}{\ult@cftsecpagefont}
+\renewcommand{\cftsubsecpagefont}{\ult@cftsecpagefont}
+\renewcommand{\cftsubsubsecpagefont}{\ult@cftsecpagefont}
+\renewcommand{\cftparapagefont}{\ult@cftsecpagefont}
+\renewcommand{\cftsubparapagefont}{\ult@cftsecpagefont}
 \renewcommand{\cftfigpagefont}{\ult@cftsecpagefont}
 \renewcommand{\cfttabpagefont}{\ult@cftsecpagefont}
 
