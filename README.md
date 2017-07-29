@@ -25,8 +25,8 @@ initexmf -u
 initexmf --mkmaps
 ```
 
-## Licence
-The contents of this GitHub repository is licensed under the CC BY-NC-ND licence.
+## License
+The contents of this GitHub repository is licensed under the CC BY-NC-ND license.
 Among other things, this means that you are not allowed to redistribute any derivatives of the contents of this repository.
 This is to prevent ending up with several different, specialized versions of the thesis template floating around.
 Instead, we want all improvements or new functionality to be made available from one place—this repository—thus making it easier for everyone to benefit from such changes.
