@@ -11,7 +11,17 @@ before_install:
   - pdfinfo -v
   - compare -version
   - gs -v
-  - sudo ./install-tl-ubuntu --repository http://mirrors.rit.edu/CTAN/systems/texlive/tlnet/ --profile "`readlink -f ./texlive.profile`"
+  - sudo ./install-tl-ubuntu --only-apt-and-dpkg
+  - sudo wget http://mirror.utexas.edu/ctan/systems/texlive/tlnet/install-tl-unx.tar.gz -O install-tl-unx.tar.gz
+  - tar -xf "install-tl-unx.tar.gz"
+  - tl_dir=$( ls | grep -P "install-tl-\d{8}$" | head -n 1 )
+  - cd "${tl_dir}"
+install:
+  - echo "i" | sudo -s ./install-tl -logfile install-tl.log -repository http://mirrors.rit.edu/CTAN/systems/texlive/tlnet -profile ../texlive.profile
+  - MAINTEXDIR=$(grep "TEXDIR:" "install-tl.log" | awk -F'"' '{ print $2 }')
+  - sudo ln -s "${MAINTEXDIR}/bin"/* "/opt/texbin"
+  - sudo sed -i 's/^PATH="/PATH="\/opt\/texbin:/' /etc/environment
+  - cd ..
   - source /etc/environment
   - source /etc/profile
   - source ~/.profile
@@ -19,7 +29,6 @@ before_install:
   - sudo -i texhash
   - sudo -i tlmgr update --self --all
   - tlmgr conf
-install:
   - make install CONTINUE=y
   - sudo -i texhash
 script:

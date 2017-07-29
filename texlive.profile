@@ -50,12 +50,13 @@ option_doc 0
 option_file_assocs 1
 option_fmt 1
 option_letter 0
-option_path 1
+option_path 0
 option_post_code 1
 option_src 0
+option_symlinks 0
 option_sys_bin /usr/local/bin
-option_sys_info /usr/local/share/info
-option_sys_man /usr/local/share/man
+option_sys_info /usr/local/info
+option_sys_man /usr/local/man
 option_w32_multi_user 0
 option_write18_restricted 1
 portable 0
