@@ -17,6 +17,7 @@ before_install:
   - tl_dir=$( ls | grep -P "install-tl-\d{8}$" | head -n 1 )
   - cd "${tl_dir}"
 install:
+  - echo "i" | sudo -s ./install-tl -logfile install-tl.adjustpath.log -repository http://mirrors.rit.edu/CTAN/systems/texlive/tlnet -profile ../texlive.adjustpath.profile || true
   - echo "i" | sudo -s ./install-tl -logfile install-tl.log -repository http://mirrors.rit.edu/CTAN/systems/texlive/tlnet -profile ../texlive.profile
   - MAINTEXDIR=$(grep "TEXDIR:" "install-tl.log" | awk -F'"' '{ print $2 }')
   - sudo ln -s "${MAINTEXDIR}/bin"/* "/opt/texbin"
