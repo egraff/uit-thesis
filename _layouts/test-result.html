@@ -53,20 +53,20 @@ layout: default
                 <div class="diff">
                   <div class="image_name">Diff</div>
                   <div class="page_image">
-                    <img src="diffs/diff_{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                    <img src="diffs/{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
                   </div>
                 </div>
                 <div class="proto_test">
                   <div class="proto">
                     <div class="image_name">Proto (hover for test)</div>
                     <div class="page_image">
-                      <img src="diffs/proto_{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                      <img src="proto/{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
                     </div>
                   </div>
                   <div class="test">
                     <div class="image_name">Test (un-hover for proto)</div>
                     <div class="page_image">
-                      <img src="diffs/{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                      <img src="tests/{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
                     </div>
                   </div>
                 </div>
