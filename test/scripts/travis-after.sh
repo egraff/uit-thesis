@@ -38,8 +38,9 @@ travis:
 EOF
 
 cp -Rf .build gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/build
-cp -Rf diffs gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/diffs
-cp -Rf tmp/. gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/diffs
+cp -Rf diffs gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/diffs || true
+cp -Rf tmp/tests gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/tests || true
+cp -Rf tmp/proto gh-pages/travis-builds/${TRAVIS_BUILD_NUMBER}/proto || true
 
 cp test_result.json gh-pages/_data/travis-builds/${TRAVIS_BUILD_NUMBER}.json
 
