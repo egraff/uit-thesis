@@ -26,6 +26,7 @@ install:
   - source /etc/environment
   - source /etc/profile
   - source ~/.profile
+  - unset _OLD_VIRTUAL_PATH
   - source ~/virtualenv/python2.7/bin/activate
   - sudo -i texhash
   - sudo -i tlmgr update --self --all
