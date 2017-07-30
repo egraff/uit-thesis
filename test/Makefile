@@ -8,7 +8,7 @@ BASENAME = $(shell basename $(FILE) .tex)
 DIRNAME = $(shell dirname $(FILE))
 
 TESTSDIR = tests
-MAINDIR_REL2_TESTSDIR = ..
+MAINDIR_REL2_TESTSDIR = $(shell python -c 'import os.path; print os.path.relpath(".", "$TESTSDIR")')
 PDFFLD = pdfs
 
 # Placement of all produced files
@@ -66,15 +66,15 @@ ifndef RETAINBUILDFLD
 endif
 
 _ctrl_:
-ifndef LATEXMK
+ifeq ($(LATEXMK),"")
 	@echo "Cannot find 'latexmk'" >&2
 	@exit 2
 endif
-ifndef PDFLATEX
+ifeq ($(PDFLATEX),"")
 	@echo "Cannot find 'pdflatex'" >&2
 	@exit 3
 endif
-ifndef MAKEGLOSSARIES
+ifeq ($(MAKEGLOSSARIES),"")
 	@echo "Cannot find 'makeglossaries'" >&2
 	@exit 4
 endif
