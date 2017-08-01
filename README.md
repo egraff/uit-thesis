@@ -3,6 +3,9 @@ uit-thesis [![Build Status](https://magnum.travis-ci.com/egraff/uit-thesis.svg?t
 
 LaTeX document class for writing theses
 
+Documentation is found at http://egraff.github.io/uit-thesis/manual/.
+
+
 How to install?
 --
 Simply clone with
