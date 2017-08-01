@@ -1,3 +1,0 @@
-\select@language {USenglish}
-\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
-\contentsline {chapter}{\numberline {2}Design}{7}{chapter.2}
