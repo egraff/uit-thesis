@@ -44,7 +44,7 @@ git checkout -l -f -q -b gh-pages origin/gh-pages
 popd
 
 
-cat <<EOF > $GH_PAGES/travis-builds/${TRAVIS_BUILD_NUMBER}/index.md
+cat <<EOF > $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/index.md
 ---
 layout: test-result
 travis:
