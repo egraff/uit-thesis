@@ -6,7 +6,7 @@ sudo: true
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      ci/travis-install-linux.sh;
+      source ci/travis-install-linux.sh;
     fi
   - tlmgr conf
   - make install CONTINUE=y
