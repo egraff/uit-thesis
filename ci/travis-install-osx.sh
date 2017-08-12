@@ -26,7 +26,7 @@ export PATH=/Library/TeX/Distributions/Programs/texbin:$PATH
 
 sudo tlmgr option repository http://mirrors.rit.edu/CTAN/systems/texlive/tlnet
 sudo -i tlmgr update --self --all
-sudo tlmgr install
+sudo tlmgr install            \
   collection-basic            \
   collection-bibtexextra      \
   collection-binextra         \
