@@ -24,7 +24,7 @@ cd $TRAVIS_BUILD_DIR
 
 # Create a new temp directory for committing test results to gh-pages branch
 GH_PAGES=$(mktemp -d)
-mkdir -p $GH_PAGES/travis-builds/${TRAVIS_BUILD_NUMBER}
+mkdir -p $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}
 
 
 pushd $GH_PAGES
@@ -60,17 +60,17 @@ travis:
 ---
 EOF
 
-cp -Rf test/.build $GH_PAGES/travis-builds/${TRAVIS_BUILD_NUMBER}/build
-cp -Rf test/diffs $GH_PAGES/travis-builds/${TRAVIS_BUILD_NUMBER}/diffs || true
-cp -Rf test/tmp/tests $GH_PAGES/travis-builds/${TRAVIS_BUILD_NUMBER}/tests || true
-cp -Rf test/tmp/proto $GH_PAGES/travis-builds/${TRAVIS_BUILD_NUMBER}/proto || true
+cp -Rf test/.build $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/build
+cp -Rf test/diffs $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/diffs || true
+cp -Rf test/tmp/tests $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/tests || true
+cp -Rf test/tmp/proto $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/proto || true
 
-cp test/test_result.json $GH_PAGES/_data/travis-builds/${TRAVIS_BUILD_NUMBER}.json
+cp test/test_result.json $GH_PAGES/_data/travis-builds/${TRAVIS_JOB_NUMBER//\./_}.json
 
 pushd $GH_PAGES
 
 git add --all .
-git commit -m "Travis: test results from build ${TRAVIS_BUILD_NUMBER}"
+git commit -m "Travis: test results from job ${TRAVIS_JOB_NUMBER}"
 
 # Allow command to fail (no exit on failure)
 set +e

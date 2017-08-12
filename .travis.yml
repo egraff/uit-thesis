@@ -13,5 +13,4 @@ install:
   - sudo -i texhash
 script:
   - make -C test
-after_script:
-  - ci/travis-after.sh
+after_script: ci/travis-after.sh
