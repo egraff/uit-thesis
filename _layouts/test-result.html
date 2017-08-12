@@ -2,10 +2,10 @@
 layout: default
 ---
 {% comment %} Convert number to string {% endcomment %}
-{% capture build_number %}{{ page.travis.build-number }}{% endcapture %}
+{% capture travis_job_data_name %}{{ page.travis.job-number | replace: '.', '_' }}{% endcapture %}
 
 {% comment %} Get test result from JSON {% endcomment %}
-{% assign result_map = site.data.travis-builds[build_number] %}
+{% assign result_map = site.data.travis-builds[travis_job_data_name] %}
 
 {% comment %} See if test passed or failed {% endcomment %}
 {% if page.travis.test-result == 0 %}
@@ -14,10 +14,10 @@ layout: default
 {% assign passed = false %}
 {% endif %}
 
-{% capture title %}Test results for Travis build #{{ page.travis.build-number }}{% endcapture %}
+{% capture title %}Test results for Travis job #{{ page.travis.job-number }}{% endcapture %}
 <div class="page">
   <h1 class="page-title">Test results for
-    <a href="https://travis-ci.org/egraff/ult-base/builds/{{ page.travis.build-id }}">Travis build #{{ page.travis.build-number }}</a>
+    <a href="https://travis-ci.org/egraff/ult-base/jobs/{{ page.travis.job-id }}">Travis job #{{ page.travis.job-number }}</a>
   </h1>
   <p>
   {% if passed %}
@@ -30,7 +30,7 @@ layout: default
   {% unless result_map %}
     No results from regression tests!
   {% else %}
-    <p>Num tests: {{ result_map.num_tests }}, in build {{ build_number }}!</p>
+    <p>Num tests: {{ result_map.num_tests }}, in job {{ page.travis.job-number }}!</p>
     
     {% assign failed_tests = result_map.failed_tests %}
     {% for failed_test_map in failed_tests %}

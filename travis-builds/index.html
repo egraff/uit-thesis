@@ -4,21 +4,29 @@ title: Last 25 Travis builds
 ---
 {% assign pages_list = site.pages | where: 'layout','test-result' %}
 
-{% assign build_num_strings = '' %}
+{% assign job_num_string_list = '' %}
 {% for page in pages_list %}
-  {% assign build_number = page.travis.build-number | prepend: '00000' | slice: -5, 5 %}
-  {% if build_num_strings == '' %}
-    {% assign build_num_strings = build_number %}
+  {% comment %} Make job number 8 symbols long, prepended with zeros {% endcomment %}
+  {% assign travis_job_sortkey = page.travis.job-number | prepend: '00000000' | slice: -8, 8 %}
+
+  {% comment %} Append actual job number after sortkey, with a ^ as separator {% endcomment %}
+  {% assign job_num_string = travis_job_sortkey | append: '^' | append: page.travis.job-number %}
+
+  {% comment %} Add to string list {% endcomment %}
+  {% if job_num_string_list == '' %}
+    {% assign job_num_string_list = job_num_string %}
   {% else %}
-    {% assign build_num_strings = build_num_strings | append: ',' | append: build_number %}
+    {% assign job_num_string_list = job_num_string_list | append: ',' | append: job_num_string %}
   {% endif %}
 {% endfor %}
-{% assign build_num_strings = build_num_strings | split: ',' | sort | reverse %}
+
+{% comment %} Convert to a list, and sort in descending order {% endcomment %}
+{% assign job_num_string_list = job_num_string_list | split: ',' | sort | reverse %}
 
 <table class="test-overview">
   <thead>
     <tr>
-      <th>Build</th>
+      <th>Job</th>
       <th>Status</th>
       <th>Branch</th>
       <th>Commit</th>
@@ -26,17 +34,19 @@ title: Last 25 Travis builds
     </tr>
   </thead>
   <tbody>
-  {% for build_num_string in build_num_strings limit:25 %}
-    {% assign build_number = build_num_string | plus: 0 %}
+  {% for job_num_string in job_num_string_list limit:25 %}
+    {% assign job_num_string_parts = job_num_string | split: '^' %}
+    {% assign travis_job_number = job_num_string_parts[1] %}
     {% for page in pages_list %}
-      {% if page.travis.build-number == build_number %}
+      {% capture page_job_num_str %}{{ page.travis.job-number }}{% endcapture %}
+      {% if page_job_num_str == travis_job_number %}
         {% if page.travis.test-result == 0 %}
           {% assign passed = true %}
         {% else %}
           {% assign passed = false %}
         {% endif %}
-        {% capture build_number %}{{ page.travis.build-number }}{% endcapture %}
-        {% assign result_map = site.data.travis-builds[build_number] %}
+        {% capture travis_job_data_name %}{{ page.travis.job-number | replace: '.', '_' }}{% endcapture %}
+        {% assign result_map = site.data.travis-builds[travis_job_data_name] %}
         {% capture commit_hash %}{{ page.travis.commit }}{% endcapture %}
         <tr class="{% if passed %}passed{% else %}failed{% endif %}">
           <td><a href="{{ site.baseurl }}{{ page.url }}">#{{ page.travis.build-number }}</a></td>
