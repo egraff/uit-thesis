@@ -4,7 +4,7 @@
 set -ev
 
 wget https://github.com/scottkosty/install-tl-ubuntu/raw/master/install-tl-ubuntu && chmod +x ./install-tl-ubuntu
-sudo apt-get update
+sudo apt-get update -qq
 sudo apt-get install --fix-missing
 sudo apt-get install --no-install-recommends -qq poppler-utils ghostscript imagemagick --fix-missing
 sudo apt-get install --no-install-recommends -qq libfile-fcntllock-perl gcc equivs libwww-perl fontconfig unzip
@@ -26,11 +26,11 @@ sudo ln -s "${MAINTEXDIR}/bin"/* "/opt/texbin"
 sudo sed -i 's/^PATH="/PATH="\/opt\/texbin:/' /etc/environment
 cd ..
 
-source /etc/environment
-source /etc/profile
-source ~/.profile
+source /etc/environment &>/dev/null
+source /etc/profile &>/dev/null
+source ~/.profile &>/dev/null
 unset _OLD_VIRTUAL_PATH
-source ~/virtualenv/python2.7/bin/activate
+source ~/virtualenv/python2.7/bin/activate &>/dev/null
 
 export PATH
 

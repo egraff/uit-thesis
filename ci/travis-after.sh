@@ -65,7 +65,7 @@ cp -Rf test/diffs $GH_PAGES/travis-builds/${TRAVIS_BUILD_NUMBER}/diffs || true
 cp -Rf test/tmp/tests $GH_PAGES/travis-builds/${TRAVIS_BUILD_NUMBER}/tests || true
 cp -Rf test/tmp/proto $GH_PAGES/travis-builds/${TRAVIS_BUILD_NUMBER}/proto || true
 
-cp test_result.json $GH_PAGES/_data/travis-builds/${TRAVIS_BUILD_NUMBER}.json
+cp test/test_result.json $GH_PAGES/_data/travis-builds/${TRAVIS_BUILD_NUMBER}.json
 
 pushd $GH_PAGES
 
