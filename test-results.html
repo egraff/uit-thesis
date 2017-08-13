@@ -2,7 +2,7 @@
 layout: page
 title: Last 25 test results
 ---
-{% assign travis_pages_list = site.pages | where: 'layout','test-result' %}
+{% assign travis_pages_list = site.pages | where: 'layout','travis-job' %}
 
 {% assign travis_job_num_string_list = '' %}
 {% for page in travis_pages_list %}
