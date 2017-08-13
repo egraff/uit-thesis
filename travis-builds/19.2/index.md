@@ -1,5 +1,5 @@
 ---
-layout: test-result
+layout: travis-job
 travis:
   branch: travis-osx
   build-id: 263947591

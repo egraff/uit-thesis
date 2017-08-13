@@ -1,5 +1,5 @@
 ---
-layout: test-result
+layout: travis-job
 travis:
   branch: master
   build-id: 259875687
