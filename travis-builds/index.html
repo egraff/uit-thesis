@@ -27,10 +27,9 @@ title: Last 25 Travis builds
   <thead>
     <tr>
       <th>Job</th>
-      <th>Status</th>
       <th>Branch</th>
       <th>Commit</th>
-      <th># passed tests</th>
+      <th># passed</th>
     </tr>
   </thead>
   <tbody>
@@ -50,9 +49,8 @@ title: Last 25 Travis builds
         {% capture commit_hash %}{{ page.travis.commit }}{% endcapture %}
         <tr class="{% if passed %}passed{% else %}failed{% endif %}">
           <td><a href="{{ site.baseurl }}{{ page.url }}">#{{ page.travis.job-number }}</a></td>
-          <td>{% if passed %}<span class="icon-passed"/>{% else %}<span class="icon-failed"/>{% endif %}</td>
           <td><a href="https://github.com/egraff/uit-thesis/tree/{{ page.travis.branch }}">{{ page.travis.branch }}</a></td>
-          <td><a href="https://github.com/egraff/uit-thesis/commit/{{ commit_hash }}">{{ commit_hash | truncate: 15 }}</a></td>
+          <td><a href="https://github.com/egraff/uit-thesis/commit/{{ commit_hash }}">{{ commit_hash | truncate: 9 }}</a></td>
           <td>
             {% unless result_map %}
               N/A
