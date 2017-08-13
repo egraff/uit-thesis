@@ -68,9 +68,9 @@ build_script:
 test_script:
   - make -C test
 
-on_finish:
+after_test:
   - ps: >-
-      $IsPullRequest = (Test-Path Env:APPVEYOR_PULL_REQUEST_NUMBER) -And $Env:APPVEYOR_PULL_REQUEST_NUMBER);
+      $IsPullRequest = (Test-Path Env:APPVEYOR_PULL_REQUEST_NUMBER) -And $Env:APPVEYOR_PULL_REQUEST_NUMBER;
       if (-Not $IsPullRequest) {
         Write-Host "Decrypting deploy key";
         secure-file\tools\secure-file -decrypt ci\appveyor-deploy-key.enc -secret %deploy_key_secret% -out %USERPROFILE%\.ssh\id_rsa;
