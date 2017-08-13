@@ -69,10 +69,10 @@ test_script:
 on_finish:
   - ps: >-
       $IsPullRequest = (Test-Path Env:APPVEYOR_PULL_REQUEST_NUMBER) -And $Env:APPVEYOR_PULL_REQUEST_NUMBER);
-      if (-Not $IsPullRequest) {  
-        # Decrypt deploy key
+      if (-Not $IsPullRequest) {
+        Write-Host "Decrypting deploy key";
         secure-file\tools\secure-file -decrypt ci\appveyor-deploy-key.enc -secret %deploy_key_secret% -out %USERPROFILE%\.ssh\id_rsa;
-        # Test deploy key
+        Write-Host "Testing deploy key";
         $OldErrorActionPreference = $ErrorActionPreference;
         $ErrorActionPreference = "Continue";
         ssh -o StrictHostKeyChecking=no -T git@github.com 2>&1 | %{ "$_" };
@@ -80,5 +80,5 @@ on_finish:
       }
 
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
-#on_failure:
-#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+on_failure:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
