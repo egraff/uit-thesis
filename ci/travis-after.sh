@@ -46,7 +46,7 @@ popd
 
 cat <<EOF > $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/index.md
 ---
-layout: test-result
+layout: travis-job
 travis:
   branch: ${TRAVIS_BRANCH}
   build-id: ${TRAVIS_BUILD_ID}
