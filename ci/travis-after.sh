@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Exit on failure, verbose
-set -ev
+# Exit on failure
+set -e
 
 if [ "$TRAVIS_SECURE_ENV_VARS" = "false" ]; then
   # Likely a pull request from a forked repository.
