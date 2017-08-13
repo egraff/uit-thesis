@@ -18,6 +18,8 @@ environment:
 
 
 install:
+  - git submodule update --init --recursive
+
   - nuget install secure-file -ExcludeVersion
 
   - cinst imagemagick -PackageParameters LegacySupport=true
