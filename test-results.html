@@ -1,11 +1,11 @@
 ---
 layout: page
-title: Last 25 Travis builds
+title: Last 25 test results
 ---
-{% assign pages_list = site.pages | where: 'layout','test-result' %}
+{% assign travis_pages_list = site.pages | where: 'layout','test-result' %}
 
-{% assign job_num_string_list = '' %}
-{% for page in pages_list %}
+{% assign travis_job_num_string_list = '' %}
+{% for page in travis_pages_list %}
   {% comment %} Make job number 8 symbols long, prepended with zeros {% endcomment %}
   {% assign travis_job_sortkey = page.travis.job-number | prepend: '00000000' | slice: -8, 8 %}
 
@@ -13,32 +13,33 @@ title: Last 25 Travis builds
   {% assign job_num_string = travis_job_sortkey | append: '^' | append: page.travis.job-number %}
 
   {% comment %} Add to string list {% endcomment %}
-  {% if job_num_string_list == '' %}
-    {% assign job_num_string_list = job_num_string %}
+  {% if travis_job_num_string_list == '' %}
+    {% assign travis_job_num_string_list = job_num_string %}
   {% else %}
-    {% assign job_num_string_list = job_num_string_list | append: ',' | append: job_num_string %}
+    {% assign travis_job_num_string_list = travis_job_num_string_list | append: ',' | append: job_num_string %}
   {% endif %}
 {% endfor %}
 
 {% comment %} Convert to a list, and sort in descending order {% endcomment %}
-{% assign job_num_string_list = job_num_string_list | split: ',' | sort | reverse %}
+{% assign travis_job_num_string_list = travis_job_num_string_list | split: ',' | sort | reverse %}
 
 <div style="width: 42rem; overflow: hidden;">
 <div style="float: left; width: 20rem;">
+<h2>Travis jobs</h2>
 <table class="test-overview">
   <thead>
     <tr>
       <th>Job</th>
       <th>Branch</th>
       <th>Commit</th>
-      <th># passed</th>
+      <th>#</th>
     </tr>
   </thead>
   <tbody>
-  {% for job_num_string in job_num_string_list limit:25 %}
+  {% for job_num_string in travis_job_num_string_list limit:25 %}
     {% assign job_num_string_parts = job_num_string | split: '^' %}
     {% assign travis_job_number = job_num_string_parts[1] %}
-    {% for page in pages_list %}
+    {% for page in travis_pages_list %}
       {% capture page_job_num_str %}{{ page.travis.job-number }}{% endcapture %}
       {% if page_job_num_str == travis_job_number %}
         {% if page.travis.test-result == 0 %}
@@ -68,5 +69,18 @@ title: Last 25 Travis builds
 </table>
 </div>
 <div style="float: left; width: 20rem; margin-left: 1rem">
+<h2>AppVeyor jobs</h2>
+<table class="test-overview">
+  <thead>
+    <tr>
+      <th>Job</th>
+      <th>Branch</th>
+      <th>Commit</th>
+      <th>#</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
 </div>
 </div>
