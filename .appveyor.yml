@@ -21,7 +21,7 @@ install:
   - git submodule update --init --recursive
 
   - nuget install secure-file -ExcludeVersion
-
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - cinst imagemagick -PackageParameters LegacySupport=true
   - cinst ghostscript
   - ps: >-
@@ -72,7 +72,7 @@ after_test:
   - ps: >-
       $IsPullRequest = (Test-Path Env:APPVEYOR_PULL_REQUEST_NUMBER) -And $Env:APPVEYOR_PULL_REQUEST_NUMBER;
       if (-Not $IsPullRequest) {
-        Write-Host "Decrypting deploy key";
+        Write-Host "Decrypting deploy key to $($Env:USERPROFILE)\.ssh\id_rsa";
         secure-file\tools\secure-file -decrypt ci\appveyor-deploy-key.enc -secret $Env:deploy_key_secret -out $($Env:USERPROFILE)\.ssh\id_rsa;
         Write-Host "Testing deploy key";
         $OldErrorActionPreference = $ErrorActionPreference;
@@ -82,5 +82,6 @@ after_test:
       }
 
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
-on_failure:
+#on_failure:
+on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
