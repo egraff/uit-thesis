@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Exit on failure, verbose
-set -ev
+# Exit on failure
+set -e
 
 wget https://github.com/scottkosty/install-tl-ubuntu/raw/master/install-tl-ubuntu && chmod +x ./install-tl-ubuntu
 sudo apt-get update -qq
