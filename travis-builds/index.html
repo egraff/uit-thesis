@@ -23,6 +23,7 @@ title: Last 25 Travis builds
 {% comment %} Convert to a list, and sort in descending order {% endcomment %}
 {% assign job_num_string_list = job_num_string_list | split: ',' | sort | reverse %}
 
+<div style="float: left; width: 400px;">
 <table class="test-overview">
   <thead>
     <tr>
@@ -64,3 +65,6 @@ title: Last 25 Travis builds
   {% endfor %}
   </tbody>
 </table>
+</div>
+<div style="float: left; width: 300px;">
+</div>
