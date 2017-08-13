@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Exit on failure, verbose
-set -ev
+# Exit on failure
+set -e
 
 
 brew update
