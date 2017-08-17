@@ -1,5 +1,10 @@
-uit-thesis [![Build Status](https://travis-ci.org/egraff/uit-thesis.svg?branch=master)](https://travis-ci.org/egraff/uit-thesis)
+uit-thesis [![Travis build status][travis-badge]][travis-url] [![AppVeyor build status][appveyor-badge]][appveyor-url]
 ==========
+
+[travis-badge]: https://travis-ci.org/egraff/uit-thesis.svg?branch=master
+[travis-url]: https://travis-ci.org/egraff/uit-thesis
+[appveyor-badge]: https://ci.appveyor.com/api/projects/status/geocvslth4hd2xl2/branch/master?svg=true
+[appveyor-url]: https://ci.appveyor.com/project/egraff/uit-thesis/branch/master
 
 LaTeX document class for writing theses
 
