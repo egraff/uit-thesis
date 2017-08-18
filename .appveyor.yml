@@ -1,0 +1,86 @@
+branches:
+  except:
+    - gh-pages
+
+skip_commits:
+  message: /\[ci skip\]/
+
+max_jobs: 1
+
+image: Visual Studio 2015
+
+clone_depth: 1
+
+
+environment:
+  deploy_key_secret:
+    secure: oUQd0vmgGMlZagBkEVim8EJrEYXtW0gCnIE6PE+aDvZs9m139IrMDQNUKErg1iGw
+
+
+install:
+  - git submodule update --init --recursive
+
+  - nuget install secure-file -ExcludeVersion
+  - cinst imagemagick -PackageParameters LegacySupport=true
+  - cinst ghostscript
+  - ps: >-
+      $GsPath = (gci 'C:\Program Files\gs' -Include 'bin' -Directory -Recurse | select -f 1).FullName;
+      $OldPath = [Environment]::GetEnvironmentVariable('path', 'machine');
+      $NewPath = $OldPath + ';' + $GsPath;
+      [Environment]::SetEnvironmentVariable('path', $NewPath, 'machine');
+  - cinst xpdf-utils
+  - cinst -y miktex
+  - refreshenv
+  - set
+  - compare -version
+  - gswin64c -v
+  - where pdfinfo
+  - ps: >-
+      $OldErrorActionPreference = $ErrorActionPreference;
+      $ErrorActionPreference = "Continue";
+      pdfinfo -v 2>&1 | %{ "$_" };
+      if ($LastExitCode -ne 0 -And $LastExitCode -ne 99) {
+        $host.SetShouldExit($LastExitCode);
+      }
+      $ErrorActionPreference = $OldErrorActionPreference;
+
+  - mpm --admin --update-db
+  #- mpm --admin --upgrade --package-level=basic
+  # ps
+  #    mpm --admin --find-updates | foreach { $_.ToString() } | select-string "^(?!miktex.*$)" > upd-packages.txt
+  #- mpm --admin --update-some=upd-packages.txt --verbose
+  - initexmf --admin --enable-installer --verbose
+  - initexmf --admin --update-fndb --verbose
+  - initexmf --admin --mkmaps --verbose
+  - pdflatex -version
+  - ps: >-
+      $MsysPath = 'C:\MinGW\msys\1.0\bin';
+      $OldPath = [Environment]::GetEnvironmentVariable('path', 'machine');
+      $NewPath = $OldPath + ';' + $MsysPath;
+      [Environment]::SetEnvironmentVariable('path', $NewPath, 'machine');
+  - refreshenv
+
+build_script:
+  - make install CONTINUE=y
+  - initexmf --admin --update-fndb --verbose
+
+test_script:
+  - make -C test
+
+after_test:
+  - ps: >-
+      $IsPullRequest = (Test-Path Env:APPVEYOR_PULL_REQUEST_NUMBER) -And $Env:APPVEYOR_PULL_REQUEST_NUMBER;
+      if (-Not $IsPullRequest) {
+        Write-Host "Decrypting deploy key";
+        secure-file\tools\secure-file -decrypt ci\appveyor-deploy-key.enc -secret $Env:deploy_key_secret -out "$($Env:USERPROFILE)\.ssh\id_rsa";
+        Write-Host "Testing deploy key";
+        $OldErrorActionPreference = $ErrorActionPreference;
+        $ErrorActionPreference = "Continue";
+        ssh -o StrictHostKeyChecking=no -T git@github.com 2>&1 | %{ "$_" };
+        $ErrorActionPreference = $OldErrorActionPreference;
+      }
+
+# https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
+on_failure:
+#on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
