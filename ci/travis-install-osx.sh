@@ -6,7 +6,7 @@ set -e
 
 brew update
 
-brew uninstall python
+brew uninstall --ignore-dependencies python
 brew install python --universal --framework
 python -v
 
