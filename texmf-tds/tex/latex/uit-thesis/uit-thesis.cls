@@ -304,7 +304,6 @@
 %:-------------------------- Things we need to do magic -----------------------
 
 % Needed by our black magic hacks below
-\usepackage{l3regex}
 \usepackage{xparse}
 \usepackage{atbegshi}
 
