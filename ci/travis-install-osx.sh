@@ -7,8 +7,10 @@ set -e
 brew update
 
 brew uninstall --ignore-dependencies python
-brew install python --universal --framework
+brew install python@2 --universal --framework
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+python2.7 -v || (exit 0)
+python2 -v || (exit 0)
 python -v
 
 brew install libidn
