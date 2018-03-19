@@ -8,6 +8,7 @@ brew update
 
 brew uninstall --ignore-dependencies python
 brew install python --universal --framework
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 python -v
 
 brew install libidn
