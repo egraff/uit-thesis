@@ -717,7 +717,7 @@
 % Begin paragraphs with an empty line rather than an indent
 % Note: we use package parskip even if uit-thesis class is loaded with class option 'parindent',
 % just to make sure that the parskip package cannot be loaded later and fuck up our layout!
-\usepackage[parfill]{parskip}
+\usepackage[parfill]{parskip}[=v1]
 
 \ifult@parindent
   % Restore the default \parindent
