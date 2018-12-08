@@ -15,12 +15,11 @@ matrix:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      ci/travis-install-linux.sh;
+      . ci/travis-install-linux.sh;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      ci/travis-install-osx.sh;
+      . ci/travis-install-osx.sh;
     fi
-  - sudo -i texhash
   - tlmgr conf
   - make install CONTINUE=y
   - sudo -i texhash
