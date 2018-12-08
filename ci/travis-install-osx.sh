@@ -6,6 +6,8 @@ set -e
 
 brew update
 
+brew install openssl readline
+
 brew uninstall --ignore-dependencies python
 brew install python@2 --universal --framework
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
