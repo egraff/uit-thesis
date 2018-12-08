@@ -1,20 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Exit on failure
-set -e
+# Exit on failure, verbose
+set -ev
 
 if [ "$TRAVIS_SECURE_ENV_VARS" = "false" ]; then
   # Likely a pull request from a forked repository.
   # Committing the test results can only be done when secure environment
   # variables are available.
+  echo "Insecure environment, test result will not be persisted..."
   exit 0
 fi
 
 cd `dirname "${BASH_SOURCE[0]}"`
-openssl aes-256-cbc -K $encrypted_06732d003ed9_key -iv $encrypted_06732d003ed9_iv -in travis-deploy-key.enc -out travis-deploy-key -d;
-chmod 600 travis-deploy-key;
-eval `ssh-agent -s`;
-ssh-add travis-deploy-key;
+openssl aes-256-cbc -K $encrypted_06732d003ed9_key -iv $encrypted_06732d003ed9_iv -in travis-deploy-key.enc -out travis-deploy-key -d
+chmod 600 travis-deploy-key
+eval `ssh-agent -s`
+ssh-add travis-deploy-key
 
 ssh-add -l
 ssh -o StrictHostKeyChecking=no -T git@github.com || (exit 0)
