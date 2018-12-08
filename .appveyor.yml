@@ -20,7 +20,20 @@ environment:
 install:
   - git submodule update --init --recursive
 
+  # Decrypt deploy key
   - nuget install secure-file -ExcludeVersion
+  - ps: >-
+      $IsPullRequest = (Test-Path Env:APPVEYOR_PULL_REQUEST_NUMBER) -And $Env:APPVEYOR_PULL_REQUEST_NUMBER;
+      if (-Not $IsPullRequest) {
+        Write-Host "Decrypting deploy key";
+        secure-file\tools\secure-file -decrypt ci\appveyor-deploy-key.enc -secret $Env:deploy_key_secret -out "$($Env:USERPROFILE)\.ssh\id_rsa";
+        Write-Host "Testing deploy key";
+        $OldErrorActionPreference = $ErrorActionPreference;
+        $ErrorActionPreference = "Continue";
+        ssh -o StrictHostKeyChecking=no -T git@github.com 2>&1 | %{ "$_" };
+        $ErrorActionPreference = $OldErrorActionPreference;
+      }
+
   - cinst imagemagick -PackageParameters LegacySupport=true
   - cinst ghostscript
   - ps: >-
@@ -67,20 +80,26 @@ build_script:
 test_script:
   - make -C test
 
-after_test:
+on_success:
   - ps: >-
-      $IsPullRequest = (Test-Path Env:APPVEYOR_PULL_REQUEST_NUMBER) -And $Env:APPVEYOR_PULL_REQUEST_NUMBER;
-      if (-Not $IsPullRequest) {
-        Write-Host "Decrypting deploy key";
-        secure-file\tools\secure-file -decrypt ci\appveyor-deploy-key.enc -secret $Env:deploy_key_secret -out "$($Env:USERPROFILE)\.ssh\id_rsa";
-        Write-Host "Testing deploy key";
-        $OldErrorActionPreference = $ErrorActionPreference;
-        $ErrorActionPreference = "Continue";
-        ssh -o StrictHostKeyChecking=no -T git@github.com 2>&1 | %{ "$_" };
-        $ErrorActionPreference = $OldErrorActionPreference;
+      try
+      {
+        . .\ci\appveyor-after.ps1 -TestResult 0
+      }
+      catch [Exception]
+      {
+        echo $_.Exception | FL -Force
       }
 
 # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
 on_failure:
-#on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - ps: >-
+      try
+      {
+        . .\ci\appveyor-after.ps1 -TestResult 1
+      }
+      catch [Exception]
+      {
+        echo $_.Exception | FL -Force
+      }
+  #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
