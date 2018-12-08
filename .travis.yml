@@ -20,11 +20,11 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       ci/travis-install-osx.sh;
     fi
+  - sudo -i texhash
   - tlmgr conf
   - make install CONTINUE=y
   - sudo -i texhash
 script:
   - make -C test
 after_script:
-  - echo "AFTER"
   - ci/travis-after.sh
