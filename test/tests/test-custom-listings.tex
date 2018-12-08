@@ -42,10 +42,14 @@ int main(void)
 % Create \listofcodesnippet macro
 \newlistof{codesnippet}{locodesnippet}{List of Code Snippets}
 
+\makeatletter
+
 % Create custom "algorithm" environment + \lstinputalgorithm macro
 % with separate counting and styling
-\newcustomlstenvironment{algorithm}{loalgorithm}{Algorithm}[1][]
+\newcustomlstenvironment{algorithm}{loalgorithm}{Algorithm}[2][]
   {%
+    \leavevmode%
+    \lst@TestEOLChar{#2}%
     \lstset{%
       language=C,
       frame=tblr,
@@ -58,6 +62,8 @@ int main(void)
   {%
     \csname lst@SaveFirstNumber\endcsname%
   }
+
+\makeatother
 
 % Demonstrate separate caption styling
 \captionsetup[codesnippet]{box=colorbox,boxcolor={yellow}}
@@ -86,6 +92,8 @@ Line 4
 \end{lstlisting}
 
 Referencing normal listings: \autoref{listing:test1}, \autoref{listing:test2}.
+
+\newpage
 
 \begin{codesnippet}[caption={First snippet},label={snippet:first},name={hello}]
 #include <stdio.h>
