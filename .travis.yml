@@ -1,9 +1,25 @@
 language: python
-python:
-  - "2.7"
-sudo: true
+
+git:
+  depth: 1
+
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      python: 2.7
+    - os: osx
+      sudo: required
+      language: generic
+      osx_image: xcode8
+
 install:
-  - ci/travis-install-linux.sh
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      ci/travis-install-linux.sh;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      ci/travis-install-osx.sh;
+    fi
   - tlmgr conf
   - make install CONTINUE=y
   - sudo -i texhash
