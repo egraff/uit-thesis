@@ -26,12 +26,6 @@ sudo ln -s "${MAINTEXDIR}/bin"/* "/opt/texbin"
 sudo sed -i 's/^PATH="/PATH="\/opt\/texbin:/' /etc/environment
 cd ..
 
-source /etc/environment &>/dev/null
-source /etc/profile &>/dev/null
-source ~/.profile &>/dev/null
-unset _OLD_VIRTUAL_PATH
-source ~/virtualenv/python2.7/bin/activate &>/dev/null
-
-export PATH
+export PATH=/opt/texbin:$PATH
 
 sudo -i tlmgr update --self --all

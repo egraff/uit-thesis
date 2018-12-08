@@ -15,10 +15,12 @@ matrix:
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      . ci/travis-install-linux.sh;
+      ci/travis-install-linux.sh;
+      export PATH=/opt/texbin:$PATH;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      . ci/travis-install-osx.sh;
+      ci/travis-install-osx.sh;
+      export PATH=/Library/TeX/Distributions/Programs/texbin:$PATH;
     fi
   - tlmgr conf
   - make install CONTINUE=y
