@@ -6,8 +6,6 @@ set -e
 
 brew update
 
-brew install openssl readline
-
 brew uninstall --ignore-dependencies python
 brew install python@2 --universal --framework
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
@@ -21,6 +19,10 @@ gs -v
 
 brew install imagemagick
 compare -version
+
+# Qt is xpdf dependency
+# We specify version explicitly, because Qt >= 5.12.0 requires macOs >= 10.12.0
+brew install qt@5.11.2
 
 brew install xpdf
 pdfinfo -v || (exit 0)
