@@ -12,6 +12,9 @@ matrix:
       sudo: required
       language: generic
       osx_image: xcode8
+      before_install:
+        - brew search qt
+        - exit 1
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
