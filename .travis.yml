@@ -14,6 +14,7 @@ matrix:
       osx_image: xcode8
       before_install:
         - brew search qt
+        - brew list --versions qt
         - exit 1
 
 install:
