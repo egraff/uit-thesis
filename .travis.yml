@@ -16,6 +16,19 @@ matrix:
         - brew search qt
         - brew list --versions qt
         - exit 1
+    - os: osx
+      sudo: required
+      language: generic
+      osx_image: xcode10
+      before_install:
+        - sw_vers
+        - brew update
+        - python2.7 -c "import subprocess; print subprocess.__file__"
+        - brew install libidn
+        - brew install ghostscript
+        - brew install imagemagick
+        - brew install xpdf
+        - exit 1
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
