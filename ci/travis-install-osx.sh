@@ -3,12 +3,13 @@
 # Exit on failure
 set -e
 
+sw_vers
 
 brew update
 
 brew uninstall --ignore-dependencies python
 brew install python@2 --universal --framework
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+export PATH="$(brew --prefix python@2)/bin:$PATH"
 python2.7 -v || (exit 0)
 python2 -v || (exit 0)
 python -v
@@ -22,7 +23,7 @@ compare -version
 
 # Qt is xpdf dependency
 # We specify version explicitly, because Qt >= 5.12.0 requires macOs >= 10.12.0
-brew install qt@5.11.2
+brew install qt@5.11
 
 brew install xpdf
 pdfinfo -v || (exit 0)
