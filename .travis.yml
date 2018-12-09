@@ -13,9 +13,21 @@ matrix:
       language: generic
       osx_image: xcode8
       before_install:
-        - brew search qt
-        - brew list --versions qt
-        - exit 1
+        - sw_vers
+        - brew update
+        - brew uninstall --ignore-dependencies python
+        - brew install python@2 --universal --framework
+        - export PATH="$(brew --prefix python@2)/bin:$PATH"
+        - python2.7 -v || (exit 0)
+        - python2 -v || (exit 0)
+        - python -v
+        - brew install libidn
+        - brew install ghostscript
+        - gs -v
+        - brew install imagemagick
+        - compare -version
+        - brew install xpdf
+        - pdfinfo -v || (exit 0)
     - os: osx
       sudo: required
       language: generic
@@ -23,12 +35,16 @@ matrix:
       before_install:
         - sw_vers
         - brew update
-        - python2.7 -c "import subprocess; print subprocess.__file__"
+        - python2.7 -v || (exit 0)
+        - python2 -v || (exit 0)
+        - python -v
         - brew install libidn
         - brew install ghostscript
+        - gs -v
         - brew install imagemagick
+        - compare -version
         - brew install xpdf
-        - exit 1
+        - pdfinfo -v || (exit 0)
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
