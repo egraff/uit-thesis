@@ -3,7 +3,7 @@
 # Exit on failure
 set -e
 
-brew cask install -v basictex
+brew cask install basictex
 # export PATH=/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin:$PATH
 export PATH=/Library/TeX/Distributions/Programs/texbin:$PATH
 

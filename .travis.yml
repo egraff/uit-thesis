@@ -12,6 +12,17 @@ matrix:
       sudo: required
       language: generic
       osx_image: xcode8
+      before_install:
+        - sw_vers
+        - brew update
+        - python2.7 --version
+        - brew install libidn
+        - brew install ghostscript
+        - gs -v
+        - brew install imagemagick
+        - compare -version
+        - brew install xpdf
+        - pdfinfo -v || (exit 0)
     - os: osx
       sudo: required
       language: generic
@@ -19,7 +30,6 @@ matrix:
       before_install:
         - sw_vers
         - brew update
-        - python2.7 -c "import subprocess; print subprocess.__file__"
         - python2.7 --version
         - brew install libidn
         - brew install ghostscript
