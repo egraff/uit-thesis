@@ -9,5 +9,5 @@ travis:
   job-id: 475720413
   job-number: 141.1
   os-name: linux
-  test-result: 1
+  test-result: 0
 ---
