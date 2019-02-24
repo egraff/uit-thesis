@@ -65,6 +65,9 @@ install:
   - initexmf --admin --enable-installer --verbose
   - initexmf --admin --update-fndb --verbose
   - initexmf --admin --mkmaps --verbose
+  - initexmf --report
+  - kpsewhich --var-value TEXMFHOME
+  - kpsewhich --var-value TEXMFLOCAL
   - pdflatex -version
   - ps: >-
       $MsysPath = 'C:\MinGW\msys\1.0\bin';
