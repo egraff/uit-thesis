@@ -42,8 +42,13 @@ install:
       $NewPath = $OldPath + ';' + $GsPath;
       [Environment]::SetEnvironmentVariable('path', $NewPath, 'machine');
   - cinst xpdf-utils
-  - INVALID_COMMAND
-  - cinst -y miktex
+  - ps: >-
+      (New-Object System.Net.WebClient).DownloadFile('https://miktex.org/download/win/miktexsetup-x64.zip', "$($env:TEMP)\miktexsetup-x64.zip");
+      Expand-Archive "$($env:TEMP)\miktexsetup-x64.zip" -DestinationPath "$($env:TEMP)\miktexsetup-x64";
+      md "$($env:TEMP)\miktex" -Force;
+      . "$($env:TEMP)\miktexsetup-x64\miktexsetup.exe" --version;
+      . "$($env:TEMP)\miktexsetup-x64\miktexsetup.exe" --verbose --shared --local-package-repository="$($env:TEMP)\miktex" --package-set=complete download;
+      . "$($env:TEMP)\miktexsetup-x64\miktexsetup.exe" --verbose --shared --local-package-repository="$($env:TEMP)\miktex" --package-set=complete install;
   - refreshenv
   - set
   - compare -version
