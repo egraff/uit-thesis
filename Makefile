@@ -1,8 +1,8 @@
 NAME = uit-thesis
 
 # Try to locate user's local texmf tree
-ULTTEXMFHOME = $(shell kpsewhich --var-value TEXMFHOME)
-ULTTEXMFLOCAL = $(shell kpsewhich --var-value TEXMFLOCAL)
+ULTTEXMFHOME = $(shell kpsewhich --var-value TEXMFHOME 2>/dev/null)
+ULTTEXMFLOCAL = $(shell kpsewhich --var-value TEXMFLOCAL 2>/dev/null)
 
 all: help
 
@@ -24,13 +24,13 @@ define prompt-texmf
 endef
 
 # Try TEXMFHOME first. If TEXMFHOME is defined, it will override ULTTEXMFLOCAL
-try-texmf-home:
+try-texmf-home: try-texmf-local
 ifneq ($(ULTTEXMFHOME),)
   ULTTEXMFLOCAL = $(ULTTEXMFHOME)
 endif
 
 # If TEXMFHOME is defined, we use it! Else, we try TEXMFLOCAL
-try-texmf-local: try-texmf-home
+try-texmf-local:
 # If neither TEXMFHOME nor TEXMFLOCAL is defined
 ifeq ($(ULTTEXMFLOCAL),)
 	@echo -e "Cannot locate your home texmf tree. Specify manually with\n\n    make install TEXMF=/path/to/texmf\n"
