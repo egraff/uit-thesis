@@ -669,9 +669,6 @@
 \newlength\ult@gm@textwidth
 \setlength\ult@gm@textwidth\textwidth
 
-\newlength\ult@gm@headheight
-\setlength\ult@gm@headheight\headheight
-
 % Geometry is needed to set frontpage layout
 % Enable option 'showframe' for debugging...
 \usepackage[a4paper,ignorehead,ignorefoot,twoside,top=\the\topmargin,textheight=\the\textheight,textwidth=\the\textwidth]{geometry}
@@ -688,6 +685,9 @@
 
 % Update geometry to preserve book class' dimensions
 \geometry{top=\the\ult@gm@topmargin,textheight=\the\ult@gm@textheight,textwidth=\the\ult@gm@textwidth}
+
+% Fix head height
+\geometry{headheight=32pt}
 
 % Make sure width of running heads is updated when geometry is changed
 \gappto\Gm@process{\f@nch@setoffs}
@@ -903,9 +903,6 @@
   \renewcommand{\headrulewidth}{0pt}%
   \renewcommand{\footrulewidth}{0pt}%
 }
-
-% Fix head height
-\setlength{\headheight}{15pt}
 
 
 %:-------------------------- Black magic hacks -----------------------
