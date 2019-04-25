@@ -93,7 +93,7 @@ on_success:
   - ps: >-
       try
       {
-        . .\ci\appveyor-after.ps1 -TestResult 0
+        . .\ci\appveyor_after.ps1 -TestResult 0
       }
       catch [Exception]
       {
@@ -105,7 +105,7 @@ on_failure:
   - ps: >-
       try
       {
-        . .\ci\appveyor-after.ps1 -TestResult 1
+        . .\ci\appveyor_after.ps1 -TestResult 1
       }
       catch [Exception]
       {

@@ -29,11 +29,9 @@ matrix:
         - pdfinfo -v || (exit 0)
 
 install:
-  - if [[ "$TEST_SUITE" == "linux-latest" ]]; then
-      ci/travis-install-linux.sh;
-    fi
-  - if [[ "$TEST_SUITE" == "osx-latest" ]]; then
-      ci/travis-install-osx.sh;
+  - ci/travis_install_${TEST_SUITE}.sh
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      export PATH=/Library/TeX/Distributions/Programs/texbin:$PATH;
     fi
   - tlmgr conf
   - make install CONTINUE=y
@@ -41,4 +39,4 @@ install:
 script:
   - make -C test
 after_script:
-  - ci/travis-after.sh
+  - ci/travis_after.sh
