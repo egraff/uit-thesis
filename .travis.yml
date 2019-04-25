@@ -5,10 +5,14 @@ git:
 
 matrix:
   include:
-    - os: linux
+    - name: "Linux - Latest TeX Live"
+      env: TEST_SUITE=linux-latest
+      os: linux
       sudo: required
       python: 2.7
-    - os: osx
+    - name: "OS X - Latest TeX Live"
+      env: TEST_SUITE=osx-latest
+      os: osx
       sudo: required
       language: generic
       osx_image: xcode10
@@ -25,13 +29,11 @@ matrix:
         - pdfinfo -v || (exit 0)
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+  - if [[ "$TEST_SUITE" == "linux-latest" ]]; then
       ci/travis-install-linux.sh;
-      export PATH=/opt/texbin:$PATH;
     fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+  - if [[ "$TEST_SUITE" == "osx-latest" ]]; then
       ci/travis-install-osx.sh;
-      export PATH=/Library/TeX/Distributions/Programs/texbin:$PATH;
     fi
   - tlmgr conf
   - make install CONTINUE=y
