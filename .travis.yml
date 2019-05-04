@@ -1,12 +1,17 @@
 language: python
 
 git:
-  depth: 1
+  depth: 10
 
 matrix:
   include:
     - name: "Linux - Latest TeX Live"
       env: TEST_SUITE=linux-latest
+      os: linux
+      sudo: required
+      python: 2.7
+    - name: "Linux - TeX Live 2018"
+      env: TEST_SUITE=linux-tl2018
       os: linux
       sudo: required
       python: 2.7
@@ -27,9 +32,26 @@ matrix:
         - compare -version
         - brew install xpdf
         - pdfinfo -v || (exit 0)
+    - name: "OS X - TeX Live 2018"
+      env: TEST_SUITE=osx-tl2018
+      os: osx
+      sudo: required
+      language: generic
+      osx_image: xcode10
+      before_install:
+        - sw_vers
+        - brew update
+        - python2.7 --version
+        - brew install libidn
+        - brew install ghostscript
+        - gs -v
+        - brew install imagemagick
+        - compare -version
+        - brew install xpdf
+        - pdfinfo -v || (exit 0)
 
 install:
-  - ci/travis_install_${TEST_SUITE}.sh
+  - ult-base/ci/travis_install_${TEST_SUITE}.sh
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       export PATH=/Library/TeX/Distributions/Programs/texbin:$PATH;
     fi
