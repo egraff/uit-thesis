@@ -10,6 +10,23 @@ LaTeX document class for writing theses
 
 Documentation is found at http://egraff.github.io/uit-thesis/manual/.
 
+Build/test matrix
+--
+
+| Build                     | Build status                               |
+| ------------------------- | ------------------------------------------ |
+| Linux - TeX Live (latest) | [![][travis-linux-tl-latest-badge]](#)     |
+| Linux - TeX Live 2018     | [![][travis-linux-tl-2018-badge]](#)       |
+| macOS - Tex Live (latest) | [![][travis-macos-tl-latest-badge]](#)     |
+| macOS - Tex Live 2018     | [![][travis-macos-tl-2018-badge]](#)       |
+| Windows - MiKTeX (latest) | [![][appveyor-miktex-latest-badge]](#)     |
+
+[travis-linux-tl-latest-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/1
+[travis-linux-tl-2018-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/2
+[travis-macos-tl-latest-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/3
+[travis-macos-tl-2018-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/4
+
+[appveyor-miktex-latest-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/1
 
 How to install?
 --
