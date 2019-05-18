@@ -1,5 +1,6 @@
 \documentclass[nocopyright]{uit-thesis-test}
 
+\usepackage{float}
 \usepackage{filecontents}
 
 % Note: this is only used for test-purposes (create temporary file samplecode.c
@@ -13,6 +14,9 @@ int main(void)
   return 0;
 }
 \end{filecontents*}
+
+\floatstyle{plaintop}
+\newfloat{code}{!tbph}{myc}
 
 % Global options (apply to all listings)
 \lstset{%
@@ -81,15 +85,21 @@ int main(void)
 
 \chapter{Chapter}
 
+\begin{code}
+\leavevmode
 \begin{lstlisting}[caption={Test 1},label={listing:test1},name={test}]
 Line 1
 Line 2
 \end{lstlisting}
+\end{code}
 
+\begin{code}
+\leavevmode
 \begin{lstlisting}[caption={Test 2},label={listing:test2},name={test}]
 Line 3
 Line 4
 \end{lstlisting}
+\end{code}
 
 Referencing normal listings: \autoref{listing:test1}, \autoref{listing:test2}.
 
