@@ -552,7 +552,7 @@
 %:-------------------------- Fonts -----------------------
 
 \usepackage{opensans}
-\@ifpackagelater{opensans}{2011/11/11}
+\@ifpackagelater{opensans}{2019/06/15}
 {%
   \newcommand*{\ult@opensans@TLF@family}{opensans-TLF}
   \newcommand*{\ult@opensans@TOsF@family}{opensans-TOsF}
