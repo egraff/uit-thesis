@@ -552,15 +552,6 @@
 %:-------------------------- Fonts -----------------------
 
 \usepackage{opensans}
-\@ifpackagelater{opensans}{2011/11/11}
-{%
-  \newcommand*{\ult@opensans@TLF@family}{opensans-TLF}
-  \newcommand*{\ult@opensans@TOsF@family}{opensans-TOsF}
-}%
-{%
-  \newcommand*{\ult@opensans@TLF@family}{fos}
-  \newcommand*{\ult@opensans@TOsF@family}{fosj}
-}%
 
 % Dependencies of XCharter
 \usepackage{textcomp}
@@ -880,7 +871,8 @@
 % strips the crazy head rule
 \let\headrule\@empty
 
-\newcommand{\rheadfont}{\fontsize{10pt}{12pt}\usefont{T1}{\ult@opensans@TOsF@family}{l}{n}}
+% fosj is opensans with old style figures
+\newcommand{\rheadfont}{\fontsize{10pt}{12pt}\usefont{T1}{fosj}{l}{n}}
 \newcommand{\rheadfmt}[1]{\textsc{\MakeLowercase{#1}}}
 
 % Set pagenumber in the header.
@@ -998,13 +990,14 @@
 \newcommand{\subsubsectfont}{\SS@subsubsectfont} % use \subsubsectionfont{} to change
 \newcommand{\parafont}{\SS@parafont}             % use \paragraphfont{} to change
 
-% Use Open Sans as chapter and section title font
-\allsectionsfont{\usefont{T1}{\ult@opensans@TOsF@family}{bx}{n}}
+% Use Open Sans (fos) as chapter and section title font
+% fosj is Open Sans with old style figures.
+\allsectionsfont{\usefont{T1}{fosj}{bx}{n}}
 
 % Change font for chapter number
 \chapternumberfont{%
-  \fontsize{56}{56}%                             % font size 56pt, baselineskip 56pt
-  \usefont{T1}{\ult@opensans@TLF@family}{b}{n}%  % Use Open Sans as chapter number font
+  \fontsize{56}{56}%            % font size 56pt, baselineskip 56pt
+  \usefont{T1}{fos}{b}{n}%      % Use Open Sans (fos) as chapter number font
 }
 
 % Draw the UiT slash (must be used inside a tikzpicture environment)
@@ -2593,7 +2586,7 @@
   %
   \begingroup
     \vskip \z@
-    \fontsize{10.3pt}{15pt}\usefont{T1}{\ult@opensans@TLF@family}{l}{n}
+    \fontsize{10.3pt}{15pt}\usefont{T1}{fos}{l}{n}
     \noindent\@thesisfaculty
     \vskip -\parskip
   \endgroup
@@ -2604,7 +2597,7 @@
     \vskip 2\baselineskip
     \microtypesetup{protrusion=false,spacing=false}%
     \RaggedRight
-    \fontsize{12.5pt}{15pt}\usefont{T1}{\ult@opensans@TLF@family}{b}{n}
+    \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{b}{n}
     \vspace*{-\baselineskip}%
     \noindent\@title
     \vskip -\parskip
@@ -2619,7 +2612,7 @@
         \vskip \ht\strutbox
         \microtypesetup{protrusion=false,spacing=false}%
         \RaggedRight
-        \fontsize{11.4pt}{14pt}\usefont{T1}{\ult@opensans@TLF@family}{l}{it}
+        \fontsize{11.4pt}{14pt}\usefont{T1}{fos}{l}{it}
         \vspace*{-\baselineskip}%
         \noindent\@subtitle
         \vskip -\parskip
@@ -2632,7 +2625,7 @@
   %
   \begingroup
     \vspace*{2pt}%
-    \fontsize{12.5pt}{15pt}\usefont{T1}{\ult@opensans@TLF@family}{l}{it}
+    \fontsize{12.5pt}{15pt}\usefont{T1}{fos}{l}{it}
     \vspace*{-\baselineskip}%
     \noindent ---%
     \vskip -\parskip
@@ -2642,7 +2635,7 @@
   % Name of author
   %
   \begingroup
-    \fontsize{10.3pt}{13pt}\usefont{T1}{\ult@opensans@TLF@family}{sb}{n}
+    \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{sb}{n}
     \vspace*{-\baselineskip}%
     \noindent\@author
     \vskip -\parskip
@@ -2652,7 +2645,7 @@
   % Thesis description one-line / study program / month and year
   %
   \begingroup
-    \fontsize{10.3pt}{13pt}\usefont{T1}{\ult@opensans@TLF@family}{l}{it}
+    \fontsize{10.3pt}{13pt}\usefont{T1}{fos}{l}{it}
     \vspace*{-\baselineskip}%
     \noindent\@thesisprogramme
     \vskip -\parskip
