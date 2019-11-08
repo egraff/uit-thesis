@@ -562,6 +562,8 @@
   \newcommand*{\ult@opensans@TOsF@family}{fosj}
 }%
 
+\usepackage[osf]{noto-sans}
+
 % Dependencies of XCharter
 \usepackage{textcomp}
 \usepackage{mweights}
@@ -880,7 +882,11 @@
 % strips the crazy head rule
 \let\headrule\@empty
 
-\newcommand{\rheadfont}{\fontsize{10pt}{12pt}\usefont{T1}{\ult@opensans@TOsF@family}{l}{n}}
+\newcommand{\rheadfont}{%
+  \fontsize{10pt}{12pt}%
+  \usefont{T1}{NotoSans-TOsF}{el}{n}%
+  \SetTracking{encoding = *, shape = {sc,si,scit}}{100}%
+}
 \newcommand{\rheadfmt}[1]{\textsc{\MakeLowercase{#1}}}
 
 % Set pagenumber in the header.
