@@ -1,0 +1,11 @@
+# Fdb version 3
+["pdflatex"] 1573508248 "./test-frontpage_master_norsk.tex" "../.build/./test-frontpage_master_norsk/output.pdf" "output" 1573508248
+  "../.build/./test-frontpage_master_norsk/output.aux" 1573508246 929 4bb17169c75f93d2cdd5af30683dd801 ""
+  "./test-frontpage_master_norsk.tex" 1573507274 331 f25d6551de89b3dd0579cc9cc8bc1228 ""
+  "c:/texlive/2018/texmf-dist/web2c/texmf.cnf" 1573507652 35176 ce7fee66be1fb01dfc6b702a7dbfa0ea ""
+  "c:/texlive/2018/texmf-var/web2c/pdftex/pdflatex.fmt" 1573508165 2820765 b93b6c2b7c6bcad88749d0caff0786dc ""
+  "c:/texlive/2018/texmf.cnf" 1573508113 753 7c7d4959b111dcbcd70f7f7b2e609997 ""
+  (generated)
+  "../.build/./test-frontpage_master_norsk/output.pdf"
+  "../.build/./test-frontpage_master_norsk/output.log"
+  "../.build/./test-frontpage_master_norsk/output.aux"
