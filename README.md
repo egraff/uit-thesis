@@ -1,10 +1,10 @@
 uit-thesis [![Travis build status][travis-badge]][travis-url] [![AppVeyor build status][appveyor-badge]][appveyor-url]
 ==========
 
-[travis-badge]: https://travis-ci.org/egraff/uit-thesis.svg?branch=master
+[travis-badge]: https://travis-ci.org/egraff/uit-thesis.svg?branch=support-v1.x
 [travis-url]: https://travis-ci.org/egraff/uit-thesis
-[appveyor-badge]: https://ci.appveyor.com/api/projects/status/geocvslth4hd2xl2/branch/master?svg=true
-[appveyor-url]: https://ci.appveyor.com/project/egraff/uit-thesis/branch/master
+[appveyor-badge]: https://ci.appveyor.com/api/projects/status/geocvslth4hd2xl2/branch/support-v1.x?svg=true
+[appveyor-url]: https://ci.appveyor.com/project/egraff/uit-thesis/branch/support-v1.x
 
 LaTeX document class for writing theses
 
@@ -15,18 +15,16 @@ Build/test matrix
 
 | Build                     | Build status                               |
 | ------------------------- | ------------------------------------------ |
-| Linux - TeX Live (latest) | [![][travis-linux-tl-latest-badge]](#)     |
 | Linux - TeX Live 2018     | [![][travis-linux-tl-2018-badge]](#)       |
-| macOS - Tex Live (latest) | [![][travis-macos-tl-latest-badge]](#)     |
-| macOS - Tex Live 2018     | [![][travis-macos-tl-2018-badge]](#)       |
-| Windows - MiKTeX (latest) | [![][appveyor-miktex-latest-badge]](#)     |
+| macOS - TeX Live 2018     | [![][travis-macos-tl-2018-badge]](#)       |
+| Windows - TeX Live 2018   | [![][appveyor-texlive-2018-badge]](#)      |
+| Windows - proTeXt 2018    | [![][appveyor-protext-2018-badge]](#)      |
 
-[travis-linux-tl-latest-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/1
-[travis-linux-tl-2018-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/2
-[travis-macos-tl-latest-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/3
-[travis-macos-tl-2018-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/4
+[travis-linux-tl-2018-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/support-v1.x/1
+[travis-macos-tl-2018-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/support-v1.x/2
 
-[appveyor-miktex-latest-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/1
+[appveyor-texlive-2018-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/support-v1.x/1
+[appveyor-protext-2018-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/support-v1.x/2
 
 How to install?
 --
