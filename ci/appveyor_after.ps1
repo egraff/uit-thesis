@@ -45,7 +45,7 @@ $ErrorActionPreference = "Stop"
 Pop-Location
 
 
-$JobDir = md "$GhPages\appveyor-builds\${env:APPVEYOR_BUILD_NUMBER}" | %{ $_.FullName }
+$JobDir = md "$GhPages\appveyor-builds\${env:APPVEYOR_BUILD_NUMBER}.${env:APPVEYOR_JOB_NUMBER}" | %{ $_.FullName }
 
 @"
 ---
@@ -72,7 +72,7 @@ cp test\tmp\tests "$JobDir\tests" -Recurse -ErrorAction Ignore
 cp test\tmp\proto "$JobDir\proto" -Recurse -ErrorAction Ignore
 
 md "$GhPages\_data\appveyor-builds" -Force | Out-Null
-cp test\test_result.json "$GhPages\_data\appveyor-builds\${env:APPVEYOR_BUILD_NUMBER}.json"
+cp test\test_result.json "$GhPages\_data\appveyor-builds\${env:APPVEYOR_BUILD_NUMBER}_${env:APPVEYOR_JOB_NUMBER}.json"
 
 
 Push-Location -Path $GhPages
@@ -80,7 +80,7 @@ Push-Location -Path $GhPages
 $ErrorActionPreference = "Continue"
 
 git add --all . 2>&1 | %{ "$_" }
-git commit -m "AppVeyor: test results from build ${env:APPVEYOR_BUILD_NUMBER}" 2>&1 | %{ "$_" }
+git commit -m "AppVeyor: test results from job ${env:APPVEYOR_BUILD_NUMBER}.${env:APPVEYOR_JOB_NUMBER}" 2>&1 | %{ "$_" }
 
 $maxAttempts = 10
 $numAttempts = 0
