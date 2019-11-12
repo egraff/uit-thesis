@@ -2,7 +2,7 @@
 layout: default
 ---
 {% comment %} Convert number to string {% endcomment %}
-{% capture appveyor_build_data_name %}{{ page.appveyor.build-number | replace: '.', '_' }}{% endcapture %}
+{% capture appveyor_build_data_name %}{{ page.appveyor.build-number }}_{{ page.appveyor.job-number }}{% endcapture %}
 
 {% comment %} Get test result from JSON {% endcomment %}
 {% assign result_map = site.data.appveyor-builds[appveyor_build_data_name] %}
@@ -14,10 +14,10 @@ layout: default
 {% assign passed = false %}
 {% endif %}
 
-{% capture title %}Test results for Appveyor build #{{ page.appveyor.build-number }}{% endcapture %}
+{% capture title %}Test results for Appveyor job #{{ page.appveyor.build-number }}.{{ page.appveyor.job-number }}{% endcapture %}
 <div class="page">
   <h1 class="page-title">Test results for
-    <a href="https://ci.appveyor.com/project/egraff/uit-thesis/build/{{ page.appveyor.build-number }}">Appveyor build #{{ page.appveyor.build-number }}</a>
+    <a href="https://ci.appveyor.com/project/egraff/uit-thesis/builds/{{ page.appveyor.build-id }}/job/{{ page.appveyor.job-id }}">Appveyor job #{{ page.appveyor.build-number }}.{{ page.appveyor.job-number }}</a>
   </h1>
   <p>
   {% if passed %}
@@ -30,7 +30,7 @@ layout: default
   {% unless result_map %}
     No results from regression tests!
   {% else %}
-    <p>Num tests: {{ result_map.num_tests }}, in build {{ page.appveyor.build-number }}!</p>
+    <p>Num tests: {{ result_map.num_tests }}, in job {{ page.appveyor.build-number }}.{{ page.appveyor.job-number }}!</p>
     
     {% assign failed_tests = result_map.failed_tests %}
     {% for failed_test_map in failed_tests %}
@@ -53,20 +53,20 @@ layout: default
                 <div class="diff">
                   <div class="image_name">Diff</div>
                   <div class="page_image">
-                    <img src="diffs/{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                    <div style="display: block; width: 355px; height: 503px; background-color: gray; background-image: url('diffs/{{ failed_test_map.test_name }}_{{ pagenum }}.png'); background-size: contain;"></div>
                   </div>
                 </div>
                 <div class="proto_test">
                   <div class="proto">
                     <div class="image_name">Proto (hover for test)</div>
                     <div class="page_image">
-                      <img src="proto/{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                      <div style="display: block; width: 355px; height: 503px; background-image: url('proto/{{ failed_test_map.test_name }}_{{ pagenum }}.png'); background-size: contain;"></div>
                     </div>
                   </div>
                   <div class="test">
                     <div class="image_name">Test (un-hover for proto)</div>
                     <div class="page_image">
-                      <img src="tests/{{ failed_test_map.test_name }}_{{ pagenum }}.png" width="355" height="503" />
+                      <div style="display: block; width: 355px; height: 503px; background-image: url('tests/{{ failed_test_map.test_name }}_{{ pagenum }}.png'); background-size: contain;"></div>
                     </div>
                   </div>
                 </div>
