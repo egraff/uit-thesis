@@ -34,24 +34,25 @@ title: Last 25 test results
 
 {% assign appveyor_pages_list = site.pages | where: 'layout','appveyor-build' %}
 
-{% assign appveyor_build_num_string_list = '' %}
+{% assign appveyor_job_num_string_list = '' %}
 {% for page in appveyor_pages_list %}
-  {% comment %} Make build number 8 symbols long, prepended with zeros {% endcomment %}
-  {% assign appveyor_build_sortkey = page.appveyor.build-number | prepend: '00000000' | slice: -8, 8 %}
+  {% comment %} Make job number 8 symbols long, prepended with zeros {% endcomment %}
+  {% capture appveyor_job_num %}{{ page.appveyor.build-number }}.{{ page.appveyor.job-number }}{% endcapture %}
+  {% assign appveyor_job_sortkey = appveyor_job_num | prepend: '00000000' | slice: -8, 8 %}
 
-  {% comment %} Append actual build number after sortkey, with a ^ as separator {% endcomment %}
-  {% assign build_num_string = appveyor_build_sortkey | append: '^' | append: page.appveyor.build-number %}
+  {% comment %} Append actual job number after sortkey, with a ^ as separator {% endcomment %}
+  {% assign job_num_string = appveyor_job_sortkey | append: '^' | append: appveyor_job_num %}
 
   {% comment %} Add to string list {% endcomment %}
-  {% if appveyor_build_num_string_list == '' %}
-    {% assign appveyor_build_num_string_list = build_num_string %}
+  {% if appveyor_job_num_string_list == '' %}
+    {% assign appveyor_job_num_string_list = job_num_string %}
   {% else %}
-    {% assign appveyor_build_num_string_list = appveyor_build_num_string_list | append: ',' | append: build_num_string %}
+    {% assign appveyor_job_num_string_list = appveyor_job_num_string_list | append: ',' | append: job_num_string %}
   {% endif %}
 {% endfor %}
 
 {% comment %} Convert to a list, and sort in descending order {% endcomment %}
-{% assign appveyor_build_num_string_list = appveyor_build_num_string_list | split: ',' | sort | reverse %}
+{% assign appveyor_job_num_string_list = appveyor_job_num_string_list | split: ',' | sort | reverse %}
 
 {% comment %} ---- END APPVEYOR ---- {% endcomment %}
 
@@ -105,29 +106,29 @@ title: Last 25 test results
 <table class="test-overview">
   <thead>
     <tr>
-      <th>Build</th>
+      <th>Job</th>
       <th>Branch</th>
       <th>Commit</th>
       <th>#</th>
     </tr>
   </thead>
   <tbody>
-  {% for build_num_string in appveyor_build_num_string_list limit:25 %}
-    {% assign build_num_string_parts = build_num_string | split: '^' %}
-    {% assign appveyor_build_number = build_num_string_parts[1] %}
+  {% for job_num_string in appveyor_job_num_string_list limit:25 %}
+    {% assign job_num_string_parts = job_num_string | split: '^' %}
+    {% assign appveyor_job_number = job_num_string_parts[1] %}
     {% for page in appveyor_pages_list %}
-      {% capture page_build_num_str %}{{ page.appveyor.build-number }}{% endcapture %}
-      {% if page_build_num_str == appveyor_build_number %}
+      {% capture page_job_num_str %}{{ page.appveyor.build-number }}.{{ page.appveyor.job-number }}{% endcapture %}
+      {% if page_job_num_str == appveyor_job_number %}
         {% if page.appveyor.test-result == 0 %}
           {% assign passed = true %}
         {% else %}
           {% assign passed = false %}
         {% endif %}
-        {% capture appveyor_build_data_name %}{{ page.appveyor.build-number }}{% endcapture %}
-        {% assign result_map = site.data.appveyor-builds[appveyor_build_data_name] %}
+        {% capture appveyor_job_data_name %}{{ page.appveyor.build-number }}_{{ page.appveyor.job-number }}{% endcapture %}
+        {% assign result_map = site.data.appveyor-builds[appveyor_job_data_name] %}
         {% capture commit_hash %}{{ page.appveyor.commit }}{% endcapture %}
         <tr class="{% if passed %}passed{% else %}failed{% endif %}">
-          <td><a href="{{ site.baseurl }}{{ page.url }}">#{{ page.appveyor.build-number }}</a></td>
+          <td><a href="{{ site.baseurl }}{{ page.url }}">#{{ page.appveyor.build-number }}.{{ page.appveyor.job-number }}</a></td>
           <td><a href="https://github.com/egraff/uit-thesis/tree/{{ page.appveyor.branch }}">{{ page.appveyor.branch }}</a></td>
           <td><a href="https://github.com/egraff/uit-thesis/commit/{{ commit_hash }}">{{ commit_hash | truncate: 9 }}</a></td>
           <td>
