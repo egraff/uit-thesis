@@ -36,7 +36,7 @@ git clone --recursive https://github.com/egraff/uit-thesis.git
 ```
 and then run ``make install``.
 
-If you're running Windows, and don't have a POSIX-like environment installed, you could try to use the [Net Installer](https://github.com/egraff/uit-thesis-installer/releases/tag/v2.0) instead.
+If you're running Windows, and don't have a POSIX-like environment installed, you could try to use the [Net Installer](https://github.com/egraff/uit-thesis-installer/releases/tag/v2.0.1) instead.
 
 
 It won't compile!
