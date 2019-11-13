@@ -564,6 +564,8 @@
 
 \usepackage[osf]{noto-sans}
 
+\renewcommand*{\sfdefault}{\ult@opensans@TOsF@family}
+
 % Dependencies of XCharter
 \usepackage{textcomp}
 \usepackage{mweights}
