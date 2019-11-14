@@ -10,30 +10,8 @@ matrix:
       os: linux
       sudo: required
       python: 2.7
-    - name: "Linux - TeX Live 2018"
-      env: TEST_SUITE=linux-tl2018
-      os: linux
-      sudo: required
-      python: 2.7
     - name: "OS X - Latest TeX Live"
       env: TEST_SUITE=osx-latest
-      os: osx
-      sudo: required
-      language: generic
-      osx_image: xcode10
-      before_install:
-        - sw_vers
-        - brew update
-        - python2.7 --version
-        - brew install libidn
-        - brew install ghostscript
-        - gs -v
-        - brew install imagemagick
-        - compare -version
-        - brew install xpdf
-        - pdfinfo -v || (exit 0)
-    - name: "OS X - TeX Live 2018"
-      env: TEST_SUITE=osx-tl2018
       os: osx
       sudo: required
       language: generic

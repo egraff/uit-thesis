@@ -9,12 +9,15 @@ max_jobs: 1
 
 image: Visual Studio 2015
 
-clone_depth: 1
+clone_depth: 10
 
 
 environment:
   deploy_key_secret:
     secure: oUQd0vmgGMlZagBkEVim8EJrEYXtW0gCnIE6PE+aDvZs9m139IrMDQNUKErg1iGw
+
+  matrix:
+    - TEST_SUITE: miktex-latest
 
 
 install:
@@ -42,13 +45,6 @@ install:
       $NewPath = $OldPath + ';' + $GsPath;
       [Environment]::SetEnvironmentVariable('path', $NewPath, 'machine');
   - cinst xpdf-utils
-  - ps: >-
-      (New-Object System.Net.WebClient).DownloadFile('https://miktex.org/download/win/miktexsetup-x64.zip', "$($env:TEMP)\miktexsetup-x64.zip");
-      Expand-Archive "$($env:TEMP)\miktexsetup-x64.zip" -DestinationPath "$($env:TEMP)\miktexsetup-x64";
-      md "$($env:TEMP)\miktex" -Force;
-      . "$($env:TEMP)\miktexsetup-x64\miktexsetup.exe" --version;
-      . "$($env:TEMP)\miktexsetup-x64\miktexsetup.exe" --verbose --shared --local-package-repository="$($env:TEMP)\miktex" --package-set=complete download;
-      . "$($env:TEMP)\miktexsetup-x64\miktexsetup.exe" --verbose --shared --local-package-repository="$($env:TEMP)\miktex" --package-set=complete install;
   - refreshenv
   - set
   - compare -version
@@ -63,18 +59,10 @@ install:
       }
       $ErrorActionPreference = $OldErrorActionPreference;
 
-  - mpm --admin --update-db
-  #- mpm --admin --upgrade --package-level=basic
-  # ps
-  #    mpm --admin --find-updates | foreach { $_.ToString() } | select-string "^(?!miktex.*$)" > upd-packages.txt
-  #- mpm --admin --update-some=upd-packages.txt --verbose
-  - initexmf --admin --enable-installer --verbose
-  - initexmf --admin --update-fndb --verbose
-  - initexmf --admin --mkmaps --verbose
-  - initexmf --report
-  - kpsewhich --var-value TEXMFHOME
-  - kpsewhich --var-value TEXMFLOCAL
+  - ps: . ".\ult-base\ci\appveyor_install_${env:TEST_SUITE}.ps1"
+  - refreshenv
   - pdflatex -version
+
   - ps: >-
       $MsysPath = 'C:\MinGW\msys\1.0\bin';
       $OldPath = [Environment]::GetEnvironmentVariable('path', 'machine');
@@ -84,7 +72,10 @@ install:
 
 build_script:
   - make install CONTINUE=y
-  - initexmf --admin --update-fndb --verbose
+  - ps: >-
+      if (Test-Path -Path ".\ult-base\ci\appveyor_postinstall_${env:TEST_SUITE}.ps1") {
+        . ".\ult-base\ci\appveyor_postinstall_${env:TEST_SUITE}.ps1"
+      }
 
 test_script:
   - make -C test
@@ -100,7 +91,6 @@ on_success:
         echo $_.Exception | FL -Force
       }
 
-# https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
 on_failure:
   - ps: >-
       try
@@ -111,4 +101,5 @@ on_failure:
       {
         echo $_.Exception | FL -Force
       }
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
+  #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
