@@ -13,16 +13,18 @@ Documentation is found at http://egraff.github.io/uit-thesis/manual/.
 Build/test matrix
 --
 
-| Build                     | Build status                               |
-| ------------------------- | ------------------------------------------ |
-| Linux - TeX Live (latest) | [![][travis-linux-tl-latest-badge]](#)     |
-| macOS - Tex Live (latest) | [![][travis-macos-tl-latest-badge]](#)     |
-| Windows - MiKTeX (latest) | [![][appveyor-miktex-latest-badge]](#)     |
+| Build                       | Build status                               |
+| --------------------------- | ------------------------------------------ |
+| Linux - TeX Live (latest)   | [![][travis-linux-tl-latest-badge]](#)     |
+| macOS - TeX Live (latest)   | [![][travis-macos-tl-latest-badge]](#)     |
+| Windows - MiKTeX (latest)   | [![][appveyor-miktex-latest-badge]](#)     |
+| Windows - TeX Live (latest) | [![][appveyor-texlive-latest-badge]](#)    |
 
 [travis-linux-tl-latest-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/1
 [travis-macos-tl-latest-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/2
 
 [appveyor-miktex-latest-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/1
+[appveyor-texlive-latest-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/2
 
 How to install?
 --
