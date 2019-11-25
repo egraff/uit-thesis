@@ -25,7 +25,7 @@ matrix:
         - gs -v
         - brew install imagemagick
         - compare -version
-        - brew install xpdf
+        - brew install poppler
         - pdfinfo -v || (exit 0)
 
 install:
