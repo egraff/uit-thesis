@@ -828,43 +828,45 @@
 % Citation numbering not starting on table of contents
 % Note: we do not use notoccite package, since it overwrites changes that
 % parskip does to \@starttoc
-\renewcommand*{\@starttoc}[1]{%
-  % First element in ToC will be a chapter. Compensate for vertical space
-  % added by tocloft, so the first element isn't pushed down.
-  % Also, elements in ToC lists that belong to different chapters are separated
-  % with spacing, and this spacing will be present before the very first element.
-  % Hence, we compensate for both these cases...
-  \vspace*{-\ult@cftbeforechapskip}%
-  %
-  % Make sure spacing is the same with class option 'parindent' and without
-  \vspace*{\parskip}%
-  %
-  \begingroup
-    % Disable protrusion locally
-    \microtypesetup{protrusion=false}%
+\AtBeginDocument{
+  \renewcommand*{\@starttoc}[1]{%
+    % First element in ToC will be a chapter. Compensate for vertical space
+    % added by tocloft, so the first element isn't pushed down.
+    % Also, elements in ToC lists that belong to different chapters are separated
+    % with spacing, and this spacing will be present before the very first element.
+    % Hence, we compensate for both these cases...
+    \vspace*{-\ult@cftbeforechapskip}%
     %
-    % Add modification from notoccite.
-    % Note: this only has effect within the current local group
-    % (which is why it works!)
-    \@fileswfalse
+    % Make sure spacing is the same with class option 'parindent' and without
+    \vspace*{\parskip}%
     %
-    % Make sure @ have right catcode before reading input file
-    \makeatletter
-    %
-    % Retain modification from parskip.
-    % Note: this is only consistent because we compensate with \vspace*{\parskip} above
-    \parskip\z@
-    %
-    \global\ult@first@contentslinetrue
-    %
-    % Read auxillary file
-    \@input{\jobname.#1}%
-  \endgroup
-  \if@filesw
-    \expandafter\newwrite\csname tf@#1\endcsname
-    \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
-  \fi
-  \@nobreakfalse
+    \begingroup
+      % Disable protrusion locally
+      \microtypesetup{protrusion=false}%
+      %
+      % Add modification from notoccite.
+      % Note: this only has effect within the current local group
+      % (which is why it works!)
+      \@fileswfalse
+      %
+      % Make sure @ have right catcode before reading input file
+      \makeatletter
+      %
+      % Retain modification from parskip.
+      % Note: this is only consistent because we compensate with \vspace*{\parskip} above
+      \parskip\z@
+      %
+      \global\ult@first@contentslinetrue
+      %
+      % Read auxillary file
+      \@input{\jobname.#1}%
+    \endgroup
+    \if@filesw
+      \expandafter\newwrite\csname tf@#1\endcsname
+      \immediate\openout \csname tf@#1\endcsname \jobname.#1\relax
+    \fi
+    \@nobreakfalse
+  }
 }
 
 
