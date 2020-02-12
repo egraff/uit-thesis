@@ -19,13 +19,13 @@ matrix:
       before_install:
         - sw_vers
         - brew update
+        - brew unlink python@2
         - python2.7 --version
         - brew install libidn
         - brew install ghostscript
         - gs -v
         - brew install imagemagick
         - compare -version
-        - brew install poppler
         - pdfinfo -v || (exit 0)
 
 install:
