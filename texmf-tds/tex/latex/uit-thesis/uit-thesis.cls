@@ -69,11 +69,11 @@
 \PassOptionsToClass{a4paper}{\baseclass}
 \PassOptionsToClass{twoside}{\baseclass}
 
-% Class options for thesis type (master thesis default)
-\DeclareOption{master}{}
-\newif\ifult@phdthesisprofile
-\ult@phdthesisprofilefalse % Default to false
-\DeclareOption{phd}{\ult@phdthesisprofiletrue}
+% Class options for whether to produce a PDF for printing (cover pages will be A4 with
+% 3mm bleed) or for viewing (cover pages use normal A4 dimensions)
+\newif\ifult@print
+\ult@printfalse % Default to false
+\DeclareOption{print}{\ult@printtrue}
 
 % Suppress book class options
 \DeclareOption{a5paper}{}
@@ -127,8 +127,76 @@
 \ProcessOptions\relax
 \LoadClass{\baseclass}
 
-% Fix compatibility issues. A4 dimensions hard coded.
-\special{papersize=210mm,297mm}
+% Lengths for paper width and height, and horizontal and vertical bleed
+\newlength{\ult@paper@width}
+\newlength{\ult@paper@height}
+\newlength{\ult@paper@hbleed}
+\newlength{\ult@paper@vbleed}
+\newlength{\ult@coverpages@graphics@width}
+\newlength{\ult@coverpages@graphics@height}
+\newlength{\ult@coverpages@graphics@hoffset}
+\newlength{\ult@coverpages@graphics@voffset}
+
+% Set the appropriate lengths for the cover pages (front page and back page), depending on
+% whether the PDF is produced for printing or not
+\ifult@print
+  \setlength{\ult@paper@hbleed}{3mm}
+  \setlength{\ult@paper@vbleed}{3mm}
+
+  \setlength{\ult@coverpages@graphics@hoffset}{\z@}
+  \setlength{\ult@coverpages@graphics@voffset}{\z@}
+\else
+  \setlength{\ult@paper@hbleed}{\z@}
+  \setlength{\ult@paper@vbleed}{\z@}
+
+  \setlength{\ult@coverpages@graphics@hoffset}{3mm}
+  \setlength{\ult@coverpages@graphics@voffset}{3mm}
+\fi
+
+% Calculate the paper size (A4 paper size + bleed depending on whether print option is set or not)
+\setlength{\ult@paper@width}{210mm}
+\addtolength{\ult@paper@width}{2\ult@paper@hbleed}
+\setlength{\ult@paper@height}{297mm}
+\addtolength{\ult@paper@height}{2\ult@paper@vbleed}
+
+% Dimensions for cover page graphics
+\setlength{\ult@coverpages@graphics@width}{216mm}
+\setlength{\ult@coverpages@graphics@height}{303mm}
+
+% Front page left margin
+\newlength{\ult@frontpage@leftmargin}
+\setlength{\ult@frontpage@leftmargin}{27mm}
+
+% Front page right margin
+\newlength{\ult@frontpage@rightmargin}
+\setlength{\ult@frontpage@rightmargin}{12mm}
+
+% Front page top margin
+\newlength{\ult@frontpage@topmargin}
+\setlength{\ult@frontpage@topmargin}{12mm}
+
+% Front page bottom margin
+\newlength{\ult@frontpage@bottommargin}
+\setlength{\ult@frontpage@bottommargin}{12mm}
+
+% Front page text box horizontal position
+\newlength{\ult@frontpage@textbox@xpos}
+\setlength{\ult@frontpage@textbox@xpos}{\z@}
+\addtolength{\ult@frontpage@textbox@xpos}{\ult@paper@hbleed}
+\addtolength{\ult@frontpage@textbox@xpos}{\ult@frontpage@leftmargin}
+
+% Front page text box vertical position
+\newlength{\ult@frontpage@textbox@ypos}
+\setlength{\ult@frontpage@textbox@ypos}{\z@}
+\addtolength{\ult@frontpage@textbox@ypos}{\ult@paper@vbleed}
+\addtolength{\ult@frontpage@textbox@ypos}{\ult@frontpage@topmargin}
+\addtolength{\ult@frontpage@textbox@ypos}{67mm}
+
+% Front page graphics vertical position
+\newlength{\ult@frontpage@graphics@ypos}
+\setlength{\ult@frontpage@graphics@ypos}{\ult@paper@height}
+\addtolength{\ult@frontpage@graphics@ypos}{-\ult@paper@vbleed}
+\addtolength{\ult@frontpage@graphics@ypos}{-12mm}
 
 % Inject USenglish in front of class options if it was not specified in the list.
 % If any other language is specified in the list, it will take precedence
@@ -273,13 +341,8 @@
 \definecolor{pms5435}{cmyk}{0.32,0.09,0.08,0.07}
 
 % Running head color
-\ifult@phdthesisprofile
-  \definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
-  \colorlet{chapnumcol}{pms1797}
-\else
-  \definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
-  \definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
-\fi
+\definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
+\definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
 
 
 %:-------------------------- URLs -----------------------
@@ -680,7 +743,18 @@
 
 % Geometry is needed to set frontpage layout
 % Enable option 'showframe' for debugging...
-\usepackage[a4paper,ignorehead,ignorefoot,twoside,top=\the\topmargin,textheight=\the\textheight,textwidth=\the\textwidth]{geometry}
+\usepackage[%
+  papersize={\ult@paper@width,\ult@paper@height},%
+  layout=a4paper,%
+  layouthoffset=\ult@paper@hbleed,%
+  layoutvoffset=\ult@paper@vbleed,%
+  ignorehead,%
+  ignorefoot,%
+  twoside,%
+  top=\the\topmargin,%
+  textheight=\the\textheight,%
+  textwidth=\the\textwidth%
+]{geometry}
 
 % Calculate differences between geometry dimensions and LaTeX dimensions
 \addtolength\ult@gm@topmargin{\ult@gm@topmargin}
@@ -707,10 +781,6 @@
 
 % Used to give adjustwidth environment
 \usepackage{changepage}
-
-%A4 settings
-\pdfpageheight=297mm
-\pdfpagewidth=210mm
 
 % Get value of baselineskip of normal-sized font in \ult@normalbaselineskip
 \newdimen\ult@normalbaselineskip
@@ -2242,86 +2312,87 @@
   \gdef\ult@frontpage@image@right{#1}%
 }
 
-\def\ult@frontpage@pattern@left{%
-  \AddToShipoutPicture*{%
-    \put(0,0){%
-      \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill
-        \centering
-        \ifult@phdthesisprofile
-          \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_yellow_left.pdf}%
-        \else
-          \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_blue_left.pdf}%
-        \fi
-        \vfill
-      }%
-    }%
-  }%
-}
-
-\def\ult@frontpage@pattern@right{%
-  \AddToShipoutPicture*{%
-    \put(0,0){%
-      \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill
-        \centering
-        \ifult@phdthesisprofile
-          \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_yellow_right.pdf}%
-        \else
-          \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{pattern_blue_right.pdf}%
-        \fi
-        \vfill
-      }%
-    }%
-  }%
-}
-
-\def\ult@frontpage@customimage@tikz#1{%
-  \AddToShipoutPicture*{%
-    \put(25.5,28.3){
-      \begin{tikzpicture}[radius=1cm,delta angle=180]
-        #1%
-      \end{tikzpicture}
-    }%
-  }%
+\def\ult@frontpage@tikzpicture#1{%
+  \begin{tikzpicture}[radius=1cm,delta angle=180]
+    #1%
+  \end{tikzpicture}
 }
 
 % Defines tikz picture for custom frontpage images
 \def\ult@frontpage@customimage@tile#1{%
   \path[fill overzoom image=#1]
+    % Coordinates are in cm
     % (Lower left) -- (Lower right) -- (Upper right) -- (Upper left)
-    (0,0) -- (19,0) -- ++(0,19.975) -- ++(-19,0) -- cycle;
+    (0,0) -- (21.6,0) -- ++(0,19.3478) -- ++(-21.6,0) -- cycle;
+}
+
+\def\ult@frontpage@pattern@left{%
+  \ult@frontpage@tikzpicture{%
+    % Note: "tile" makes sure we effectively blit the image in place without zooming or translating
+    \path[fill tile image={ult_forside_helt_element.pdf}]
+      % Coordinates are in cm
+      %
+      % Make sure coordinates are translated relative to image bottom left
+      (0,1.5)
+      % Make sure coordinates are scaled relative to image size (216mm x 303mm)
+      (21.6,30.3)
+      %
+      % (Lower left) -- (Lower right) -- (Upper right) -- (Upper left)
+      (0,1.5) -- (13.434,1.5) -- (20.421,20.8478) -- (0,20.8478) -- cycle;
+  }%
+}
+
+\def\ult@frontpage@pattern@right{%
+  \ult@frontpage@tikzpicture{%
+    % Note: "tile" makes sure we effectively blit the image in place without zooming or translating
+    \path[fill tile image={ult_forside_helt_element.pdf}]
+      % Coordinates are in cm
+      %
+      % Make sure coordinates are translated relative to image bottom left
+      (0,1.5)
+      % Make sure coordinates are scaled relative to image size (216mm x 303mm)
+      (21.6,30.3)
+      %
+      % (Lower left) -- (Lower right) -- (Upper right) -- (Upper left)
+      (13.469,1.5) -- (21.6,1.5) -- (21.6,20.8478) -- (20.52,20.8478) -- cycle;
+  }%
 }
 
 \def\ult@frontpage@customimage@left{%
-  \ult@frontpage@customimage@tikz{%
+  \ult@frontpage@tikzpicture{%
     % Note: "tile" makes sure we effectively blit the image in place without zooming or translating
     \path[fill tile picture=\ult@frontpage@customimage@tile{\ult@frontpage@image@left}]
-      % (Lower left) -- (Upper left) -- (Upper right)
-      (0,0) -- (0,19.975) -- ++(7.3,0) -- cycle;
+      % Coordinates are in cm
+      %
+      % Make sure coordinates are translated relative to image bottom left
+      (0,0)
+      %
+      % (Lower left) -- (Lower right) -- (Upper right) -- (Upper left)
+      (0,0) -- (13.434,0) -- (20.421,19.3478) -- (0,19.3478) -- cycle;
   }%
 }
 
 \def\ult@frontpage@customimage@right{%
-  \ult@frontpage@customimage@tikz{%
+  \ult@frontpage@tikzpicture{%
     % Note: "tile" makes sure we effectively blit the image in place without zooming or translating
     \path[fill tile picture=\ult@frontpage@customimage@tile{\ult@frontpage@image@right}]
-      (0,0)% Make sure (0,0) is origo, instead of (0.355,0)
+      % Coordinates are in cm
+      %
+      % Make sure coordinates are translated relative to image bottom left
+      (0,0)
+      %
       % (Lower left) -- (Lower right) -- (Upper right) -- (Upper left)
-      (0.355,0) -- (19,0) -- ++(0,19.975) -- ++(-11.29,0) -- cycle;
+      (13.469,0) -- (21.6,0) -- (21.6,19.3478) -- (20.52,19.3478) -- cycle;
   }%
 }
 
 \def\ult@frontpage@customimage@single{%
-  \ult@frontpage@customimage@tikz{%
-    % Note: we use tile+overzoom here as well, to make sure image is zoomed and positioned
-    % the same way as triangle (left image) and trapezoid (right image).
-    % In other words, \ThesisFrontpageImage{example.jpg} will look identically to
-    % \ThesisLeftFrontpageImage{example.jpg} + \ThesisRightFrontpageImage{example.jpg},
-    % except for the white diagonal that separates the left and right image.
+  \ult@frontpage@tikzpicture{%
+    % Note: "tile" makes sure we effectively blit the image in place without zooming or translating
     \path[fill tile picture=\ult@frontpage@customimage@tile{\ult@frontpage@image@single}]
+      % Coordinates are in cm
       % (Lower left) -- (Lower right) -- (Upper right) -- (Upper left)
-      (0,0) -- (19,0) -- ++(0,19.975) -- ++(-19,0) -- cycle;
+      (0,0) -- (21.6,0) -- (21.6,19.3478) -- (0,19.3478) -- cycle;
   }%
 }
 
@@ -2331,24 +2402,12 @@
 
 % Use English as default
 % Set the topleft frontpage logo to English
-\gdef\ult@frontpage@logo{Logo_eng_pos.pdf}
-% Set the pattern, depending on PHD or master, which contains the UiT logo with the English language.
-\ifult@phdthesisprofile
-  \gdef\ult@frontpage@profile{phd_profile_en.pdf}
-\else
-  \gdef\ult@frontpage@profile{master_profile_en.pdf}
-\fi
+\gdef\ult@frontpage@logo{ult_logo_engelsk.pdf}
 
 % norsk language - changes the frontpage logos and profile to the norwegian language
 \iflanguage{norsk}{%
   % Set the topleft frontpage logo to Norwegian
-  \gdef\ult@frontpage@logo{Logo_norsk_pos.pdf} %
-  % Set the pattern, depending on PHD or master, which contains the UiT logo with the Norwegian language.
-  \ifult@phdthesisprofile
-    \gdef\ult@frontpage@profile{phd_profile_nor.pdf}
-  \else
-    \gdef\ult@frontpage@profile{master_profile_nor.pdf}
-  \fi
+  \gdef\ult@frontpage@logo{ult_logo_norsk.pdf}
 }{}
 
 % samin language - changes the frontpage logos and profile to the Sami language
@@ -2357,13 +2416,7 @@
 \def\languagetemp{samin}
 \ifx\languagename\languagetemp
   % Set the topleft frontpage logo to Sami
-  \gdef\ult@frontpage@logo{Logo_samisk_pos.pdf}
-  % Set the pattern, depending on PHD or master, which contains the UiT logo with the Sami language.
-  \ifult@phdthesisprofile
-    \gdef\ult@frontpage@profile{phd_profile_sami.pdf}
-  \else
-    \gdef\ult@frontpage@profile{master_profile_sami.pdf}
-  \fi
+  \gdef\ult@frontpage@logo{ult_logo_samisk.pdf}
 \fi
 
 \newif\ifult@has@titlepage
@@ -2530,140 +2583,141 @@
 
 \renewcommand\maketitle{%
   % Set custom geometry for the frontpage text
-  \newgeometry{top=16.5mm,bottom=10mm,right=12mm,left=59mm}%
+  \newgeometry{%
+    layout=a4paper,%
+    layouthoffset=\ult@paper@hbleed,%
+    layoutvoffset=\ult@paper@vbleed,%
+    ignorehead,%
+    ignorefoot,%
+    top=\ult@frontpage@topmargin,%
+    bottom=\ult@frontpage@bottommargin,%
+    left=\ult@frontpage@leftmargin,%
+    right=\ult@frontpage@rightmargin%
+  }%
   %
   \begin{titlepage}%
-  %
-  %\begin{egg}%
-  \IfEndWith{\ult@author}{arlberq}{%
+    \null
+    %
+    %\begin{egg}%
+    \IfEndWith{\ult@author}{arlberq}{%
+      \AddToShipoutPicture*{%
+        \put(140,50){%
+          \begingroup
+            \printthed
+          \endgroup
+        }%
+      }%
+    }{%
+    %\end{egg}
+    }%
+    %
+    %%% Front page pattern / images
+    \ifult@frontpage@image@issingle
+      \AddToShipoutPicture*{%
+        \AtPageUpperLeft{%
+          \raisebox{-\ult@frontpage@graphics@ypos}{%
+            \hspace*{-\ult@coverpages@graphics@hoffset}%
+            \ult@frontpage@customimage@single
+          }%
+        }%
+      }%
+    \else
+      %
+      % Left front page image
+      %
+      \AddToShipoutPicture*{%
+        \AtPageUpperLeft{%
+          \raisebox{-\ult@frontpage@graphics@ypos}{%
+            \hspace*{-\ult@coverpages@graphics@hoffset}%
+            \ifx\ult@frontpage@image@left\@empty
+              \ult@frontpage@pattern@left
+            \else
+              \ult@frontpage@customimage@left
+            \fi
+          }%
+        }%
+      }%
+      %
+      % Right front page image
+      %
+      \AddToShipoutPicture*{%
+        \AtPageUpperLeft{%
+          \raisebox{-\ult@frontpage@graphics@ypos}{%
+            \hspace*{-\ult@coverpages@graphics@hoffset}%
+            \ifx\ult@frontpage@image@right\@empty
+              \ult@frontpage@pattern@right
+            \else
+              \ult@frontpage@customimage@right
+            \fi
+          }%
+        }%
+      }%
+    \fi
+    %
+    % UiT Logo (Hugin & Munin)
+    %
     \AddToShipoutPicture*{%
-      \put(140,50){%
-        \begingroup
-          \printthed
-        \endgroup
+      \AtPageUpperLeft{%
+        \raisebox{-\dimexpr\ult@coverpages@graphics@height-\ult@coverpages@graphics@voffset\relax}{%
+          \hspace*{-\ult@coverpages@graphics@hoffset}%
+          \includegraphics{\ult@frontpage@logo}%
+        }%
       }%
     }%
-  }{%
-  %\end{egg}
-  }%
-  %
-  %%% Front page pattern / images
-  \ifult@frontpage@image@issingle
-    \ult@frontpage@customimage@single
-  \else
     %
-    % Left front page image
-    %
-    \ifx\ult@frontpage@image@left\@empty
-      \ult@frontpage@pattern@left
-    \else
-      \ult@frontpage@customimage@left
-    \fi
-    %
-    % Right front page image
-    %
-    \ifx\ult@frontpage@image@right\@empty
-      \ult@frontpage@pattern@right
-    \else
-      \ult@frontpage@customimage@right
-    \fi
-  \fi
-  %
-  % UiT Logo (Hugin & Munin)
-  %
-  \AddToShipoutPicture*{%
-    \put(221,-350.5){% This is the correct position
-      \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill
-        \centering
-        \includegraphics[width=24mm,height=24mm,keepaspectratio=false]{\ult@frontpage@logo}%
-        \vfill
+    \AddToShipoutPicture*{%
+      \AtPageUpperLeft{%
+        \raisebox{-\ult@frontpage@textbox@ypos}{%
+          \hspace*{\ult@frontpage@textbox@xpos}%
+          \begin{minipage}[b][0pt][b]{\textwidth}%
+            %
+            % Faculty / department
+            %
+            \begingroup
+              \fontsize{12pt}{14.4pt}\usefont{T1}{\ult@opensans@TLF@family}{l}{n}%
+              \noindent\@thesisfaculty
+              \vskip -\parskip
+              \vspace*{5pt}%
+            \endgroup
+            %
+            % Thesis title
+            %
+            \begingroup
+              \fontsize{14pt}{16.8pt}\usefont{T1}{\ult@opensans@TLF@family}{sb}{n}%
+              \noindent\@title
+              \vskip -\parskip
+              \vspace*{5pt}%
+            \endgroup
+            %
+            % Thesis subtitle
+            %
+            \begingroup
+              \fontsize{12pt}{14.4pt}\usefont{T1}{\ult@opensans@TLF@family}{m}{n}%
+              \noindent\@subtitle
+              \vskip -\parskip
+              \vspace*{14.4pt}%
+            \endgroup
+            %
+            % Name of author
+            %
+            \begingroup
+              \fontsize{10pt}{12pt}\usefont{T1}{\ult@opensans@TLF@family}{l}{n}%
+              \noindent\@author
+              \vskip -\parskip
+              \vspace*{5pt}%
+            \endgroup
+            %
+            % Thesis description one-line / study program / month and year
+            %
+            \begingroup
+              \fontsize{10pt}{12pt}\usefont{T1}{\ult@opensans@TLF@family}{l}{n}%
+              \noindent\@thesisprogramme
+              \vskip -\parskip
+            \endgroup
+          \end{minipage}%
+        }%
       }%
     }%
-  }%
-  %
-  % UiT profile ("navnetrekk")
-  %
-  \AddToShipoutPicture*{%
-    \put(-230.5,339.5){% This is the correct position
-      \parbox[b][\paperheight]{\paperwidth}{%
-        \vfill
-        \centering
-        \includegraphics[width=90mm,height=90mm,keepaspectratio=false]{\ult@frontpage@profile}%
-        \vfill
-      }%
-    }%
-  }%
-  %
-  % Faculty / department
-  %
-  \begingroup
-    \vskip \z@
-    \fontsize{10.3pt}{15pt}\usefont{T1}{\ult@opensans@TLF@family}{l}{n}
-    \noindent\@thesisfaculty
-    \vskip -\parskip
-  \endgroup
-  %
-  % Thesis title
-  %
-  \begingroup
-    \vskip 2\baselineskip
-    \microtypesetup{protrusion=false,spacing=false}%
-    \RaggedRight
-    \fontsize{12.5pt}{15pt}\usefont{T1}{\ult@opensans@TLF@family}{b}{n}
-    \vspace*{-\baselineskip}%
-    \noindent\@title
-    \vskip -\parskip
-    \normalsize\normalfont\selectfont\vspace*{\baselineskip}%
-  \endgroup
-  %
-  % Thesis subtitle
-  %
-  \ifdefined\@subtitle
-    \ifx\@subtitle\@empty\else
-      \begingroup
-        \vskip \ht\strutbox
-        \microtypesetup{protrusion=false,spacing=false}%
-        \RaggedRight
-        \fontsize{11.4pt}{14pt}\usefont{T1}{\ult@opensans@TLF@family}{l}{it}
-        \vspace*{-\baselineskip}%
-        \noindent\@subtitle
-        \vskip -\parskip
-        \normalsize\normalfont\selectfont\vspace*{\baselineskip}%
-      \endgroup
-    \fi
-  \fi
-  %
-  % Separation line
-  %
-  \begingroup
-    \vspace*{2pt}%
-    \fontsize{12.5pt}{15pt}\usefont{T1}{\ult@opensans@TLF@family}{l}{it}
-    \vspace*{-\baselineskip}%
-    \noindent ---%
-    \vskip -\parskip
-    \normalsize\normalfont\selectfont\vspace*{\baselineskip}%
-  \endgroup
-  %
-  % Name of author
-  %
-  \begingroup
-    \fontsize{10.3pt}{13pt}\usefont{T1}{\ult@opensans@TLF@family}{sb}{n}
-    \vspace*{-\baselineskip}%
-    \noindent\@author
-    \vskip -\parskip
-    \normalsize\normalfont\selectfont\vspace*{\baselineskip}%
-  \endgroup
-  %
-  % Thesis description one-line / study program / month and year
-  %
-  \begingroup
-    \fontsize{10.3pt}{13pt}\usefont{T1}{\ult@opensans@TLF@family}{l}{it}
-    \vspace*{-\baselineskip}%
-    \noindent\@thesisprogramme
-    \vskip -\parskip
-  \endgroup
-  %
   \end{titlepage}%
   %
   % Restore original geometry
