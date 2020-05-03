@@ -2736,6 +2736,53 @@
   \global\let\author\relax
   \global\let\date\relax
   \global\let\and\relax
+  %
+  % Add back page automatically
+  %
+  \AtEndDocument{%
+    \cleardoublepage
+    \thispagestyle{empty}%
+    \hbox{}%
+    %
+    % Set custom geometry for the frontpage
+    \newgeometry{%
+      layout=a4paper,%
+      layouthoffset=\ult@paper@hbleed,%
+      layoutvoffset=\ult@paper@vbleed,%
+      ignorehead,%
+      ignorefoot,%
+      top=\ult@frontpage@topmargin,%
+      bottom=\ult@frontpage@bottommargin,%
+      left=\ult@frontpage@leftmargin,%
+      right=\ult@frontpage@rightmargin%
+    }%
+    %
+    \newpage
+    \thispagestyle{empty}%
+    \hbox{}%
+    %
+    % Left back page image
+    %
+    \AddToShipoutPicture*{%
+      \AtPageUpperLeft{%
+        \raisebox{-\ult@frontpage@graphics@ypos}{%
+          \hspace*{-\ult@coverpages@graphics@hoffset}%
+          \ult@frontpage@pattern@left
+        }%
+      }%
+    }%
+    %
+    % Right back page image
+    %
+    \AddToShipoutPicture*{%
+      \AtPageUpperLeft{%
+        \raisebox{-\ult@frontpage@graphics@ypos}{%
+          \hspace*{-\ult@coverpages@graphics@hoffset}%
+          \ult@frontpage@pattern@right
+        }%
+      }%
+    }%
+  }%
 }
 
 
