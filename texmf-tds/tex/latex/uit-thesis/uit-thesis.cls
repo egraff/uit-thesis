@@ -132,7 +132,7 @@
 
 % Inject USenglish in front of class options if it was not specified in the list.
 % If any other language is specified in the list, it will take precedence
-% We only inject if its was not specified, since every option is only processed once.
+% We only inject if it was not specified, since every option is only processed once.
 \ifult@specified@english\else
 \preto\@classoptionslist{USenglish,}
 \fi
@@ -2398,15 +2398,15 @@
       THIS MAY BE IN VIOLATION OF THE\MessageBreak
       LICENCE AGREEMENT!\MessageBreak
       See http://github.com/egraff/uit-thesis for more info%
-    }
-
+    }%
+    %
     \AfterBeginDocument{%
       \AtBeginShipoutNext{%
         \ifult@has@titlepage\else
           \global\ult@titlepage@was@not@first@pagetrue
         \fi
       }%
-    }
+    }%
   \else
     % Copyright page
     \AfterBeginDocument{%
@@ -2489,7 +2489,7 @@
           \fi
         \fi
       }%
-    }
+    }%
   \fi
 \fi
 
