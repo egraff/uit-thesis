@@ -69,8 +69,8 @@
 \PassOptionsToClass{a4paper}{\baseclass}
 \PassOptionsToClass{twoside}{\baseclass}
 
-% Class options for whether to produce a PDF for printing (cover pages will be A4 with
-% 3mm bleed) or for viewing (cover pages use normal A4 dimensions)
+% Class options for whether to produce a PDF for printing (A4 with 3mm bleed)
+% or for viewing (normal A4 dimensions)
 \newif\ifult@print
 \ult@printfalse % Default to false
 \DeclareOption{print}{\ult@printtrue}
@@ -2582,7 +2582,7 @@
   }
 
 \renewcommand\maketitle{%
-  % Set custom geometry for the frontpage text
+  % Set custom geometry for the frontpage
   \newgeometry{%
     layout=a4paper,%
     layouthoffset=\ult@paper@hbleed,%
@@ -2596,7 +2596,7 @@
   }%
   %
   \begin{titlepage}%
-    \null
+    \hbox{}%
     %
     %\begin{egg}%
     \IfEndWith{\ult@author}{arlberq}{%
