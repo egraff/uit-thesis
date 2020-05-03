@@ -144,7 +144,6 @@
 \RequirePackage[safe]{silence}
 
 \WarningFilter*{microtype}{You are using the `ragged2e' package}
-\WarningFilter*{fixltx2e}{fixltx2e is not required with releases after 2015}
 
 % Allow UTF-8 characters in .tex source files (e.g. so we don't have to escape Norwegian characters)
 \RequirePackage[utf8]{inputenc}
@@ -166,9 +165,6 @@
 % Scalable Computer Modern font support
 \RequirePackage{lmodern}
 \RequirePackage{type1cm}
-
-% Support for subscript and superscript using \textsuperscript{} and \textsubscript{}
-\RequirePackage{fixltx2e}
 
 % Better support fraction calculations
 \RequirePackage{xintexpr}
