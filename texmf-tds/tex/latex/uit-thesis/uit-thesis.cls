@@ -2033,11 +2033,20 @@
 \renewcommand\backmatter{%
   \ult@savebackmatter
   %
-  % Redefine headers
-  \pagestyle{empty}%
+  % Clear running heads
+  \markboth{}{}%
   %
-  % Blank back cover
-  \clearversopage
+  % Redefine what is in \chaptermark so that \leftmark contains chapter name.
+  \renewcommand{\chaptermark}[1]{%
+    % Note: we use two number signs (#) because we have renewcommand within renewcommand
+    \markboth{\rheadfmt{##1}}% % \leftmark (will be written to the right on even/verso pages and to the left on odd/recto pages) is set to chapter title after start of new chapters
+             {}%    % \rightmark is cleared after start of new chapters, and will be replaced after start of new section
+    }%
+  %
+  % Set \leftmark to the left on odd pages
+  % This will make sure that chapter title is written in back matter where section title is normally written in main matter,
+  % that is, to the left on odd/recto pages (in addition to the right on even/verso pages, where it is already written)
+  \fancyhead[LO]{\rheadfont\textcolor{rheadcolor}{\leftmark}}%
 }
 
 
