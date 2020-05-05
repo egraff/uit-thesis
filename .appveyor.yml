@@ -19,6 +19,7 @@ environment:
   matrix:
     - TEST_SUITE: miktex-latest
     - TEST_SUITE: texlive-latest
+    - TEST_SUITE: texlive-2019
 
 
 install:
