@@ -328,21 +328,22 @@
 % Text highlighting
 \usepackage{soul}
 
-%% UiT colors (from http://uit.no/ansatte/grafiskprofil/artikkel?p_document_id=150304)
-\definecolor{pms7707}{cmyk}{0.96,0,0.06,0.42}
+%% UiT colors (from https://uit.no/ansatte/grafiskprofil#innhold_617372, https://uit.no/ressurs/uit/profil2019/examples/fargekart.png)
+\definecolor{pms2189}{cmyk}{1.00,0.17,0,0.73}
 \definecolor{pms633}{cmyk}{0.99,0.03,0.16,0.19}
-\definecolor{pms2229}{cmyk}{0.98,0,0.29,0}
 \definecolor{pms2227}{cmyk}{0.60,0,0.20,0}
 \definecolor{pms1797}{cmyk}{0.01,0.87,0.89,0.04}
-\definecolor{pms138}{cmyk}{0.02,0.39,0.96,0.07}
 \definecolor{pms130}{cmyk}{0,0.31,0.90,0}
 
-% Support-color
+
+\definecolor{pms2229}{cmyk}{0.98,0,0.29,0}
+\definecolor{pms7707}{cmyk}{0.96,0,0.06,0.42}
+\definecolor{pms138}{cmyk}{0.02,0.39,0.96,0.07}
 \definecolor{pms5435}{cmyk}{0.32,0.09,0.08,0.07}
 
 % Running head color
 \definecolor{rheadcolor}{cmyk}{0.15,0,0,0.8}
-\definecolor{chapnumcol}{cmyk}{0.77,0.09,0.32,0}
+\colorlet{chapnumcol}{pms633}
 
 
 %:-------------------------- URLs -----------------------
