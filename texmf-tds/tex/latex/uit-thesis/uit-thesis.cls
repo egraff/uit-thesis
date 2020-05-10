@@ -72,8 +72,10 @@
 % Class options for whether to produce a PDF for printing (A4 with 3mm bleed)
 % or for viewing (normal A4 dimensions)
 \newif\ifult@print
-\ult@printfalse % Default to false
-\DeclareOption{print}{\ult@printtrue}
+\newif\ifult@print@specified
+\ult@print@specifiedfalse % Default to false
+\DeclareOption{print}{\ult@print@specifiedtrue\ult@printtrue}
+\DeclareOption{noprint}{\ult@print@specifiedtrue\ult@printfalse}
 
 % Suppress book class options
 \DeclareOption{a5paper}{}
@@ -126,6 +128,24 @@
 % Now, process!
 \ProcessOptions\relax
 \LoadClass{\baseclass}
+
+\ifult@print@specified\else
+  \ult@critical@error{%
+    You must specify either the 'print' or 'noprint'^^J%
+    document class option.^^J%
+    ^^J%
+    Use \@backslashchar documentclass[print]{uit-thesis} when you want to produce a PDF for^^J%
+    "professional grade" printing. This will use a page size of 216mm x 303mm^^J%
+    (corresponding to A4 with an additional 3mm bleed added to all of the paper^^J%
+    edges), to facilitate proper printing of front and back page artwork that^^J%
+    extends to the edges of the paper. Note that using the 'print' option requires^^J%
+    the use of 216mm x 303mm paper, and a printer that can support this paper size.^^J%
+    ^^J%
+    Use \@backslashchar documentclass[noprint]{uit-thesis} when you want to produce a PDF with^^J%
+    normal A4 size, for example for electronic publishing, or when you want to^^J%
+    print the document using a normal "consumer grade" printer%
+  }%
+\fi
 
 % Lengths for paper width and height, and horizontal and vertical bleed
 \newlength{\ult@paper@width}
