@@ -65,22 +65,15 @@ install:
   - refreshenv
   - pdflatex -version
 
-  - ps: >-
-      $MsysPath = 'C:\MinGW\msys\1.0\bin';
-      $OldPath = [Environment]::GetEnvironmentVariable('path', 'machine');
-      $NewPath = $OldPath + ';' + $MsysPath;
-      [Environment]::SetEnvironmentVariable('path', $NewPath, 'machine');
-  - refreshenv
-
 build_script:
-  - make install CONTINUE=y
+  - 'C:\msys64\usr\bin\bash.exe -e -l -c "cd $APPVEYOR_BUILD_FOLDER && make install CONTINUE=y"'
   - ps: >-
       if (Test-Path -Path ".\ult-base\ci\appveyor_postinstall_${env:TEST_SUITE}.ps1") {
         . ".\ult-base\ci\appveyor_postinstall_${env:TEST_SUITE}.ps1"
       }
 
 test_script:
-  - make -C test
+  - 'C:\msys64\usr\bin\bash.exe -e -l -c "cd $APPVEYOR_BUILD_FOLDER && ulimit -n 3200 && make -C test"'
 
 on_success:
   - ps: >-
