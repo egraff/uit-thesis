@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.11.26)  26 NOV 2020 23:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.11.27)  27 NOV 2020 20:05
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1210,31 +1210,1028 @@ File: T1XCharter-TOsF.fd 2017/06/25 (autoinst) Font definitions for T1/XCharter
 )
 LaTeX Font Info:    Font shape `T1/XCharter-TOsF/m/n' will be
 (Font)              scaled to size 10.73094pt on input line 668.
-! Font T1/XCharter-TOsF/m/n/10.95=XCharter1-Roman-tosf-t1 at 10.73094pt not loa
-dable: Metric (TFM) file not found.
-<to be read again> 
-                   relax 
-l.668 \osfstyle
-               
-I wasn't able to read the size data for this font,
-so I will ignore the font specification.
-[Wizards can fix TFM files using TFtoPL/PLtoTF.]
-You might try inserting a different font spec;
-e.g., type `I\font<same font id>=<substitute font name>'.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/csquotes/csquotes.sty
+Package: csquotes 2019-12-06 v5.2j context-sensitive quotations (JAW)
+\csq@reset=\count332
+\csq@gtype=\count333
+\csq@glevel=\count334
+\csq@qlevel=\count335
+\csq@maxlvl=\count336
+\csq@tshold=\count337
+\csq@ltx@everypar=\toks57
+(/usr/local/texlive/2020/texmf-dist/tex/latex/csquotes/csquotes.def
+File: csquotes.def 2019-12-06 v5.2j csquotes generic definitions (JAW)
+)
+Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
+Package csquotes Info: ... configuration file loaded successfully.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/csquotes/csquotes.cfg
+File: csquotes.cfg 
+)) (/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/microtype.sty
+Package: microtype 2019/11/18 v2.7d Micro-typographical refinements (RS)
+\MT@toks=\toks58
+\MT@count=\count338
+LaTeX Info: Redefining \textls on input line 790.
+\MT@outer@kern=\dimen276
+LaTeX Info: Redefining \textmicrotypecontext on input line 1354.
+\MT@listname@count=\count339
+(/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/microtype-pdftex.def
+File: microtype-pdftex.def 2019/11/18 v2.7d Definitions specific to pdftex (RS)
 
-! pdfTeX error (font): invalid font identifier.
-font@name ->T1/XCharter-TOsF/m/n/10.95 
-                                       
-l.668 \osfstyle
-               
+LaTeX Info: Redefining \lsstyle on input line 914.
+LaTeX Info: Redefining \lslig on input line 914.
+\MT@outer@space=\skip74
+)
+Package microtype Info: Loading configuration file microtype.cfg.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/microtype.cfg
+File: microtype.cfg 2019/11/18 v2.7d microtype main configuration file (RS)
+)) (/usr/local/texlive/2020/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count340
+\lst@gtempboxa=\box75
+\lst@token=\toks59
+\lst@length=\count341
+\lst@currlwidth=\dimen277
+\lst@column=\count342
+\lst@pos=\count343
+\lst@lostspace=\dimen278
+\lst@width=\dimen279
+\lst@newlines=\count344
+\lst@lineno=\count345
+\lst@maxwidth=\dimen280
+(/usr/local/texlive/2020/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
+\c@lstnumber=\count346
+\lst@skipnumbers=\count347
+\lst@framebox=\box76
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2020/03/24 1.8d listings configuration
+))
+Package: listings 2020/03/24 1.8d (Carsten Heinz)
+(/home/travis/texmf/tex/latex/ult-base/ult-custom-listings.sty
+Package: ult-custom-listings 2015/11/05 v1.1a UiT LaTeX template custom listing
+s
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen281
+\lightrulewidth=\dimen282
+\cmidrulewidth=\dimen283
+\belowrulesep=\dimen284
+\belowbottomsep=\dimen285
+\aboverulesep=\dimen286
+\abovetopsep=\dimen287
+\cmidrulesep=\dimen288
+\cmidrulekern=\dimen289
+\defaultaddspace=\dimen290
+\@cmidla=\count348
+\@cmidlb=\count349
+\@aboverulesep=\dimen291
+\@belowrulesep=\dimen292
+\@thisruleclass=\count350
+\@lastruleclass=\count351
+\@thisrulewidth=\dimen293
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
+\TX@col@width=\dimen294
+\TX@old@table=\dimen295
+\TX@old@col=\dimen296
+\TX@target=\dimen297
+\TX@delta=\dimen298
+\TX@cols=\count352
+\TX@ftn=\toks60
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/tools/xspace.sty
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2020/09/23 v2.17i AMS math features
+\@mathmargin=\skip75
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+(/usr/local/texlive/2020/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks61
+\ex@=\dimen299
+)) (/usr/local/texlive/2020/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen300
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count353
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count354
+\leftroot@=\count355
+LaTeX Info: Redefining \overline on input line 399.
+\classnum@=\count356
+\DOTSCASE@=\count357
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box77
+\strutbox@=\box78
+\big@size=\dimen301
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count358
+\c@MaxMatrixCols=\count359
+\dotsspace@=\muskip17
+\c@parentequation=\count360
+\dspbrk@lvl=\count361
+\tag@help=\toks62
+\row@=\count362
+\column@=\count363
+\maxfields@=\count364
+\andhelp@=\toks63
+\eqnshift@=\dimen302
+\alignsep@=\dimen303
+\tagshift@=\dimen304
+\tagwidth@=\dimen305
+\totwidth@=\dimen306
+\lineht@=\dimen307
+\@envbody=\toks64
+\multlinegap=\skip76
+\multlinetaggap=\skip77
+\mathdisplay@stack=\toks65
+LaTeX Info: Redefining \[ on input line 2923.
+LaTeX Info: Redefining \] on input line 2924.
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2020/05/29 v2.20.6
+\thm@style=\toks66
+\thm@bodyfont=\toks67
+\thm@headfont=\toks68
+\thm@notefont=\toks69
+\thm@headpunct=\toks70
+\thm@preskip=\skip78
+\thm@postskip=\skip79
+\thm@headsep=\skip80
+\dth@everypar=\toks71
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/newtx/newtxmath.sty
+Package: newtxmath 2020/09/19 v1.630
 
- 
+`newtxmath' v1.630, 2020/09/19 Math macros based originally on txfonts (msharpe
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/oberdiek/centernot.sty
+Package: centernot 2016/05/16 v1.4 Centers the not symbol horizontally (HO)
+)
+\tx@cntz=\count365
+(/usr/local/texlive/2020/texmf-dist/tex/generic/kastrup/binhex.tex)
+\tx@Isdigit=\count366
+\tx@IsAlNum=\count367
+\tx@tA=\toks72
+\tx@tB=\toks73
+\tx@su=\read5
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 360.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/lmr/m/n --> OT1/XCharter-TLF/m/n on input line 360.
+
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/lmr/bx/n --> OT1/XCharter-TLF/m/n on input line 360
+.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/XCharter-TLF/m/n --> OT1/XCharter-TLF/sb/n on input
+ line 361.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 369.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/lmss/m/n --> T1/opensans-TOsF/m/n on input line 369
+.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/lmss/bx/n --> T1/opensans-TOsF/m/n on input line 36
+9.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 370.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/lmr/m/it --> OT1/XCharter-TLF/m/it on input line 37
+0.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/lmr/bx/it --> OT1/XCharter-TLF/m/it on input line 3
+70.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 371.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 371.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/lmtt/m/n --> T1/lmtt/m/n on input line 371.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 373.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/lmr/bx/n --> OT1/XCharter-TLF/sb/n on input line 37
+3.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/lmr/bx/n --> OT1/XCharter-TLF/sb/n on input line 37
+3.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/XCharter-TLF/m/it --> OT1/XCharter-TLF/sb/it on inp
+ut line 374.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  T1/opensans-TOsF/m/n --> T1/opensans-TOsF/b/n on input 
+line 375.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  T1/lmtt/m/n --> T1/lmtt/b/n on input line 376.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 393.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/lmm/m/it --> OML/nxlmi/m/it on input line 393.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/lmm/b/it --> OML/nxlmi/m/it on input line 393.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/nxlmi/m/it --> OML/nxlmi/b/it on input line 394.
+\symlettersA=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `lettersA' in version `bold'
+(Font)                  U/ntxmia/m/it --> U/ntxmia/b/it on input line 535.
+Now handling font encoding LMS ...
+... no UTF-8 mapping file for font encoding LMS
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 556.
+LaTeX Font Info:    Encoding `OMS' has changed to `LMS' for symbol font
+(Font)              `symbols' in the math version `normal' on input line 556.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/lmsy/m/n --> LMS/ntxsy/m/n on input line 556.
+LaTeX Font Info:    Encoding `OMS' has changed to `LMS' for symbol font
+(Font)              `symbols' in the math version `bold' on input line 556.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/lmsy/b/n --> LMS/ntxsy/m/n on input line 556.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  LMS/ntxsy/m/n --> LMS/ntxsy/b/n on input line 557.
+\symAMSm=\mathgroup5
+LaTeX Font Info:    Overwriting symbol font `AMSm' in version `bold'
+(Font)                  U/ntxsym/m/n --> U/ntxsym/b/n on input line 580.
+\symsymbolsC=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `symbolsC' in version `bold'
+(Font)                  U/ntxsyc/m/n --> U/ntxsyc/b/n on input line 601.
+Now handling font encoding LMX ...
+... no UTF-8 mapping file for font encoding LMX
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 614.
+LaTeX Font Info:    Encoding `OMX' has changed to `LMX' for symbol font
+(Font)              `largesymbols' in the math version `normal' on input line 6
+14.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/lmex/m/n --> LMX/ntxexx/m/n on input line 614.
+LaTeX Font Info:    Encoding `OMX' has changed to `LMX' for symbol font
+(Font)              `largesymbols' in the math version `bold' on input line 614
+.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/lmex/m/n --> LMX/ntxexx/m/n on input line 614.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  LMX/ntxexx/m/n --> LMX/ntxexx/b/n on input line 615.
+\symlargesymbolsTXA=\mathgroup7
+LaTeX Font Info:    Overwriting symbol font `largesymbolsTXA' in version `bold'
+
+(Font)                  U/ntxexa/m/n --> U/ntxexa/b/n on input line 629.
+\tx@sbptoks=\toks74
+LaTeX Font Info:    Redeclaring math delimiter \lfloor on input line 851.
+LaTeX Font Info:    Redeclaring math delimiter \rfloor on input line 852.
+LaTeX Font Info:    Redeclaring math delimiter \lceil on input line 853.
+LaTeX Font Info:    Redeclaring math delimiter \rceil on input line 854.
+LaTeX Font Info:    Redeclaring math delimiter \lbrace on input line 855.
+LaTeX Font Info:    Redeclaring math delimiter \rbrace on input line 856.
+LaTeX Font Info:    Redeclaring math delimiter \langle on input line 857.
+LaTeX Font Info:    Redeclaring math delimiter \rangle on input line 859.
+LaTeX Font Info:    Redeclaring math delimiter \arrowvert on input line 863.
+LaTeX Font Info:    Redeclaring math delimiter \vert on input line 864.
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 910.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 935.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 936.
+LaTeX Font Info:    Redeclaring math accent \vec on input line 1999.
+\ntx@numstart=\count368
+\ntx@UCstart=\count369
+\ntx@lcstart=\count370
+\ntx@tmpc=\count371
+\ntx@imath=\count372
+\ntx@jmath=\count373
+LaTeX Info: Redefining \Bbbk on input line 2510.
+LaTeX Info: Redefining \not on input line 2659.
+LaTeX Info: Redefining \textsquare on input line 2689.
+LaTeX Info: Redefining \openbox on input line 2691.
+)
+\ult@gm@topmargin=\skip81
+\ult@gm@textheight=\skip82
+\ult@gm@textwidth=\skip83
+(/usr/local/texlive/2020/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+(/usr/local/texlive/2020/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+)
+\Gm@cnth=\count374
+\Gm@cntv=\count375
+\c@Gm@tempcnt=\count376
+\Gm@bindingoffset=\dimen308
+\Gm@wd@mp=\dimen309
+\Gm@odd@mp=\dimen310
+\Gm@even@mp=\dimen311
+\Gm@layoutwidth=\dimen312
+\Gm@layoutheight=\dimen313
+\Gm@layouthoffset=\dimen314
+\Gm@layoutvoffset=\dimen315
+\Gm@dimlist=\toks75
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/tools/layout.sty
+Package: layout 2014/10/28 v1.2c Show layout parameters
+\oneinch=\count377
+\cnt@paperwidth=\count378
+\cnt@paperheight=\count379
+\cnt@hoffset=\count380
+\cnt@voffset=\count381
+\cnt@textheight=\count382
+\cnt@textwidth=\count383
+\cnt@topmargin=\count384
+\cnt@oddsidemargin=\count385
+\cnt@evensidemargin=\count386
+\cnt@headheight=\count387
+\cnt@headsep=\count388
+\cnt@marginparsep=\count389
+\cnt@marginparwidth=\count390
+\cnt@marginparpush=\count391
+\cnt@footskip=\count392
+\fheight=\count393
+\ref@top=\count394
+\ref@hoffset=\count395
+\ref@voffset=\count396
+\ref@head=\count397
+\ref@body=\count398
+\ref@foot=\count399
+\ref@margin=\count400
+\ref@marginwidth=\count401
+\ref@marginpar=\count402
+\Interval=\count403
+\ExtraYPos=\count404
+\PositionX=\count405
+\PositionY=\count406
+\ArrowLength=\count407
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/changepage/changepage.sty
+Package: changepage 2009/10/20 v1.0c check page and change page layout
+\c@cp@cntr=\count408
+\cp@tempcnt=\count409
+)
+\ult@normalbaselineskip=\dimen316
+\ult@saveparindent=\skip84
+(/usr/local/texlive/2020/texmf-dist/tex/latex/parskip/parskip.sty
+Rollback for package 'parskip' requested -> version 'v1'.
+         This corresponds to the release introduced on 2001-04-09.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/parskip/parskip-2001-04-09.sty
+Package: parskip 2001/04/09 non-zero parskip adjustments
+)) (/usr/local/texlive/2020/texmf-dist/tex/latex/ragged2e/ragged2e.sty
+Package: ragged2e 2019/07/28 v2.2 ragged2e Package (MS)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/ms/everysel.sty
+Package: everysel 2011/10/28 v1.2 EverySelectfont Package (MS)
+)
+\CenteringLeftskip=\skip85
+\RaggedLeftLeftskip=\skip86
+\RaggedRightLeftskip=\skip87
+\CenteringRightskip=\skip88
+\RaggedLeftRightskip=\skip89
+\RaggedRightRightskip=\skip90
+\CenteringParfillskip=\skip91
+\RaggedLeftParfillskip=\skip92
+\RaggedRightParfillskip=\skip93
+\JustifyingParfillskip=\skip94
+\CenteringParindent=\skip95
+\RaggedLeftParindent=\skip96
+\RaggedRightParindent=\skip97
+\JustifyingParindent=\skip98
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/tocbibind/tocbibind.sty
+Package: tocbibind 2010/10/13 v1.5k extra ToC listings
+Package tocbibind Info: The document has chapter divisions on input line 50.
+
+Package tocbibind Note: Using chapter style headings, unless overridden.
+
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/tocloft/tocloft.sty
+Package: tocloft 2017/08/31 v2.3i parameterised ToC, etc., typesetting
+Package tocloft Info: The document has chapter divisions on input line 51.
+\cftparskip=\skip99
+\cftbeforetoctitleskip=\skip100
+\cftaftertoctitleskip=\skip101
+\cftbeforepartskip=\skip102
+\cftpartnumwidth=\skip103
+\cftpartindent=\skip104
+\cftbeforechapskip=\skip105
+\cftchapindent=\skip106
+\cftchapnumwidth=\skip107
+\cftbeforesecskip=\skip108
+\cftsecindent=\skip109
+\cftsecnumwidth=\skip110
+\cftbeforesubsecskip=\skip111
+\cftsubsecindent=\skip112
+\cftsubsecnumwidth=\skip113
+\cftbeforesubsubsecskip=\skip114
+\cftsubsubsecindent=\skip115
+\cftsubsubsecnumwidth=\skip116
+\cftbeforeparaskip=\skip117
+\cftparaindent=\skip118
+\cftparanumwidth=\skip119
+\cftbeforesubparaskip=\skip120
+\cftsubparaindent=\skip121
+\cftsubparanumwidth=\skip122
+\cftbeforeloftitleskip=\skip123
+\cftafterloftitleskip=\skip124
+\cftbeforefigskip=\skip125
+\cftfigindent=\skip126
+\cftfignumwidth=\skip127
+\c@lofdepth=\count410
+\c@lotdepth=\count411
+\cftbeforelottitleskip=\skip128
+\cftafterlottitleskip=\skip129
+\cftbeforetabskip=\skip130
+\cfttabindent=\skip131
+\cfttabnumwidth=\skip132
+
+Package tocloft Warning: \@starttoc has already been redefined; tocloft bailing
+ out. on input line 1156.
+
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2019/01/31 v3.10 Extensive control of page headers and footer
+s
+\f@nch@headwidth=\skip133
+\f@nch@O@elh=\skip134
+\f@nch@O@erh=\skip135
+\f@nch@O@olh=\skip136
+\f@nch@O@orh=\skip137
+\f@nch@O@elf=\skip138
+\f@nch@O@erf=\skip139
+\f@nch@O@olf=\skip140
+\f@nch@O@orf=\skip141
+) (/home/travis/texmf/tex/latex/ult-base/ult-clearpage.sty
+Package: ult-clearpage 2015/11/05 v1.1a UiT LaTeX template clearpage macros
+\c@ult@c@firstblankpage=\count412
+\c@ult@c@lastblankpage=\count413
+\c@ult@c@tmpblankpage=\count414
+) (/home/travis/texmf/tex/latex/ult-base/ult-upsc.sty
+Package: ult-upsc 2016/08/18 v1.2a UiT LaTeX template upsc macro
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/glossaries/base/glossaries.sty
+Package: glossaries 2020/03/19 v4.46 (NLCT)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/mfirstuc/mfirstuc.sty
+Package: mfirstuc 2017/11/14 v2.06 (NLCT)
+\@glsmfirst=\toks76
+\@glsmrest=\toks77
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/textcase/textcase.sty
+Package: textcase 2019/09/14 v1.00 Text only upper/lower case changing (DPC)
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/xfor/xfor.sty
+Package: xfor 2009/02/05 v1.05 (NLCT)
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/datatool/datatool-base.sty
+Package: datatool-base 2019/09/27 v2.32 (NLCT)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/substr/substr.sty
+Package: substr 2009/10/20 v1.2 Handle substrings
+\c@su@anzahl=\count415
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/datatool/datatool-fp.sty
+Package: datatool-fp 2019/09/27 v2.32 (NLCT)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/fp/fp.sty
+Package: fp 1995/04/02
+`Fixed Point Package', Version 0.8, April 2, 1995 (C) Michael Mehlich (/usr/loc
+al/texlive/2020/texmf-dist/tex/latex/fp/defpattern.sty
+Package: defpattern 1994/10/12
+\actioncount=\count416
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fp/fp-basic.sty
+Package: fp-basic 1996/05/13
+\FP@xs=\count417
+\FP@xia=\count418
+\FP@xib=\count419
+\FP@xfa=\count420
+\FP@xfb=\count421
+\FP@rega=\count422
+\FP@regb=\count423
+\FP@regs=\count424
+\FP@times=\count425
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fp/fp-addons.sty
+Package: fp-addons 1995/03/15
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fp/fp-snap.sty
+Package: fp-snap 1995/04/05
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fp/fp-exp.sty
+Package: fp-exp 1995/04/03
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fp/fp-trigo.sty
+Package: fp-trigo 1995/04/14
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fp/fp-pas.sty
+Package: fp-pas 1994/08/29
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fp/fp-random.sty
+Package: fp-random 1995/02/23
+\FPseed=\count426
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fp/fp-eqn.sty
+Package: fp-eqn 1995/04/03
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fp/fp-upn.sty
+Package: fp-upn 1996/10/21
+) (/usr/local/texlive/2020/texmf-dist/tex/latex/fp/fp-eval.sty
+Package: fp-eval 1995/04/03
+)))
+\@dtl@toks=\toks78
+\@dtl@tmpcount=\count427
+\dtl@tmplength=\skip142
+\dtl@sortresult=\count428
+\@dtl@numgrpsepcount=\count429
+\@dtl@datatype=\count430
+\dtl@codeA=\count431
+\dtl@codeB=\count432
+\@dtl@foreach@level=\count433
+)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/glossaries/base/glossaries-compat
+ible-307.sty
+Package: glossaries-compatible-307 2020/03/19 v4.46 (NLCT)
+)
+\gls@level=\count434
+\@gls@tmpb=\toks79
+\gls@tmplen=\skip143
+\glskeylisttok=\toks80
+\glslabeltok=\toks81
+\glsshorttok=\toks82
+\glslongtok=\toks83
+
+(/usr/local/texlive/2020/texmf-dist/tex/latex/glossaries/styles/glossary-hypern
+av.sty
+Package: glossary-hypernav 2020/03/19 v4.46 (NLCT)
+)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/glossaries/styles/glossary-list.s
+ty
+Package: glossary-list 2020/03/19 v4.46 (NLCT)
+\glslistdottedwidth=\skip144
+)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/glossaries/styles/glossary-long.s
+ty
+Package: glossary-long 2020/03/19 v4.46 (NLCT)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
+\LTleft=\skip145
+\LTright=\skip146
+\LTpre=\skip147
+\LTpost=\skip148
+\LTchunksize=\count435
+\LTcapwidth=\dimen317
+\LT@head=\box79
+\LT@firsthead=\box80
+\LT@foot=\box81
+\LT@lastfoot=\box82
+\LT@cols=\count436
+\LT@rows=\count437
+\c@LT@tables=\count438
+\c@LT@chunks=\count439
+\LT@p@ftn=\toks84
+)
+\glsdescwidth=\skip149
+\glspagelistwidth=\skip150
+)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/glossaries/styles/glossary-super.
+sty
+Package: glossary-super 2020/03/19 v4.46 (NLCT)
+(/usr/local/texlive/2020/texmf-dist/tex/latex/supertabular/supertabular.sty
+Package: supertabular 2020/02/02 v4.1g the supertabular environment
+\c@tracingst=\count440
+\ST@wd=\dimen318
+\ST@rightskip=\skip151
+\ST@leftskip=\skip152
+\ST@parfillskip=\skip153
+\ST@pageleft=\dimen319
+\ST@headht=\dimen320
+\ST@tailht=\dimen321
+\ST@pagesofar=\dimen322
+\ST@pboxht=\dimen323
+\ST@lineht=\dimen324
+\ST@prevht=\dimen325
+\ST@toadd=\dimen326
+\ST@dimen=\dimen327
+\ST@pbox=\box83
+))
+(/usr/local/texlive/2020/texmf-dist/tex/latex/glossaries/styles/glossary-tree.s
+ty
+Package: glossary-tree 2020/03/19 v4.46 (NLCT)
+\glstreeindent=\skip154
+)) (/home/travis/texmf/tex/latex/ult-base/ult-glossaries.sty
+Package: ult-glossaries 2016/08/07 v1.0a UiT LaTeX template glossaries style cu
+stomizations
+)
+\ult@chapnummetabox=\box84
+\ult@chapnumbox=\box85
+\ult@chapslashbox=\box86
+\ult@chapslash@height=\skip155
+\chapterheadalign=\skip156
+\chapternamealign=\skip157
+\chapterheadtopvspace=\skip158
+\ult@chaptername@vbox=\box87
+\ult@chapter@tmptotalheight=\dimen328
+\ult@chapter@tmpstrutheight=\dimen329
+\ult@sectionname@vbox=\box88
+\ult@section@parwidth=\dimen330
+\ult@section@tmptotalheight=\dimen331
+\ult@section@tmpstrutheight=\dimen332
+\c@ult@chapter@tmpnumlines=\count441
+\c@ult@section@tmpnumlines=\count442
+\ult@cftbeforepartskip=\skip159
+\ult@cftbeforechapskip=\skip160
+\ult@cftbeforesecskip=\skip161
+\ult@cftpartindent=\skip162
+\ult@cftpartnumwidth=\skip163
+\ult@cftchapindent=\skip164
+\ult@cftchapnumwidth=\skip165
+\ult@cftsecindent=\skip166
+\ult@cftsecnumwidth=\skip167
+\ult@cftsubsecindent=\skip168
+\ult@cftsubsecnumwidth=\skip169
+\ult@cftsubsubsecindent=\skip170
+\ult@cftsubsubsecnumwidth=\skip171
+\ult@cftparaindent=\skip172
+\ult@cftparanumwidth=\skip173
+\ult@cftsubparaindent=\skip174
+\ult@cftsubparanumwidth=\skip175
+(/usr/local/texlive/2020/texmf-dist/tex/latex/totalcount/totalcount.sty
+Package: totalcount 2018/01/21 v1.0a Total values of counters (AR)
+\c@totalcount@figure=\count443
+\c@totalcount@table=\count444
+\c@totalcount@lstlisting=\count445
+)
+\cftbeforelistingsskip=\skip176
+\cftlistingsindent=\skip177
+\cftlistingsnumwidth=\skip178
+\cftbeforeloltitleskip=\skip179
+\cftafterloltitleskip=\skip180
+(/home/travis/texmf/tex/latex/ult-base/ult-printglossary.sty
+Package: ult-printglossary 2015/11/05 v1.1a UiT LaTeX template printglossary pa
+tch
+)
+(/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibraryarrows.code.tex
+File: tikzlibraryarrows.code.tex 2020/11/23 v3.1.7 (3.1.7)
+
+(/usr/local/texlive/2020/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.
+code.tex
+File: pgflibraryarrows.code.tex 2020/11/23 v3.1.7 (3.1.7)
+\arrowsize=\dimen333
+))
+\ult@copyright@page@box=\box89
+\ult@tmp@shipoutbox=\box90
+
+Class uit-thesis Warning: You have disabled the copyright notice.
+(uit-thesis)              THIS MAY BE IN VIOLATION OF THE
+(uit-thesis)              LICENCE AGREEMENT!
+(uit-thesis)              See http://github.com/egraff/uit-thesis for more info
+.
+
+))
+Package csquotes Info: Checking for multilingual support...
+Package csquotes Info: ... found 'babel' package.
+Package csquotes Info: Adjusting default style.
+Package csquotes Info: Redefining alias 'default' -> 'USenglish'.
+No file output.aux.
+\openout1 = `output.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/nxlmi/m/it on input line 3.
+LaTeX Font Info:    Trying to load font information for OML+nxlmi on input line
+ 3.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/newtx/omlnxlmi.fd
+File: omlnxlmi.fd 2013/11/19 Fontinst v1.933 font definitions for OML/nxlmi.
+)
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for U/ntxexa/m/n on input line 3.
+LaTeX Font Info:    Trying to load font information for U+ntxexa on input line 
+3.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/newtx/untxexa.fd
+File: untxexa.fd 2012/04/16 Fontinst v1.933 font definitions for U/ntxexa.
+)
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 3.
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for T2A/cmr/m/n on input line 3.
+LaTeX Font Info:    Trying to load font information for T2A+cmr on input line 3
+.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/cyrillic/t2acmr.fd
+File: t2acmr.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
+)
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for LY1/ptm/m/n on input line 3.
+LaTeX Font Info:    Trying to load font information for LY1+ptm on input line 3
+.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/ly1/ly1ptm.fd
+File: ly1ptm.fd 2001/02/01 font definitions for LY1/ptm using Berry names.
+)
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for LMS/ntxsy/m/n on input line 3.
+LaTeX Font Info:    Trying to load font information for LMS+ntxsy on input line
+ 3.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/newtx/lmsntxsy.fd
+File: lmsntxsy.fd 2016/07/02 Fontinst v1.933 font definitions for LMS/ntxsy.
+)
+LaTeX Font Info:    ... okay on input line 3.
+LaTeX Font Info:    Checking defaults for LMX/ntxexx/m/n on input line 3.
+LaTeX Font Info:    Trying to load font information for LMX+ntxexx on input lin
+e 3.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/newtx/lmxntxexx.fd
+File: lmxntxexx.fd 2016/07/03 Fontinst v1.933 font definitions for LMX/ntxexx.
+)
+LaTeX Font Info:    ... okay on input line 3.
+
+! LaTeX Error: Command \printacronyms undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.3 \begin{document}
+                    
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+LaTeX Font Info:    Font shape `T1/XCharter-TOsF/m/n' will be
+(Font)              scaled to size 24.3823pt on input line 3.
+LaTeX Font Info:    Font shape `T1/XCharter-TOsF/b/n' will be
+(Font)              scaled to size 24.3823pt on input line 3.
+LaTeX Font Info:    Trying to load font information for T1+opensans-TLF on inpu
+t line 3.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/opensans/T1opensans-TLF.fd
+File: T1opensans-TLF.fd 2019/06/24 Font definitions for T1/opensans-TLF.
+)
+LaTeX Font Info:    Font shape `T1/opensans-TLF/b/n' will be
+(Font)              scaled to size 56.0pt on input line 3.
+(/usr/local/texlive/2020/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count446
+\scratchdimen=\dimen334
+\scratchbox=\box91
+\nofMPsegments=\count447
+\nofMParguments=\count448
+\everyMPshowfont=\toks85
+\MPscratchCnt=\count449
+\MPscratchDim=\dimen335
+\MPnumerator=\count450
+\makeMPintoPDFobject=\count451
+\everyMPtoPDFconversion=\toks86
+)
+
+Class uit-thesis Warning: Are you sure you are allowed to use the epstopdf-base
+ package?.
+
+(/usr/local/texlive/2020/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package newfloat Info: `float' package detected.
+Package hyperref Info: Link coloring OFF on input line 3.
+
+Class uit-thesis Warning: Are you sure you are allowed to use the nameref packa
+ge?.
+
+(/usr/local/texlive/2020/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
+
+Class uit-thesis Warning: Are you sure you are allowed to use the refcount pack
+age?.
+
+(/usr/local/texlive/2020/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+
+Class uit-thesis Warning: Are you sure you are allowed to use the gettitlestrin
+g package?.
+
+
+(/usr/local/texlive/2020/texmf-dist/tex/generic/gettitlestring/gettitlestring.s
+ty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+)
+\c@section@level=\count452
+)
+LaTeX Info: Redefining \ref on input line 3.
+LaTeX Info: Redefining \pageref on input line 3.
+LaTeX Info: Redefining \nameref on input line 3.
+\@outlinefile=\write6
+\openout6 = `output.out'.
+
+
+Class uit-thesis Warning: Are you sure you are allowed to use the pdflscape pac
+kage?.
+
+(/usr/local/texlive/2020/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+Package: pdflscape 2019/12/05 v0.12 Display of landscape pages in PDF (HO)
+
+Class uit-thesis Warning: Are you sure you are allowed to use the lscape packag
+e?.
+
+(/usr/local/texlive/2020/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+)
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: changepage package is loaded.
+\caption@adjustwidth@hsize=\dimen336
+\caption@adjustwidth@linewidth=\dimen337
+Package caption Info: listings package is loaded.
+Package caption Info: longtable package is loaded.
+
+Class uit-thesis Warning: Are you sure you are allowed to use the ltcaption pac
+kage?.
+
+(/usr/local/texlive/2020/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2020/05/30 v1.4b longtable captions (AR)
+)
+Package caption Info: supertabular package is loaded.
+Package caption Info: End \AtBeginDocument code.
+\c@mv@tabular=\count453
+\c@mv@boldtabular=\count454
+LaTeX Info: Redefining \microtypecontext on input line 3.
+Package microtype Info: Generating PDF output.
+Package microtype Info: Character protrusion enabled (level 2),
+(microtype)             factor: 1100.
+Package microtype Info: Using default protrusion set `alltext'.
+Package microtype Info: Automatic font expansion enabled (level 2),
+(microtype)             stretch: 10, shrink: 10, step: 1, non-selected.
+Package microtype Info: Using default expansion set `basictext'.
+LaTeX Info: Redefining \showhyphens on input line 3.
+Package microtype Info: Tracking enabled.
+Package microtype Info: Using tracking set `ultsmallcaps'.
+Package microtype Info: Adjustment of interword spacing enabled.
+Package microtype Info: Using default spacing set `basictext'.
+Package microtype Info: Adjustment of character kerning enabled.
+Package microtype Info: Using default kerning set `alltext'.
+(/usr/local/texlive/2020/texmf-dist/tex/latex/microtype/mt-bch.cfg
+File: mt-bch.cfg 2007/03/03 v1.5 microtype config. file: Bitstream Charter (RS)
+
+)
+\c@lstlisting=\count455
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: custom
+* layout: <custom>
+* layout(width,height): (597.50787pt,845.04684pt)
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(95.00314pt, 360.0pt, 142.50473pt)
+* v-part:(T,H,B)=(126.14378pt, 595.80026pt, 123.1028pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=360.0pt
+* \textheight=595.80026pt
+* \oddsidemargin=22.73315pt
+* \evensidemargin=70.23474pt
+* \topmargin=2.0pt
+* \headheight=32.0pt
+* \headsep=19.8738pt
+* \topskip=11.0pt
+* \footskip=27.46295pt
+* \marginparwidth=106.0pt
+* \marginparsep=7.0pt
+* \columnsep=10.0pt
+* \skip\footins=14.0pt plus 6.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+ABD: EverySelectfont initializing macros
+LaTeX Info: Redefining \selectfont on input line 3.
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: custom
+* layout: <custom>
+* layout(width,height): (597.50787pt,845.04684pt)
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(76.82243pt, 486.54214pt, 34.1433pt)
+* v-part:(T,H,B)=(34.1433pt, 776.76025pt, 34.1433pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=486.54214pt
+* \textheight=776.76025pt
+* \oddsidemargin=4.55244pt
+* \evensidemargin=-38.1267pt
+* \topmargin=-90.00049pt
+* \headheight=32.0pt
+* \headsep=19.8738pt
+* \topskip=11.0pt
+* \footskip=27.46295pt
+* \marginparwidth=106.0pt
+* \marginparsep=7.0pt
+* \columnsep=10.0pt
+* \skip\footins=14.0pt plus 6.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+<Focusing_example_image.jpg, id=8, 1927.2pt x 1204.5pt>
+File: Focusing_example_image.jpg Graphic file (type jpg)
+<use Focusing_example_image.jpg>
+Package pdftex.def Info: Focusing_example_image.jpg  used on input line 13.
+(pdftex.def)             Requested size: 1927.19533pt x 1204.49707pt.
+<ult_forside_helt_element.pdf, id=9, 614.57909pt x 862.11888pt>
+File: ult_forside_helt_element.pdf Graphic file (type pdf)
+<use ult_forside_helt_element.pdf>
+Package pdftex.def Info: ult_forside_helt_element.pdf  used on input line 13.
+(pdftex.def)             Requested size: 614.57759pt x 862.11678pt.
+<ult_logo_engelsk.pdf, id=10, 614.57909pt x 862.11888pt>
+File: ult_logo_engelsk.pdf Graphic file (type pdf)
+<use ult_logo_engelsk.pdf>
+Package pdftex.def Info: ult_logo_engelsk.pdf  used on input line 13.
+(pdftex.def)             Requested size: 614.57759pt x 862.11678pt.
+LaTeX Font Info:    Font shape `T1/opensans-TLF/l/n' will be
+(Font)              scaled to size 12.0pt on input line 13.
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `opensans-TLF' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+LaTeX Font Info:    Font shape `T1/opensans-TLF/sb/n' will be
+(Font)              scaled to size 14.0pt on input line 13.
+LaTeX Font Info:    Font shape `T1/opensans-TLF/m/n' will be
+(Font)              scaled to size 12.0pt on input line 13.
+LaTeX Font Info:    Font shape `T1/opensans-TLF/l/n' will be
+(Font)              scaled to size 10.0pt on input line 13.
+[1{/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+
+
+
+ <./Focusing_example_image.jpg> </home/travis/texmf/tex/latex/uit-thesis/ult_fo
+rside_helt_element.pdf> </home/travis/texmf/tex/latex/uit-thesis/ult_logo_engel
+sk.pdf>]
+
+Package totalcount Warning: Total counter(s) have changed.
+(totalcount)                Rerun to get them right.
+
+[2
+
+
+
+] [3]
+*geometry* verbose mode - [ newgeometry ] result:
+* driver: pdftex
+* paper: custom
+* layout: <custom>
+* layout(width,height): (597.50787pt,845.04684pt)
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(76.82243pt, 486.54214pt, 34.1433pt)
+* v-part:(T,H,B)=(34.1433pt, 776.76025pt, 34.1433pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=486.54214pt
+* \textheight=776.76025pt
+* \oddsidemargin=4.55244pt
+* \evensidemargin=-38.1267pt
+* \topmargin=-90.00049pt
+* \headheight=32.0pt
+* \headsep=19.8738pt
+* \topskip=11.0pt
+* \footskip=27.46295pt
+* \marginparwidth=106.0pt
+* \marginparsep=7.0pt
+* \columnsep=10.0pt
+* \skip\footins=14.0pt plus 6.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+File: ult_forside_helt_element.pdf Graphic file (type pdf)
+<use ult_forside_helt_element.pdf>
+Package pdftex.def Info: ult_forside_helt_element.pdf  used on input line 15.
+(pdftex.def)             Requested size: 614.57759pt x 862.11678pt.
+File: ult_forside_helt_element.pdf Graphic file (type pdf)
+<use ult_forside_helt_element.pdf>
+Package pdftex.def Info: ult_forside_helt_element.pdf  used on input line 15.
+(pdftex.def)             Requested size: 614.57759pt x 862.11678pt.
+[4
+
+] (../.build/./test-frontpage_left_image_noprint/output.aux)
+
+Package rerunfilecheck Warning: File `output.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `output.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  D41D8CD98F00B204E9800998ECF8427E;0.
+ ) 
 Here is how much of TeX's memory you used:
- 31936 strings out of 480299
- 594510 string characters out of 5890927
- 936108 words of memory out of 5000000
- 48362 multiletter control sequences out of 15000+600000
- 545683 words of font info for 34 fonts, out of 8000000 for 9000
+ 44409 strings out of 480299
+ 794580 string characters out of 5890927
+ 1254366 words of memory out of 5000000
+ 60519 multiletter control sequences out of 15000+600000
+ 568348 words of font info for 48 fonts, out of 8000000 for 9000
  622 hyphenation exceptions out of 8191
- 122i,0n,147p,1586b,115s stack positions out of 5000i,500n,10000p,200000b,80000s
-!  ==> Fatal error occurred, no output PDF file produced!
+ 122i,17n,147p,2392b,1132s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2020/texmf-dist/fonts/enc/dvips/opensans/a_jg4h6q.enc}</u
+sr/local/texlive/2020/texmf-dist/fonts/type1/ascender/opensans/OpenSans-Light.p
+fb></usr/local/texlive/2020/texmf-dist/fonts/type1/ascender/opensans/OpenSans-R
+egular.pfb></usr/local/texlive/2020/texmf-dist/fonts/type1/ascender/opensans/Op
+enSans-SemiBold.pfb>
+Output written on ../.build/./test-frontpage_left_image_noprint/output.pdf (4 p
+ages, 1309078 bytes).
+PDF statistics:
+ 192 PDF objects out of 1000 (max. 8388607)
+ 136 compressed objects within 2 object streams
+ 5 named destinations out of 1000 (max. 500000)
+ 4128 words of extra memory for PDF output out of 10000 (max. 10000000)
+
