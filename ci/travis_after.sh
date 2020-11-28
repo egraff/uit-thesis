@@ -61,10 +61,10 @@ travis:
 ---
 EOF
 
-cp -Rf test/.build $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/build
-cp -Rf test/diffs $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/diffs || true
-cp -Rf test/tmp/tests $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/tests || true
-cp -Rf test/tmp/proto $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/proto || true
+rsync --archive test/.build/ $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/build/
+rsync --archive test/diffs/ $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/diffs/ || true
+rsync --archive test/tmp/tests/ $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/tests/ || true
+rsync --archive test/tmp/proto/ $GH_PAGES/travis-builds/${TRAVIS_JOB_NUMBER}/proto/ || true
 
 cp test/test_result.json $GH_PAGES/_data/travis-builds/${TRAVIS_JOB_NUMBER//\./_}.json
 
