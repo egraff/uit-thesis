@@ -1075,6 +1075,13 @@
   }%
 }
 
+\ifcsname DeclareHookRule\endcsname%
+  % LaTeX2e 2020-10-01 or newer with lthooks system
+  %
+  % Ensure our redefinition of \printacronyms happens after the glossaries package has defined it!
+  \DeclareHookRule{begindocument}{.}{after}{glossaries}
+\fi%
+
 % Prevent grouping together abbreviations starting on same letter in list of
 % abbreviations.
 % See http://tex.stackexchange.com/questions/4183/package-glossaries-single-spaced-printglossaries
