@@ -1,0 +1,3 @@
+\babel@toc {USenglish}{}
+\contentsline {chapter}{Some frontmatter chapter}{i}{chapter*.1}%
+\contentsline {chapter}{\numberline {1}First chapter}{1}{chapter.1}%
