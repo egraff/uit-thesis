@@ -45,6 +45,13 @@
   \ult@critical@error{The uit-thesis template only supports compiling with pdflatex}
 \fi
 
+\newif\ifult@has@lthooks
+\ult@has@lthooksfalse
+\ifcsname DeclareHookRule\endcsname%
+  % LaTeX2e 2020-10-01 or newer with lthooks system
+  \ult@has@lthookstrue
+\fi%
+
 
 %:-------------------------- Basic class options -----------------------
 
@@ -386,6 +393,20 @@
 % Needed by our black magic hacks below
 \usepackage{xparse}
 \usepackage{atbegshi}
+
+\AtBeginDocument{%
+  \ifult@has@lthooks
+    \ifcsname AtBeginShipoutOriginalShipout\endcsname
+      \ult@critical@error{BUG! Assumption was that original atbegshi package is not in use when new lthooks system is used}%
+    \fi
+    \global\let\ult@orig@shipout\shipout% This will be the \shipout macro defined by the ltshipout package
+  \else
+    \ifcsname AtBeginShipoutOriginalShipout\endcsname\else
+      \ult@critical@error{BUG! Assumption was that original atbegshi package is available when new lthooks system is not used}%
+    \fi
+    \global\let\ult@orig@shipout\AtBeginShipoutOriginalShipout% This should be the original \shipout TeX primitive
+  \fi
+}
 
 % To read LaTeX macro from file
 \usepackage{catchfile}
@@ -1075,9 +1096,7 @@
   }%
 }
 
-\ifcsname DeclareHookRule\endcsname%
-  % LaTeX2e 2020-10-01 or newer with lthooks system
-  %
+\ifult@has@lthooks
   % Ensure our redefinition of \printacronyms happens after the glossaries package has defined it!
   \DeclareHookRule{begindocument}{.}{after}{glossaries}
 \fi%
