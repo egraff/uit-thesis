@@ -2551,7 +2551,7 @@
           % that was already done in \AtBegShi@Output.
           %
           \let\protect\noexpand
-          \AtBeginShipoutOriginalShipout\box\AtBeginShipoutBox
+          \ult@orig@shipout\box\AtBeginShipoutBox
           \set@typeset@protect
           %
           % Then, setup shipout of copyright page
@@ -2580,7 +2580,7 @@
           % that was already done in \AtBegShi@Output.
           %
           \let\protect\noexpand
-          \AtBeginShipoutOriginalShipout\box\ult@copyright@page@box
+          \ult@orig@shipout\box\ult@copyright@page@box
           \set@typeset@protect
           %
           % Restore original first page, so it will be shipped out too!
