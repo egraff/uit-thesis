@@ -5,9 +5,9 @@ MAKEGLOSSARIES := "$(shell which makeglossaries 2>/dev/null)"
 
 PY := "$(shell which py 2>/dev/null)"
 ifeq ($(PY),"")
-  PYTHON := "$(shell which python2.7 2>/dev/null || which python2 2>/dev/null || which python 2>/dev/null)"
+  PYTHON := "$(shell which python3.8 2>/dev/null || which python3.7 2>/dev/null || which python3.6 2>/dev/null || which python3 2>/dev/null)"
 else
-  PYTHON := $(PY) -2
+  PYTHON := $(PY) -3
 endif
 
 # The file to test (without extension)
@@ -15,7 +15,7 @@ BASENAME = $(shell basename $(FILE) .tex)
 DIRNAME = $(shell dirname $(FILE))
 
 TESTSDIR = tests
-MAINDIR_REL2_DIRNAME = $(shell $(PYTHON) -c 'import os.path; print os.path.relpath(".", "$(TESTSDIR)/$(DIRNAME)").replace("\\", "/")')
+MAINDIR_REL2_DIRNAME = $(shell $(PYTHON) -c 'import os.path; print(os.path.relpath(".", "$(TESTSDIR)/$(DIRNAME)").replace("\\", "/"))')
 PDFFLD = pdfs
 
 # Placement of all produced files
