@@ -14,6 +14,8 @@ endif
 BASENAME = $(shell basename $(FILE) .tex)
 DIRNAME = $(shell dirname $(FILE))
 
+PROTODIR ?= proto
+
 TESTSDIR = tests
 MAINDIR_REL2_DIRNAME = $(shell $(PYTHON) -c 'import os.path; print(os.path.relpath(".", "$(TESTSDIR)/$(DIRNAME)").replace("\\", "/"))')
 PDFFLD = pdfs
@@ -57,7 +59,7 @@ clean:
 test: 
 	@echo "Running comparison tests..."
 	@echo ""
-	@$(PYTHON) ../ult-base/test-scripts/regtest.py .
+	@$(PYTHON) ../ult-base/test-scripts/regtest.py --protodir $(PROTODIR) .
 
 _file: _ctrl_
 	@echo "Building $(FILE)..."
