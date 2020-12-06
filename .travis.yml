@@ -9,12 +9,12 @@ matrix:
       env: TEST_SUITE=linux-latest
       os: linux
       sudo: required
-      python: 2.7
+      python: 3.6
     - name: "Linux - TeX Live 2019"
       env: TEST_SUITE=linux-tl2019
       os: linux
       sudo: required
-      python: 2.7
+      python: 3.6
     - name: "OS X - Latest TeX Live"
       env: TEST_SUITE=osx-latest
       os: osx
@@ -24,8 +24,7 @@ matrix:
       before_install:
         - sw_vers
         - brew update
-        - brew unlink python@2
-        - python2.7 --version
+        - python3.6 --version
         - brew install libidn
         - brew install ghostscript
         - gs -v
@@ -41,8 +40,7 @@ matrix:
       before_install:
         - sw_vers
         - brew update
-        - brew unlink python@2
-        - python2.7 --version
+        - python3.6 --version
         - brew install libidn
         - brew install ghostscript
         - gs -v
