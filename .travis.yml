@@ -3,28 +3,31 @@ language: python
 git:
   depth: 10
 
-matrix:
+jobs:
   include:
     - name: "Linux - Latest TeX Live"
-      env: TEST_SUITE=linux-latest
+      env:
+        - TEST_SUITE=linux-latest
+        - PYTHON=python
       os: linux
-      sudo: required
       python: 3.6
     - name: "Linux - TeX Live 2019"
-      env: TEST_SUITE=linux-tl2019
+      env:
+        - TEST_SUITE=linux-tl2019
+        - PYTHON=python
       os: linux
-      sudo: required
       python: 3.6
     - name: "OS X - Latest TeX Live"
-      env: TEST_SUITE=osx-latest
+      env:
+        - TEST_SUITE=osx-latest
+        - PYTHON=python3
       os: osx
-      sudo: required
       language: generic
       osx_image: xcode10
       before_install:
         - sw_vers
         - brew update
-        - python3.6 --version
+        - python3 --version
         - brew install libidn
         - brew install ghostscript
         - gs -v
@@ -32,15 +35,16 @@ matrix:
         - compare -version
         - pdfinfo -v || (exit 0)
     - name: "OS X - TeX Live 2019"
-      env: TEST_SUITE=osx-tl2019
+      env:
+        - TEST_SUITE=osx-tl2019
+        - PYTHON=python3
       os: osx
-      sudo: required
       language: generic
       osx_image: xcode10
       before_install:
         - sw_vers
         - brew update
-        - python3.6 --version
+        - python3 --version
         - brew install libidn
         - brew install ghostscript
         - gs -v
@@ -57,6 +61,6 @@ install:
   - make install CONTINUE=y
   - sudo -i texhash
 script:
-  - make -C test
+  - make -C test PYTHON=${PYTHON}
 after_script:
   - ci/travis_after.sh
