@@ -1,3 +1,5 @@
+PROTODIR ?= proto
+
 # All files produced while making the document will have this basename
 LATEX_JOBNAME ?= output
 
