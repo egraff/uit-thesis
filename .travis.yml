@@ -32,7 +32,7 @@ jobs:
         #- brew install ghostscript
         - curl -fsSLO https://pages.uoregon.edu/koch/Ghostscript-9.53.3-Full.pkg
         - shasum -a 256 -c <<< '2ccb1dad69eeb706fc4a959f76f80469599f46802378e040769d79bb86bac264 *Ghostscript-9.53.3-Full.pkg'
-        - installer -pkg ./Ghostscript-9.53.3-Full.pkg -target /
+        - sudo installer -pkg ./Ghostscript-9.53.3-Full.pkg -target /
         - gs -v
         - brew install imagemagick
         - compare -version
