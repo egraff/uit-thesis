@@ -1,0 +1,203 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.11) (preloaded format=pdflatex 2020.12.8)  8 DEC 2020 19:28
+entering extended mode
+**./test-baseline.tex
+(test-baseline.tex
+LaTeX2e <2020-10-01> patch level 2
+L3 programming layer <2020-12-03> xparse <2020-03-03> (uit-thesis-test.cls
+Document Class: uit-thesis-test 
+(C:\Users\appveyor/texmf\tex/latex/uit-thesis\uit-thesis.cls
+Document Class: uit-thesis 2014/16/02 v0.1a UiT thesis class
+(C:\Users\appveyor\AppData\Roaming\MiKTeX\tex/latex/etex-pkg\etex.sty
+Package: etex 2016/08/01 v2.7 eTeX basic definition package (PEB,DPC)
+\et@xins=\count177
+) ("C:\Program Files\MiKTeX\tex/latex/etoolbox\etoolbox.sty"
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count178
+) ("C:\Program Files\MiKTeX\tex/generic/iftex\ifpdf.sty"
+Package: ifpdf 2019/10/25 v3.4 ifpdf legacy package. Use iftex instead.
+("C:\Program Files\MiKTeX\tex/generic/iftex\iftex.sty"
+Package: iftex 2020/03/06 v1.0d TeX engine tests
+)) ("C:\Program Files\MiKTeX\tex/latex/base\book.cls"
+Document Class: book 2020/04/10 v1.4m Standard LaTeX document class
+("C:\Program Files\MiKTeX\tex/latex/base\bk11.clo"
+File: bk11.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
+)
+\c@part=\count179
+\c@chapter=\count180
+\c@section=\count181
+\c@subsection=\count182
+\c@subsubsection=\count183
+\c@paragraph=\count184
+\c@subparagraph=\count185
+\c@figure=\count186
+\c@table=\count187
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+)
+\ult@paper@width=\skip49
+\ult@paper@height=\skip50
+\ult@paper@hbleed=\skip51
+\ult@paper@vbleed=\skip52
+\ult@coverpages@graphics@width=\skip53
+\ult@coverpages@graphics@height=\skip54
+\ult@coverpages@graphics@hoffset=\skip55
+\ult@coverpages@graphics@voffset=\skip56
+\ult@frontpage@leftmargin=\skip57
+\ult@frontpage@rightmargin=\skip58
+\ult@frontpage@topmargin=\skip59
+\ult@frontpage@bottommargin=\skip60
+\ult@frontpage@textbox@xpos=\skip61
+\ult@frontpage@textbox@ypos=\skip62
+\ult@frontpage@graphics@ypos=\skip63
+(C:\Users\appveyor\AppData\Roaming\MiKTeX\tex/latex/silence\silence.sty
+Package: silence 2012/07/02 v1.5b Selective filtering of warnings and error mes
+sages
+\sl@Save=\count188
+\sl@StateNumber=\count189
+\sl@MessageCount=\count190
+\sl@Casualties=\count191
+\sl@Filter=\toks15
+\sl@Message=\toks16
+\sl@UnexpandedMessage=\toks17
+\sl@Mess@ge=\toks18
+\sl@WarningCount=\count192
+\sl@WarningNumber=\count193
+\sl@WarningCasualties=\count194
+\sl@TempBOW=\toks19
+\sl@BankOfWarnings=\toks20
+LaTeX Info: Redefining \GenericWarning on input line 433.
+\sl@ErrorCount=\count195
+\sl@ErrorNumber=\count196
+\sl@ErrorCasualties=\count197
+\sl@TempBOE=\toks21
+\sl@BankOfErrors=\toks22
+LaTeX Info: Redefining \GenericError on input line 601.
+) ("C:\Program Files\MiKTeX\tex/latex/base\inputenc.sty"
+Package: inputenc 2020/08/01 v1.3d Input encoding file
+\inpenc@prehook=\toks23
+\inpenc@posthook=\toks24
+) (C:\Users\appveyor\AppData\Roaming\MiKTeX\tex/latex/cmap\cmap.sty
+Package: cmap 2008/03/06 v1.0h CMap support: searchable PDF
+) ("C:\Program Files\MiKTeX\tex/latex/base\fontenc.sty"
+Package: fontenc 2020/08/10 v2.0s Standard LaTeX package
+<<t1.cmap>>) ("C:\Program Files\MiKTeX\tex/generic/oberdiek\hyphsubst.sty"
+Package: hyphsubst 2016/05/16 v0.3 Substitute hyphenation patterns (HO)
+(C:\Users\appveyor\AppData\Roaming\MiKTeX\tex/generic/infwarerr\infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package hyphsubst Info: Redefined: \l@english
+(hyphsubst)             old value: 0
+(hyphsubst)             new value: 76
+(hyphsubst)             \language updated on input line 227.
+) ("C:\Program Files\MiKTeX\tex/generic/babel\babel.sty"
+Package: babel 2020/10/27 3.51 The Babel package
+("C:\Program Files\MiKTeX\tex/generic/babel\babel.def"
+File: babel.def 2020/10/27 3.51 Babel common definitions
+\babel@savecnt=\count198
+\U@D=\dimen139
+\l@babelnohyphens=\language79
+("C:\Program Files\MiKTeX\tex/generic/babel\txtbabel.def")
+\bbl@readstream=\read2
+)
+\bbl@dirlevel=\count199
+*************************************
+* Local config file bblopts.cfg used
+*
+("C:\Program Files\MiKTeX\tex/latex/arabi\bblopts.cfg"
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of
+ babel
+) ("C:\Program Files\MiKTeX\tex/latex/babel-english\USenglish.ldf"
+Language: USenglish 2017/06/06 v3.3r English support from the babel system
+("C:\Program Files\MiKTeX\tex/latex/babel-english\english.ldf"
+Language: english 2017/06/06 v3.3r English support from the babel system
+Package babel Info: \l@canadian = using hyphenrules for english
+(babel)             (\language0) on input line 102.
+Package babel Info: \l@australian = using hyphenrules for ukenglish
+(babel)             (\language73) on input line 105.
+Package babel Info: \l@newzealand = using hyphenrules for ukenglish
+(babel)             (\language73) on input line 108.
+))) (C:\Users\appveyor\AppData\Roaming\MiKTeX\tex/latex/titlesec\titlesec.sty
+Package: titlesec 2019/10/16 v2.13 Sectioning titles
+\ttl@box=\box47
+\beforetitleunit=\skip64
+\aftertitleunit=\skip65
+\ttl@plus=\dimen140
+\ttl@minus=\dimen141
+\ttl@toksa=\toks25
+\titlewidth=\dimen142
+\titlewidthlast=\dimen143
+\titlewidthfirst=\dimen144
+) (C:\Users\appveyor\AppData\Roaming\MiKTeX\tex/latex/sectsty\sectsty.sty
+Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading sty
+les
+
+LaTeX Warning: Command \underbar  has changed.
+               Check if current package is valid.
+
+
+LaTeX Warning: Command \underline  has changed.
+               Check if current package is valid.
+
+) ("C:\Program Files\MiKTeX\tex/latex/lm\lmodern.sty"
+Package: lmodern 2009/10/30 v1.6 Latin Modern Fonts
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/lmm/m/it on input line 23.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/lmsy/m/n on input line 24.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 25.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 26.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/lmm/b/it on input line 27.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/lmsy/b/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 29.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 31.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 32.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/lmr/m/it on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/lmss/bx/n on input line 36.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
+) (C:\Users\appveyor\AppData\Roaming\MiKTeX\tex/latex/type1cm\type1cm.sty
+Package: type1cm 2002/09/05 v0.04 BlueSky/Y&Y Type1 CM font definitions (DPC, p
+atched RF)
+)
+
+! LaTeX Error: File `xintexpr.sty' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: sty)
+
+Enter file name: 
+! Emergency stop.
+<read *> flag __fil
+                   
+l.266 
+       
+*** (cannot \read from terminal in nonstop modes)
+
+ 
+Here is how much of TeX's memory you used:
+ 2412 strings out of 479697
+ 32864 string characters out of 2876951
+ 323096 words of memory out of 3000000
+ 19503 multiletter control sequences out of 15000+200000
+ 404499 words of font info for 29 fonts, out of 3000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 82i,0n,86p,174b,106s stack positions out of 5000i,500n,10000p,200000b,50000s
+!  ==> Fatal error occurred, no output PDF file produced!
