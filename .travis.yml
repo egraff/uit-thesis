@@ -21,37 +21,41 @@ jobs:
       env:
         - TEST_SUITE=osx-latest
         - PYTHON=python3
+        - HOMEBREW_NO_AUTO_UPDATE=1
+        - HOMEBREW_NO_BOTTLE_SOURCE_FALLBACK=1
       os: osx
       language: generic
-      osx_image: xcode10
+      osx_image: xcode10.2
       before_install:
         - sw_vers
         - brew update
         - python3 --version
-        - brew install libidn
+        - brew fetch --retry libidn && brew install libidn
         #- brew install ghostscript
         - curl -fsSLO https://pages.uoregon.edu/koch/Ghostscript-9.53.3-Full.pkg
         - shasum -a 256 -c <<< '2ccb1dad69eeb706fc4a959f76f80469599f46802378e040769d79bb86bac264 *Ghostscript-9.53.3-Full.pkg'
         - sudo installer -pkg ./Ghostscript-9.53.3-Full.pkg -target /
         - gs -v
-        - brew install imagemagick
+        - brew fetch --retry imagemagick && brew install imagemagick
         - compare -version
         - pdfinfo -v || (exit 0)
     - name: "OS X - TeX Live 2019"
       env:
         - TEST_SUITE=osx-tl2019
         - PYTHON=python3
+        - HOMEBREW_NO_AUTO_UPDATE=1
+        - HOMEBREW_NO_BOTTLE_SOURCE_FALLBACK=1
       os: osx
       language: generic
-      osx_image: xcode10
+      osx_image: xcode10.2
       before_install:
         - sw_vers
         - brew update
         - python3 --version
-        - brew install libidn
-        - brew install ghostscript
+        - brew fetch --retry libidn && brew install libidn
+        - brew fetch --retry ghostscript && brew install ghostscript
         - gs -v
-        - brew install imagemagick
+        - brew fetch --retry imagemagick && brew install imagemagick
         - compare -version
         - pdfinfo -v || (exit 0)
 
