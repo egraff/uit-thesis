@@ -16,4 +16,4 @@ task:
     - texhash
 
   test_script:
-    - make -C test PROTODIR=${PROTODIR}
+    - make -C test PYTHON=python3 PROTODIR=${PROTODIR}
