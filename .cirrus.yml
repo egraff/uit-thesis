@@ -1,0 +1,19 @@
+task:
+  matrix:
+    - name: "Linux - TeX Live 2019"
+      container:
+        dockerfile: ult-base/ci/texlive-2019-linux.Dockerfile
+      env:
+        PROTODIR: proto_tl2019
+
+  install_script:
+    - pdfinfo -v
+    - compare -version
+    - gs -v
+    - pdflatex -version
+    - tlmgr conf
+    - make install CONTINUE=y
+    - texhash
+
+  test_script:
+    - make -C test PYTHON=python3 PROTODIR=${PROTODIR}
