@@ -1,4 +1,7 @@
 task:
+  submodules_script:
+    - git submodule update --init --recursive
+
   matrix:
     - name: "Linux - TeX Live 2019"
       container:
