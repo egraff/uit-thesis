@@ -3,6 +3,12 @@ task:
     - git submodule update --init --recursive
 
   matrix:
+    - name: "Linux - TeX Live 2020"
+      container:
+        dockerfile: ci/texlive-2020-linux.Dockerfile
+      env:
+        PROTODIR: proto_tl2020
+
     - name: "Linux - TeX Live 2019"
       container:
         dockerfile: ci/texlive-2019-linux.Dockerfile
