@@ -8,21 +8,14 @@ jobs:
     - name: "Linux - Latest TeX Live"
       env:
         - TEST_SUITE=linux-latest
-        - PROTODIR=proto_tl2020
-        - PYTHON=python
-      os: linux
-      python: 3.6
-    - name: "Linux - TeX Live 2019"
-      env:
-        - TEST_SUITE=linux-tl2019
-        - PROTODIR=proto_tl2019
+        - PROTODIR=proto_tl2021
         - PYTHON=python
       os: linux
       python: 3.6
     - name: "OS X - Latest TeX Live"
       env:
         - TEST_SUITE=osx-latest
-        - PROTODIR=proto_tl2020
+        - PROTODIR=proto_tl2021
         - PYTHON=python3
         - HOMEBREW_NO_AUTO_UPDATE=1
         - HOMEBREW_NO_BOTTLE_SOURCE_FALLBACK=1

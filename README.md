@@ -24,18 +24,20 @@ Build/test matrix
 | macOS - TeX Live (2019)     | [![][travis-macos-tl-2019-badge]](#)               |
 | Windows - MiKTeX (latest)   | [![][appveyor-miktex-latest-badge]](#)             |
 | Windows - TeX Live (latest) | [![][appveyor-texlive-latest-badge]](#)            |
+| Windows - TeX Live (2020)   | [![][appveyor-texlive-2020-badge]](#)              |
 | Windows - TeX Live (2019)   | [![][appveyor-texlive-2019-badge]](#)              |
 
 [travis-linux-tl-latest-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/1
-[travis-macos-tl-latest-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/3
-[travis-macos-tl-2019-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/4
+[travis-macos-tl-latest-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/2
+[travis-macos-tl-2019-badge]: https://travis-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branches/master/3
 
 [cirrus-linux-tl-2020-badge]: https://api.cirrus-ci.com/github/egraff/uit-thesis.svg?task=Linux%20-%20TeX%20Live%202020
 [cirrus-linux-tl-2019-badge]: https://api.cirrus-ci.com/github/egraff/uit-thesis.svg?task=Linux%20-%20TeX%20Live%202019
 
 [appveyor-miktex-latest-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/1
 [appveyor-texlive-latest-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/2
-[appveyor-texlive-2019-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/3
+[appveyor-texlive-2020-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/3
+[appveyor-texlive-2019-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/4
 
 How to install?
 --

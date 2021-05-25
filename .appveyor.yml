@@ -18,9 +18,12 @@ environment:
 
   matrix:
     - TEST_SUITE: miktex-latest
-      PROTODIR: proto_tl2020
+      PROTODIR: proto_tl2021
 
     - TEST_SUITE: texlive-latest
+      PROTODIR: proto_tl2021
+
+    - TEST_SUITE: texlive-2020
       PROTODIR: proto_tl2020
 
     - TEST_SUITE: texlive-2019
