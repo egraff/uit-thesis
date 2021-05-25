@@ -983,6 +983,9 @@
 % Used to modify header/footer of pages
 \usepackage{fancyhdr}
 
+% Compensate for \vskip added to fancyhdr in http://www.tug.org/svn/texlive/trunk/Master/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty?r1=49886&r2=57327&pathrev=57664.
+\renewcommand{\headruleskip}{-3.6pt}
+
 \usepackage{ult-clearpage}
 
 % Define pagestyle
