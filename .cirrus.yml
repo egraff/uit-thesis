@@ -15,6 +15,12 @@ task:
       env:
         PROTODIR: proto_tl2019
 
+    - name: "Linux - TeX Live 2018"
+      container:
+        dockerfile: ci/texlive-2018-linux.Dockerfile
+      env:
+        PROTODIR: proto_tl2018
+
   install_script:
     - pdfinfo -v
     - compare -version

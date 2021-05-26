@@ -20,6 +20,7 @@ Build/test matrix
 | Linux - TeX Live (latest)   | [![][travis-linux-tl-latest-badge]](#)             |
 | Linux - TeX Live (2020)     | [![][cirrus-linux-tl-2020-badge]][cirrus-url]      |
 | Linux - TeX Live (2019)     | [![][cirrus-linux-tl-2019-badge]][cirrus-url]      |
+| Linux - TeX Live (2018)     | [![][cirrus-linux-tl-2018-badge]][cirrus-url]      |
 | macOS - TeX Live (latest)   | [![][travis-macos-tl-latest-badge]](#)             |
 | macOS - TeX Live (2019)     | [![][travis-macos-tl-2019-badge]](#)               |
 | Windows - MiKTeX (latest)   | [![][appveyor-miktex-latest-badge]](#)             |
@@ -33,6 +34,7 @@ Build/test matrix
 
 [cirrus-linux-tl-2020-badge]: https://api.cirrus-ci.com/github/egraff/uit-thesis.svg?task=Linux%20-%20TeX%20Live%202020
 [cirrus-linux-tl-2019-badge]: https://api.cirrus-ci.com/github/egraff/uit-thesis.svg?task=Linux%20-%20TeX%20Live%202019
+[cirrus-linux-tl-2018-badge]: https://api.cirrus-ci.com/github/egraff/uit-thesis.svg?task=Linux%20-%20TeX%20Live%202018
 
 [appveyor-miktex-latest-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/1
 [appveyor-texlive-latest-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/2
