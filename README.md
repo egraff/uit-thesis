@@ -1,4 +1,4 @@
-uit-thesis [![Travis build status][travis-badge]][travis-url] [![AppVeyor build status][appveyor-badge]][appveyor-url]
+uit-thesis [![Travis build status][travis-badge]][travis-url] [![Cirrus build status][cirrus-badge]][cirrus-url] [![AppVeyor build status][appveyor-badge]][appveyor-url]
 ==========
 
 [travis-badge]: https://travis-ci.org/egraff/uit-thesis.svg?branch=master
