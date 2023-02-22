@@ -1,5 +1,0 @@
-PWD c:/projects/uit-thesis/test/tests
-INPUT c:/texlive/2018/texmf.cnf
-INPUT c:/texlive/2018/texmf-dist/web2c/texmf.cnf
-INPUT c:/texlive/2018/texmf-var/web2c/pdftex/pdflatex.fmt
-OUTPUT ../.build/./test-frontpage_image/output.log
