@@ -15,23 +15,13 @@ Build/test matrix
 
 | Build                       | Build status                                       |
 | --------------------------- | -------------------------------------------------- |
-| Linux - TeX Live (latest)   | [![][travis-linux-tl-latest-badge]](#)             |
 | Linux - TeX Live (2020)     | [![][cirrus-linux-tl-2020-badge]][cirrus-url]      |
 | Linux - TeX Live (2019)     | [![][cirrus-linux-tl-2019-badge]][cirrus-url]      |
 | Linux - TeX Live (2018)     | [![][cirrus-linux-tl-2018-badge]][cirrus-url]      |
-| Windows - MiKTeX (latest)   | [![][appveyor-miktex-latest-badge]](#)             |
-| Windows - TeX Live (latest) | [![][appveyor-texlive-latest-badge]](#)            |
-| Windows - TeX Live (2020)   | [![][appveyor-texlive-2020-badge]](#)              |
-| Windows - TeX Live (2019)   | [![][appveyor-texlive-2019-badge]](#)              |
 
 [cirrus-linux-tl-2020-badge]: https://api.cirrus-ci.com/github/egraff/uit-thesis.svg?task=Linux%20-%20TeX%20Live%202020
 [cirrus-linux-tl-2019-badge]: https://api.cirrus-ci.com/github/egraff/uit-thesis.svg?task=Linux%20-%20TeX%20Live%202019
 [cirrus-linux-tl-2018-badge]: https://api.cirrus-ci.com/github/egraff/uit-thesis.svg?task=Linux%20-%20TeX%20Live%202018
-
-[appveyor-miktex-latest-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/1
-[appveyor-texlive-latest-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/2
-[appveyor-texlive-2020-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/3
-[appveyor-texlive-2019-badge]: https://appveyor-matrix-badges.herokuapp.com/repos/egraff/uit-thesis/branch/master/4
 
 How to install?
 --
