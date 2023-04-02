@@ -1,0 +1,4 @@
+\babel@toc {USenglish}{}\relax 
+\contentsline {chapter}{List of Algorithms}{iii}{chapter*.2}%
+\contentsline {chapter}{\numberline {1}A chapter}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}A chapter}{3}{chapter.2}%
