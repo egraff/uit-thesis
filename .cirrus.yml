@@ -7,19 +7,19 @@ task:
       container:
         dockerfile: ci/texlive-2022-linux.Dockerfile
       env:
-        PROTODIR: proto_tl2022
+        PROTODIR: proto_tl2021
 
     - name: "Linux - TeX Live 2021"
       container:
         dockerfile: ci/texlive-2021-linux.Dockerfile
       env:
-        PROTODIR: proto_tl2016
+        PROTODIR: proto_tl2021
 
     - name: "Linux - TeX Live 2020"
       container:
         dockerfile: ci/texlive-2020-linux.Dockerfile
       env:
-        PROTODIR: proto_tl2016
+        PROTODIR: proto_tl2020
 
     - name: "Linux - TeX Live 2019"
       container:
