@@ -32,6 +32,14 @@ environment:
       TEST_CATEGORY: regtest_win
       PROTODIR: proto_tl2021
 
+    - TEST_SUITE: texlive-2022
+      TEST_CATEGORY: regtest_win
+      PROTODIR: proto_tl2021
+
+    - TEST_SUITE: texlive-2021
+      TEST_CATEGORY: regtest_win
+      PROTODIR: proto_tl2021
+
     - TEST_SUITE: texlive-2020
       TEST_CATEGORY: regtest_win
       PROTODIR: proto_tl2020
@@ -43,13 +51,54 @@ environment:
 
 matrix:
   exclude:
-    - TEST_CATEGORY: regtest_linux
+    - image: Visual Studio 2022
+      TEST_CATEGORY: regtest_linux
 
     - image: Ubuntu
       TEST_CATEGORY: regtest_win
 
 
 for:
+  - matrix:
+      only:
+        - image: Ubuntu
+          TEST_CATEGORY: regtest_linux
+
+    install:
+      # Decrypt deploy key
+      - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
+      - ps: >-
+          $IsPullRequest = (Test-Path Env:APPVEYOR_PULL_REQUEST_NUMBER) -And $Env:APPVEYOR_PULL_REQUEST_NUMBER;
+          if (-Not $IsPullRequest) {
+            Write-Host "Decrypting deploy key";
+            appveyor-tools/secure-file -decrypt ci/appveyor-deploy-key.enc -secret $Env:deploy_key_secret -salt $Env:deploy_key_salt -out "$($Env:HOME)/.ssh/id_rsa";
+            chmod 600 "$($Env:HOME)/.ssh/id_rsa";
+            Write-Host "Testing deploy key";
+            $OldErrorActionPreference = $ErrorActionPreference;
+            $ErrorActionPreference = "Continue";
+            (ssh -o StrictHostKeyChecking=no -T git@github.com || true) 2>&1 | %{ "$_" };
+            $ErrorActionPreference = $OldErrorActionPreference;
+          }
+
+      - sh: ult-base/ci/appveyor_linux_install_${TEST_SUITE}.sh
+      - tlmgr conf
+
+    build_script:
+      - sh: make install CONTINUE=y
+      - sh: sudo -i texhash
+
+    test_script:
+      - sh: |
+          source $HOME/venv3.10/bin/activate
+          make -C test PYTHON=python PROTODIR=${PROTODIR}
+
+    on_success:
+      - sh: ci/appveyor_linux_after.sh 0
+
+    on_failure:
+      - sh: ci/appveyor_linux_after.sh 1
+
+
   - matrix:
       only:
         - image: Visual Studio 2022
