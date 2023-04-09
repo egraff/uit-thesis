@@ -33,15 +33,31 @@ ifndef PYTHON
   endif
 endif
 
+detect-tex-cmds:
+ifndef LATEXMK
+  LATEXMK := "$(shell which latexmk 2>/dev/null)"
+endif
+ifndef PDFLATEX
+  PDFLATEX := "$(shell which pdflatex 2>/dev/null)"
+endif
+ifndef MAKEGLOSSARIES
+  MAKEGLOSSARIES := "$(shell which makeglossaries 2>/dev/null)"
+endif
+
+set-default-vars:
+ifeq ($(strip $(WARMUP_COMPILE)),)
+  override WARMUP_COMPILE := 0
+endif
+
 
 clean:
 	@$(RM) -r $(PDFFLD) $(BUILDFLD)
 	@echo "Done!"
 
-test: detect-python
+test: detect-python set-default-vars
 	@echo "Running comparison tests..."
 	@echo ""
-	@$(PYTHON) ../ult-base/test-scripts/regtest.py --protodir $(PROTODIR) .
+	@$(PYTHON) ../ult-base/test-scripts/regtest.py --protodir $(PROTODIR) --warmup-compile $(WARMUP_COMPILE) .
 
 _file: _ctrl_
 	@echo "Building $(TEXFILE_DIR)/$(TEXFILE_FILENAME)..."
@@ -52,16 +68,7 @@ _file: _ctrl_
 	  $(BUILD) \
 	)
 
-_ctrl_:
-ifndef LATEXMK
-  LATEXMK := "$(shell which latexmk 2>/dev/null)"
-endif
-ifndef PDFLATEX
-  PDFLATEX := "$(shell which pdflatex 2>/dev/null)"
-endif
-ifndef MAKEGLOSSARIES
-  MAKEGLOSSARIES := "$(shell which makeglossaries 2>/dev/null)"
-endif
+_ctrl_: detect-tex-cmds
 ifeq ($(LATEXMK),"")
 	@echo "Cannot find 'latexmk'" >&2
 	@exit 2
