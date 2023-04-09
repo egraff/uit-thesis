@@ -12,14 +12,14 @@ RUN \
 COPY ci/texlive2020.profile ./texlive.profile
 
 RUN \
-  export TLNET_REPO=http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2020/tlnet-final && \
-  wget ${TLNET_REPO}/install-tl-unx.tar.gz && \
+  export INSTALL_TL_REPO=https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2020/tlnet-final && \
+  wget ${INSTALL_TL_REPO}/install-tl-unx.tar.gz && \
   tar -xf "install-tl-unx.tar.gz" && \
   export tl_dir=$( ls | grep -P "install-tl-\d{8}$" | head -n 1 ) && \
-  (echo "i" | ${tl_dir}/install-tl -logfile install-tl.log -repository ${TLNET_REPO} -profile ./texlive.profile) || \
+  (echo "i" | ${tl_dir}/install-tl -logfile install-tl.log -repository ${INSTALL_TL_REPO} -profile ./texlive.profile) || \
   ( \
     while [ $? -ne 0 ]; do \
-      echo "y" | ${tl_dir}/install-tl -logfile install-tl.log -repository ${TLNET_REPO} -profile ./texlive.profile ; \
+      echo "y" | ${tl_dir}/install-tl -logfile install-tl.log -repository ${INSTALL_TL_REPO} -profile ./texlive.profile ; \
     done \
   ) && \
   export MAINTEXDIR=$(grep "TEXDIR:" "install-tl.log" | awk -F'"' '{ print $2 }') && \
@@ -28,6 +28,8 @@ RUN \
   rm -rf ${tl_dir} "install-tl-unx.tar.gz"
 
 RUN \
+  export TLNET_REPO=http://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2020/tlnet-final ; \
+  tlmgr repository set ${TLNET_REPO} ; \
   tlmgr install \
     collection-basic \
     collection-bibtexextra \
