@@ -397,9 +397,10 @@
 \AtBeginDocument{%
   \ifult@has@lthooks
     \ifcsname AtBeginShipoutOriginalShipout\endcsname
-      \ult@critical@error{BUG! Assumption was that original atbegshi package is not in use when new lthooks system is used}%
+      \global\let\ult@orig@shipout\AtBeginShipoutOriginalShipout
+    \else
+      \global\let\ult@orig@shipout\shipout% This will be the \shipout macro defined by the ltshipout package
     \fi
-    \global\let\ult@orig@shipout\shipout% This will be the \shipout macro defined by the ltshipout package
   \else
     \ifcsname AtBeginShipoutOriginalShipout\endcsname\else
       \ult@critical@error{BUG! Assumption was that original atbegshi package is available when new lthooks system is not used}%
