@@ -5,7 +5,7 @@ RUN \
   apt-get install -y wget apt-utils software-properties-common
 
 RUN \
-  apt-get install --no-install-recommends -y git python2.7 && \
+  apt-get install --no-install-recommends -y git python3 curl && \
   apt-get install --no-install-recommends -y poppler-utils ghostscript imagemagick --fix-missing && \
   apt-get install --no-install-recommends -y libfile-fcntllock-perl gcc equivs libwww-perl fontconfig unzip
 
