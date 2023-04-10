@@ -50,4 +50,7 @@ RUN \
     collection-plaingeneric \
     collection-pstricks \
   ; while [ $? -ne 0 ]; do !!; done ; \
+  export TLNET_REPO=https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2018/tlnet-final ; \
+  tlmgr repository set ${TLNET_REPO} ; \
+  tlmgr update --reinstall-forcibly-removed --all --self ; \
   tlmgr path add
