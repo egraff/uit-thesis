@@ -1,4 +1,8 @@
 task:
+  environment:
+    deploy_key_secret: ENCRYPTED[9c49f44440c3bf6aa38b735b20a73b802af3312a213fa430303009b649682c2977b81d32311c868e0b0b58f77efad620]
+    deploy_key_salt: ENCRYPTED[3aa09ff4c8ef3a1a6a755a1b8be824f67344509eb5e8aa65609c2df20867bf1a4063c68e80bd95c43e10e68214adab6f]
+
   submodules_script:
     - git submodule update --init --recursive
 
@@ -33,6 +37,18 @@ task:
       env:
         PROTODIR: proto_tl2018
 
+  decrypt_deploy_key_script: |
+    curl -sflL 'https://raw.githubusercontent.com/appveyor/secure-file/fc44f5c5f2fb184fe738814f373c16cb69c30929/install.sh' | bash -e -
+    if [ -z "$CIRRUS_PR" ]; then
+      echo "Decrypting deploy key"
+      mkdir -p "${HOME}/.ssh"
+      chmod 700 "${HOME}/.ssh"
+      appveyor-tools/secure-file -decrypt ci/cirrus-deploy-key.enc -secret ${deploy_key_secret} -salt ${deploy_key_salt} -out "${HOME}/.ssh/id_ed25519"
+      chmod 600 "${HOME}/.ssh/id_ed25519"
+      echo "Testing deploy key"
+      (ssh -o StrictHostKeyChecking=no -T git@github.com || true)
+    fi
+
   install_script:
     - pdfinfo -v
     - compare -version
@@ -44,3 +60,16 @@ task:
 
   test_script:
     - make -C test PYTHON=python3 PROTODIR=${PROTODIR}
+
+  on_failure:
+    set_failure_result_code_script:
+      - echo "TEST_RESULT_CODE=1" >> $CIRRUS_ENV
+
+  always:
+    set_success_result_code_script: |
+      if [ -z "$TEST_RESULT_CODE" ]; then
+        echo "TEST_RESULT_CODE=0" >> $CIRRUS_ENV
+      fi
+
+    after_script:
+      - echo "Test result code: $TEST_RESULT_CODE"

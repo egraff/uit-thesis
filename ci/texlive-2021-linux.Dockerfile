@@ -1,13 +1,24 @@
-FROM ubuntu:bionic
+FROM ubuntu:focal
 
 RUN \
   apt-get update && \
-  apt-get install -y wget apt-utils software-properties-common
+  export DEBIAN_FRONTEND=noninteractive && \
+  apt-get install --no-install-recommends -y wget apt-utils software-properties-common
 
 RUN \
-  apt-get install --no-install-recommends -y git python3 curl && \
-  apt-get install --no-install-recommends -y poppler-utils ghostscript imagemagick --fix-missing && \
-  apt-get install --no-install-recommends -y libfile-fcntllock-perl gcc equivs libwww-perl fontconfig unzip
+  export DEBIAN_FRONTEND=noninteractive && \
+  apt-get install --no-install-recommends -qq -y git python3 curl && \
+  apt-get install --no-install-recommends -qq -y poppler-utils ghostscript imagemagick --fix-missing && \
+  apt-get install --no-install-recommends -qq -y libfile-fcntllock-perl gcc equivs libwww-perl fontconfig unzip openssh-client
+
+# Install .NET 3.1 runtime, required by secure-file utility
+RUN \
+  export DEBIAN_FRONTEND=noninteractive && \
+  wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && \
+  dpkg -i packages-microsoft-prod.deb && \
+  rm packages-microsoft-prod.deb && \
+  apt-get update && \
+  apt-get install --no-install-recommends -y dotnet-runtime-3.1
 
 COPY ci/texlive2021.profile ./texlive.profile
 
