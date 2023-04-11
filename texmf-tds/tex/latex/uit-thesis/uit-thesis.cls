@@ -721,6 +721,9 @@
 % the default tracking is kind of huge, this sets tracking to 5.5% of an em
 \SetTracking{encoding = *, shape = {sc,si,scit}}{55}
 
+% Fix bug where ligatures are enabled for smallcaps in noto font
+\DisableLigatures[f]{encoding = {T1}, family = {NotoSans-TOsF}, shape = {sc,si,scit}}
+
 \newif\ifult@microtypeloaded
 \AtBeginDocument{%
   \@ifpackageloaded{microtype}%
