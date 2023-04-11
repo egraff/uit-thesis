@@ -1,0 +1,96 @@
+---
+layout: default
+---
+{% comment %} Convert number to string {% endcomment %}
+{% capture cirrus_build_data_name %}{{ page.cirrus.build-id }}_{{ page.cirrus.task-number }}{% endcapture %}
+
+{% comment %} Get test result from JSON {% endcomment %}
+{% assign result_map = site.data.cirrus-builds[cirrus_build_data_name] %}
+
+{% comment %} See if test passed or failed {% endcomment %}
+{% if page.cirrus.test-result == 0 %}
+{% assign passed = true %}
+{% else %}
+{% assign passed = false %}
+{% endif %}
+
+{% capture title %}Test results for Cirrus task #{{ page.cirrus.build-id }}.{{ page.cirrus.task-number }}{% endcapture %}
+<div class="page">
+  <h1 class="page-title">Test results for
+    <a href="https://cirrus-ci.com/task/{{ page.cirrus.task-id }}">Cirrus task #{{ page.cirrus.build-id }}.{{ page.cirrus.task-number }}</a>
+  </h1>
+  <p>
+  {% if passed %}
+    PASSED!
+  {% else %}
+    FAILED!
+  {% endif %}
+  </p>
+
+  {% unless result_map %}
+    No results from regression tests!
+  {% else %}
+    <p>Num tests: {{ result_map.num_tests }}, in task {{ page.cirrus.build-id }}.{{ page.cirrus.task-number }}!</p>
+    
+    {% assign failed_tests = result_map.failed_tests %}
+    {% for failed_test_map in failed_tests %}
+      <h2>{{ failed_test_map.test_name }}</h2>
+      {% if failed_test_map.build_succeeded %}
+        {% if failed_test_map.exception %}
+          {% assign exc_info = failed_test_map.exc_info %}
+          <p>Got exception <code>{{ exc_info.type | escape }}({{ exc_info.value | escape }})</code></p>
+          Traceback:
+          <pre>{% for tb_line in exc_info.traceback %}{{ tb_line | escape }}
+{% endfor %}</pre>
+        {% else %}
+          {% assign failed_pages = failed_test_map.failed_pages %}
+          <p>Pages with diff:</p>
+          <ul class="failed_pages">
+          {% for pagenum in failed_pages %}
+            <li>
+              <div class="page_num">Page {{ pagenum }}</div>
+              <div class="page_details">
+                <div class="diff">
+                  <div class="image_name">Diff</div>
+                  <div class="page_image">
+                    <div style="display: block; width: 355px; height: 503px; background-color: gray; background-image: url('diffs/{{ failed_test_map.test_name }}_{{ pagenum }}.png'); background-size: contain;"></div>
+                  </div>
+                </div>
+                <div class="proto_test">
+                  <div class="proto">
+                    <div class="image_name">Proto (hover for test)</div>
+                    <div class="page_image">
+                      <div style="display: block; width: 355px; height: 503px; background-image: url('proto/{{ failed_test_map.test_name }}_{{ pagenum }}.png'); background-size: contain;"></div>
+                    </div>
+                  </div>
+                  <div class="test">
+                    <div class="image_name">Test (un-hover for proto)</div>
+                    <div class="page_image">
+                      <div style="display: block; width: 355px; height: 503px; background-image: url('tests/{{ failed_test_map.test_name }}_{{ pagenum }}.png'); background-size: contain;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% else %}
+        {% assign stdout_lines = failed_test_map.proc.stdout %}
+        {% assign stderr_lines = failed_test_map.proc.stderr %}
+        {% capture log_file %}{{ failed_test_map.log_file | replace_first:'.build','build' }}{% endcapture %}
+        <p>Build failed!</p>
+        stdout output:
+        <pre>{% for stdout_line in stdout_lines %}{{ stdout_line | escape }}
+{% endfor %}</pre>
+        stderr output:
+        <pre>{% for stderr_line in stderr_lines %}{{ stderr_line | escape }}
+{% endfor %}</pre>
+        {% if log_file %}
+          LaTeX log file: <a href="{{ log_file }}">{{ log_file }}</a>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endunless %}
+
+</div>

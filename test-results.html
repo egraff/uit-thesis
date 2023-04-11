@@ -3,6 +3,32 @@ layout: page
 title: Last 25 test results
 ---
 
+{% comment %} ---- BEGIN CIRRUS ---- {% endcomment %}
+
+{% assign cirrus_pages_list = site.pages | where: 'layout','cirrus-build' %}
+
+{% assign cirrus_job_num_string_list = '' %}
+{% for page in cirrus_pages_list %}
+  {% comment %} Make job number 8 symbols long, prepended with zeros {% endcomment %}
+  {% capture cirrus_job_num %}{{ page.cirrus.build-id }}.{{ page.cirrus.task-number }}{% endcapture %}
+  {% assign cirrus_job_sortkey = cirrus_job_num | prepend: '00000000000000000000' | slice: -20, 20 %}
+
+  {% comment %} Append actual job number after sortkey, with a ^ as separator {% endcomment %}
+  {% assign job_num_string = cirrus_job_sortkey | append: '^' | append: cirrus_job_num %}
+
+  {% comment %} Add to string list {% endcomment %}
+  {% if cirrus_job_num_string_list == '' %}
+    {% assign cirrus_job_num_string_list = job_num_string %}
+  {% else %}
+    {% assign cirrus_job_num_string_list = cirrus_job_num_string_list | append: ',' | append: job_num_string %}
+  {% endif %}
+{% endfor %}
+
+{% comment %} Convert to a list, and sort in descending order {% endcomment %}
+{% assign cirrus_job_num_string_list = cirrus_job_num_string_list | split: ',' | sort | reverse %}
+
+{% comment %} ---- END CIRRUS ---- {% endcomment %}
+
 {% comment %} ---- BEGIN APPVEYOR ---- {% endcomment %}
 
 {% assign appveyor_pages_list = site.pages | where: 'layout','appveyor-build' %}
@@ -29,8 +55,8 @@ title: Last 25 test results
 
 {% comment %} ---- END APPVEYOR ---- {% endcomment %}
 
-<div style="width: 42rem; overflow: hidden;">
-<div style="float: left; width: 20rem;">
+<div style="width: 49rem; overflow: hidden;">
+<div style="float: left; width: 27rem;">
 <h2>Cirrus jobs</h2>
 <table class="test-overview">
   <thead>
@@ -42,6 +68,35 @@ title: Last 25 test results
     </tr>
   </thead>
   <tbody>
+  {% for job_num_string in cirrus_job_num_string_list limit:25 %}
+    {% assign job_num_string_parts = job_num_string | split: '^' %}
+    {% assign cirrus_job_number = job_num_string_parts[1] %}
+    {% for page in cirrus_pages_list %}
+      {% capture page_job_num_str %}{{ page.cirrus.build-id }}.{{ page.cirrus.task-number }}{% endcapture %}
+      {% if page_job_num_str == cirrus_job_number %}
+        {% if page.cirrus.test-result == 0 %}
+          {% assign passed = true %}
+        {% else %}
+          {% assign passed = false %}
+        {% endif %}
+        {% capture cirrus_job_data_name %}{{ page.cirrus.build-id }}_{{ page.cirrus.task-number }}{% endcapture %}
+        {% assign result_map = site.data.cirrus-builds[cirrus_job_data_name] %}
+        {% capture commit_hash %}{{ page.cirrus.commit }}{% endcapture %}
+        <tr class="{% if passed %}passed{% else %}failed{% endif %}">
+          <td><a href="{{ site.baseurl }}{{ page.url }}">#{{ page.cirrus.build-id }}.{{ page.cirrus.task-number }}</a></td>
+          <td><a href="https://github.com/egraff/uit-thesis/tree/{{ page.cirrus.branch }}">{{ page.cirrus.branch }}</a></td>
+          <td><a href="https://github.com/egraff/uit-thesis/commit/{{ commit_hash }}">{{ commit_hash | truncate: 9 }}</a></td>
+          <td>
+            {% unless result_map %}
+              N/A
+            {% else %}
+              {{ result_map.num_tests | minus: result_map.failed_tests.size }}/{{ result_map.num_tests }}
+            {% endunless %}
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
   </tbody>
 </table>
 </div>
