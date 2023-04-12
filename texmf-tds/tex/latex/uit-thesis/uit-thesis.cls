@@ -675,7 +675,7 @@
 \usepackage{xkeyval}
 
 % XCharter
-\usepackage[scaled=.98,sups]{XCharter}% lining figures in math
+\usepackage[scaled=.98,sups,osf]{XCharter}% lining figures in math, oldstyle figures in text mode
 
 % Save font family for XCharter with lining figures
 \global\let\ult@fontfamilylfstyle\@empty
@@ -765,13 +765,11 @@
 
 \usepackage[libertine,bigdelims,scaled=1.07]{newtxmath}
 
-% Use oldstyle figures in text
-% Note: we have to do this manually instead of using XCharter's \useosf command, since last version of XCharter breaks \useosf
-\edef\XCharter@figurestyle{TOsF}\edef\XCharter@altone{1}
+\useosf % XCharter: oldstyle figures in text
 \AtEndPreamble{%
-  % Note: we use \XCharter@figurestyle here instead of TOsF to allow user to
+  % Note: we use \XCharter@figurestyle here instead of OsF to allow user to
   % override default figure style in preamble!
-  \renewcommand*{\rmdefault}{XCharter-\XCharter@figurestyle}%
+  \renewcommand*{\rmdefault}{XCharter-\XCharter@figurealign\XCharter@figurestyle}%
   \normalfont
 }
 
