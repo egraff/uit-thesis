@@ -1,0 +1,12 @@
+---
+layout: appveyor-build
+appveyor:
+  branch: master
+  build-id: 46767080
+  build-number: 487
+  commit: b08e911bf222f5c835df1e0050854adbef445fac
+  job-id: hfu40d03dht68se1
+  job-number: 4
+  os-name: Windows
+  test-result: 1
+---
