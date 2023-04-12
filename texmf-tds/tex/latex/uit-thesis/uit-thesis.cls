@@ -765,7 +765,13 @@
 
 \usepackage[libertine,bigdelims,scaled=1.07]{newtxmath}
 
-\useosf % XCharter: use oldstyle figures in text
+% XCharter: use oldstyle figures in text
+\useosf
+
+% XCharter: use proportional (oldstyle) figures
+\ifcsname useproportional\endcsname
+  \useproportional
+\fi
 
 
 %:-------------------------- Page layout -----------------------
