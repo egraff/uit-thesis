@@ -1,0 +1,4 @@
+\babel@toc {USenglish}{}
+\contentsline {chapter}{My list of definitions}{iii}{chapter*.2}% 
+\contentsline {chapter}{List of Code Samples}{v}{chapter*.3}% 
+\contentsline {chapter}{\numberline {1}A chapter}{1}{chapter.1}% 
