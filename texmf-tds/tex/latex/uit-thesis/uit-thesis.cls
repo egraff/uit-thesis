@@ -765,13 +765,7 @@
 
 \usepackage[libertine,bigdelims,scaled=1.07]{newtxmath}
 
-\useosf % XCharter: oldstyle figures in text
-\AtEndPreamble{%
-  % Note: we use \XCharter@figurestyle here instead of OsF to allow user to
-  % override default figure style in preamble!
-  \renewcommand*{\rmdefault}{XCharter-\XCharter@figurealign\XCharter@figurestyle}%
-  \normalfont
-}
+\useosf % XCharter: use oldstyle figures in text
 
 
 %:-------------------------- Page layout -----------------------
