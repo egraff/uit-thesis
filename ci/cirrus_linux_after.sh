@@ -42,10 +42,12 @@ cat <<EOF > $JOB_DIR/index.md
 layout: cirrus-build
 cirrus:
   branch: ${CIRRUS_BRANCH}
-  build-id: ${CIRRUS_BUILD_ID}
   commit: ${CIRRUS_CHANGE_IN_REPO}
+  build-id: ${CIRRUS_BUILD_ID}
+  github-check-suite-id: ${GITHUB_CHECK_SUITE_ID}
   task-id: ${CIRRUS_TASK_ID}
   task-number: ${CI_NODE_INDEX}
+  task-name: ${CIRRUS_TASK_NAME}
   os-name: Ubuntu
   test-result: $1
 ---
