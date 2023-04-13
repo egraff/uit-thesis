@@ -1,0 +1,1 @@
+{"num_tests": 47, "failed_tests": [{"test_name": "test_crossref_frontpage_copyright", "build_succeeded": true, "build_timed_out": false, "exception": false, "failed_pages": [1, 2, 9, 10]}, {"test_name": "test_frontpage_copyright", "build_succeeded": true, "build_timed_out": false, "exception": false, "failed_pages": [1, 2]}]}
