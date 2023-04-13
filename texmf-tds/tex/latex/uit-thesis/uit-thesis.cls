@@ -397,7 +397,9 @@
 \AtBeginDocument{%
   \ifult@has@lthooks
     \ifcsname AtBeginShipoutOriginalShipout\endcsname
-      \global\let\ult@orig@shipout\AtBeginShipoutOriginalShipout
+      % 2023-04-13: not quite sure why this is the right thing to do, even in this case - but it seems to work,
+      % and using \AtBeginShipoutOriginalShipout does -not- work correctly, so...
+      \global\let\ult@orig@shipout\shipout% This will be the \shipout macro defined by the ltshipout package
     \else
       \global\let\ult@orig@shipout\shipout% This will be the \shipout macro defined by the ltshipout package
     \fi
@@ -2550,6 +2552,9 @@
       % Setup hook for first page
       \AtBeginShipoutNext{%
         \ifult@has@titlepage
+          \ifvoid\AtBeginShipoutBox
+            \ClassError{uit-thesis}{Unexpected empty first page}\@ehd
+          \fi
           % First, shipout the title page
           % Note: we have to restore \protect first, which was overridden in \AtBegShi@Output.
           % Then, after shipout, we use LaTeX' \set@typeset@protect to change \protect the way
