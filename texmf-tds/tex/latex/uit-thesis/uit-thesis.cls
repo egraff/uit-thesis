@@ -2496,7 +2496,9 @@
 \fancypagestyle{ult-copyrightpage}{%
   \fancyhf{}%
   \fancyfoot[C]{%
+    \leavevmode
     \color[cmyk]{0.3,0.3,0.3,0.9}%
+    \newline
     This thesis document was typeset using the \emph{UiT Thesis L\kern-.28em\raise.35ex\hbox{\textsc{a}}\kern-.12emT\kern-.12em\lower.38ex\hbox{E}\kern-.03emX Template}.\\
     \textcopyright{} \the\year{} -- \url{http://github.com/egraff/uit-thesis}%
   }%
