@@ -1,0 +1,119 @@
+\documentclass[baselinegrid,showframe,noprint,nocopyright]{uit-thesis-test}
+
+\usepackage{lipsum}
+\usepackage{layout}
+
+\fancypagestyle{custom-footer-one}{%
+  \fancyhf{}% clear all header and footer fields
+  \fancyfoot[C]{%
+    First footer line%
+  }%
+}
+
+\fancypagestyle{custom-footer-two}{%
+  \fancyhf{}% clear all header and footer fields
+  \fancyfoot[C]{%
+    First footer line\\
+    Second footer line%
+  }%
+}
+
+\fancypagestyle{custom-footer-three}{%
+  \fancyhf{}% clear all header and footer fields
+  \fancyfoot[C]{%
+    First footer line\\
+    Second footer line\\
+    Third footer line%
+  }%
+}
+
+\fancypagestyle{custom-header-one}{%
+  \fancyhf{}% clear all header and footer fields
+  \fancyhead[C]{%
+    First header line%
+  }%
+}
+
+\fancypagestyle{custom-header-two}{%
+  \fancyhf{}% clear all header and footer fields
+  \fancyhead[C]{%
+    First header line\\
+    Second header line%
+  }%
+}
+
+\fancypagestyle{custom-header-three}{%
+  \fancyhf{}% clear all header and footer fields
+  \fancyhead[C]{%
+    First header line\\
+    Second header line\\
+    Third header line%
+  }%
+}
+
+\begin{document}
+
+\frontmatter
+
+\layout
+
+\clearpage\thispagestyle{custom-footer-one}%
+
+Blah blah
+
+\includegraphics[width=0.5\linewidth]{example-image-duck}
+
+\vfill
+
+\clearpage\thispagestyle{custom-footer-two}%
+
+Blah blah
+
+\includegraphics[width=0.5\linewidth]{example-image-duck}
+
+\vfill
+
+\clearpage\thispagestyle{custom-footer-three}%
+
+Blah blah
+
+\includegraphics[width=0.5\linewidth]{example-image-duck}
+
+\vfill
+
+\clearpage\thispagestyle{custom-header-one}%
+
+Blah blah
+
+\includegraphics[width=0.5\linewidth]{example-image-duck}
+
+\vfill
+
+\clearpage\thispagestyle{custom-header-two}%
+
+Blah blah
+
+\includegraphics[width=0.5\linewidth]{example-image-duck}
+
+\vfill
+
+\makeatletter
+\newgeometry{top=\the\ult@gm@topmargin,textheight=\the\ult@gm@textheight,textwidth=\the\ult@gm@textwidth,headheight=44pt}%
+\makeatother
+
+\clearpage\thispagestyle{custom-header-three}%
+
+Blah blah
+
+\includegraphics[width=0.5\linewidth]{example-image-duck}
+
+\vfill
+
+\restoregeometry
+\clearpage\thispagestyle{fancy}%
+
+Blah blah
+
+\includegraphics[width=0.5\linewidth]{example-image-duck}
+
+\end{document}
