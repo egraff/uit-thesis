@@ -22,19 +22,19 @@ environment:
   matrix:
     - TEST_SUITE: miktex-latest
       TEST_CATEGORY: regtest_win
-      PROTODIR: proto_tl2021
+      PROTODIR: proto_tl2022
 
     - TEST_SUITE: texlive-latest
       TEST_CATEGORY: regtest_linux
-      PROTODIR: proto_tl2021
+      PROTODIR: proto_tl2022
 
     - TEST_SUITE: texlive-latest
       TEST_CATEGORY: regtest_win
-      PROTODIR: proto_tl2021
+      PROTODIR: proto_tl2022
 
     - TEST_SUITE: texlive-2022
       TEST_CATEGORY: regtest_win
-      PROTODIR: proto_tl2021
+      PROTODIR: proto_tl2022
 
     - TEST_SUITE: texlive-2021
       TEST_CATEGORY: regtest_win
