@@ -65,6 +65,8 @@ for:
           TEST_CATEGORY: regtest_linux
 
     install:
+      - git submodule update --init --recursive
+
       # Decrypt deploy key
       - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
       - ps: >-
