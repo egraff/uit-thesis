@@ -23,6 +23,7 @@ environment:
     - TEST_SUITE: miktex-latest
       TEST_CATEGORY: regtest_win
       PROTODIR: proto_tl2022
+      WARMUP_COMPILE: 1
 
     - TEST_SUITE: texlive-latest
       TEST_CATEGORY: regtest_linux
@@ -157,7 +158,7 @@ for:
           }
 
     test_script:
-      - 'C:\msys64\usr\bin\bash.exe -e -l -c "cd $APPVEYOR_BUILD_FOLDER && ulimit -n 3200 && make -C test PROTODIR=${PROTODIR}"'
+      - 'C:\msys64\usr\bin\bash.exe -e -l -c "cd $APPVEYOR_BUILD_FOLDER && ulimit -n 3200 && make -C test PROTODIR=${PROTODIR} WARMUP_COMPILE=${WARMUP_COMPILE}"'
 
     on_success:
       - ps: >-
