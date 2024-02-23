@@ -1,0 +1,1 @@
+\ifcsname ult@mainfile@basename\endcsname \else \expandafter \gdef \csname ult@mainfile@basename\endcsname {}\fi 
