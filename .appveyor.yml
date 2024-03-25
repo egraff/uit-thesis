@@ -83,6 +83,8 @@ for:
             $ErrorActionPreference = $OldErrorActionPreference;
           }
 
+      - ps: choco upgrade chocolatey -y
+
       - sh: ult-base/ci/appveyor_linux_install_${TEST_SUITE}.sh
       - tlmgr conf
 
