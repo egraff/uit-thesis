@@ -83,8 +83,6 @@ for:
             $ErrorActionPreference = $OldErrorActionPreference;
           }
 
-      - ps: choco upgrade chocolatey -y
-
       - sh: ult-base/ci/appveyor_linux_install_${TEST_SUITE}.sh
       - tlmgr conf
 
@@ -125,6 +123,8 @@ for:
             ssh -o StrictHostKeyChecking=no -T git@github.com 2>&1 | %{ "$_" };
             $ErrorActionPreference = $OldErrorActionPreference;
           }
+
+      - choco upgrade chocolatey -y
 
       - cinst imagemagick -PackageParameters LegacySupport=true
       - cinst ghostscript
