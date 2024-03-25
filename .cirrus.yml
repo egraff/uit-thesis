@@ -11,7 +11,7 @@ task:
       container:
         dockerfile: ci/texlive-2023-linux.Dockerfile
       env:
-        PROTODIR: proto_tl2022
+        PROTODIR: proto_tl2023
 
     - name: "Linux - TeX Live 2022"
       container:
