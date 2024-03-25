@@ -24,7 +24,7 @@ RUN \
 COPY ci/texlive2023.profile ./texlive.profile
 
 RUN \
-  export INSTALL_TL_REPO=https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2022/tlnet-final && \
+  export INSTALL_TL_REPO=https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2023/tlnet-final && \
   wget ${INSTALL_TL_REPO}/install-tl-unx.tar.gz && \
   tar -xf "install-tl-unx.tar.gz" && \
   export tl_dir=$( ls | grep -P "install-tl-\d{8}$" | head -n 1 ) && \
