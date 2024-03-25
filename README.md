@@ -15,12 +15,14 @@ Build/test matrix
 
 | Build                       | Build status                                       |
 | --------------------------- | -------------------------------------------------- |
+| Linux - TeX Live (2023)     | [![][cirrus-linux-tl-2023-badge]][cirrus-url]      |
 | Linux - TeX Live (2022)     | [![][cirrus-linux-tl-2022-badge]][cirrus-url]      |
 | Linux - TeX Live (2021)     | [![][cirrus-linux-tl-2021-badge]][cirrus-url]      |
 | Linux - TeX Live (2020)     | [![][cirrus-linux-tl-2020-badge]][cirrus-url]      |
 | Linux - TeX Live (2019)     | [![][cirrus-linux-tl-2019-badge]][cirrus-url]      |
 | Linux - TeX Live (2018)     | [![][cirrus-linux-tl-2018-badge]][cirrus-url]      |
 
+[cirrus-linux-tl-2023-badge]: https://api.cirrus-ci.com/github/egraff/uit-thesis.svg?task=Linux%20-%20TeX%20Live%202023
 [cirrus-linux-tl-2022-badge]: https://api.cirrus-ci.com/github/egraff/uit-thesis.svg?task=Linux%20-%20TeX%20Live%202022
 [cirrus-linux-tl-2021-badge]: https://api.cirrus-ci.com/github/egraff/uit-thesis.svg?task=Linux%20-%20TeX%20Live%202021
 [cirrus-linux-tl-2020-badge]: https://api.cirrus-ci.com/github/egraff/uit-thesis.svg?task=Linux%20-%20TeX%20Live%202020
