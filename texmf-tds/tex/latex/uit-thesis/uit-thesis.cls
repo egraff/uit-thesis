@@ -1062,6 +1062,7 @@
 % Translate=false because package 'babel' reverts renaming of the default glossary-/acronymnames
 \usepackage[toc,acronym,shortcuts,nonumberlist,nopostdot,translate=false,\ult@glossariesextraoptions]{glossaries}
 \usepackage{ult-glossaries}
+\usepackage{ult-glossaries-casechange-fix}
 
 % Apply custom smallcaps glossaries style
 \setacronymstyle{ult-long-upsc-short}
