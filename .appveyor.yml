@@ -125,15 +125,16 @@ for:
           }
 
       - choco upgrade chocolatey -y
+      - refreshenv
 
-      - cinst imagemagick -PackageParameters LegacySupport=true
-      - cinst ghostscript
+      - choco install -y imagemagick -PackageParameters LegacySupport=true
+      - choco install -y ghostscript
       - ps: >-
           $GsPath = (gci 'C:\Program Files\gs' -Include 'bin' -Directory -Recurse | select -f 1).FullName;
           $OldPath = [Environment]::GetEnvironmentVariable('path', 'machine');
           $NewPath = $OldPath + ';' + $GsPath;
           [Environment]::SetEnvironmentVariable('path', $NewPath, 'machine');
-      - cinst xpdf-utils
+      - choco install -y xpdf-utils
       - refreshenv
       - set
       - compare -version
