@@ -52,16 +52,34 @@ initexmf --mkmaps
 ```
 
 ## License
-The contents of this GitHub repository is licensed under the CC BY-NC-ND license.
-Among other things, this means that you are not allowed to redistribute any derivatives of the contents of this repository.
-This is to prevent ending up with several different, specialized versions of the thesis template floating around.
-Instead, we want all improvements or new functionality to be made available from one place—this repository—thus making it easier for everyone to benefit from such changes.
+The contents of this GitHub repository is licensed under the CC BY-NC-ND
+license.  Among other things, this means that **you are not allowed to
+redistribute any derivatives of the contents of this repository.**  This is to
+prevent ending up with several different, specialized versions of the thesis
+template floating around.  Instead, we want all improvements or new
+functionality to be made available from one place—this repository—thus making
+it easier for everyone to benefit from such changes.
 
-Note that we do NOT impose any restrictions on the licensing or redistribution of your thesis—either in its source code form (excluding any parts of the UiT Thesis LaTeX template) or as a compiled document (i.e. PDF file).
+Note that **we do NOT impose any restrictions on the licensing or redistribution
+of your thesi**s—either in its source code form (excluding any parts of the UiT
+Thesis LaTeX template) or as a compiled document (i.e. PDF file).
 
-We also require you to add an attribution to all documents that use the UiT Thesis LaTeX template.
-By default, the template automatically adds a small attribution notice at the bottom of the first verso page of any document using it.
-Note that although it is easy to disable this, you are not allowed to do so, unless special permission has been granted.
+**We require you to add an attribution to all documents that use the UiT
+Thesis LaTeX template.** By default, the template automatically adds a small
+attribution notice at the bottom of the first verso page of any document using
+it.  Note that although it is easy to disable this, you are not allowed to do
+so, unless special permission has been granted.
+
+Finally, although we provide this template as a form of public service, all
+contributors are volunteers. We are busy people and you can't expect much by
+way of tech support. We have worked hard to make this template
+install and work painlessly for as many people as possible. We have continuous
+integration for three different platforms. That said, we provide this template
+as-is. **If you are unable to install the template or compile your document,
+you are pretty much on your own.** However, if you believe you have discovered
+a bug, we will be grateful if you post it as an issue to this repo. If you do
+so, please provide a minimal example that reproduces your error as per 
+[these guidelines](https://sqa.stackexchange.com/questions/1920/best-guidelines-for-bug-reporting).
 
 
 ### Does this mean that I'm not allowed to fork this repository?
