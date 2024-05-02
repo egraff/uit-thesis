@@ -1587,7 +1587,7 @@
 \renamedefname[USenglish]{ack}{Acknowledgements}
 \renamedefname[norsk]{abstract}{Sammendrag}
 \renamedefname[norsk]{ack}{Takksigelser}
-\renamedefname[nynorsk]{abstract}{Samendrag}
+\renamedefname[nynorsk]{abstract}{Samandrag}
 \renamedefname[nynorsk]{ack}{Forord}
 
 % Missing from samin babel package
