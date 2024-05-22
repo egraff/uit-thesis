@@ -20,9 +20,34 @@ environment:
     secure: nP2YRfsA9mfQN7AkaoAzhvl5YwFZMzfA+oFQ+44CEf/jI0Datv+kjh6j0btMARyojsZF8dBRMKk1y8VnV+CtfQ==
 
   matrix:
+    - TEST_SUITE: miktex-latest
+      TEST_CATEGORY: regtest_win
+      PROTODIR: proto_tl2023
+      WARMUP_COMPILE: 1
+
+    - TEST_SUITE: texlive-latest
+      TEST_CATEGORY: regtest_linux
+      PROTODIR: proto_tl2023
+
+    - TEST_SUITE: texlive-latest
+      TEST_CATEGORY: regtest_win
+      PROTODIR: proto_tl2023
+
     - TEST_SUITE: texlive-2022
       TEST_CATEGORY: regtest_win
       PROTODIR: proto_tl2022
+
+    - TEST_SUITE: texlive-2021
+      TEST_CATEGORY: regtest_win
+      PROTODIR: proto_tl2021
+
+    - TEST_SUITE: texlive-2020
+      TEST_CATEGORY: regtest_win
+      PROTODIR: proto_tl2020
+
+    - TEST_SUITE: texlive-2019
+      TEST_CATEGORY: regtest_win
+      PROTODIR: proto_tl2019
 
 
 matrix:
@@ -160,4 +185,4 @@ for:
             echo $_.Exception | FL -Force
           }
       # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
-      - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+      #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))

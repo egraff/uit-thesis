@@ -68,8 +68,8 @@ _file: _ctrl_
 	  (echo "pdflatex done" || true) && \
 	  (if grep -q "\\makeglossaries" $(TEXFILE_FILENAME); then $(BUILDGLOSS); fi) && \
 	  (echo "makeglossaries done" || true) && \
-	  $(BUILD) && \
-	  (echo "latexmk done" || true) \
+	  $(BUILD) \
+	  (echo "latexmk done" || true) && \
 	)
 
 _ctrl_: detect-tex-cmds
