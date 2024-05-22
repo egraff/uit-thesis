@@ -63,9 +63,13 @@ _file: _ctrl_
 	@echo "Building $(TEXFILE_DIR)/$(TEXFILE_FILENAME)..."
 	( \
 	  cd $(TEXFILE_DIR) && \
+	  (echo "cd done" || true) && \
 	  $(LAMEBUILD) && \
+	  (echo "pdflatex done" || true) && \
 	  (if grep -q "\\makeglossaries" $(TEXFILE_FILENAME); then $(BUILDGLOSS); fi) && \
+	  (echo "makeglossaries done" || true) && \
 	  $(BUILD) \
+	  (echo "latexmk done" || true) && \
 	)
 
 _ctrl_: detect-tex-cmds
