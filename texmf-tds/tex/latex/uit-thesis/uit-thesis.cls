@@ -2468,10 +2468,16 @@
 % Set the topleft frontpage logo to English
 \gdef\ult@frontpage@logo{ult_logo_engelsk.pdf}
 
-% norsk language - changes the frontpage logos and profile to the norwegian language
+% norsk language - changes the frontpage logos and profile to the Norwegian language
 \iflanguage{norsk}{%
   % Set the topleft frontpage logo to Norwegian
   \gdef\ult@frontpage@logo{ult_logo_norsk.pdf}
+}{}
+
+% nynorsk language - changes the frontpage logos and profile to the 'nynorsk' Norwegian language
+\iflanguage{nynorsk}{%
+  % Set the topleft frontpage logo to Norwegian
+  \gdef\ult@frontpage@logo{ult_logo_nynorsk.pdf}
 }{}
 
 % samin language - changes the frontpage logos and profile to the Sami language
