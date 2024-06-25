@@ -1090,10 +1090,10 @@
     \setlength{\LTpre}{0pt}\setlength{\LTpost}{0pt}%
     \setlength\LTleft{\cftfigindent}% Left align with same indent as LoF
     \leavevmode% Make sure table isn't ouput one line before it should
-    % Note: {longtable*} is unnumbered, so table-counter isn't increased!
-    \begin{longtable*}{@{}l p{\glsdescwidth}}%
+    \begin{longtable}{@{}l p{\glsdescwidth}}%
   }{%
-    \end{longtable*}%
+    \end{longtable}%
+    \addtocounter{table}{-1}%
   }%
   \renewcommand*{\glsnamefont}[1]{\textbf{\upsc{##1}}}%
 }
