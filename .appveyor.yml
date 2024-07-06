@@ -75,7 +75,7 @@ for:
             Write-Host "Testing deploy key";
             $OldErrorActionPreference = $ErrorActionPreference;
             $ErrorActionPreference = "Continue";
-            (ssh -o StrictHostKeyChecking=no -T git@github.com || true) 2>&1 | %{ "$_" };
+            (ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -vvvT git@github.com || true) 2>&1 | %{ "$_" };
             $ErrorActionPreference = $OldErrorActionPreference;
           }
 
@@ -116,7 +116,7 @@ for:
             Write-Host "Testing deploy key";
             $OldErrorActionPreference = $ErrorActionPreference;
             $ErrorActionPreference = "Continue";
-            ssh -o StrictHostKeyChecking=no -T git@github.com 2>&1 | %{ "$_" };
+            ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -vvvT git@github.com 2>&1 | %{ "$_" };
             $ErrorActionPreference = $OldErrorActionPreference;
           }
 
