@@ -885,6 +885,13 @@
 \let\@listi\@listI
 \@listi
 
+% Fix over-compensation in amsthm package (which clashes with adjustments in parskip package)
+\xpatchcmd{\deferred@thm@head}
+  {\addvspace{-\parskip}}
+  {}
+  {}
+  {\ult@critical@error{Failed to patch \string\deferred@thm@head}}
+
 % BASELINE GRID
 % http://tex.stackexchange.com/questions/150619/drawing-a-background-grid-based-on-linespread-value
 \ifult@drawbaselinegrid
