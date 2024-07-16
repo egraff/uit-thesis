@@ -11,7 +11,7 @@ max_jobs: 1
 
 image:
   - Visual Studio 2022
-  - Ubuntu
+  - Ubuntu2204
 
 environment:
   deploy_key_secret:
@@ -51,33 +51,35 @@ matrix:
     - image: Visual Studio 2022
       TEST_CATEGORY: regtest_linux
 
-    - image: Ubuntu
+    - image: Ubuntu2204
       TEST_CATEGORY: regtest_win
 
 
 for:
   - matrix:
       only:
-        - image: Ubuntu
+        - image: Ubuntu2204
           TEST_CATEGORY: regtest_linux
 
     install:
       - git submodule update --init --recursive
 
       # Decrypt deploy key
-      - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
-      - ps: >-
-          $IsPullRequest = (Test-Path Env:APPVEYOR_PULL_REQUEST_NUMBER) -And $Env:APPVEYOR_PULL_REQUEST_NUMBER;
-          if (-Not $IsPullRequest) {
-            Write-Host "Decrypting deploy key";
-            appveyor-tools/secure-file -decrypt ci/appveyor-deploy-key.enc -secret $Env:deploy_key_secret -salt $Env:deploy_key_salt -out "$($Env:HOME)/.ssh/id_rsa";
-            chmod 600 "$($Env:HOME)/.ssh/id_rsa";
-            Write-Host "Testing deploy key";
-            $OldErrorActionPreference = $ErrorActionPreference;
-            $ErrorActionPreference = "Continue";
-            (ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -vvvT git@github.com || true) 2>&1 | %{ "$_" };
-            $ErrorActionPreference = $OldErrorActionPreference;
-          }
+      - sh: |
+          source $HOME/venv3.12/bin/activate
+          python -mpip install --upgrade pip 2>&1
+          python -mpip install pycryptodomex
+          deactivate
+      - sh: |
+          if [[ -z "$APPVEYOR_PULL_REQUEST_NUMBER" ]]; then
+            echo "Decrypting deploy key"
+            source $HOME/venv3.12/bin/activate
+            python ult-base/ci/secure-file.py -decrypt ci/appveyor-deploy-key.enc -secret ${deploy_key_secret} -salt ${deploy_key_salt} -out "${HOME}/.ssh/id_rsa"
+            deactivate
+            chmod 600 "${HOME}/.ssh/id_rsa"
+            echo "Testing deploy key"
+            (ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -vvvT -T git@github.com || true) 2>&1
+          fi
 
       - sh: ult-base/ci/appveyor_linux_install_${TEST_SUITE}.sh
       - tlmgr conf
@@ -88,7 +90,7 @@ for:
 
     test_script:
       - sh: |
-          source $HOME/venv3.10/bin/activate
+          source $HOME/venv3.12/bin/activate
           make -C test PYTHON=python PROTODIR=${PROTODIR}
 
     on_success:
@@ -107,16 +109,21 @@ for:
       - git submodule update --init --recursive
 
       # Decrypt deploy key
-      - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
+      - ps: >-
+          $OldErrorActionPreference = $ErrorActionPreference;
+          $ErrorActionPreference = "Continue";
+          py -3.12-64 -mpip install --upgrade pip 2>&1 | %{ "$_" };
+          $ErrorActionPreference = $OldErrorActionPreference;
+      - ps: py -3.12-64 -mpip install pycryptodomex
       - ps: >-
           $IsPullRequest = (Test-Path Env:APPVEYOR_PULL_REQUEST_NUMBER) -And $Env:APPVEYOR_PULL_REQUEST_NUMBER;
           if (-Not $IsPullRequest) {
             Write-Host "Decrypting deploy key";
-            appveyor-tools\secure-file -decrypt ci\appveyor-deploy-key.enc -secret $Env:deploy_key_secret -salt $Env:deploy_key_salt -out "$($Env:USERPROFILE)\.ssh\id_rsa";
+            py -3.12-64 ult-base\ci\secure-file.py -decrypt ci\appveyor-deploy-key.enc -secret $Env:deploy_key_secret -salt $Env:deploy_key_salt -out "$($Env:USERPROFILE)\.ssh\id_rsa";
             Write-Host "Testing deploy key";
             $OldErrorActionPreference = $ErrorActionPreference;
             $ErrorActionPreference = "Continue";
-            ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -vvvT git@github.com 2>&1 | %{ "$_" };
+            ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -vvvT -T git@github.com 2>&1 | %{ "$_" };
             $ErrorActionPreference = $OldErrorActionPreference;
           }
 
@@ -157,7 +164,7 @@ for:
           }
 
     test_script:
-      - 'C:\msys64\usr\bin\bash.exe -e -l -c "cd $APPVEYOR_BUILD_FOLDER && ulimit -n 3200 && make -C test PROTODIR=${PROTODIR} WARMUP_COMPILE=${WARMUP_COMPILE}"'
+      - 'C:\msys64\usr\bin\bash.exe -e -l -c "cd $APPVEYOR_BUILD_FOLDER && ulimit -n 3200 && make -C test PYTHON=\"py -3.12-64\" PROTODIR=${PROTODIR} WARMUP_COMPILE=${WARMUP_COMPILE}"'
 
     on_success:
       - ps: >-
@@ -181,4 +188,4 @@ for:
             echo $_.Exception | FL -Force
           }
       # https://www.appveyor.com/docs/how-to/rdp-to-build-worker/
-      #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+      # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
