@@ -44,12 +44,11 @@ task:
         PROTODIR: proto_tl2018
 
   decrypt_deploy_key_script: |
-    curl -sflL 'https://raw.githubusercontent.com/appveyor/secure-file/fc44f5c5f2fb184fe738814f373c16cb69c30929/install.sh' | bash -e -
     if [ -z "$CIRRUS_PR" ]; then
       echo "Decrypting deploy key"
       mkdir -p "${HOME}/.ssh"
       chmod 700 "${HOME}/.ssh"
-      appveyor-tools/secure-file -decrypt ci/cirrus-deploy-key.enc -secret ${deploy_key_secret} -salt ${deploy_key_salt} -out "${HOME}/.ssh/id_ed25519"
+      python3 ult-base/ci/secure-file.py -decrypt ci/cirrus-deploy-key.enc -secret ${deploy_key_secret} -salt ${deploy_key_salt} -out "${HOME}/.ssh/id_ed25519"
       chmod 600 "${HOME}/.ssh/id_ed25519"
       echo "Testing deploy key"
       (ssh -o StrictHostKeyChecking=no -T git@github.com || true)
