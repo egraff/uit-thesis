@@ -1,0 +1,12 @@
+---
+layout: appveyor-build
+appveyor:
+  branch: erlend/ult-base-new-regtest
+  build-id: 50225078
+  build-number: 595
+  commit: ac25364d7ff3d2e335a8d80012eb39b1916a1160
+  job-id: uqehleuut8y2lh8t
+  job-number: 3
+  os-name: Windows
+  test-result: 0
+---
