@@ -15,45 +15,65 @@ help:
 	@echo "     uninstall  -  remove the uit-thesis class from your home texmf tree"
 
 define prompt-texmf
-	@while [ -z "$$CONTINUE" ]; do \
-		read -r -p "Is this correct? [y/N] " CONTINUE; \
-	done ; \
-	if [ $$CONTINUE != "y" ] && [ $$CONTINUE != "Y" ]; then \
-		echo "Exiting." ; exit 1 ; \
+	while [ -z "$$CONTINUE" ]; do                                           \
+	    read -r -p "Is this correct? [y/N] " CONTINUE;                      \
+	done ;                                                                  \
+	if [ $$CONTINUE != "y" ] && [ $$CONTINUE != "Y" ]; then                 \
+	    echo "Exiting." ; exit 1 ;                                          \
 	fi
 endef
 
-# Try TEXMFHOME first. If TEXMFHOME is defined, it will override ULTTEXMFLOCAL
-try-texmf-home: try-texmf-local
-ifneq ($(ULTTEXMFHOME),)
-  ULTTEXMFLOCAL = $(ULTTEXMFHOME)
-endif
+
+# If the TEXMF argument is on the kpathsea form {dir1:dir2:dir3} or {dir1;dir2;dir3} or {dir1,dir2,dir3},
+# then select the first directory from the list. Otherwise, use the TEXMF argument verbatim.
+define parse-texmf
+	MULTI_PATHS=$$(echo "$(1)" | sed -n 's/^{\(.*\)}/\1/p') ;               \
+	if [ ! -z "$$MULTI_PATHS" ]; then                                       \
+	    if [ "$(OS)" = "Windows_NT" ]; then                                 \
+	        IFS=';,' ;                                                      \
+	    else                                                                \
+	        IFS=';:,' ;                                                     \
+	    fi ;                                                                \
+	    for p in $$MULTI_PATHS; do                                          \
+	        echo "$$p" ;                                                    \
+	        break ;                                                         \
+	    done ;                                                              \
+	else                                                                    \
+	    echo "$(1)" ;                                                       \
+	fi
+endef
+
 
 # If TEXMFHOME is defined, we use it! Else, we try TEXMFLOCAL
-try-texmf-local:
-# If neither TEXMFHOME nor TEXMFLOCAL is defined
-ifeq ($(ULTTEXMFLOCAL),)
-	@echo -e "Cannot locate your home texmf tree. Specify manually with\n\n    make install TEXMF=/path/to/texmf\n"
-	@exit 1
-else
-  TEXMF = $(ULTTEXMFLOCAL)
+# (note that if TEXMF has been specified as a command line argument, it takes precedence)
+ifneq ($(ULTTEXMFHOME),)
+  TEXMF = $(shell $(call parse-texmf,$(ULTTEXMFHOME)))
+else ifneq ($(ULTTEXMFLOCAL),)
+  TEXMF = $(shell $(call parse-texmf,$(ULTTEXMFLOCAL)))
 endif
 
-ifdef TEXMF
-detect-texmf:
-else
-detect-texmf: try-texmf-home
+
+check-texmf:
+ifeq ($(strip $(TEXMF)),)
+	@echo "Cannot locate your home texmf tree. Specify manually with"
+	@echo " "
+	@echo "    make install TEXMF=/path/to/texmf"
+	@echo " "
+	@exit 1
 endif
+
+
+detect-texmf: check-texmf
 	@echo "Using texmf tree in \"$(TEXMF)\"."
-	$(prompt-texmf)
+	@$(prompt-texmf)
 ULTTEXMF = $(subst \,/,$(TEXMF))
 LATEXROOT = $(ULTTEXMF)/tex/latex/$(NAME)
 LOCALLATEXROOT = texmf-tds/tex/latex/$(NAME)
 
-check-texmf: detect-texmf
+ensure-texmf-exists: detect-texmf
 	@test -d "$(ULTTEXMF)" || mkdir -p "$(ULTTEXMF)"
 
-uninstall: check-texmf
+uninstall: ensure-texmf-exists
 	$(MAKE) -C ult-base uninstall TEXMF=$(TEXMF) CONTINUE=y
 	@echo "$(ULTTEXMF)/tex/latex/$(NAME)"
 	@if [ -d "$(LATEXROOT)" ]; then \
@@ -63,7 +83,7 @@ uninstall: check-texmf
 		echo "You might have to run 'texhash' to update your texmf database." ; \
 	fi
 
-install: check-texmf uninstall
+install: ensure-texmf-exists uninstall
 	$(MAKE) -C ult-base install TEXMF=$(TEXMF) CONTINUE=y
 	@echo "Installing into \"$(LATEXROOT)\"..."
 	@test -d "$(LATEXROOT)" || mkdir -p "$(LATEXROOT)"
