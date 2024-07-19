@@ -76,6 +76,15 @@ task:
         echo "TEST_RESULT_CODE=0" >> $CIRRUS_ENV
       fi
 
+    copy_artifacts_script: |
+      mkdir cirrus-artifacts
+      if [[ "$CIRRUS_CHANGE_MESSAGE" =~ \[keep\-pdfs\] ]]; then
+        (cp -Rvv test/pdfs/*.pdf cirrus-artifacts/ 2>/dev/null) || true
+      fi
+
+    ci_artifacts:
+      path: "cirrus-artifacts/*"
+
     after_script:
       - echo "Test result code: $TEST_RESULT_CODE"
       - ci/cirrus_linux_after.sh $TEST_RESULT_CODE
