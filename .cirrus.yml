@@ -7,6 +7,12 @@ task:
     - git submodule update --init --recursive
 
   matrix:
+    - name: "Linux - TeX Live 2024"
+      container:
+        dockerfile: ci/texlive-2024-linux.Dockerfile
+      env:
+        PROTODIR: proto_tl2023
+
     - name: "Linux - TeX Live 2023"
       container:
         dockerfile: ci/texlive-2023-linux.Dockerfile
