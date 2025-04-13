@@ -22,16 +22,16 @@ environment:
   matrix:
     - TEST_SUITE: miktex-latest
       TEST_CATEGORY: regtest_win
-      PROTODIR: proto_tl2024
+      PROTODIR: proto_tl2025
       WARMUP_COMPILE: 1
 
     - TEST_SUITE: texlive-latest
       TEST_CATEGORY: regtest_linux
-      PROTODIR: proto_tl2024
+      PROTODIR: proto_tl2025
 
     - TEST_SUITE: texlive-latest
       TEST_CATEGORY: regtest_win
-      PROTODIR: proto_tl2024
+      PROTODIR: proto_tl2025
 
     - TEST_SUITE: texlive-2024
       TEST_CATEGORY: regtest_win
