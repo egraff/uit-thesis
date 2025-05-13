@@ -229,7 +229,8 @@
 % If any other language is specified in the list, it will take precedence
 % We only inject if it was not specified, since every option is only processed once.
 \ifult@specified@english\else
-\preto\@classoptionslist{USenglish,}
+  \preto\@classoptionslist{USenglish,}
+  \preto\@raw@classoptionslist{USenglish,}
 \fi
 
 
