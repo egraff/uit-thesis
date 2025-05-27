@@ -6,6 +6,25 @@ Param(
 
 $ErrorActionPreference = "Stop"
 
+#$shouldPushPdfArtifacts = "${env:APPVEYOR_REPO_COMMIT_MESSAGE} ${env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED}" -Match '.*\[keep\-pdfs\].*'
+$shouldPushPdfArtifacts = $true
+if ($shouldPushPdfArtifacts)
+{
+    $artifactsDirAbsPath = (md "appveyor-artifacts").FullName
+    cp "test\pdfs\*.pdf" $artifactsDirAbsPath -Recurse -ErrorAction Ignore
+
+    # https://www.appveyor.com/docs/packaging-artifacts/#pushing-artifacts-from-scripts
+    [IO.Directory]::GetFiles($artifactsDirAbsPath, "*.*", "AllDirectories") | % {
+        $filePath = $_
+        $relativeFilePath = $filePath.Substring($artifactsDirAbsPath.Length + 1)
+
+        Push-AppveyorArtifact `
+          $filePath `
+          -FileName $relativeFilePath `
+          -DeploymentName "test-pdfs"
+    }
+}
+
 if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
     # Likely a pull request from a forked repository.
     # Committing the test results can only be done when secure environment
