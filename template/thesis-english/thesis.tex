@@ -1,0 +1,87 @@
+%!TEX root = thesis.tex
+
+%:-------------------------- Preamble -----------------------
+
+\documentclass[
+    11pt,           % Font size
+%   notlol,         % Disable printing of a List of Listings (if utilized in thesis)
+%   notlof,         % Disable printing of List of Figures (if utilized in thesis)
+%   notlot,         % Disable printing of List of Tables (if utilized in thesis)
+%   notloa,         % Disable printing of List of Abbreviations (if utilized and external utility 'makeglossaries' had been ran)
+%   notglo,         % Disable printing of List of Glossaries (if utilized and external utility 'makeglossaries' has been ran)
+%   draft,          % Developer option - Mark part of document exceeding margin
+%   baselinegrid,   % Developer option - Create a red grid to visualize placement of text
+	]{uit-thesis}
+
+% To enable List of Glossaries and List of Abbreviations, and external utility called 'makeglossaries' must be ran.
+% This command signifies to this ulitity that loa and glo is desired.
+\makeglossaries
+
+% Add external glossaryentries
+\loadglsentries{resource/acronyms}
+\loadglsentries{resource/glossaries}
+
+
+\begin{document}
+
+%:-------------------------- Frontpage ------------------------
+
+\title{Title of thesis}
+\subtitle{Subtitle}                                                     % Optional
+\author{Name of author}
+\thesisfaculty{Faculty of [faculty] \\ Department of [department]}
+\thesisprogramme{Master thesis in [study programme] … Month 20xx}
+%\ThesisFrontpageImage{resource/example_image.jpg}                      % Optional - Override the frontpage image
+
+\maketitle
+
+%:-------------------------- Frontmatter -----------------------
+\frontmatter
+
+% Optional - Thesis dedication
+%\begin{dedication}
+%To [person of importance].
+%
+%[dedication]
+%\end{dedication}
+
+% Optional - epigraph entries (Multiple items allowed)
+%\begin{epigraph}
+%\epigraphitem{Simplicity is prerequisite for reliability.}{Edsger Dijkstra}
+%\end{epigraph}
+
+\begin{abstract}
+\input{content/abstract}
+\end{abstract}
+
+% Optional - Acknowledgement
+%\begin{acknowledge}
+%\input(content/acknowledgement)
+%\end{acknowledge}
+
+\tableofcontents
+
+%:-------------------------- Mainmatter -----------------------
+\mainmatter
+
+\chapter{Introduction}
+\label{chapter:introduction}
+\input{content/introduction}
+
+
+% Add successive chapters here
+
+
+% Choose reference style
+% ----------------------
+% ieeetr: computer science reference style, sorted in order of citation
+\bibliographystyle{ieeetr}
+
+% Load bibtex file(s)
+\bibliography{resource/references,}
+
+
+\backmatter
+
+\end{document}
+
