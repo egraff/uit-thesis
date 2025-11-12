@@ -10,18 +10,22 @@ $ErrorActionPreference = "Stop"
 $shouldPushPdfArtifacts = $true
 if ($shouldPushPdfArtifacts)
 {
-    $artifactsDirAbsPath = (md "appveyor-artifacts").FullName
-    cp "test\pdfs\*.pdf" $artifactsDirAbsPath -Recurse -ErrorAction Ignore
+    if (Test-Path -Path "test\pdfs" -PathType Container)
+    {
+        $artifactsDirAbsPath = (md "appveyor-artifacts").FullName
+        cp "test\pdfs\*.pdf" $artifactsDirAbsPath -Recurse -ErrorAction Ignore
 
-    # https://www.appveyor.com/docs/packaging-artifacts/#pushing-artifacts-from-scripts
-    [IO.Directory]::GetFiles($artifactsDirAbsPath, "*.*", "AllDirectories") | % {
-        $filePath = $_
-        $relativeFilePath = $filePath.Substring($artifactsDirAbsPath.Length + 1)
+        # https://www.appveyor.com/docs/packaging-artifacts/#pushing-artifacts-from-scripts
+        [IO.Directory]::GetFiles($artifactsDirAbsPath, "*.*", "AllDirectories") | % {
+            $filePath = $_
+            $relativeFilePath = $filePath.Substring($artifactsDirAbsPath.Length + 1)
 
-        Push-AppveyorArtifact `
-          $filePath `
-          -FileName $relativeFilePath `
-          -DeploymentName "test-pdfs"
+            Write-Host "Pushing AppVeyor artifact: ${filePath} -> ${relativeFilePath}"
+            Push-AppveyorArtifact `
+              $filePath `
+              -FileName $relativeFilePath `
+              -DeploymentName "test-pdfs"
+        }
     }
 }
 
@@ -29,6 +33,12 @@ if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
     # Likely a pull request from a forked repository.
     # Committing the test results can only be done when secure environment
     # variables are available.
+    exit 0
+}
+
+if (!(Test-Path -Path "test\test_result.json"))
+{
+    Write-Host "No test_result.json"
     exit 0
 }
 
@@ -47,7 +57,7 @@ Push-Location -Path $GhPages
 
 $ErrorActionPreference = "Continue"
 
-git init
+git init --initial-branch=gh-pages
 git config core.autocrlf true
 git config user.name "AppVeyor"
 git config user.email "appveyor@appveyor.com"
