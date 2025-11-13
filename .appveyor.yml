@@ -117,7 +117,7 @@ for:
       - ps: py -3.12-64 -mpip install pycryptodomex
 
       # Decrypt deploy key
-      - ps: >-
+      - ps: |
           $IsPullRequest = (Test-Path Env:APPVEYOR_PULL_REQUEST_NUMBER) -And $Env:APPVEYOR_PULL_REQUEST_NUMBER
           if (-Not $IsPullRequest) {
             Write-Host "Decrypting deploy key"
