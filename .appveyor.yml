@@ -90,6 +90,14 @@ for:
 
     test_script:
       - sh: |
+          echo "Running ltxpect tests..."
+          source $HOME/venv3.12/bin/activate
+          (cd ult-base/test-scripts && python -munittest discover -s ltxpect -t ..)
+          deactivate
+          echo
+          echo
+
+      - sh: |
           source $HOME/venv3.12/bin/activate
           make -C test PYTHON=python PROTODIR=${PROTODIR}
 
