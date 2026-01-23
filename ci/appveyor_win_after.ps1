@@ -15,16 +15,32 @@ if ($shouldPushPdfArtifacts)
         $artifactsDirAbsPath = (md "appveyor-artifacts").FullName
         cp "test\pdfs\*.pdf" $artifactsDirAbsPath -Recurse -ErrorAction Ignore
 
-        # https://www.appveyor.com/docs/packaging-artifacts/#pushing-artifacts-from-scripts
-        [IO.Directory]::GetFiles($artifactsDirAbsPath, "*.*", "AllDirectories") | % {
-            $filePath = $_
-            $relativeFilePath = $filePath.Substring($artifactsDirAbsPath.Length + 1)
+        # https://github.com/appveyor/ci/issues/3991
+        if ($true)
+        {
+            Compress-Archive -Path $artifactsDirAbsPath -DestinationPath "${pwd}\artifacts.zip"
 
-            Write-Host "Pushing AppVeyor artifact: ${filePath} -> ${relativeFilePath}"
+            Write-Host "Pushing AppVeyor artifact: ${pwd}\artifacts.zip -> artifacts.zip"
             Push-AppveyorArtifact `
-              $filePath `
-              -FileName $relativeFilePath `
+              "${pwd}\artifacts.zip" `
+              -FileName "artifacts.zip" `
               -DeploymentName "test-pdfs"
+
+            Write-Host "Done pushing AppVeyor artifact: ${pwd}\artifacts.zip -> artifacts.zip"
+        }
+        else
+        {
+            # https://www.appveyor.com/docs/packaging-artifacts/#pushing-artifacts-from-scripts
+            [IO.Directory]::GetFiles($artifactsDirAbsPath, "*.*", "AllDirectories") | % {
+                $filePath = $_
+                $relativeFilePath = $filePath.Substring($artifactsDirAbsPath.Length + 1)
+
+                Write-Host "Pushing AppVeyor artifact: ${filePath} -> ${relativeFilePath}"
+                Push-AppveyorArtifact `
+                  $filePath `
+                  -FileName $relativeFilePath `
+                  -DeploymentName "test-pdfs"
+            }
         }
     }
 }
