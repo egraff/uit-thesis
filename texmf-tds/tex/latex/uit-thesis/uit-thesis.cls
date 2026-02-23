@@ -626,6 +626,23 @@
 \renameautorefname[norsk]{part}{del}
 \renameautorefname[norsk]{appendix}{tillegg}
 
+% Set autoref definitions for nynorsk language - none of these are set.
+\renameautorefname[nynorsk]{section}{seksjon}
+\renameautorefname[nynorsk]{footnote}{fotnote}
+\renameautorefname[nynorsk]{item}{element}
+\renameautorefname[nynorsk]{chapter}{kapittel}
+\renameautorefname[nynorsk]{subsection}{underseksjon}
+\renameautorefname[nynorsk]{paragraph}{avsnitt}
+\renameautorefname[nynorsk]{subparagraph}{underavsnitt}
+\renameautorefname[nynorsk]{FancyVerbLine}{Line}
+\renameautorefname[nynorsk]{page}{side}
+\renameautorefname[nynorsk]{equation}{formel}
+\renameautorefname[nynorsk]{table}{tabell}
+\renameautorefname[nynorsk]{figure}{figur}
+\renameautorefname[nynorsk]{lstlisting}{listing}
+\renameautorefname[nynorsk]{part}{del}
+\renameautorefname[nynorsk]{appendix}{tillegg}
+
 
 %:-------------------------- Title and subtitle  -----------------------
 
@@ -1578,6 +1595,8 @@
 \renamedefname[USenglish]{ack}{Acknowledgements}
 \renamedefname[norsk]{abstract}{Sammendrag}
 \renamedefname[norsk]{ack}{Takksigelser}
+\renamedefname[nynorsk]{abstract}{Samandrag}
+\renamedefname[nynorsk]{ack}{Forord}
 
 % Missing from samin babel package
 \renamedefname[samin]{ack}{Giitosat}
@@ -1585,6 +1604,7 @@
 
 % Defined incorrectly with capital first letter in babel's 'norsk'
 \renamedefname[norsk]{see}{se}
+\renamedefname[nynorsk]{see}{sjå}
 
 % Control-ifs
 \newif\ifult@hasacknowledgement\ult@hasacknowledgementfalse
@@ -1909,6 +1929,7 @@
 % List of Listings
 \renamedefname[USenglish]{lstlistlisting}{List of Listings}
 \renamedefname[norsk]{lstlistlisting}{Listinger}
+\renamedefname[norsk]{lstlistlisting}{Listingar}
 \renewcommand\lstlistoflistings{%
   \iftotallstlistings% Only output list if count > 0
     \cleardoublepage
@@ -1922,6 +1943,7 @@
 % List of Abbreviations
 \renamedefname[USenglish]{acronym}{List of Abbreviations}
 \renamedefname[norsk]{acronym}{Forkortelser}
+\renamedefname[nynorsk]{acronym}{Forkortingar}
 
 \usepackage{ult-printglossary}
 
@@ -2481,6 +2503,10 @@
   % Set the topleft frontpage logo to Norwegian
   \gdef\ult@frontpage@logo{ult_logo_norsk.pdf}
 }{}
+\iflanguage{nynorsk}{%
+  % Set the topleft frontpage logo to Norwegian
+  \gdef\ult@frontpage@logo{ult_logo_nynorsk.pdf}
+}{}
 
 % nynorsk language - changes the frontpage logos and profile to the 'nynorsk' Norwegian language
 \iflanguage{nynorsk}{%
@@ -2513,7 +2539,7 @@
   \fancyfoot[C]{%
     \leavevmode
     \color[cmyk]{0.3,0.3,0.3,0.9}%
-    \newline
+    Cover photo: Havøygavlen vindpark, Koen van Greevenbroek. \\[1em]
     This thesis document was typeset using the \emph{UiT Thesis L\kern-.28em\raise.35ex\hbox{\textsc{a}}\kern-.12emT\kern-.12em\lower.38ex\hbox{E}\kern-.03emX Template}.\\
     \textcopyright{} \the\year{} -- \url{http://github.com/egraff/uit-thesis}%
   }%
