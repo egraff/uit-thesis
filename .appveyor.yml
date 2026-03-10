@@ -33,17 +33,13 @@ environment:
       TEST_CATEGORY: regtest_win
       PROTODIR: proto_tl2025
 
+    - TEST_SUITE: texlive-2025
+      TEST_CATEGORY: regtest_win
+      PROTODIR: proto_tl2025
+
     - TEST_SUITE: texlive-2024
       TEST_CATEGORY: regtest_win
       PROTODIR: proto_tl2024
-
-    - TEST_SUITE: texlive-2023
-      TEST_CATEGORY: regtest_win
-      PROTODIR: proto_tl2023
-
-    - TEST_SUITE: texlive-2022
-      TEST_CATEGORY: regtest_win
-      PROTODIR: proto_tl2022
 
 
 matrix:

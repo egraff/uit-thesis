@@ -7,6 +7,12 @@ task:
     - git submodule update --init --recursive
 
   matrix:
+    - name: "Linux - TeX Live 2025"
+      container:
+        dockerfile: ci/texlive-2025-linux.Dockerfile
+      env:
+        PROTODIR: proto_tl2025
+
     - name: "Linux - TeX Live 2024"
       container:
         dockerfile: ci/texlive-2024-linux.Dockerfile
@@ -30,24 +36,6 @@ task:
         dockerfile: ci/texlive-2021-linux.Dockerfile
       env:
         PROTODIR: proto_tl2021
-
-    - name: "Linux - TeX Live 2020"
-      container:
-        dockerfile: ci/texlive-2020-linux.Dockerfile
-      env:
-        PROTODIR: proto_tl2020
-
-    - name: "Linux - TeX Live 2019"
-      container:
-        dockerfile: ci/texlive-2019-linux.Dockerfile
-      env:
-        PROTODIR: proto_tl2019
-
-    - name: "Linux - TeX Live 2018"
-      container:
-        dockerfile: ci/texlive-2018-linux.Dockerfile
-      env:
-        PROTODIR: proto_tl2018
 
   decrypt_deploy_key_script: |
     if [ -z "$CIRRUS_PR" ]; then
